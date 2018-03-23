@@ -1,0 +1,252 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">问题分类：</td>
+		    			<td> 
+							<input id="typeNameSearch-${rand}" style="width:150px;" class="easyui-textbox"  name="typeName" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">问题名称：</td>
+		    			<td> 
+							<input id="nameSearch-${rand}" style="width:150px;" class="easyui-textbox"  name="name" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">问题描述：</td>
+		   				<td> 
+    			 			<input id="descriptionSearch-${rand}" style="width:150px;" class="easyui-textbox"  name="description" />
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="hardwareName-${rand}"></div>
+	</div>
+ </div>
+
+<div id="hardwareNameDialog${rand}" class="easyui-dialog" data-options="closed:true">
+	<div  style="padding:10px 10px;">
+		<form id="addHardwareNameForm${rand}" method="post">
+			<table>
+				<tr>
+					<td  align="left" width="120">所属类型:</td>
+					<td>
+						<input id="typeName-${rand}" class="easyui-combogrid" style="width:220px" data-options="
+								panelWidth: 300,
+								idField: 'id',
+								textField: 'typeName',
+								editable : false, 
+								required:true,
+								url: 'hardware/query.json',
+								method: 'get',
+								columns: [[
+									{field:'id',title:'问题ID',width:60,align:'center',hidden:true},
+									{field:'typeName',title:'问题名称',width:90},
+									{field:'description',title:'问题描述',width:90,}
+								]],
+								fitColumns: true
+							">
+					</td>
+				</tr>
+				<tr>
+					<td  align="left" width="120">问题名称:</td>
+					<td>
+						<input id="input_id-${rand}" type="hidden" name="id" />
+						<input id="name-${rand}" class="easyui-validatebox" data-options="required:true" name="name" style="width:200px;">
+					</td>
+				</tr>
+				<tr>
+					<td  align="left" width="120">描述:</td>
+					<td>
+						<textarea id="description-${rand}" class="easyui-text" name="description" style="width:300px;"></textarea>
+					</td>
+				</tr>
+				
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$('#hardwareName-${rand}').datagrid({
+	  fitColumns:true,
+	  url:'type/query.json',
+	  columns:[[
+		{field:'id',title:'编号',checkbox:true,width:150},
+		{field:'typeName',title:'问题分类',width:100},
+		{field:'name',title:'问题名称',width:100},
+		{field:'description',title:'问题描述',width:100},
+		{field:'createBy',title:'创建人',width:100},
+		{field:'createTime',title:'创建时间',width:120},
+		{field:'updateBy',title:'更新人',width:100},
+		{field:'updateTime',title:'更新时间',width:120}
+	  ]],
+	  nowrap: true,
+	  pagination:true,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  border : true,
+	  rownumbers:true,
+	  toolbar: [{
+		text:'新增',
+		iconCls: 'icon-add',
+		handler:add${rand}
+	  },'-',{
+		text:'编辑',
+		iconCls: 'icon-edit',
+		handler:edit${rand}
+	  },'-',{
+		text:'删除',
+		iconCls: 'icon-remove',
+		handler:delete${rand}
+	  }]
+	});
+	
+	
+	//edit
+	function edit${rand}(){
+		var row = $('#hardwareName-${rand}').datagrid('getSelected');
+	  if (row){
+		createDialog();
+		
+		$('#input_id-${rand}').val(row.id);
+		//	var grid=$("#typeName-${rand}").combogrid("grid");//获取表格对象
+		//  var row1 = grid.datagrid('getSelected');//获取行数据 
+		$('#typeName-${rand}').combogrid('setValue',row.typeName);
+		$('#name-${rand}').val(row.name);
+		$('#description-${rand}').val(row.description);
+		//valiadate
+		$("#addhardwareNameForm${rand}").form('validate');
+		//set title
+		$('#hardwareNameDialog${rand}').dialog('setTitle', '编辑问题类型');
+	  } else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	  }
+	}
+	
+	//delete
+	function delete${rand}(){
+		var row = $('#hardwareName-${rand}').datagrid('getSelected');
+		 if (row){
+			$.messager.confirm('删除提示','您确定要删除该条记录吗?',function(r){
+				if (r){
+					$.post('type/delete.json',{id:row.id},function(result){
+						$.messager.show({
+							title: '信息提示', msg: result.msg
+				        });
+						if (result.success){
+							hardwareNameGridRefresh();
+						} 
+				  	},'json');
+				}
+			});
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	
+	//refresh
+	function hardwareNameGridRefresh(){
+		$('#hardwareName-${rand}').datagrid('reload');
+	}
+	
+	//add
+	function add${rand}(){
+		createDialog();
+	}
+	function createDialog(){
+		var win = $('#hardwareNameDialog${rand}').dialog({
+			title: '新增类型名称',
+			collapsible:false,
+			width: 600,
+			height: 300,
+			maximizable:true,
+			resizable:true,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text : '保存',    
+				iconCls:'icon-save',    
+				handler:function(){
+					save${rand}();
+				}    
+			},{    
+				text:'重置',
+				iconCls:'icon-undo',    
+				handler:function(){
+					$('#addHardwareNameForm${rand}').form('clear');
+				}    
+			}],
+			onClose : function(){
+				$('#addHardwareNameForm${rand}').form('clear');
+			}
+		});
+		return win;
+	}
+	
+	//save
+	function save${rand}(){
+		var result = $("#addHardwareNameForm${rand}").form('validate');
+		if (result) {
+			var typeName =  $('#typeName-${rand}').combogrid('getText');
+			var name = $('#name-${rand}').val();
+			var description =  $('#description-${rand}').val();
+			
+			$.post('type/save.json',
+				{
+					id:$('#input_id-${rand}').val(),
+					typeName:typeName,
+					name:name,
+					description:description
+				},
+				function(result){
+					$.messager.show({
+						title: '信息提示', msg:result.msg
+					});
+					if (result.success){
+						$('#hardwareNameDialog${rand}').dialog('close');
+						hardwareNameGridRefresh();
+					} 
+			},'json');
+		}
+	}
+	
+	//按钮绑定事件
+	$('#search_btn-${rand}').bind('click', function(){
+		var typeNameSearch = $('#typeNameSearch-${rand}').val();
+	    var nameSearch = $('#nameSearch-${rand}').val();
+		var descriptionSearch = $('#descriptionSearch-${rand}').val();
+		
+		$('#hardwareName-${rand}').datagrid('reload',
+			{
+				typeName:typeNameSearch,
+				name:nameSearch,
+				description:descriptionSearch
+			});
+	});
+	
+	$('#reset_btn-${rand}').bind('click', function(){
+		$('#typeNameSearch-${rand}').val('');
+	    $('#nameSearch-${rand}').val('');
+		$('#descriptionSearch-${rand}').val('');
+	});
+	
+});
+</script>
+<#include "/common/foot.ftl">

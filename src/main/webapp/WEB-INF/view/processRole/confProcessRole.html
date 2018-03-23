@@ -1,0 +1,886 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west',iconCls:'icon-process',
+			title:'流程列表',border:true,
+			split:true,minHeight:200,width:230"
+			style="padding: 5px 0px 5px 0px">
+		<ul id="process${rand}" />
+	</div>
+	<div data-options="region:'center',border:false,split:true">
+	  		<div id="centerLayout${rand}" class="easyui-layout" data-options="fit:true" style="">
+	  			<div data-options="region:'center',iconCls:'icon-task',title:'任务节点列表',border:true,split:true"
+						style="padding: 0px 0px 0px 0px;">
+					<table id="task${rand}"></table>
+				</div>
+	  			<div id="centerSouth${rand}" data-options="region:'south',border:true,title:'流程角色配置属性',
+	  					height:300,split:true,collapsed:true">
+	  				<table id="confAttr${rand}"></table>
+	  			</div>
+	  		</div>
+	 </div>
+</div>
+
+<!-- getSpecialRoleMaster Dialog -->
+<div id="specialRoleWin${rand}" class="easyui-dialog" data-options="width:500,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#spRoleDialog-buttons${rand}'">
+	<div style="padding-top:25px" align="center">
+			<input id="sp_role_id${rand}" type="hidden" value=""/>
+			<td>
+					请输入用户姓名：
+				</td>
+				<td class="formtable_td_value" colspan="7">
+				  		 <input id="accepter${rand}" type="hidden" value="" name="fp_assignee" style="width:80px"/>
+				  		 <input id="accepterName${rand}" class="easyui-validatebox" name="fp_accepterName" data-options="required:true" readonly="readonly">
+				  		 <a id="openOrgWinBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+				</td>
+	</div>
+</div>
+<div id="spRoleDialog-buttons${rand}">
+   <a id="spRoleSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="spRoleCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- getSpecialAreaRoleMaster Dialog -->
+<div id="specialAreaRoleWin${rand}" class="easyui-dialog" data-options="width:500,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#spAreaRoleDialog-buttons${rand}'">
+	<div style="padding-top:25px" align="center">
+		<input id="sp_area_role_id${rand}" type="hidden" value=""/>
+		请输入用户姓名：<input id="sp_area_role_user${rand}" class="easyui-combobox" data-options="valueField:'id',textField:'text'"/>
+		请选择区域：<input id="sp_area_role_area${rand}" class="easyui-combobox" 
+			data-options="valueField:'id',textField:'text',multiple:true,
+							data: [{
+							id: '深圳',
+							text: '深圳'
+						},{
+							id: '北京',
+							text: '北京'
+						},{
+							id: '海外',
+							text: '海外'
+						}]"/>
+	</div>
+</div>
+<div id="spAreaRoleDialog-buttons${rand}">
+   <a id="spAreaRoleSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="spAreaRoleCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- getSpecialDeptMaster Dialog -->
+<div id="specialDeptWin${rand}" class="easyui-dialog" data-options="width:600,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#spDeptDialog-buttons${rand}'">
+	<div style="padding-top:25px" align="center">
+		<input id="sp_dept_id${rand}" type="hidden" value=""/>
+		请输入用户姓名：<input id="sp_dept_user${rand}" class="easyui-combobox" data-options="valueField:'id',textField:'text'" style="width:200px;"/>
+		请选取部门：<select id="sp_dept_dept${rand}" class="easyui-combotree" 
+			data-options="url:'processRole/showAllOrgTree.json',method:'get',
+			required:true,checkbox:true,panelWidth:350,panelHeight:500" multiple style="width:200px;"></select>
+	</div>
+</div>
+<div id="spDeptDialog-buttons${rand}">
+   <a id="spDeptSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="spDeptCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- getSpecialAreaDeptMaster Dialog -->
+<div id="specialAreaDeptWin${rand}" class="easyui-dialog" data-options="width:700,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#spAreaDeptDialog-buttons${rand}'">
+	<div style="padding:15px" align="center">
+		<table style="width: 100%">
+			<tr>
+				<td>
+					请输入用户姓名：
+				</td>
+				<td>
+					<input id="sp_area_dept_id${rand}" type="hidden" value=""/>
+					<input id="sp_area_dept_user${rand}" class="easyui-combobox" data-options="valueField:'id',textField:'text'" style="width:200px;"/>
+				</td>
+				<td>
+					请选取部门：
+				</td>
+				<td>
+					<select id="sp_area_dept_dept${rand}" class="easyui-combotree" 
+							data-options="url:'processRole/showAllOrgTree.json',method:'get',
+							required:false,checkbox:true,panelWidth:350,panelHeight:500" multiple style="width:200px;"></select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					请选择区域：
+				</td>
+				<td><input id="sp_area_dept_area${rand}" class="easyui-combobox"  style="width:200px;"
+						data-options="valueField:'id',textField:'text',multiple:true,
+							data: [{
+							id: '深圳',
+							text: '深圳'
+						},{
+							id: '北京',
+							text: '北京'
+						},{
+							id: '海外',
+							text: '海外'
+						}]"/>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="spAreaDeptDialog-buttons${rand}">
+   <a id="spAreaDeptSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="spAreaDeptCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- getSpecialAreaFloorMaster Dialog -->
+<div id="specialAreaFloorWin${rand}" class="easyui-dialog" data-options="width:700,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#spAreaFloorDialog-buttons${rand}'">
+	<div style="padding:15px" align="center">
+		<table style="width: 100%">
+			<tr>
+				<td>
+					请输入用户姓名：
+				</td>
+				<td>
+					<input id="sp_area_floor_id${rand}" type="hidden" value=""/>
+					<input id="sp_area_floor_user${rand}" class="easyui-combobox" data-options="valueField:'id',textField:'text'" style="width:200px;"/>
+				</td>
+				<td>
+					请选取楼层：
+				</td>
+				<td>
+					<input id="sp_area_floor_detail${rand}" class="easyui-combobox"  style="width:200px;"
+						data-options="valueField:'id',textField:'text',multiple:true,
+							data: [{
+							id: '1',
+								text: '时代科技大厦19层'
+							},{
+								id: '2',
+								text: '时代科技大厦21层'
+							},{
+								id: '3',
+								text: '东海B座12层'
+							},{
+								id: '4',
+								text: '东海B座16层'
+							},{
+								id: '5',
+								text: '东海A座32层'
+							},{
+								id: '6',
+								text: '东海A座33层'
+							},{
+								id: '7',
+								text: '阳光高尔夫15层'
+							}]"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					请选择区域：
+				</td>
+				<td>
+					<input id="sp_area_floor_area${rand}" class="easyui-combobox"  style="width:200px;"
+						data-options="valueField:'id',textField:'text',multiple:true,
+							data: [{
+							id: '深圳',
+							text: '深圳'
+						},{
+							id: '北京',
+							text: '北京'
+						},{
+							id: '海外',
+							text: '海外'
+						}]"/>
+				</td>
+				<td></td>
+				<td></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="spAreaFloorDialog-buttons${rand}">
+   <a id="spAreaFloorSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="spAreaFloorCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+ 
+ 
+ <!--  选择人员-->
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			
+			<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+	员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+</div>
+
+			<table id="users${rand}"></table>
+		</div>
+
+	</div>
+	
+	</div>
+
+
+
+<script type="text/javascript">	
+//选择人员
+//弹出选择人员窗口
+$('#openOrgWinBtn${rand}').bind('click', function(){
+	$('#orgWin-${rand}').dialog('open');	
+});
+
+
+//init org win
+$(function(){
+
+	    var orgs = $('#orgs${rand}');
+		var users = $('#users${rand}');
+		var currentOrgId = 0;
+
+		//init tree
+		orgs.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+                currentOrgId = node.id;		
+				$('#users${rand}').datagrid('reload',{id:currentOrgId});
+			}
+		});
+
+
+//user search
+	$('#userGridSearchBtn${rand}').bind('click', function(){
+		var userAccount = $('#userAccount${rand}').val();
+		var userName = $('#searchName${rand}').val();
+		$('#users${rand}').datagrid('reload',
+			{
+				userAccount:userAccount,
+				userName:userName
+			});
+	});
+	
+   //init UserGrid 
+     $('#users${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+		id:currentOrgId
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  rownumbers:true
+	
+	});
+	//init UserGrid 
+	  
+	  
+});
+
+//选择用户完成事件
+function selectUserEnd(){
+	var row = $('#users${rand}').datagrid('getSelected');
+	if (row) {
+	    $('#accepter${rand}').val(row.account);
+	    $('#accepterName${rand}').val(row.name);
+	       		
+	    $('#accepterName${rand}').validatebox('validate');
+	       		
+	    $('#orgWin-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+function  closeSelectUserWin(){
+	$('#orgWin-${rand}').dialog('close');	
+}
+
+</script>	
+
+<script type="text/javascript">
+//init process tree
+$(function(){
+	 var centerLayout = $('#centerLayout${rand}');
+
+	var roleName = null;
+	var processDefKey = null;
+	var method = null;
+
+	var processTree = $('#process${rand}');
+	var taskGrid = $('#task${rand}');
+	var confAttrPGrid = $('#confAttr${rand}');
+	var proceddDefId = null;
+	
+	//Dialog
+	var specialRoleWin = $("#specialRoleWin${rand}");
+	var input_spRoleUser = $('#sp_role_user${rand}');
+	var input_spRoleId =  $('#sp_role_id${rand}');
+	
+	var specialAreaRoleWin = $('#specialAreaRoleWin${rand}');
+	var input_spAreaRoleUser = $('#sp_area_role_user${rand}');
+	var input_spAreaRoleArea = $('#sp_area_role_area${rand}');
+	var input_spAreaRoleId = $('#sp_area_role_id${rand}');
+	
+	var specialDeptWin = $('#specialDeptWin${rand}');
+	var input_spDeptUser = $('#sp_dept_user${rand}');
+	var input_spDeptDept = $('#sp_dept_dept${rand}');
+	var input_spDeptId = $('#sp_dept_id${rand}');
+	
+	var specialAreaDeptWin = $('#specialAreaDeptWin${rand}');
+	var input_spAreaDeptUser = $('#sp_area_dept_user${rand}');
+	var input_spAreaDeptDept = $('#sp_area_dept_dept${rand}');
+	var input_spAreaDeptArea = $('#sp_area_dept_area${rand}');
+	var input_spAreaDeptId = $('#sp_area_dept_id${rand}');
+	
+	var specialAreaFloorWin = $('#specialAreaFloorWin${rand}');
+	var input_spAreaFloorUser = $('#sp_area_floor_user${rand}');
+	var input_spAreaFloorDetail = $('#sp_area_floor_detail${rand}');
+	var input_spAreaFloorArea = $('#sp_area_floor_area${rand}');
+	var input_spAreaFloorId = $('#sp_area_floor_id${rand}');
+	
+	//init tree
+	processTree.tree({
+		url: 'menus.json',
+		method:'get',
+		required:true,
+		lines:true,
+		panelWidth:300,
+		panelHeight:280,
+		onClick:function(node){
+			proceddDefId = node.attributes.processDefId;
+			taskGrid.datagrid('reload',{
+				processDefinitionId:proceddDefId
+			});
+		}
+	});
+	
+	//task grid
+	taskGrid.datagrid({
+		fitColumns:true,
+		url:'processRole/showTaskNodes.json',
+		columns:[[
+			{field:'taskDefKey',title:'任务KEY',width:150},
+			{field:'taskName',title:'任务名称',width:150},
+			{field:'assigneeExpression',title:'任务表达式',width:250},
+			{field:'processDefKey',title:'流程定义KEY',width:250}
+		]],
+		nowrap: true,    
+		fit : true,
+		border : false,
+		pagination:true,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:true,
+		onClickRow:function(index,row){
+			processDefKey = row.processDefKey;
+	  	
+			var assigneeExpression = row.assigneeExpression;
+			var expression = assigneeExpression.substring(2, assigneeExpression.length - 2);
+
+			var arr = expression.split("(");//two arr
+			
+			method = arr[0].split(".")[1];
+			
+			if (arr[1].length == 1) {
+				roleName = arr[1];
+			} else {
+				roleName = arr[1].split(",")[0];
+			}
+			roleName = roleName.replace(/\"/g, "");
+			
+			//
+			centerLayout.layout('expand','south');
+			
+			confAttrPGrid.datagrid('reload',
+				{
+					processDefKey:row.processDefKey,
+					roleName:roleName,
+					method:method
+				}
+			);
+		},
+		toolbar: [{
+			text : '设置流程角色',
+			iconCls: 'icon-handle',
+			handler: globalHandle${rand}
+		}]
+	});
+	
+	//conf attr
+	confAttrPGrid.datagrid({
+		fitColumns:true,
+		url:'processRole/bpmConfProceessRole.json',
+		columns:[[
+			{field:'id',title:'ID'},
+			{field:'roleName',title:'角色名称',width:150},
+			{field:'processDefKey',title:'流程定义KEY',width:250},
+			{field:'assignee',title:'处理人',width:250},
+			{field:'area',title:'区域',width:250},
+			{field:'details',title:'详情',width:250},
+			{field:'method',title:'方法名称',width:250}
+		]],
+		nowrap: true,    
+		fit : true,
+		border : false,
+		pagination:true,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:true,
+		toolbar: [{
+			text : '编辑配置',
+			iconCls: 'icon-edit',
+			handler: globalEditRowHandle${rand}
+			},'-',{
+			text : '删除配置',
+			iconCls: 'icon-handle',
+			handler: deleteRowHandle${rand}
+		}]
+	});
+	
+	//Global Handle
+	function globalHandle${rand}(){
+		var row = taskGrid.datagrid('getSelected');
+	  	if (row){
+			if (method == 'getSpecialRoleMaster'){
+				//save Get Role Method
+				input_spRoleUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+this.value;
+//						 	alert("url:"+url);
+							input_spRoleUser.combobox('reload', url);
+							input_spRoleUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//清空编辑框中的值
+				clearSpeRoleWinValue${rand}();
+				
+				specialRoleWin.dialog('open');
+			} else if (method == 'getSpecialAreaRoleMaster') {
+				input_spAreaRoleUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?nameLike='+this.value;
+							input_spAreaRoleUser.combobox('reload', url);
+							input_spAreaRoleUser.combobox('setValue', this.value);
+				 		}
+				});
+				//清空编辑框中的值
+				clearSpeAreaRoleWinValue${rand}();
+				
+				specialAreaRoleWin.dialog('open');
+			} else if (method == 'getSpecialDeptMaster') {
+				input_spDeptUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?nameLike='+this.value;
+							input_spDeptUser.combobox('reload', url);
+							input_spDeptUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//清空编辑框中的值
+				clearSpeDeptWinValue${rand}();
+				
+				specialDeptWin.dialog('open');
+			} else if (method == 'getSpecialAreaDeptMaster') {
+				input_spAreaDeptUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?nameLike='+this.value;
+							input_spAreaDeptUser.combobox('reload', url);
+							input_spAreaDeptUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//清空编辑框中的值
+				clearSpeAreaDeptWinValue${rand}();
+				
+				specialAreaDeptWin.dialog('open');
+			} else if (method == 'getSpecialAreaFloorMaster') {
+				input_spAreaFloorUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?nameLike='+this.value;
+							input_spAreaFloorUser.combobox('reload', url);
+							input_spAreaFloorUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//清空编辑框中的值
+				clearSpeAreaFloorWinValue${rand}();
+				
+				specialAreaFloorWin.dialog('open');
+			}
+			
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+	}
+
+	//btn handle
+	$('#spRoleSaveBtn${rand}').bind('click',function(){
+		$.post('processRole/saveGetSpecialRoleMaster.json',
+			{
+				id:input_spRoleId.val(),
+				processDefKey:processDefKey,
+				roleName:roleName,
+				assignee:$('#accepter${rand}').val(),
+//				assignee:input_spRoleUser.combobox('getValue'),
+				method:method
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					specialRoleWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#spRoleCloseBtn${rand}').bind('click',function(){
+		specialRoleWin.dialog('close');
+	})
+	
+	//btn handle
+	$('#spAreaRoleSaveBtn${rand}').bind('click',function(){
+		var areaIds = input_spAreaRoleArea.combobox('getValues').join(",");
+		$.post('processRole/saveGetSpecialAreaRoleMaster.json',
+			{
+				id:input_spAreaRoleId.val(),
+				processDefKey:processDefKey,
+				roleName:roleName,
+				assignee:input_spAreaRoleUser.combobox('getValue'),
+				area:areaIds,
+				method:method
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					specialAreaRoleWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#spAreaRoleCloseBtn${rand}').bind('click',function(){
+		specialAreaRoleWin.dialog('close');
+	})
+	
+	//btn handle
+	$('#spDeptSaveBtn${rand}').bind('click',function(){
+		var detailsArr = input_spDeptDept.combotree('getValues');
+		var details = detailsArr.join(",");
+		$.post('processRole/saveGetSpecialDeptMaster.json',
+			{
+				id:input_spDeptId.val(),
+				processDefKey:processDefKey,
+				roleName:roleName,
+				assignee:input_spDeptUser.combobox('getValue'),
+				details:details,
+				method:method
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					specialDeptWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#spDeptCloseBtn${rand}').bind('click',function(){
+		specialDeptWin.dialog('close');
+	})
+	
+	//btn handle
+	$('#spAreaDeptSaveBtn${rand}').bind('click',function(){
+		var areaIds = input_spAreaDeptArea.combobox('getValues').join(",");
+		var details = input_spAreaDeptDept.combotree('getValues').join(",");
+		$.post('processRole/saveGetSpecialAreaDeptMaster.json',
+			{
+				id:input_spAreaDeptId.val(),
+				processDefKey:processDefKey,
+				roleName:roleName,
+				assignee:input_spAreaDeptUser.combobox('getValue'),
+				details:details,
+				area:areaIds,
+				method:method
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					specialAreaDeptWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#spAreaDeptCloseBtn${rand}').bind('click',function(){
+		specialAreaDeptWin.dialog('close');
+	})
+	
+	//btn handle
+	$('#spAreaFloorSaveBtn${rand}').bind('click',function(){
+		var areaIds = input_spAreaFloorArea.combobox('getValues').join(",");
+		var details = input_spAreaFloorDetail.combobox('getValues').join(",");
+		$.post('processRole/saveGetSpecialAreaFloorMaster.json',
+			{
+				id:input_spAreaFloorId.val(),
+				processDefKey:processDefKey,
+				roleName:roleName,
+				assignee:input_spAreaFloorUser.combobox('getValue'),
+				details:details,
+				area:areaIds,
+				method:method
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					specialAreaFloorWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#spAreaFloorCloseBtn${rand}').bind('click',function(){
+		specialAreaFloorWin.dialog('close');
+	})
+	
+	//delete
+	function deleteRowHandle${rand}(){
+		var row = confAttrPGrid.datagrid('getSelected');
+	  	if (row){
+	  		 $.messager.confirm('信息提示', '您确定要删除该配置吗?', function(r){
+                if (r){
+                    $.post('processRole/deleteProRole.json',
+						{
+							id:row.id
+						},
+						function(result){
+							$.messager.show({
+								title: '信息提示', msg: result.msg
+							});
+							if (result.success){
+								confAttrPGrid.datagrid('reload');
+							} 
+					},'json');
+                }
+            });
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+	}
+	
+	//edit
+	function globalEditRowHandle${rand}(){
+		var row = confAttrPGrid.datagrid('getSelected');
+		if (row) {
+			if (row.method == 'getSpecialRoleMaster') {
+				input_spRoleUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+ encodeURI(this.value);
+							input_spRoleUser.combobox('reload', url);
+							input_spRoleUser.combobox('setValue', this.value);
+				 		}
+				});
+				//清空值
+				clearSpeRoleWinValue${rand}();
+				
+				specialRoleWin.dialog('open');
+				//回填值
+				input_spRoleUser.combobox('setValue',row.assignee);
+				//设置ID
+				input_spRoleId.val(row.id);
+			} else if (row.method == 'getSpecialAreaRoleMaster') {
+				input_spAreaRoleUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+this.value;
+							input_spAreaRoleUser.combobox('reload', url);
+							input_spAreaRoleUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//clear
+				clearSpeAreaRoleWinValue${rand}();
+				
+				specialAreaRoleWin.dialog('open');
+				//回填值
+				input_spAreaRoleUser.combobox('setValue',row.assignee);
+				var area = row.area;
+				area = area.substring(1, area.length - 1);
+
+				input_spAreaRoleArea.combobox('setValues', area.split(','));
+				//设置ID
+				input_spAreaRoleId.val(row.id);
+			} else if (row.method == 'getSpecialDeptMaster') {
+				input_spDeptUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+this.value;
+							input_spDeptUser.combobox('reload', url);
+							input_spDeptUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//clear
+				clearSpeDeptWinValue${rand}();
+				
+				specialDeptWin.dialog('open');
+				//回填值
+				input_spDeptUser.combobox('setValue',row.assignee);
+				
+				//detail--dept
+				var details = row.details;
+				details = details.substring(1, details.length - 1);
+				input_spDeptDept.combotree('setValues', details.split(","));
+				//设置ID
+				input_spDeptId.val(row.id);
+			} else if (row.method == 'getSpecialAreaDeptMaster'){
+				input_spAreaDeptUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+this.value;
+							input_spAreaDeptUser.combobox('reload', url);
+							input_spAreaDeptUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//clear
+				clearSpeAreaDeptWinValue${rand}();
+				
+				specialAreaDeptWin.dialog('open');
+				//回填值
+				input_spAreaDeptUser.combobox('setValue',row.assignee);
+				var area = row.area;
+				area = area.substring(1, area.length - 1);
+				input_spAreaDeptArea.combobox('setValues', area.split(','));
+				
+				//detail--dept
+				var details = row.details;
+				details = details.substring(1, details.length - 1);
+				input_spAreaDeptDept.combotree('setValues', details.split(","));
+				//设置ID
+				input_spAreaDeptId.val(row.id);
+			} else if (row.method == 'getSpecialAreaFloorMaster') {
+				input_spAreaFloorUser.next().find('.combo-text').bind('keyup',function(){
+					 	if(this.value != ''){
+						 	var url = 'processRole/allUser.json?name='+this.value;
+							input_spAreaFloorUser.combobox('reload', url);
+							input_spAreaFloorUser.combobox('setValue', this.value);
+				 		}
+				});
+				
+				//clear
+				clearSpeAreaRoleWinValue${rand}();
+				
+				specialAreaFloorWin.dialog('open');
+				//回填值
+				input_spAreaFloorUser.combobox('setValue',row.assignee);
+				var area = row.area;
+				area = area.substring(1, area.length - 1);
+				input_spAreaFloorArea.combobox('setValues', area.split(','));
+				//detail
+				var details = row.details;
+				details = details.substring(1, details.length - 1);
+				input_spAreaFloorDetail.combobox('setValues', details.split(','));
+				//设置ID
+				input_spAreaFloorId.val(row.id);
+			}
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+	}
+	
+	//clear value
+	function clearSpeRoleWinValue${rand}(){
+		//清空编辑框中的值
+		input_spRoleId.val('');
+		input_spRoleUser.combobox('clear');
+	}
+	
+	function clearSpeAreaRoleWinValue${rand}(){
+		//清空编辑框中的值
+		input_spAreaRoleId.val('');
+		input_spAreaRoleUser.combobox('clear');
+		input_spAreaRoleArea.combobox('clear');
+	}
+	
+	function clearSpeDeptWinValue${rand}(){
+		
+	}
+	
+	function clearSpeAreaDeptWinValue${rand}(){
+		//清空编辑框中的值
+		input_spAreaDeptId.val('');
+		input_spAreaDeptUser.combobox('clear');
+		input_spAreaDeptArea.combobox('clear');
+		input_spAreaDeptDept.combotree('clear');
+	}
+	
+	function clearSpeAreaFloorWinValue${rand}(){
+		//清空编辑框中的值
+		input_spAreaFloorId.val('');
+		input_spAreaFloorUser.combobox('clear');
+		input_spAreaFloorArea.combobox('clear');
+		input_spAreaFloorDetail.combobox('clear');
+	}
+});
+
+
+</script>
+<#include "/common/foot.ftl">

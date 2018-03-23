@@ -1,0 +1,2356 @@
+<#include "/common/head.html">
+<#assign AccessoriesPart1Var=""/>
+<#assign AccessoriesPart2Var=""/>
+<#assign AccessoriesPart3Var=""/>
+
+<!-- 展示表单  -->
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent'>
+			 <tr>
+				<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效合同</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门：</td>
+			    <td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				<td class="formtable_td_key">职位：</td>
+			    <td class="formtable_td_value">${(steps.vars["jobDuty"])!""}</td>
+	     	    <td class="formtable_td_key">员工编码：</td>
+			    <td class="formtable_td_value">${(steps.vars["updateappnew"])!""}</td>
+			    <td class="formtable_td_key">姓名：</td>
+			    <td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+			    <td class="formtable_td_key">考核周期：</td>
+			    <td colspan="6" class="formtable_td_value">${(steps.vars["evaluationDate"])!""}</td>
+			</tr>
+			<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+					<tr>
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td  colspan="3"   style="min-width:50px" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					        <#if steps.vars["AccessoriesPart1Json"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesPart1Json"])!""}
+								</#assign>
+								<#assign AccessoriesPart1Var>
+									${(steps.vars["AccessoriesPart1Json"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value"></td>
+    								</tr>
+								</#list>
+  							</#if>
+					
+					<!-- 第二部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td  colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					        <#if steps.vars["AccessoriesPart2Json"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesPart2Json"])!""}
+								</#assign>
+								<#assign AccessoriesPart2Var>
+									${(steps.vars["AccessoriesPart2Json"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value"></td>
+    								</tr>
+								</#list>
+  							</#if>
+					<!-- 第三部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+					<!-- 动态行 -->
+					<tr>
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					<#if steps.vars["AccessoriesPart3Json"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesPart3Json"])!""}
+								</#assign>
+								<#assign AccessoriesPart3Var>
+									${(steps.vars["AccessoriesPart3Json"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value" >${item.rowno}</td>
+										<td class="formtable_td_value" colspan="3">${item.subtractpoints}</td>
+										<td class="formtable_td_value" colspan="5">${item.reason}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value"></td>
+    								</tr>
+								</#list>
+  					</#if>
+  							
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							${proHisVar.vars['auditeeFeedback']!''}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+						</td>
+					</tr>
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">${(steps.vars["part6total"])!""}
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${proHisVar.vars['auditeeName']!''}
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							${appuser.name}
+						</td>
+					</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+<!-- 修改表单展示 -->	
+ <#if steps.key == 'assesserModifyTask'>
+			<tr>
+				<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效领导审核表</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门：</td>
+			    <td class="formtable_td_value">${(steps.vars["suporgName"])!""}</td>
+				<td class="formtable_td_key">职位：</td>
+			    <td class="formtable_td_value">${(steps.vars["supjobDuty"])!""}</td>
+	     	    <td class="formtable_td_key">员工编码：</td>
+			    <td class="formtable_td_value">${(steps.vars["supupdateappnew"])!""}</td>
+			    <td class="formtable_td_key">姓名：</td>
+			    <td class="formtable_td_value">${(steps.vars["supuserName"])!""}</td>
+			    <td class="formtable_td_key">考核周期：</td>
+			    <td colspan="6" class="formtable_td_value">${(steps.vars["supevaluationDate"])!""}</td>
+			</tr>
+			
+					<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+					<tr>
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td  colspan="6"   style="min-width:50px" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					<#if steps.vars["AccessoriesUpdatePart1JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesUpdatePart1JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart1Var>
+									${(steps.vars["AccessoriesUpdatePart1JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.lenderScore}</td>
+    								</tr>
+								</#list>
+  							</#if>
+					<!-- 第二部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td  colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					        <#if steps.vars["AccessoriesUpdatePart2JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesUpdatePart2JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart2Var>
+									${(steps.vars["AccessoriesUpdatePart2JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.lenderScore}</td>
+    								</tr>
+								</#list>
+  							</#if>
+					<!-- 第三部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+					<!-- 动态行 -->
+					<tr>
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					<#if steps.vars["AccessoriesUpdatePart3JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesUpdatePart3JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart3Var>
+									${(steps.vars["AccessoriesUpdatePart3JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value" >${item.rowno}</td>
+										<td class="formtable_td_value" colspan="3">${item.subtractpoints}</td>
+										<td class="formtable_td_value" colspan="5">${item.reason}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.superScore}</td>
+    								</tr>
+								</#list>
+  					</#if>
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							${proHisVar.vars['auditeeFeedback']!''}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+						</td>
+					</tr>
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">${(steps.vars["leaderpart6total"])!""}
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">${(steps.vars["performLevel"])!""}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${proHisVar.vars['auditeeName']!''}
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							${appuser.name}
+						</td>
+					</tr>
+					
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>   
+		 
+<!-- 上级领导审核展示 -->	
+ <#if steps.key == 'superiorLeaderAudiTask'>
+			<tr>
+				<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效领导审核表</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门：</td>
+			    <td class="formtable_td_value">${(steps.vars["suporgName"])!""}</td>
+				<td class="formtable_td_key">职位：</td>
+			    <td class="formtable_td_value">${(steps.vars["supjobDuty"])!""}</td>
+	     	    <td class="formtable_td_key">员工编码：</td>
+			    <td class="formtable_td_value">${(steps.vars["supupdateappnew"])!""}</td>
+			    <td class="formtable_td_key">姓名：</td>
+			    <td class="formtable_td_value">${(steps.vars["supuserName"])!""}</td>
+			    <td class="formtable_td_key">考核周期：</td>
+			    <td colspan="6" class="formtable_td_value">${(steps.vars["supevaluationDate"])!""}</td>
+			</tr>
+			
+					<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+					<tr>
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td  colspan="6"   style="min-width:50px" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					<#if steps.vars["AccessoriesSuperPart1JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesSuperPart1JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart1Var>
+									${(steps.vars["AccessoriesSuperPart1JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.lenderScore}</td>
+    								</tr>
+								</#list>
+  							</#if>
+					<!-- 第二部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td  colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					        <#if steps.vars["AccessoriesSuperPart2JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesSuperPart2JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart2Var>
+									${(steps.vars["AccessoriesSuperPart2JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value">${item.rowno}</td>
+										<td class="formtable_td_value">${item.target}</td>
+										<td class="formtable_td_value">${item.weight}</td>
+										<td class="formtable_td_value">${item.basicgoal}</td>
+										<td class="formtable_td_value">${item.expectedgoal}</td>
+										<td class="formtable_td_value">${item.threatgoal}</td>
+										<td class="formtable_td_value">${item.pointsdesc}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.lenderScore}</td>
+    								</tr>
+								</#list>
+  							</#if>
+					<!-- 第三部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+					<!-- 动态行 -->
+					<tr>
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					<#if steps.vars["AccessoriesSuperPart3JsonStr"]??>
+		   						<#assign text>
+									${(steps.vars["AccessoriesSuperPart3JsonStr"])!""}
+								</#assign>
+								<#assign AccessoriesPart3Var>
+									${(steps.vars["AccessoriesSuperPart3JsonStr"])!""}
+								</#assign>
+								<#assign json=text?eval />
+								<#list json.accessoryData as item>
+									<tr> 
+										<td class="formtable_td_value" >${item.rowno}</td>
+										<td class="formtable_td_value" colspan="3">${item.subtractpoints}</td>
+										<td class="formtable_td_value" colspan="5">${item.reason}</td>
+										<td class="formtable_td_value">${item.selfScore}</td>
+										<td colspan="3"   class="formtable_td_value">${item.superScore}</td>
+    								</tr>
+								</#list>
+  					</#if>
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							${proHisVar.vars['auditeeFeedback']!''}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+						</td>
+					</tr>
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">${(steps.vars["leaderpart6total"])!""}
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">${(steps.vars["performLevel"])!""}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${proHisVar.vars['auditeeName']!''}
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							${appuser.name}
+						</td>
+					</tr>
+					
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>   
+		 
+   <!-- 人事专员审核展示  -->
+	   <#if steps.key == 'hrAudiTask'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">薪酬经理</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["hrAudiAdvice"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">薪酬经理签字：</td>
+				<td class="formtable_td_value" >${steps.vars["hrName"]}</td>
+				<td class="formtable_td_key">签字时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["hrTime"]}</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>  
+		   
+	   </#list>
+	</table>
+</#if>
+	   
+<!-- 表单开始 -->
+<#if currentStep?exists && currentStep == 'startevent'> 
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+				<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效合同</td>
+					</tr>
+					<tr>
+					    <td class="formtable_td_key">部门：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-validatebox" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_orgName" data-options="required:true" value="${appuser.orgName}"/>
+						</td>
+						<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+								<input id="job" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly"  type="text" name="fp_jobDuty"  />
+						</td>
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input  colspan="1" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly" value="${appuser.account}" type="text" name="fp_updateappnew" data-options="required:true" />
+						</td>
+					    <td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input id="account" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input id="userName" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly" name="fp_userName"   value="${appuser.name}"
+								data-options="required:true"/> 
+							<input type="hidden" name="fp_userCardId" id="userCardId">	
+					    </td>
+						<td class="formtable_td_key" colspan="1">考核周期：</td>
+						<td class="formtable_td_value"  colspan="5">
+						    <input  class="easyui-validatebox"  style="width:200px;height:40px;"  type="text" name="fp_evaluationDate" data-options="required:true" />
+					    </td>
+					</tr>
+					<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+					<tr>
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					 <input type="text" id="AccessoriesPart1Json${rand}" name="fp_AccessoriesPart1Json" class="easyui-validatebox" data-options="required:true" readonly="readonly"
+		                 missingMessage="表格不能为空" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" autocomplete="off" />
+					<tr id="part1_up_row_${rand}_1">
+						<td align="center" class="formtable_td_value">
+							<span>1</span>
+						</td>
+						<td class="formtable_td_value">
+							<textarea name="map_part1up_target_1_1" class="easyui-validatebox" data-options="required:true"  style="width:200px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<input name="map_part1up_weight_2_1" class="easyui-validatebox" data-options="required:true,validType:'percentage'" size=3/>
+						</td>
+						<td class="formtable_td_value">
+							<textarea name="map_part1up_basicgoal_3_1" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<textarea name="map_part1up_expectedgoal_4_1" class="easyui-validatebox" data-options="required:true"  onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<textarea name="map_part1up_threatgoal_5_1" class="easyui-validatebox" data-options="required:true"  onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<textarea name="map_part1up_pointsdesc_6_1" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part1_up_selfScore_${rand}_1" name="map_part1up_selfscore_9_1" class="easyui-validatebox" onblur="makeAccessory()" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td class="formtable_td_value" colspan="6">
+							<input name="sss" size=3  />
+						</td>
+					</tr>
+					<!-- 按钮 -->
+					<tr class="formtable_td_value">
+						<td colspan="11" class="formtable_td_value">
+							<a href="javascript:void(0)" id="part1_up_add_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">增加行</a>
+						</td>
+					</tr>
+				<!-- 第二部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 内容 -->
+			    	 <input type="text" id="AccessoriesPart2Json${rand}" name="fp_AccessoriesPart2Json" class="easyui-validatebox" data-options="required:true" readonly="readonly"
+		                 missingMessage="表格不能为空" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" autocomplete="off" />
+					<tr id="part2_row_${rand}_1">
+						<td align="center" class="formtable_td_value">
+							1
+						</td>
+						<td class="formtable_td_value">
+							以奋斗者为本
+						</td>
+						<td class="formtable_td_value">
+							20%
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为经常展现且未出现任何明显的负面行为。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为一贯展现，或所有行为经常展现。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，全部行为都得到了一贯展现，若同时作为管理者，则能带动部门和团队员工展现。
+						</td>
+						<td class="formtable_td_value">
+						     <input id="part2_example_${rand}_1" name="fp_part2-example-1" class="easyui-validatebox"  style="width:200px;height:40px;"/>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part2_selfScore_${rand}_1" onblur="makeAccessory()" name="fp_part2-selfScore-1" class="easyui-validatebox" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td colspan="6" class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr>
+					<tr id="part2_row_${rand}_2">
+						<td align="center" class="formtable_td_value">
+							2
+						</td>
+						<td class="formtable_td_value">
+							以用户价值为先
+						</td>
+						<td class="formtable_td_value">
+							20%
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为经常展现且未出现任何明显的负面行为。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为一贯展现，或所有行为经常展现。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，全部行为都得到了一贯展现，若同时作为管理者，则能带动部门和团队员工展现。
+						</td>
+						<td class="formtable_td_value">
+						     <input id="part2_example_${rand}_2" name="fp_part2-example-2" class="easyui-validatebox"  style="width:200px;height:40px;"/>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part2_selfScore_${rand}_2" onblur="makeAccessory()" name="fp_part2-selfScore-2" class="easyui-validatebox" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td colspan="6" class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr>
+					<tr id="part2_row_${rand}_3">
+						<td align="center" class="formtable_td_value">
+							3
+						</td>
+						<td class="formtable_td_value">
+							说到做到
+						</td>
+						<td class="formtable_td_value">
+							20%
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为经常展现且未出现任何明显的负面行为。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为一贯展现，或所有行为经常展现。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，全部行为都得到了一贯展现，若同时作为管理者，则能带动部门和团队员工展现。
+						</td>
+						<td class="formtable_td_value">
+						     <input id="part2_example_${rand}_3" name="fp_part2-example-3" class="easyui-validatebox"  style="width:200px;height:40px;"/>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part2_selfScore_${rand}_3" onblur="makeAccessory()" name="fp_part2-selfScore-3" class="easyui-validatebox" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td colspan="6" class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr>
+					<tr id="part2_row_${rand}_4">
+						<td align="center" class="formtable_td_value">
+							4
+						</td>
+						<td class="formtable_td_value">
+							善学快用
+						</td>
+						<td class="formtable_td_value">
+							20%
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为经常展现且未出现任何明显的负面行为。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为一贯展现，或所有行为经常展现。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，全部行为都得到了一贯展现，若同时作为管理者，则能带动部门和团队员工展现。
+						</td>
+						<td class="formtable_td_value">
+						     <input id="part2_example_${rand}_4" name="fp_part2-example-4" class="easyui-validatebox"  style="width:200px;height:40px;"/>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part2_selfScore_${rand}_4" onblur="makeAccessory()" name="fp_part2-selfScore-4" class="easyui-validatebox" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td colspan="6" class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr id="part2_row_${rand}_5">
+						<tr>
+						<td align="center" class="formtable_td_value">
+							5
+						</td>
+						<td class="formtable_td_value">
+							崇实勇进
+						</td>
+						<td class="formtable_td_value">
+							20%
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为经常展现且未出现任何明显的负面行为。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，80%及以上的行为一贯展现，或所有行为经常展现。
+						</td>
+						<td class="formtable_td_value">
+							在工作中，全部行为都得到了一贯展现，若同时作为管理者，则能带动部门和团队员工展现。
+						</td>
+						<td class="formtable_td_value">
+						     <input id="part2_example_${rand}_5" name="fp_part2-example-5" class="easyui-validatebox"  style="width:200px;height:40px;"/>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part2_selfScore_${rand}_5" onblur="makeAccessory()" name="fp_part2-selfScore-5" class="easyui-validatebox" data-options="required:true,validType:'number'" size=3/>
+						</td>
+						<td colspan="6" class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr>
+					<!-- 第三部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+					<!-- 动态行 -->
+					<tr>
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					 <input type="text" id="AccessoriesPart3Json${rand}" name="fp_AccessoriesPart3Json" class="easyui-validatebox"  readonly="readonly"
+		                 style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" autocomplete="off" />
+					
+					<tr id="part3_row_${rand}_1">
+						<td align="center" class="formtable_td_value">
+							<span>1</span>
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea name="map_part3_subtractpoints_1_1" onblur="makeAccessory()" class="easyui-validatebox" style="width:500px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea name="map_part3_reason_2_1" onblur="makeAccessory()" class="easyui-validatebox" style="width:1050px;height:40px;"></textarea>
+						</td>
+						<td class="formtable_td_value">
+							<input id="part3_selfScore_${rand}_1" onblur="makeAccessory()" name="map_part3_selfScore_3_1" class="easyui-validatebox" data-options="validType:'number'" size=3/>
+						</td>
+						<td class="formtable_td_value">
+							<input name="sss" size=3/>
+						</td>
+					</tr>
+					<!-- 按钮 -->
+					<tr class="formtable_td_value">
+						<td colspan="11" class="formtable_td_value">
+							<a href="javascript:void(0)" id="part3_add_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">增加行</a>
+						</td>
+					</tr>
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							<textarea class="easyui-validatebox" name="fp_auditeeFeedback" style="width:1050px;height:40px;"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							<textarea class="easyui-validatebox" name="fp_auditorFeedback" disabled="disabled" style="width:1050px;height:40px;"></textarea>
+						</td>
+					</tr>
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							<input id="part6_total_${rand}" name="fp_part6total" class="easyui-validatebox" data-options="required:true" style="width:300px;" readonly="readonly"/>
+							<!-- 计算总分按钮 -->
+							<a href="javascript:void(0)" id="part6_countTotal_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">计算总分</a>
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<input class="easyui-validatebox" name="fp_performLevel" style="width:400px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${appuser.name}
+							<input type="hidden" class="easyui-validatebox" name="fp_auditeeName" value="${appuser.name}"/>
+							<input type="hidden" class="easyui-validatebox" name="fp_auditeeAccount" value="${appuser.account}"/>
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<input class="easyui-validatebox" style="width:400px;" disabled="disabled"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+				
+			$(function(){
+				//自动填写职位
+				$.post("hrFlow/getHrUserInfo.json",
+						{
+							account:$("#account").val()
+						},
+						function(data){
+							if (data.success) {
+								$("#job").val(data.obj.job);
+								$("#userCardId").val(data.obj.idCard);
+							}
+				});
+				
+				var btn_part1_up_add = $('#part1_up_add_btn-${rand}');//第一部分上半部分,添加按钮
+				var btn_part1_down_add = $('#part1_down_add_btn-${rand}');///第一部分下半部分,添加按钮
+				
+				var btn_part3_add = $('#part3_add_btn-${rand}');//第三部分，添加按钮
+				
+				var btn_part6_countTotal = $('#part6_countTotal_btn-${rand}');//第六部分的计算总分按钮
+				var input_part6_total = $('#part6_total_${rand}');//第六部分的总分input项
+				
+				//第一部分上办部分，增加行，减少行
+				btn_part1_up_add.bind('click',function(){
+					
+					//获取第一部分上半部分的最后一个行的ID,然后获取最后的值，如：part1_up_row_133902_3获取3
+					var part1_up_lastrow = $('#startFormTable').find("tr[id^='part1_up_row_']")
+						.last()[0];
+					var last_tr_id = part1_up_lastrow.id;
+					var tr_id_arr = last_tr_id.split("_");
+					var part1_row_max = tr_id_arr[tr_id_arr.length - 1];
+					
+					//获取最后一个tr的序号，即tr的第一个td中的span元素的值
+					var par1_up_seq = $('#startFormTable').find("tr[id^='part1_up_row_']")
+						.last().children('td').children('span').html();
+					
+			        if (part1_row_max == null) {
+			            part1_row_max = 2;
+			        } else {
+			        	//动态删除行后，序列号和tr的id增长不同步
+			            part1_row_max = parseInt(part1_row_max);
+			            part1_row_max = part1_row_max + 1;
+			            
+			            par1_up_seq = parseInt(par1_up_seq);
+			            par1_up_seq = par1_up_seq + 1;
+			        }
+			        
+				    var newRow = '<tr id="part1_up_row_${rand}_' + part1_row_max + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ par1_up_seq + '</span><br/><a href="javascript:void(0)" onclick=part1_up_delRow('+part1_row_max+')>删除</a></td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_target_1_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input name="map_part1up_weight_2_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true,validType:\'percentage\'" onblur="makeAccessory()" size=3 />'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_basicgoal_3_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_expectedgoal_4_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_threatgoal_5_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_pointsdesc_6_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" onblur="makeAccessory()" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input id="part1_up_selfScore_${rand}_'+ part1_row_max +'" name="map_part1up_selfscore_9_'+ par1_up_seq +'"  class="easyui-validatebox" onblur="makeAccessory()" data-options="required:true,validType:\'number\'" size=3 />'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value" colspan="6">'
+				    	+ '<input name="sss"  size=3 />'
+				    	+ '</td>'
+				    	+ '</tr>';
+				    $('#part1_up_row_${rand}_' + (part1_row_max - 1)).after(newRow);
+				    
+				    $.parser.parse('#part1_up_row_${rand}_' + (part1_row_max));
+				});
+				
+				//第三部分的增加行和减少行
+				btn_part3_add.bind('click',function(){
+					
+					//获取第一部分上半部分的最后一个行的ID,然后获取最后的值，如：part1_up_row_133902_3获取3
+					var part3_lastrow = $('#startFormTable').find("tr[id^='part3_row_']")
+						.last()[0];
+					var last_tr_id = part3_lastrow.id;
+					var tr_id_arr = last_tr_id.split("_");
+					var part3_row_max = tr_id_arr[tr_id_arr.length - 1];
+					
+					//获取最后一个tr的序号，即tr的第一个td中的span元素的值
+					var par3_seq = $('#startFormTable').find("tr[id^='part3_row_']")
+						.last().children('td').children('span').html();
+					
+			        if (part3_row_max == null) {
+			            part3_row_max = 2;
+			        } else {
+			        	//动态删除行后，序列号和tr的id增长不同步
+			            part3_row_max = parseInt(part3_row_max);
+			            part3_row_max = part3_row_max + 1;
+			            
+			            par3_seq = parseInt(par3_seq);
+			            par3_seq = par3_seq + 1;
+			        }
+				    var newRow = 
+				    	'<tr id="part3_row_${rand}_' + part3_row_max + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ par3_seq + '</span><br/><a href="javascript:void(0)" onclick=part3_delRow('+part3_row_max+')>删除</a></td>'
+				    	+ '<td class="formtable_td_value" colspan="3">'
+				    	+ '<textarea name="map_part3_subtractpoints_1_'+ par3_seq +'" class="easyui-validatebox"  onblur="makeAccessory()" style="width:500px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value" colspan="5">'
+				    	+ '<textarea name="map_part3_reason_2_'+ par3_seq +'" class="easyui-validatebox" onblur="makeAccessory()" style="width:1050px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input id="part3_selfScore_${rand}_'+ part3_row_max +'" name="map_part3_selfScore_3_'+ par3_seq +'" class="easyui-validatebox" onblur="makeAccessory()" data-options="validType:\'number\'" size=3/>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input name="sss" size=3/>'
+				    	+ '</td>'
+				    	+ '</tr>';
+				    $('#part3_row_${rand}_' + (part3_row_max - 1)).after(newRow);
+				    
+				    $.parser.parse('#part3_row_${rand}_' + (part3_row_max));
+				});
+				
+				
+				
+				//第六部分计算总分
+				btn_part6_countTotal.bind('click', function(){
+					var total = 0;
+					//获取第一部分上半部分的所有自评分
+					var verify_result = true;
+					//验证第一部分的上半部分
+					$('#startFormTable').find("input[id^='part1_up_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证第二部分
+					$('#startFormTable').find("input[id^='part2_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证第三部分
+					$('#startFormTable').find("input[id^='part3_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证结果
+					if (verify_result) {
+						//计算第一部分上半部分总分
+						$('#startFormTable').find("tr[id^='part1_up_row_']")
+							.each(function(i){
+								var temp_weight = $(this).children().find(":input[name^='map_part1up_weight_']").val();
+							 	var temp_score =$(this).children().find("input[id^='part1_up_selfScore_']").val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score)*parseInt(temp_weight)/100;
+							 	}
+						});	
+						//计算第二部分总分
+						$('#startFormTable').find("input[id^='part2_selfScore_']")
+							.each(function(i){
+							 	var temp_score = $(this).val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score)*0.2;
+							 	}
+						});	
+						//计算第三部分总分
+						$('#startFormTable').find("input[id^='part3_selfScore_']")
+							.each(function(i){
+							 	var temp_score = $(this).val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score);
+							 	}
+						});	
+						//设置总分
+						input_part6_total.attr('value', total);
+						input_part6_total.validatebox('validate');
+					} else {
+						$.messager.alert('信息提示','请完整填写完自评分后，再计算总分!','warning');
+						return;
+					}
+				});
+			});
+			//组装中间变量
+			function makeAccessory() {
+				//$('#startFormTable').find("tr[id^='part1_up_row_']")
+				//封装第一部分
+				var rows = $('#startFormTable').find("tr[id^='part1_up_row_']");
+				if(rows.length == 0) {		
+					$('#AccessoriesPart1Json${rand}').val('');
+				} else {				
+					var AccessoriesPart1Json = { accessoryData:[] };
+					var rowno = 1;
+					$('#startFormTable').find("tr[id^='part1_up_row_']").each(function () {	        			
+	        			var target = $.trim($(this).find('td').eq(1).find("textarea").val());
+	        			var weight = $.trim($(this).find('td').eq(2).find("input").val());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).find("textarea").val());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).find("textarea").val());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).find("textarea").val());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).find("textarea").val());
+	        			var selfScore = $.trim($(this).find('td').eq(7).find("input").val());
+	        			AccessoriesPart1Json.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesPart1Json${rand}').val(JSON.stringify(AccessoriesPart1Json));
+				}
+				//封装第二部分
+				var AccessoriesPart2Json = { accessoryData:[] };
+					var rowno = 1;
+					$('#startFormTable').find("tr[id^='part2_row_']").each(function () {	        			
+	        			var target = $.trim($(this).find('td').eq(1).text());
+	        			var weight = $.trim($(this).find('td').eq(2).text());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).text());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).text());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).text());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).find("input").val());
+	        			var selfScore = $.trim($(this).find('td').eq(7).find("input").val());
+	        			AccessoriesPart2Json.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesPart2Json${rand}').val(JSON.stringify(AccessoriesPart2Json));
+			   //封装第三部分
+			   var part3Rows = $('#startFormTable').find("tr[id^='part3_row_']");
+				if(part3Rows.length == 0) {		
+					$('#AccessoriesPart3Json${rand}').val('');
+				} else {				
+					var AccessoriesPart3Json = { accessoryData:[] };
+					var rowno = 1;
+					$('#startFormTable').find("tr[id^='part3_row_']").each(function () {	        			
+	        			var subtractpoints = $.trim($(this).find('td').eq(1).find("textarea").val());
+	        			var reason = $.trim($(this).find('td').eq(2).find("textarea").val());
+	        			var selfScore = $.trim($(this).find('td').eq(3).find("input").val());
+	        			
+	        			AccessoriesPart3Json.accessoryData.push({
+	        				rowno:rowno,subtractpoints:subtractpoints,reason:reason,selfScore:selfScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesPart3Json${rand}').val(JSON.stringify(AccessoriesPart3Json));
+				}
+				
+				
+			}
+			
+			//-------------删除操作-----------------
+			//第一部分上半部分 删除行
+			function part1_up_delRow(rowAccount){
+				//如果删除的是中间的行，需要更新其他添加行的序号
+				$("#part1_up_row_${rand}_" + rowAccount).remove();
+				//获取第一部分的上半部分的所有行，进行更新序号
+				$('#startFormTable')
+					.find("tr[id^='part1_up_row_']")
+					.each(function(i){
+						 $(this).children("td").first().children("span").html(i + 1);
+					});
+				makeAccessory();	
+				
+			}
+			//第三部分 删除行
+			function part3_delRow(rowAccount){
+				//如果删除的是中间的行，需要更新其他添加行的序号
+				$("#part3_row_${rand}_" + rowAccount).remove();
+				//获取第一部分的上半部分的所有行，进行更新序号
+				$('#startFormTable')
+					.find("tr[id^='part3_row_']")
+					.each(function(i){
+						 $(this).children("td").first().children("span").html(i + 1);
+					});
+				
+			}
+		</script>		
+</#if>
+
+<!--修改申请表-->
+<#if currentStep?exists && currentStep == 'assesserModifyTask'> 
+  <#if processSteps??> 
+  <#list processSteps as steps> 
+      	<#if steps.key == 'startevent'> 
+		<div id="assesserModifyTask">
+			<form id="assesserModifyTaskForm" method="post" enctype='multipart/form-data'>
+			    <div hidden="true">
+				   <textarea id="AccessoriesUpdatePart1Var${rand}" >${AccessoriesPart1Var}</textarea>
+				   <textarea id="AccessoriesUpdatePart2Var${rand}" >${AccessoriesPart2Var}</textarea>
+				   <textarea id="AccessoriesUpdatePart3Var${rand}" >${AccessoriesPart3Var}</textarea>
+				</div>
+				<table id="assesserModifyTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效合同</td>
+					</tr>
+					<tr>
+					    <td class="formtable_td_key">部门：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-validatebox" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_orgName" data-options="required:true" value="${appuser.orgName}"/>
+						</td>
+						<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+								<input id="job" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly"  type="text" name="fp_jobDuty"  />
+						</td>
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input  colspan="1" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly" value="${appuser.account}" type="text" name="fp_updateappnew" data-options="required:true" />
+						</td>
+					    <td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input id="account" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input id="userName" class="easyui-validatebox" style="width:200px;height:40px;"  readonly="readonly" name="fp_userName"   value="${appuser.name}"
+								data-options="required:true"/> 
+							<input type="hidden" name="fp_userCardId" id="userCardId">	
+					    </td>
+						<td class="formtable_td_key" colspan="1">考核周期：</td>
+						<td class="formtable_td_value"  colspan="5">
+						    <input  class="easyui-validatebox"  style="width:200px;height:40px;"  type="text" name="fp_evaluationDate" data-options="required:true" />
+					    </td>
+					</tr>
+					<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+					   	<input type="hidden" id="AccessoriesUpdatePart1JsonStr${rand}" name="fp_AccessoriesUpdatePart1JsonStr" />
+					<tr id="updatepart1${rand}">
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 动态添加行 -->
+					<!-- 按钮 -->
+					<tr class="formtable_td_value">
+						<td colspan="11" class="formtable_td_value">
+							<a href="javascript:void(0)" id="updatepart1_up_add_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">增加行</a>
+						</td>
+					</tr>
+				<!-- 第二部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+						<input type="hidden" id="AccessoriesUpdatePart2JsonStr${rand}" name="fp_AccessoriesUpdatePart2JsonStr" />
+					<tr id="updatepart2${rand}">
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td colspan="6" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 第三部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+					<!-- 动态行 -->
+						<input type="hidden" id="AccessoriesUpdatePart3JsonStr${rand}" name="fp_AccessoriesUpdatePart3JsonStr" />
+					<tr id="updatepart3${rand}">
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					<!-- 按钮 -->
+					<tr class="formtable_td_value">
+						<td colspan="11" class="formtable_td_value">
+							<a href="javascript:void(0)" id="updatepart3_add_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">增加行</a>
+						</td>
+					</tr>
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							<textarea class="easyui-validatebox" name="fp_auditeeFeedback" style="width:1050px;height:40px;"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							<textarea class="easyui-validatebox" name="fp_auditorFeedback" disabled="disabled" style="width:1050px;height:40px;"></textarea>
+						</td>
+					</tr>
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							<input id="part6_total_${rand}" class="easyui-validatebox" data-options="required:true" name="fp_part6total" class="easyui-validatebox"  style="width:300px;" readonly="readonly"/>
+							<!-- 计算总分按钮 -->
+							<a href="javascript:void(0)" id="part6_countTotal_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">计算总分</a>
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<input class="easyui-validatebox" name="fp_performLevel" style="width:400px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${appuser.name}
+							<input type="hidden" class="easyui-validatebox" name="fp_auditeeName" value="${appuser.name}"/>
+							<input type="hidden" class="easyui-validatebox" name="fp_auditeeAccount" value="${appuser.account}"/>
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<input class="easyui-validatebox" style="width:400px;" disabled="disabled"/>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				//加载第一部分
+				var UpdatePart1Var = $('#AccessoriesUpdatePart1Var${rand}').val();
+				var UpdatePart2Var = $('#AccessoriesUpdatePart2Var${rand}').val();
+				var UpdatePart3Var = $('#AccessoriesUpdatePart3Var${rand}').val();
+				var objUpdatePart1 = JSON.parse(UpdatePart1Var);
+				var objUpdatePart2 = JSON.parse(UpdatePart2Var);
+				var objUpdatePart3 = JSON.parse(UpdatePart3Var);
+				if(objUpdatePart1.accessoryData.length>0) {
+		        	var str1 = '';
+		        	var j=0;
+		        	 for(i=0;i<objUpdatePart1.accessoryData.length;i++){
+		        		j=i+1;
+		        		str1+='<tr id="updatepart1_up_row_${rand}_' +  j + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ j + '</span></td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart1_target_1_'+ j +'"  class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;">'+objUpdatePart1.accessoryData[i].target+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input name="map_updatepart1_weight_2_'+ j +'"  value="'+objUpdatePart1.accessoryData[i].weight+'" class="easyui-validatebox" data-options="required:true,validType:\'percentage\'" size=3 />'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart1_basicgoal_1_'+ j +'"  class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;">'+objUpdatePart1.accessoryData[i].basicgoal+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart1_expectedgoal_1_'+ j +'"  class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;">'+objUpdatePart1.accessoryData[i].expectedgoal+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart1_threatgoal_1_'+ j +'"  class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;">'+objUpdatePart1.accessoryData[i].threatgoal+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart1_pointsdesc_1_'+ j +'"  class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;">'+objUpdatePart1.accessoryData[i].pointsdesc+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input  id="part1_selfScore_${rand}_'+ j +'" size=3  class="easyui-validatebox" data-options="required:true" value="'+objUpdatePart1.accessoryData[i].selfScore+'" onblur="makeAccessorypart()" />'
+				    	+ '</td>'
+				    	+ '<td  colspan="3"  class="formtable_td_value">'
+				    	+ '<input  name="sss" size=3  value="'+objUpdatePart1.accessoryData[i].lenderScore+'" onblur="makeAccessorypart()" />'
+				    	+ '</td>'
+				    	+ '</tr>';		
+		        	} 
+	        		$('#updatepart1${rand}').after(str1);
+				}
+				
+				//加载第二部分	
+				if(objUpdatePart2.accessoryData.length>0) {
+		        	var str2 = '';
+		        	var j=0;
+		        	 for(i=0;i<objUpdatePart2.accessoryData.length;i++){
+		        		 j=i+1;
+		        		str2+='<tr id="updatepart2_up_row_${rand}_' +  j  + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ j  + '</span></td>'
+				    	+ '<td class="formtable_td_value">'+objUpdatePart2.accessoryData[i].target+ '</td>'
+				    	+ '<td class="formtable_td_value">'+objUpdatePart2.accessoryData[i].weight+ '</td>'
+				    	+ '<td class="formtable_td_value">'+objUpdatePart2.accessoryData[i].basicgoal+ '</td>'
+				    	+ '<td class="formtable_td_value">'+objUpdatePart2.accessoryData[i].expectedgoal+ '</td>'
+				    	+ '<td class="formtable_td_value">'+objUpdatePart2.accessoryData[i].threatgoal+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_updatepart2_pointsdesc_1_'+ j +'"  style="width:200px;height:40px;">'+objUpdatePart2.accessoryData[i].pointsdesc+'</textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input  id="part2_selfScore_${rand}_'+ j +'" size=3  class="easyui-validatebox" data-options="required:true" value="'+objUpdatePart2.accessoryData[i].selfScore+'" onblur="makeAccessorypart()" />'
+				    	+ '</td>'
+				    	+ '<td  colspan="3"  class="formtable_td_value">'
+				    	+ '<input  name="sss" size=3  value="'+objUpdatePart2.accessoryData[i].lenderScore+'" onblur="makeAccessorypart()" />'
+				    	+ '</td>'
+				    	+ '</tr>';		
+		        	} 
+	        		$('#updatepart2${rand}').after(str2);
+				}
+				//加载第三部分
+				if(objUpdatePart3.accessoryData.length>0) {
+					var str3 = '';
+					var j=0;
+		        	 for(i=0;i<objUpdatePart3.accessoryData.length;i++){
+		        		 j=i+1
+		        		 str3+='<tr id="updatepart3_up_row_${rand}_' +  j + '"><td align="center" class="formtable_td_value"><span>' 
+					    	+ j + '</span></td>'
+					    	+ '<td class="formtable_td_value" colspan="3">'
+					    	+ '<textarea name="map_part3_subtractpoints_1_'+ j +'" value="'+objUpdatePart3.accessoryData[i].subtractpoints+'" class="easyui-validatebox"  onblur="makeAccessorypart()" style="width:500px;height:40px;"></textarea>'
+					    	+ '</td>'
+					    	+ '<td class="formtable_td_value" colspan="5">'
+					    	+ '<textarea name="map_part3_reason_2_'+ j +'" value="'+objUpdatePart3.accessoryData[i].reason+'" class="easyui-validatebox" onblur="makeAccessorypart()" style="width:1050px;height:40px;"></textarea>'
+					    	+ '</td>'
+					    	+ '<td class="formtable_td_value">'
+					    	+ '<input id="part3_selfScore_${rand}_'+ j +'" name="map_part3_selfScore_3_'+ j +'" value="'+objUpdatePart3.accessoryData[i].selfScore+'"  class="easyui-validatebox" onblur="makeAccessorypart()" data-options="validType:\'number\'" size=3/>'
+					    	+ '</td>'
+					    	+ '<td class="formtable_td_value">'
+					    	+ '<input name="sss" value="'+objUpdatePart3.accessoryData[i].superScore+'" size=3/>'
+					    	+ '</td>'
+					    	+ '</tr>';
+		        	 }
+	        		$('#updatepart3${rand}').after(str3);
+				}
+				
+				//自动填写职位
+				$.post("hrFlow/getHrUserInfo.json",
+						{
+							account:$("#account").val()
+						},
+						function(data){
+							if (data.success) {
+								$("#job").val(data.obj.job);
+								$("#userCardId").val(data.obj.idCard);
+							}
+				});
+				
+				var btn_updatepart1_up_add = $('#updatepart1_up_add_btn-${rand}');//第一部分上半部分,添加按钮
+				var btn_updatepart3_add = $('#updatepart3_add_btn-${rand}');//第三部分，添加按钮
+				var btn_part6_countTotal = $('#part6_countTotal_btn-${rand}');//第六部分的计算总分按钮
+				var input_part6_total = $('#part6_total_${rand}');//第六部分的总分input项
+				
+				//第一部分上办部分，增加行，减少行
+				btn_updatepart1_up_add.bind('click',function(){
+					//获取第一部分上半部分的最后一个行的ID,然后获取最后的值，如：part1_up_row_133902_3获取3
+					var part1_up_lastrow = $('#assesserModifyTaskForm').find("tr[id^='updatepart1_up_row_']")
+						.last()[0];
+					var last_tr_id = part1_up_lastrow.id;
+					var tr_id_arr = last_tr_id.split("_");
+					var part1_row_max = tr_id_arr[tr_id_arr.length - 1];
+					//获取最后一个tr的序号，即tr的第一个td中的span元素的值
+					var par1_up_seq = $('#assesserModifyTaskForm').find("tr[id^='updatepart1_up_row_']")
+						.last().children('td').children('span').html();
+					
+			        if (part1_row_max == null) {
+			            part1_row_max = 2;
+			        } else {
+			        	//动态删除行后，序列号和tr的id增长不同步
+			            part1_row_max = parseInt(part1_row_max);
+			            part1_row_max = part1_row_max + 1;
+			            
+			            par1_up_seq = parseInt(par1_up_seq);
+			            par1_up_seq = par1_up_seq + 1;
+			        }
+			        
+				    var newRow = '<tr id="updatepart1_up_row_${rand}_' + part1_row_max + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ par1_up_seq + '</span><br/><a href="javascript:void(0)" onclick=part1_up_delRow('+part1_row_max+')>删除</a></td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_target_1_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input name="map_part1up_weight_2_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true,validType:\'percentage\'" size=3 />'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_basicgoal_3_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_expectedgoal_4_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_threatgoal_5_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<textarea name="map_part1up_pointsdesc_6_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true" style="width:200px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input id="id="part1_selfScore_${rand}_'+ j +'"${rand}_'+ part1_row_max +'" name="map_part1up_selfscore_9_'+ par1_up_seq +'" class="easyui-validatebox" data-options="required:true,validType:\'number\'" size=3 />'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value" colspan="6">'
+				    	+ '<input name="sss" size=3 />'
+				    	+ '</td>'
+				    	+ '</tr>';
+				    $('#updatepart1_up_row_${rand}_' + (part1_row_max - 1)).after(newRow);
+				    
+				    $.parser.parse('#updatepart1_up_row_${rand}_' + (part1_row_max));
+				});
+				
+				//第三部分的增加行和减少行
+				btn_updatepart3_add.bind('click',function(){
+					
+					//获取第一部分上半部分的最后一个行的ID,然后获取最后的值，如：part1_up_row_133902_3获取3
+					var part3_lastrow = $('#assesserModifyTaskForm').find("tr[id^='updatepart3_up_row_']")
+						.last()[0];
+					var last_tr_id = part3_lastrow.id;
+					var tr_id_arr = last_tr_id.split("_");
+					var part3_row_max = tr_id_arr[tr_id_arr.length - 1];
+					
+					//获取最后一个tr的序号，即tr的第一个td中的span元素的值
+					var par3_seq = $('#assesserModifyTaskForm').find("tr[id^='updatepart3_up_row_']")
+						.last().children('td').children('span').html();
+					
+			        if (part3_row_max == null) {
+			            part3_row_max = 2;
+			        } else {
+			        	//动态删除行后，序列号和tr的id增长不同步
+			            part3_row_max = parseInt(part3_row_max);
+			            part3_row_max = part3_row_max + 1;
+			            
+			            par3_seq = parseInt(par3_seq);
+			            par3_seq = par3_seq + 1;
+			        }
+				    var newRow = '<tr id="updatepart3_up_row_${rand}_' + part3_row_max + '"><td align="center" class="formtable_td_value"><span>' 
+				    	+ par3_seq + '</span><br/><a href="javascript:void(0)" onclick=part3_delRow('+part3_row_max+')>删除</a></td>'
+				    	+ '<td class="formtable_td_value" colspan="3">'
+				    	+ '<textarea name="map_part3_subtractpoints_1_'+ par3_seq +'" class="easyui-validatebox" style="width:500px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value" colspan="5">'
+				    	+ '<textarea name="map_part3_reason_2_'+ par3_seq +'" class="easyui-validatebox" style="width:1050px;height:40px;"></textarea>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input id="part3_selfScore_${rand}_'+ part3_row_max +'" name="map_part3_selfScore_3_'+ par3_seq +'" class="easyui-validatebox" data-options="required:true,validType:\'number\'" size=3/>'
+				    	+ '</td>'
+				    	+ '<td class="formtable_td_value">'
+				    	+ '<input name="sss" size=3/>'
+				    	+ '</td>'
+				    	+ '</tr>';
+				    $('#updatepart3_up_row_${rand}_' + (part3_row_max - 1)).after(newRow);
+				    
+				    $.parser.parse('#updatepart3_up_row_${rand}_' + (part3_row_max));
+				});
+				
+				//第六部分计算总分
+				btn_part6_countTotal.bind('click', function(){
+					var total = 0;
+					//获取第一部分上半部分的所有自评分
+					var verify_result = true;
+					//验证第一部分的上半部分
+					$('#assesserModifyTaskForm').find("input[id^='part1_up_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证第二部分
+					$('#assesserModifyTaskForm').find("input[id^='part2_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证第三部分
+					$('#assesserModifyTaskForm').find("input[id^='part3_selfScore_']")
+						.each(function(i){
+							if (!$(this).validatebox('isValid')) {
+								verify_result = false;
+							}
+					});	
+					//验证结果
+					if (verify_result) {
+						//计算第一部分上半部分总分
+						$('#assesserModifyTaskForm').find("tr[id^='updatepart1_up_row_']")
+						.each(function(i){
+							var temp_weight = $(this).children().find(":input[name^='map_updatepart1_weight']").val();
+						 	var temp_score =$(this).children().find("input[id^='part1_selfScore_']").val();
+						 	if (temp_score != null && temp_score.length > 0) {
+						 		total = total + parseInt(temp_score)*parseInt(temp_weight)/100;
+						 	}
+					});	
+						
+						//计算第二部分总分
+						$('#assesserModifyTaskForm').find("input[id^='part2_selfScore_']")
+							.each(function(i){
+							 	var temp_score = $(this).val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score)*0.2;
+							 	}
+						});	
+						//计算第三部分总分
+						$('#assesserModifyTaskForm').find("input[id^='part3_selfScore_']")
+							.each(function(i){
+							 	var temp_score = $(this).val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score);
+							 	}
+						});	
+						//设置总分
+						input_part6_total.attr('value', total);
+						input_part6_total.validatebox('validate');
+					} else {
+						$.messager.alert('信息提示','请完整填写完自评分后，再计算总分!','warning');
+						return;
+					}
+				});
+				
+			});
+			
+			//第一部分上半部分 删除行
+			function part1_up_delRow(rowAccount){
+				//如果删除的是中间的行，需要更新其他添加行的序号
+				$("#updatepart1_up_row_${rand}_" + rowAccount).remove();
+				//获取第一部分的上半部分的所有行，进行更新序号
+				$('#assesserModifyTaskForm')
+					.find("tr[id^='updatepart1_up_row_']")
+					.each(function(i){
+						 $(this).children("td").first().children("span").html(i + 1);
+					});
+				
+			}
+			
+			//第三部分 删除行
+			function part3_delRow(rowAccount){
+				//如果删除的是中间的行，需要更新其他添加行的序号
+				$("#updatepart3_up_row_${rand}_" + rowAccount).remove();
+				//获取第一部分的上半部分的所有行，进行更新序号
+				$('#assesserModifyTaskForm')
+					.find("tr[id^='updatepart3_up_row_']")
+					.each(function(i){
+						 $(this).children("td").first().children("span").html(i + 1);
+					});
+				
+			}
+			
+			function makeAccessorypart() {
+				//第一部分封装
+				var rows = $('#assesserModifyTaskForm').find("tr[id^='updatepart1_up_row_']");
+				if(rows.length == 0) {		
+					$('#AccessoriesUpdatePart1JsonStr${rand}').val('');
+				} else {		
+					var AccessoriesUpdatePart1JsonStr = { accessoryData:[] };
+					var rowno = 1;
+					$('#assesserModifyTaskForm').find("tr[id^='updatepart1_up_row_']").each(function () {	        			
+						var target = $.trim($(this).find('td').eq(1).find("textarea").val());
+	        			var weight = $.trim($(this).find('td').eq(2).find("input").val());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).find("textarea").val());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).find("textarea").val());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).find("textarea").val());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).find("textarea").val());
+	        			var selfScore = $.trim($(this).find('td').eq(7).find("input").val());
+	        			var lenderScore = $.trim($(this).find('td').eq(8).find("input").val());
+	        			AccessoriesUpdatePart1JsonStr.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore,lenderScore:lenderScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesUpdatePart1JsonStr${rand}').val(JSON.stringify(AccessoriesUpdatePart1JsonStr));
+				}
+				
+				//第二部分封装
+				var rows = $('#assesserModifyTaskForm').find("tr[id^='updatepart2_up_row_']");
+				if(rows.length == 0) {		
+					$('#AccessoriesUpdatePart2JsonStr${rand}').val('');
+				} else {		
+					var AccessoriesUpdatePart2JsonStr = { accessoryData:[] };
+					
+					var rowno = 1;
+					$('#assesserModifyTaskForm').find("tr[id^='updatepart2_up_row_']").each(function () {	        			
+						var target = $.trim($(this).find('td').eq(1).text());
+	        			var weight = $.trim($(this).find('td').eq(2).text());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).text());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).text());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).text());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).find("input").val());
+	        			var selfScore = $.trim($(this).find('td').eq(7).find("input").val());
+	        			var lenderScore = $.trim($(this).find('td').eq(8).find("input").val());
+	        			AccessoriesUpdatePart2JsonStr.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore,lenderScore:lenderScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesUpdatePart2JsonStr${rand}').val(JSON.stringify(AccessoriesUpdatePart2JsonStr));
+				}
+				
+				//第三部分封装
+				var SuperPart3Rows = $('#assesserModifyTaskForm').find("tr[id^='updatepart3_up_row_']");
+				if(SuperPart3Rows.length == 0) {		
+					$('#AccessoriesUpdatePart3JsonStr${rand}').val('');
+				} else {				
+					var AccessoriesUpdatePart3JsonStr = { accessoryData:[] };
+					var rowno = 1;
+					$('#assesserModifyTaskForm').find("tr[id^='updatepart3_up_row_']").each(function () {	        			
+						var subtractpoints = $.trim($(this).find('td').eq(1).find("textarea").val());
+	        			var reason = $.trim($(this).find('td').eq(2).find("textarea").val());
+	        			var selfScore = $.trim($(this).find('td').eq(3).find("input").val());
+	        			var superScore = $.trim($(this).find('td').eq(4).find("input").val());
+	        			AccessoriesUpdatePart3JsonStr.accessoryData.push({
+	        				rowno:rowno,subtractpoints:subtractpoints,reason:reason,selfScore:selfScore,superScore:superScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesUpdatePart3JsonStr${rand}').val(JSON.stringify(AccessoriesUpdatePart3JsonStr));
+	        		alert(JSON.stringify(AccessoriesUpdatePart3JsonStr));
+				}
+			}
+			
+		</script>	
+		
+        </#if>
+		</#list>
+  </#if>
+</#if>
+
+
+
+<!-- 上级领导审批 -->
+<#if currentStep?exists && currentStep == 'superiorLeaderAudiTask' && proHisVar?exists>
+<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent'> 
+		<div id="superiorLeaderAudiTask">
+			<form id="superiorLeaderAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<div hidden="true">
+				   <textarea id="AccessoriesSuperPart1Var${rand}" >${AccessoriesPart1Var}</textarea>
+				   <textarea id="AccessoriesSuperPart2Var${rand}" >${AccessoriesPart2Var}</textarea>
+				   <textarea id="AccessoriesSuperPart3Var${rand}" >${AccessoriesPart3Var}</textarea>
+				</div>
+				<table id="superiorLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">金立集团员工个人绩效领导审核表</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门：</td>
+					    <td class="formtable_td_value">
+				           <input class="easyui-validatebox"  hidden="ture" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_suporgName" data-options="required:true" value=" ${(steps.vars["orgName"])!""}"/>
+					        ${(steps.vars["orgName"])!""}
+					    </td>
+						<td class="formtable_td_key">职位：</td>
+					    <td class="formtable_td_value">
+					      <input class="easyui-validatebox"  hidden="ture" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_supjobDuty" data-options="required:true" value=" ${(steps.vars["jobDuty"])!""}"/>
+					       ${(steps.vars["jobDuty"])!""}</td>
+			     	    <td class="formtable_td_key">员工编码：</td>
+					    <td class="formtable_td_value">
+					      <input class="easyui-validatebox"  hidden="ture" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_supupdateappnew" data-options="required:true" value=" ${(steps.vars["updateappnew"])!""}"/>
+					    ${(steps.vars["updateappnew"])!""}</td>
+					    <td class="formtable_td_key">姓名：</td>
+					    <td class="formtable_td_value">${(steps.vars["userName"])!""}
+					    	  <input class="easyui-validatebox"  hidden="ture" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_supuserName" data-options="required:true" value=" ${(steps.vars["userName"])!""}"/>
+					    </td>
+					    <td class="formtable_td_key">考核周期：</td>
+					    <td colspan="6" class="formtable_td_value">
+					      <input class="easyui-validatebox"  hidden="ture" style="width:200px;height:40px;" readonly="readonly" type="text" name="fp_supevaluationDate" data-options="required:true" value=" ${(steps.vars["evaluationDate"])!""}"/>
+					      ${(steps.vars["evaluationDate"])!""}</td>
+					</tr>
+					
+					<!-- 第一部门的上半部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第一部分  业绩指标——占80%权重，主要考核业绩和工作计划完成情况(指标和权重可根据实际岗位/工作情况调整)
+						</td>
+					</tr>
+				    	<input type="hidden" id="AccessoriesSuperPart1JsonStr${rand}" name="fp_AccessoriesSuperPart1JsonStr" />
+					<tr id="superpart1${rand}">
+						<td style="min-width:30px"  class="formtable_td_value" align="center">序号</td>
+						<td class="formtable_td_value" align="center">目标(量化/非量化指标)</td>
+						<td class="formtable_td_value" align="center">权重</td>
+						<td class="formtable_td_value" align="center">T1(门槛目标)</td>
+						<td class="formtable_td_value" align="center">T2(达成目标)</td>
+						<td class="formtable_td_value" align="center">T3(挑战目标)</td>
+						<td class="formtable_td_value" align="center">达成情况</td>
+						<td style="min-width:50px" class="formtable_td_value">员工自评分</td>
+						<td  colspan="3"   style="min-width:50px" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 第二部分 -->
+				   <tr>
+						<td class="formtable_td_key" colspan="11">
+							第二部分  管理能力评价——占20%权重，主要考核管理者的管理能力（具体权重和细节可根据实际调整）
+						</td>
+					</tr>
+	    				<input type="hidden" id="AccessoriesSuperPart2JsonStr${rand}" name="fp_AccessoriesSuperPart2JsonStr" />
+					<tr id="superpart2${rand}">
+						<td class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value">
+							行为指标名称
+						</td>
+						<td class="formtable_td_value">权重</td>
+						<td class="formtable_td_value">T1(门槛目标)</td>
+						<td class="formtable_td_value">T2(达成目标)</td>
+						<td class="formtable_td_value">T3(挑战目标)</td>
+						<td class="formtable_td_value">行为举例</td>
+						<td class="formtable_td_value">员工自评分</td>
+						<td  colspan="3" class="formtable_td_value">直接/参评上级评分</td>
+					</tr>
+					<!-- 第三部分 -->
+					 <tr>
+						<td class="formtable_td_key" colspan="11">
+							第三部分 加减分项目（不占权重，额外加减分，总分不超过10分）
+						</td>
+					</tr>
+						<input type="hidden" id="AccessoriesSuperPart3JsonStr${rand}" name="fp_AccessoriesSuperPart3JsonStr" />
+					<tr id="superpart3${rand}">
+						<td align="center" class="formtable_td_value">
+							序号
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							加减分事项
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							理由描述
+						</td>
+						<td class="formtable_td_value">
+							自评分
+						</td>
+						<td class="formtable_td_value">
+							上级评分
+						</td>
+					</tr>
+					<!-- 第四部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第四部分  添加其他附件（如工作总结等，非必填项）
+						</td>
+					</tr>
+					<!-- 第五部分 -->
+					 <!-- <tr>
+						<td class="formtable_td_key" colspan="11">
+							第五部分  绩效沟通反馈
+						</td>
+					</tr>
+					 <tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							被考核者（绩效问题反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							${proHisVar.vars['auditeeFeedback']!''}
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="4">
+							考核者（回复及反馈）
+						</td>
+						<td class="formtable_td_value" colspan="7">
+							<textarea class="easyui-validatebox" name="fp_auditorFeedback" style="width:1050px;height:40px;"></textarea>
+						</td>
+					</tr> -->
+					<!-- 第六部分 -->
+					<tr>
+						<td class="formtable_td_key" colspan="11">
+							第六部分  考核结果
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							考核总分：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							<input id="part6_total_${rand}" name="fp_leaderpart6total" class="easyui-validatebox" data-options="required:true" style="width:300px;" readonly="readonly"/>
+							<!-- 计算总分按钮 -->
+							<a href="javascript:void(0)" id="part6_countTotal_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">计算总分</a>
+						</td>
+						<td align="center" class="formtable_td_value">
+							绩效等级：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							<input class="easyui-validatebox" name="fp_performLevel" data-options="required:true" style="width:400px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" class="formtable_td_value" colspan="2">
+							被考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							${proHisVar.vars['auditeeName']!''}
+						</td>
+						<td align="center" class="formtable_td_value">
+							考核者签名：
+						</td>
+						<td class="formtable_td_value" colspan="5">
+							${appuser.name}
+							<input type="hidden" class="easyui-validatebox" name="fp_auditorName" value="${appuser.name}"/>
+							<input type="hidden" class="easyui-validatebox" name="fp_auditorAccount" value="${appuser.account}"/>
+						</td>
+					</tr>
+					<tr id="checekResult${rand}">
+						<td class="formtable_td_key" >审批结果：</td>
+						<td  colspan="10" class="formtable_td_value" colspan="5" >
+							<input id="checkResult0${rand}" type="radio" name="fp_superiorLeaderAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input id="checkResult1${rand}" type="radio" name="fp_superiorLeaderAudi" value="1" />不同意
+						</td>
+				</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				//加载第一部分
+				var Part1Var = $('#AccessoriesSuperPart1Var${rand}').val();
+				var Part2Var = $('#AccessoriesSuperPart2Var${rand}').val();
+				var Part3Var = $('#AccessoriesSuperPart3Var${rand}').val();
+				var objPart1 = JSON.parse(Part1Var);
+				var objPart2 = JSON.parse(Part2Var);
+				var objPart3 = JSON.parse(Part3Var);
+				//第一部分
+				 if(objPart1.accessoryData.length>0) {
+			        	var str1 = '';
+			        	 for(i=0;i<objPart1.accessoryData.length;i++){
+			        		str1+='<tr id="superpart1_up_row_${rand}_' +  i+1 + '"><td align="center" class="formtable_td_value"><span>' 
+					    	+ i + '</span></td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].target+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].weight+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].basicgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].expectedgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].threatgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].pointsdesc+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart1.accessoryData[i].selfScore+ '</td>'
+					    	+ '<td  colspan="3"  class="formtable_td_value">'
+					    	+ '<input  class="easyui-validatebox" data-options="required:true" name="sss" size=3 onblur="makeAccessorypart()" />'
+					    	+ '</td>'
+					    	+ '</tr>';		
+			        	} 
+		    					    		    	
+		        		$('#superpart1${rand}').after(str1);
+					} 
+				
+				//第二部分
+				 if(objPart2.accessoryData.length>0) {
+			        	var str2 = '';
+			        	 for(i=0;i<objPart2.accessoryData.length;i++){
+			        		str2+='<tr id="superpart2_up_row_${rand}_' +  i+1 + '"><td align="center" class="formtable_td_value"><span>' 
+					    	+ i + '</span></td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].target+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].weight+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].basicgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].expectedgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].threatgoal+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].pointsdesc+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart2.accessoryData[i].selfScore+ '</td>'
+					    	+ '<td  colspan="3"  class="formtable_td_value">'
+					    	+ '<input class="easyui-validatebox" data-options="required:true" name="sss" size=3 onblur="makeAccessorypart()" />'
+					    	+ '</td>'
+					    	+ '</tr>';		
+			        	} 
+		        		$('#superpart2${rand}').after(str2);
+					} 
+				
+				//加载第三部分
+					if(objPart3.accessoryData.length>0) {
+			        	var str3 = '';
+			        	 for(i=0;i<objPart3.accessoryData.length;i++){
+		    				str3+='<tr id="superpart3_up_row_${rand}_' +  i+1 + '"><td align="center" class="formtable_td_value"><span>' 
+					    	+ i + '</span></td>'
+					    	+ '<td colspan="3" class="formtable_td_value">'+objPart3.accessoryData[i].subtractpoints+ '</td>'
+					    	+ '<td colspan="5" class="formtable_td_value">'+objPart3.accessoryData[i].reason+ '</td>'
+					    	+ '<td class="formtable_td_value">'+objPart3.accessoryData[i].selfScore+ '</td>'
+					    	+ '<td  colspan="3"  class="formtable_td_value">'
+					    	+ '<input class="easyui-validatebox" data-options="required:true" name="sss" size=3 onblur="makeAccessorypart()"/>'
+					    	+ '</td>'
+					    	+ '</tr>';		    		    	
+		        		};  
+		        		$('#superpart3${rand}').after(str3);
+					}
+				
+					var btn_part6_countTotal = $('#part6_countTotal_btn-${rand}');//第六部分的计算总分按钮
+					var input_part6_total = $('#part6_total_${rand}');//第六部分的总分input项
+					//第六部分计算总分
+					btn_part6_countTotal.bind('click', function(){
+						var total = 0;
+						//获取第一部分上半部分的所有自评分
+						var verify_result = true;
+						//验证第一部分的上半部分
+						$('#superiorLeaderAudiTaskFormTable').find("input[id^='part1_up_leaderScore_']")
+							.each(function(i){
+								if (!$(this).validatebox('isValid')) {
+									verify_result = false;
+								}
+						});	
+						//验证第二部分
+						$('#superiorLeaderAudiTaskFormTable').find("input[id^='part2_leaderScore_']")
+							.each(function(i){
+								if (!$(this).validatebox('isValid')) {
+									verify_result = false;
+								}
+						});	
+						//验证第三部分
+						$('#superiorLeaderAudiTaskFormTable').find("input[id^='part3_leaderScore_']")
+							.each(function(i){
+								if (!$(this).validatebox('isValid')) {
+									verify_result = false;
+								}
+						});	
+						//验证结果
+						if (verify_result) {
+							//计算第一部分上半部分总分
+							$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart1_up_row_']")
+							.each(function(){
+								
+								var temp_weight =$(this).find('td').eq(2).text();
+							 	var temp_score =$(this).find('td').eq(8).find("input").val();
+							 	if (temp_score != null && temp_score.length > 0) {
+							 		total = total + parseInt(temp_score)*parseInt(temp_weight)/100;
+							 	}
+						});	
+							//计算第二部分总分
+							$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart2_up_row_']")
+								.each(function(i){
+								 	var temp_score = $(this).find('td').eq(8).find("input").val();
+								 	if (temp_score != null && temp_score.length > 0) {
+								 		total = total + parseInt(temp_score)*0.2;
+								 	}
+							});	
+							//计算第三部分总分
+							$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart3_up_row_']")
+								.each(function(i){
+								 	var temp_score = $(this).find('td').eq(4).find("input").val();
+								 	if (temp_score != null && temp_score.length > 0) {
+								 		total = total + parseInt(temp_score);
+								 	}
+							});	
+							//设置总分
+							input_part6_total.attr('value', total);
+							input_part6_total.validatebox('validate');
+						} else {
+							$.messager.alert('信息提示','请完整填写完上级评分后，再计算总分!','warning');
+							return;
+						}
+					});
+			});
+			
+			function makeAccessorypart() {
+				//第一部分封装
+				var rows = $('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart1_up_row_']");
+				if(rows.length == 0) {		
+					$('#AccessoriesSuperPart1JsonStr${rand}').val('');
+				} else {		
+					var AccessoriesSuperPart1Json = { accessoryData:[] };
+					
+					var rowno = 1;
+					$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart1_up_row_']").each(function () {	        			
+						var target = $.trim($(this).find('td').eq(1).text());
+	        			var weight = $.trim($(this).find('td').eq(2).text());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).text());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).text());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).text());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).text());
+	        			var selfScore = $.trim($(this).find('td').eq(7).text());
+	        			var lenderScore = $.trim($(this).find('td').eq(8).find("input").val());
+	        			AccessoriesSuperPart1Json.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore,lenderScore:lenderScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesSuperPart1JsonStr${rand}').val(JSON.stringify(AccessoriesSuperPart1Json));
+	        		
+				}
+				
+				//第二部分封装
+				var rows = $('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart2_up_row_']");
+				if(rows.length == 0) {		
+					$('#AccessoriesSuperPart2JsonStr${rand}').val('');
+				} else {		
+					var AccessoriesSuperPart2Json = { accessoryData:[] };
+					
+					var rowno = 1;
+					$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart2_up_row_']").each(function () {	        			
+						var target = $.trim($(this).find('td').eq(1).text());
+	        			var weight = $.trim($(this).find('td').eq(2).text());
+	        			var basicgoal = $.trim($(this).find('td').eq(3).text());
+	        			var expectedgoal = $.trim($(this).find('td').eq(4).text());
+	        			var threatgoal = $.trim($(this).find('td').eq(5).text());
+	        			var pointsdesc = $.trim($(this).find('td').eq(6).text());
+	        			var selfScore = $.trim($(this).find('td').eq(7).text());
+	        			var lenderScore = $.trim($(this).find('td').eq(8).find("input").val());
+	        			AccessoriesSuperPart2Json.accessoryData.push({
+	        				rowno:rowno,target:target,weight:weight,basicgoal:basicgoal,expectedgoal:expectedgoal,threatgoal:threatgoal,pointsdesc:pointsdesc,selfScore:selfScore,lenderScore:lenderScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesSuperPart2JsonStr${rand}').val(JSON.stringify(AccessoriesSuperPart2Json));
+				}
+				
+				//第三部分封装
+				var SuperPart3Rows = $('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart3_up_row_']");
+				if(SuperPart3Rows.length == 0) {		
+					$('#AccessoriesSuperPart3JsonStr${rand}').val('');
+				} else {				
+					var AccessoriesSuperPart3Json = { accessoryData:[] };
+					var rowno = 1;
+					$('#superiorLeaderAudiTaskFormTable').find("tr[id^='superpart3_up_row_']").each(function () {	        			
+	        			var subtractpoints = $.trim($(this).find('td').eq(1).text());
+	        			var reason = $.trim($(this).find('td').eq(2).text());
+	        			var selfScore = $.trim($(this).find('td').eq(3).text());
+	        			var superScore = $.trim($(this).find('td').eq(4).find("input").val());
+	        			AccessoriesSuperPart3Json.accessoryData.push({
+	        				rowno:rowno,subtractpoints:subtractpoints,reason:reason,selfScore:selfScore,superScore:superScore
+	        			})
+	        			rowno++;
+	        		});
+	        		$('#AccessoriesSuperPart3JsonStr${rand}').val(JSON.stringify(AccessoriesSuperPart3Json));
+				}
+			}
+		</script>
+	
+	     </#if>
+		</#list>
+	</#if>
+</#if>
+
+<#if currentStep?exists>
+	<#if currentStep == 'hrAudiTask'>
+		<div id="hrAudiTask">
+		  <form id="hrAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="hrAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	 	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">人事专员</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="10">
+							<textarea style="width: 1250px; height: 80px" name="fp_hrAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">人事专员签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_hrName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_hrTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>	
+		  	 	
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if> 
+
+
+<#include "/common/foot.html">

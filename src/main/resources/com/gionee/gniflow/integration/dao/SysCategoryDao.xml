@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.SysCategoryDao">
+  
+ <insert id="add" parameterType="com.gionee.gniflow.biz.model.SysCategory">
+   insert into sysCategory(id,pid) values(#{id},#{pid})
+ </insert>
+    <select id="getAllByPid" parameterType="Integer" resultType="Integer">
+	select id from sysCategory
+	where pid = #{pid} 
+  </select>
+  
+   <select id="query" parameterType="com.gionee.gniflow.biz.model.SysCategory" resultType="Integer">
+     select count(1) from sysCategory where id=#{id} and pid=#{pid}
+  </select>
+</mapper>

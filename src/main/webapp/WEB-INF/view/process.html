@@ -1,0 +1,84 @@
+<!-- 为EOA项目提供的任务处理表单以及流程历史表单 -->
+  <#assign title="流程表单"/>
+  <#include "/common/head.ftl">
+    <div id="loadFormPanel-${rand}"></div>
+    <div id="loadFormPrintPanel-${rand}" style="display: none"></div>
+    <script type="text/javascript">
+   	function getQueryStr(sArgName)
+	{
+		var LocString = window.location.href;
+		var args = LocString.split("?");
+		var retval = "";
+		if(args[0] == LocString) /*参数为空*/
+		{
+			return retval; /*无需做任何处理*/
+		}
+		var str = args[1];
+		args = str.split("&");
+		for(var i = 0; i < args.length; i ++)
+		{
+			str = args[i];
+			var arg = str.split("=");
+			if(arg.length <= 1) continue;
+			if(arg[0] == sArgName) retval = arg[1];
+		}
+		return retval;
+	}
+    var processInstanceId =  getQueryStr("processInstanceId");
+    function init() {
+        if (window.addEventListener) {  // all browsers except IE before version 9
+            window.addEventListener("message", OnMessage, false);
+        } else {
+            if (window.attachEvent) {   // IE before version 9
+            window.attachEvent("onmessage", OnMessage);
+            }
+        }
+      }
+	//监听处理方法
+    var OnMessage = function (e) {
+		switch(e.data){
+    		case 'obsoleteProcess': obsoleteProcess${rand}();break;
+    		case 'print':  print${rand}();break;
+    		case 'help': help${rand}();break;
+    	}
+    }
+    //废止流程
+    function obsoleteProcess${rand}(){
+  		$.messager.confirm('信息提示', '你确定要废止流程吗?', function(r){
+	        if (r){
+	           $.post("workspace/obsoleteProcess.json",{processInstanceId:processInstanceId},function(data){
+					 window.parent.postMessage(JSON.stringify(data),"*");
+			  	});
+	        }
+  		});
+    }    
+   	//打印
+	function print${rand}(){
+		LODOP = getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+		if ( typeof(LODOP) != "undefined" && LODOP != null) {
+			LODOP.PRINT_INITA(10,10,730,1050,"${rand}")
+			LODOP.ADD_PRINT_HTM(10,10,730,1050,"<!DOCTYPE html><html><head><meta name='renderer' content='webkit'/><meta charset='utf-8'/><style>textarea{background-color: #FFF !important;}</style>"+$('#loadFormPrintPanel-${rand}').html()+"</html>");
+			LODOP.PREVIEW(); //打印预览  
+		} else {
+			$.messager.alert('信息提示','打印控件未安装,请点击打印帮助按钮,详细阅读打开的页面中的内容!','warning');
+		}
+	}
+   	//打印帮助
+	function help${rand}(){
+		window.open("common/printHelp/printHelp.html", "helpPrint", "");
+	}
+   $(function(){
+	    init();
+		$('#loadFormPanel-${rand}').panel({
+	            border:false,
+	            href:"sysprocess/task/viewHisform.html?processInstanceId=" + processInstanceId
+	        });
+		//加载打印的表单
+		$('#loadFormPrintPanel-${rand}').panel({
+	             border:false,
+	             href:"sysprocess/task/viewHisPrintform.html?processInstanceId=" + processInstanceId
+	         });
+	
+      });
+      </script>
+      <#include "/common/foot.ftl">

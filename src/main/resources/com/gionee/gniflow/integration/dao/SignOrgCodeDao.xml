@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.SignOrgCodeDao">
+  
+  <sql id="columns">
+    id, org_id, org_code,
+	status, remark, create_by, create_time, update_by, update_time
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.SignOrgCode" id="result">
+	<id property="id" column="id"/>
+	<result property="orgId" column="org_id"/>
+	<result property="orgCode" column="org_code"/>
+	<result property="status" column="status"/>
+	<result property="remark" column="remark"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateBy" column="update_by"/>
+	<result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.SignOrgCode">
+    insert into sign_org_code (<include refid="columns"/>) values (
+    #{nextId},
+    #{orgId},
+    #{orgCode},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.SignOrgCode">
+    update sign_org_code
+    <set>
+      <if test="orgId != null">
+        org_id = #{orgId},
+      </if>
+      <if test="orgCode != null">
+        org_code = #{orgCode},
+      </if>
+      <if test="status != null">
+        status = status,
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      update_by = #{currentAccount},
+      update_time = #{currentTime}
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete sign_org_code where id = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from sign_org_code
+	<where>
+	  <if test="orgId != null">
+        and org_id = #{orgId}
+	  </if>
+	  <if test="orgCode != null">
+        and org_code = #{orgCode}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select <include refid="columns"/> from sign_org_code
+      <where>
+        <if test="orgId != null">
+          and org_id = #{orgId}
+        </if>
+        <if test="orgCode != null">
+          and org_code = #{orgCode}
+        </if>
+      </where>
+      <![CDATA[
+    	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from sign_org_code
+    <where>
+      <if test="orgId != null">
+        and org_id = #{orgId}
+      </if>
+      <if test="orgCode != null">
+        and org_code = #{orgCode}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from sign_org_code
+	where id = #{_parameter}
+  </select>
+  
+  <select id="getOrgCode4OrgId" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from sign_org_code
+	where org_id = #{orgId}
+  </select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="processGrid-${rand}"></div>
+
+<script type="text/javascript">
+var postUrl${rand};
+$('#processGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'myflow/tasks/${processDefId}.json',
+  columns:[[
+	{field:'id',title:'任务ID',checkbox:true},
+	{field:'taskDefinitionKey',title:'任务Key'},
+	{field:'name',title:'任务名称'},
+	{field:'processDefinitionId',title:'流程定义ID',width:150},
+	{field:'processInstanceId',title:'流程实例ID',width:100},
+	{field:'priority',title:'优先级',width:100},
+	{field:'createTime',title:'任务创建日期',width:100},
+	{field:'dueDate',title:'任务逾期日',width:100},
+	{field:'description',title:'任务描述',width:100},
+	{field:'owner',title:'任务所属人',width:100}
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar: [{
+	text : '启动流程',
+	iconCls: 'icon-add'
+  },'-',{
+	text:'处理任务',
+	iconCls: 'icon-edit'
+  },'-',{
+	text:'查看详情',
+	iconCls: 'icon-tip'
+  },'-',{
+	text:'已结束流程',
+	iconCls: 'icon-tip'
+  }]
+});
+
+</script>
+<#include "/common/foot.ftl">

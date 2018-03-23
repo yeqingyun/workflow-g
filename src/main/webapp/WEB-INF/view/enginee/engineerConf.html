@@ -1,0 +1,304 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">姓名：</td>
+		    			<td> 
+							<input id="name-${rand}" style="width:150px;" class="easyui-textbox"  name="name" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">工号：</td>
+		   				<td> 
+    			 			<input id="userId-${rand}" style="width:150px;" class="easyui-textbox"  name="userId" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">地址：</td>
+		   				<td> 
+    			 			<input id="address-${rand}" style="width:150px;" class="easyui-textbox"  name="address" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">状态：</td>
+		   				<td> 
+    			 			<select id="status-${rand}" style="width:150px;" class="easyui-combobox"  name="status">
+    			 				<option value="">请选择</option>
+    			 				<option value="0">有效</option>
+    			 				<option value="-1">无效</option>
+    			 			</select>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="engineerGrid-${rand}"></div>
+	</div>
+ </div>
+
+<div id="engineerDialog${rand}" class="easyui-dialog" data-options="closed:true">
+	<div  style="padding:10px 10px;">
+		<form id="addEngineerForm${rand}" method="post">
+			<table>
+				<tr>
+					<td width="120" align="center">工号:</td>
+					<td><input id="input_userId_${rand}" class="easyui-validatebox"  data-options="required:true" name="userId" style="width:200px;"></td>
+					<td width="120" align="center">姓名:</td>
+					<td>
+						<input id="input_id_${rand}" type="hidden" name="id" />
+						<input id="input_name_${rand}" class="easyui-validatebox"  data-options="required:true" name="name" style="width:200px;">
+					</td>
+				</tr>
+				<tr>
+					<td width="120" align="center">电话:</td>
+					<td><input id="input_tel_${rand}" class="easyui-validatebox"  data-options="required:true"  name="tel" style="width:200px;"></td>
+					<td width="120" align="center">地址:</td>
+					<td><input id="input_address_${rand}" class="easyui-validatebox"  data-options="required:true" name="address" style="width:200px;"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(function(){
+	$('#engineerGrid-${rand}').datagrid({
+	  fitColumns:true,
+	  url:'engineer/queryPage.json',
+	  columns:[[
+		{field:'id',title:'编号',checkbox:true,width:150},
+		{field:'userId',title:'员工编号',width:100},
+		{field:'name',title:'员工姓名',width:100},
+		{field:'address',title:'地址',width:100},
+		{field:'tel',title:'电话号码',width:100},
+		{field:'status',title:'状态',width:100, formatter: function(value, row, index){
+			if(value == 0)
+	    		return '有效';
+	    	else 
+	    		return '<span style="color:red;">无效</sapn>'; 
+		}},
+		{field:'createBy',title:'创建人',width:100},
+		{field:'createTime',title:'创建时间',width:120},
+		{field:'updateBy',title:'更新人',width:100},
+		{field:'updateTime',title:'更新时间',width:120}
+	  ]],
+	  nowrap: true,
+	  pagination:true,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  border : true,
+	  rownumbers:true,
+	  toolbar: [{
+		text:'新增',
+		iconCls: 'icon-add',
+		handler:add${rand}
+	  },'-',{
+		text:'编辑',
+		iconCls: 'icon-edit',
+		handler:edit${rand}
+	  },'-',{
+		text:'删除',
+		iconCls: 'icon-remove',
+		handler:delete${rand}
+	  }]
+	});
+	
+	
+	//edit
+	function edit${rand}(){
+		var row = $('#engineerGrid-${rand}').datagrid('getSelected');
+	  if (row){
+		createDialog();
+		
+		$('#input_id_${rand}').val(row.id);
+		$('#input_name_${rand}').val(row.name);
+		$('#input_userId_${rand}').val(row.userId);
+		$('#input_address_${rand}').val(row.address);
+		$('#input_tel_${rand}').val(row.tel);
+		//valiadate
+		$("#addEngineerForm${rand}").form('validate');
+		//set title
+		$('#engineerDialog${rand}').dialog('setTitle', '编辑员工');
+	  } else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	  }
+	}
+	
+	//delete
+	function delete${rand}(){
+		var row = $('#engineerGrid-${rand}').datagrid('getSelected');
+		 if (row){
+			$.messager.confirm('删除提示','您确定要删除该条记录吗?',function(r){
+				if (r){
+					$.post('engineer/del.json',{id:row.id},function(result){
+						$.messager.show({
+							title: '信息提示', msg: result.message
+				        });
+						if (result.success){
+							engineerGridRefresh();
+						} 
+				  	},'json');
+				}
+			});
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	
+	//refresh
+	function engineerGridRefresh(){
+		$('#engineerGrid-${rand}').datagrid('reload');
+	}
+	
+	//add
+	function add${rand}(){
+		$("#input_name_${rand}").removeAttr("disabled");
+		$("#input_address_${rand}").removeAttr("disabled");
+		$("#input_tel_${rand}").removeAttr("disabled");
+		createDialog();
+	}
+	
+	$("#input_userId_${rand}").blur(function(){
+		$.post("engineer/getUserInfo.json",{
+			userId:$("#input_userId_${rand}").val()
+		},
+		function(data){
+			if(data!=null & data.status==0){
+				$.messager.alert('信息提示:','此编号的工程师已存在，确定要重复添加？');
+				$("#input_name_${rand}").val('');
+				$("#input_address_${rand}").val('');
+				$("#input_tel_${rand}").val('');
+				//$("#input_name_${rand}").attr("disabled",true);
+				//$("#input_address_${rand}").attr("disabled",true);
+				//$("#input_tel_${rand}").attr("disabled",true);
+				return;
+			}
+			$.post("hrFlow/getHrUserInfoById.json",{
+				account:$("#input_userId_${rand}").val()
+			},
+			function(data){
+				if(data.obj.length > 0){
+					$("#input_name_${rand}").removeAttr("disabled");
+					$("#input_address_${rand}").removeAttr("disabled");
+					$("#input_tel_${rand}").removeAttr("disabled");
+					$("#input_name_${rand}").val(data.obj[0].name);
+					if(data.obj[0].tel!=null){
+						$("#input_tel_${rand}").val(data.obj[0].tel);
+					}
+				}else{
+					$.messager.alert('信息提示:','没此编号员工的记录信息!');
+					$("#input_name_${rand}").val('');
+					$("#input_address_${rand}").val('');
+					$("#input_tel_${rand}").val('');
+					$("#input_name_${rand}").attr("disabled",true);
+					$("#input_address_${rand}").attr("disabled",true);
+					$("#input_tel_${rand}").attr("disabled",true);
+				}
+			});
+		});
+	});
+	function createDialog(){
+		var win = $('#engineerDialog${rand}').dialog({
+			title: '新增员工',
+			collapsible:false,
+			width: 600,
+			height: 300,
+			maximizable:true,
+			resizable:true,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text : '保存',    
+				iconCls:'icon-save',    
+				handler:function(){
+					if($("#input_name_${rand}").val()==null){
+						$.messager.show({
+							title: '信息提示', msg: '请输入正确的员工信息!'
+						});
+						return;
+					}
+					save${rand}();
+				}    
+			},{    
+				text:'重置',
+				iconCls:'icon-undo',    
+				handler:function(){
+					$('#addEngineerForm${rand}').form('clear');
+				}    
+			}],
+			onClose : function(){
+				$('#addEngineerForm${rand}').form('clear');
+			}
+		});
+		return win;
+	}
+	
+	//save
+	function save${rand}(){
+		var result = $("#addEngineerForm${rand}").form('validate');
+		if (result) {
+			var name =  $('#input_name_${rand}').val();
+			var userId =  $('#input_userId_${rand}').val();
+			var address =  $('#input_address_${rand}').val();
+			var tel =  $('#input_tel_${rand}').val();
+			
+			$.post('engineer/sav.json',
+				{
+					id:$('#input_id_${rand}').val(),
+					name:name,
+					userId:userId,
+					address:address,
+					tel:tel
+				},
+				function(result){
+					$.messager.show({
+						title: '信息提示', msg: result.message
+					});
+					if (result.success){
+						$('#engineerDialog${rand}').dialog('close');
+			           	engineerGridRefresh();
+					} 
+			},'json');
+		}
+	}
+	
+	//按钮绑定事件
+	$('#search_btn-${rand}').bind('click', function(){
+	    var name = $('#name-${rand}').val();
+		var userId = $('#userId-${rand}').val();
+		var address = $('#address-${rand}').val();
+		var status = $('#status-${rand}').combobox('getValue');
+		
+	
+		$('#engineerGrid-${rand}').datagrid('reload',
+			{
+				name:name,
+				userId:userId,
+				address:address,
+				status:status
+			});
+	});
+	
+	$('#reset_btn-${rand}').bind('click', function(){
+	    $('#name-${rand}').val('');
+		$('#userId-${rand}').val('');
+		$('#address-${rand}').val('');
+		$('#status-${rand}').combobox('setValue','');
+	});
+	
+});
+
+</script>
+<#include "/common/foot.ftl">

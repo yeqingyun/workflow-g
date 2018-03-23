@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.QuartzJobLogDao">
+  
+  <sql id="columns">
+    Id, TaskName, StarteTime, EndTime, IntervalTime
+  </sql>
+  
+  <sql id="insertColumns">
+    TaskName, StarteTime, EndTime, IntervalTime
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.QuartzJobLog" id="result">
+	<id property="id" column="Id"/>
+	<result property="taskname" column="TaskName"/>
+	<result property="startetime" column="StarteTime"/>
+	<result property="endtime" column="EndTime"/>
+	<result property="intervaltime" column="IntervalTime"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.QuartzJobLog">
+    insert into quartz_job_log (<include refid="insertColumns"/>) values (
+    #{taskname},
+    #{startetime},
+    #{endtime},
+    #{intervaltime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.QuartzJobLog">
+    update quartz_job_log
+    <set>
+      <if test="taskname != null">
+        TaskName = #{taskname},
+      </if>
+      <if test="startetime != null">
+        StarteTime = #{startetime},
+      </if>
+      <if test="endtime != null">
+        EndTime = #{endtime},
+      </if>
+      <if test="intervaltime != null">
+        IntervalTime = #{intervaltime},
+      </if>
+    </set>
+    where Id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete quartz_job_log where Id = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from quartz_job_log
+	<where>
+	  <if test="taskname != null">
+        and TaskName = #{taskname}
+	  </if>
+	  <if test="startetime != null">
+        and StarteTime = #{startetime}
+	  </if>
+	  <if test="endtime != null">
+        and EndTime = #{endtime}
+	  </if>
+	  <if test="intervaltime != null">
+        and IntervalTime = #{intervaltime}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY Id) rnk FROM (
+      select <include refid="columns"/> from quartz_job_log
+      <where>
+        <if test="taskname != null">
+          and TaskName = #{taskname}
+        </if>
+        <if test="startetime != null">
+          and StarteTime = #{startetime}
+        </if>
+        <if test="endtime != null">
+          and EndTime = #{endtime}
+        </if>
+        <if test="intervaltime != null">
+          and IntervalTime = #{intervaltime}
+        </if>
+      </where>
+       <![CDATA[
+    	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+       ]]>
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from quartz_job_log
+    <where>
+      <if test="taskname != null">
+        and TaskName = #{taskname}
+      </if>
+      <if test="startetime != null">
+        and StarteTime = #{startetime}
+      </if>
+      <if test="endtime != null">
+        and EndTime = #{endtime}
+      </if>
+      <if test="intervaltime != null">
+        and IntervalTime = #{intervaltime}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from quartz_job_log
+	where Id = #{_parameter}
+  </select>
+
+</mapper>

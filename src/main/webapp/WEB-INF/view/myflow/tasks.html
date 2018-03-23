@@ -1,0 +1,42 @@
+<#assign title="我的任务">
+<#include "/common/head.ftl">
+<script type="text/javascript">
+$(function() {
+ 	$('.handle').click(handle);
+});
+
+function handle(){
+	var pp = $('#tt').tabs('getSelected');
+	var tabId = pp.attr("id");
+	var taskId = $(this).attr('tid');
+	initStartForm('processform', tabId, 'myflow/task/' + taskId + '.json', "myflow/complete/" + taskId + ".json", "tasks");
+}
+</script>
+<div>
+<div style="float:left;">
+	<table>
+  <tr>
+	<th>ID</th>
+	<th>Name</th>
+	<th>Key</th>
+	<th>Category</th>
+	<th></th>
+  </tr>
+<#list tasks as f>
+  <tr id="tasklist">
+	<td>${f.id}</td>
+	<td>${f.name}</td>
+	<td>${f.taskDefinitionKey}</td>
+	<td>${f.category!""}</td>
+	<td><a class="handle" onclick="addAttachmentDiv();" href="javascript:void(0)" tkey='${f.taskDefinitionKey}' tname='${f.name}' tid='${f.id}'>处理</a>
+		<a class="handle" href="javascript:void(0)" tkey='${f.taskDefinitionKey}' tname='${f.name}' tid='${f.id}'>流程详情</a>
+	</td>
+  </tr>
+</#list>
+</table>
+</div>
+<div id="processform" style="float:left;margin-left:20px;padding:30px;display:none;border:1px solid black;">
+  
+</div>
+</div>
+<#include "/common/foot.ftl">

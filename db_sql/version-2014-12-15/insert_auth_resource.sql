@@ -1,0 +1,1 @@
+INSERT INTO auth_resource (id, pid, type, name, code, index_, action, url, icon, status, remark, create_by, create_time, update_by, update_time) VALUES ('31', '5', '1', '流程相关配置管理', '', '1', '', 'processConf/confProcess.html', 'icon-joinprocess', '0', NULL, 'ali', '2014-12-11 14:14:42.000', 'ali', '2014-12-11 14:14:56.000');

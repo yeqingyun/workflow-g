@@ -1,0 +1,1943 @@
+<#include "/common/head.html">
+
+
+<#assign reqChannels=""/>
+<#assign time=""/>
+<#assign time2=""/>
+<#assign time3=""/>
+<#assign deadRelation=""/>
+<#assign staffNumber=""/>
+<#assign staffName=""/>
+<#assign deadName=""/>
+<#assign rewardAndPenaltyDesc=""/>
+<#assign applyUserAccount=""/>
+<#assign hrDepa=""/>
+<#assign maxManage=""/>
+<#assign depaHead=""/>
+<#assign isManager=""/>
+
+<#if processSteps??>   
+<table class="formtable" cellspacing="1" cellpadding="0">
+<!-- 展示表单 -->
+	<#list processSteps as steps> 
+	
+	
+	<#if steps.key == 'startevent1'>
+	<tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >福利申请表</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >员工编号：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["applyUserAccount"])!""}</td>
+		<td class="formtable_td_key">姓名：</td>
+		<td class="formtable_td_value"colspan="7">${(steps.vars["userName"])!""}</td>
+	</tr>
+
+	<tr>
+		
+		<td class="formtable_td_key">部门：</td>
+		<td class="formtable_td_value"colspan="3">${(steps.vars["orgName"])!""}</td>
+		<td class="formtable_td_key">岗位：</td>
+		<td class="formtable_td_value"colspan="7">${(steps.vars["duty"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">申请人：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["applyUserName"])!""}</td>
+		<td class="formtable_td_key">申请时间：</td>
+		<td class="formtable_td_value" colspan="7">${(steps.vars["applyDate"])!""}</td>
+	</tr>
+	<tr id="tr${rand}">
+	   <td class="formtable_td_key">申请事项：</td>
+	   <#if steps.vars["reqChannels"] == '1'>
+		<td class="formtable_td_value" > 新婚贺仪</td>
+		 <td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>
+		 <#if steps.vars["deadRelation"] == '1'>
+		  <td class="formtable_td_value" > 是</td>
+		  <!-- <#assign staffNumber=steps.vars["staffNumber"]/>
+		    <#assign staffName=steps.vars["staffName"]/> -->
+		 <td class="formtable_td_key"> 员工编号</td>
+		 <td class="formtable_td_value">${(steps.vars["staffNumber"])!""}</td>
+		 <td class="formtable_td_key"> 员工姓名</td>
+		 <td class="formtable_td_value">${(steps.vars["staffName"])!""}</td> 
+		 <td class="formtable_td_key"> 领证日期</td>
+		<td class="formtable_td_value">${(steps.vars["startRecruitTime"])!""}</td>
+		 </#if>
+		  <#if steps.vars["deadRelation"] == '2'>
+		  <td class="formtable_td_value">否</td>
+		  <td class="formtable_td_key"> 领证日期</td>
+		 <td class="formtable_td_value" colspan="5">${(steps.vars["startRecruitTime"])!""}</td>
+		 </#if>
+		</#if>
+		 <#if steps.vars["reqChannels"] == '2'>
+		   <td class="formtable_td_value" > 生育贺仪</td>
+		   <td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>
+			 <#if steps.vars["deadRelation"] == '1'>
+			  <td class="formtable_td_value" > 是</td>
+	          <td class="formtable_td_key"> 员工编号</td>
+			  <td class="formtable_td_value">${(steps.vars["staffNumber"])!""}</td>
+			  <td class="formtable_td_key"> 员工姓名</td>
+			  <td class="formtable_td_value">${(steps.vars["staffName"])!""}</td> 
+              <td class="formtable_td_key"> 子女出生日期</td>
+		      <td class="formtable_td_value">${(steps.vars["startRecruitTime2"])!""}</td>
+			   </#if>
+			  <#if steps.vars["deadRelation"] == '2'>
+			  <td class="formtable_td_value" >否</td>
+			  <td class="formtable_td_key"> 子女出生日期</td>
+		      <td class="formtable_td_value" colspan="5">${(steps.vars["startRecruitTime2"])!""}</td>
+			 </#if>
+		 </#if>
+		  <#if steps.vars["reqChannels"] == '3'>
+		  <td class="formtable_td_value" >奠仪</td>
+		   <td class="formtable_td_key">与逝者的关系：</td>
+		     <td class="formtable_td_value" > 
+		        <#if steps.vars["deadRelation"]== '1'>配偶</#if>
+		        <#if steps.vars["deadRelation"]== '2'>子女</#if>
+		        <#if steps.vars["deadRelation"]== '3'>父亲</#if>
+		        <#if steps.vars["deadRelation"]== '4'>母亲</#if>
+		        <#if steps.vars["deadRelation"]== '5'>配偶父亲</#if>
+		        <#if steps.vars["deadRelation"]== '6'>配偶母亲</#if>
+		     </td>
+		     <td class="formtable_td_key"> 逝者的姓名</td>
+		     <td class="formtable_td_value" >${(steps.vars["deadName"])!""}</td>
+		     <td class="formtable_td_key"> 过逝日期</td>
+		     <td class="formtable_td_value" colspan="3">${(steps.vars["startRecruitTime3"])!""}</td>
+		  </#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">事项简述：</td>
+		<td class="formtable_td_value" colspan="10">${(steps.vars["rewardAndPenaltyDesc"])!""}</td>
+	</tr>
+		<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="10">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if> 
+			<script type="text/javascript">
+			 /* $(function(){
+				 if("${time}"){
+					 var tr='<tr id="staff${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 领证日期</td>'
+					 +'<td class="formtable_td_value" colspan="6">'+"${time}"+'</td>'+'</tr>';
+					 if ($('#staff${rand}-tr2').length <= 0) {
+			         		$("#tr${rand}").after(tr);
+			         } 
+				 }
+				 if("${time2}"){
+					 var tr='<tr id="staff${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 子女出生日期</td>'
+					 +'<td class="formtable_td_value" colspan="6">'+"${time2}"+'</td>'+'</tr>';
+					 if ($('#staff${rand}-tr2').length <= 0) {
+			         		$("#tr${rand}").after(tr);
+			         } 
+				 }
+				 if("${time3}"){
+					 var tr='<tr id="staff${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 逝者的姓名</td>'
+				     +'<td class="formtable_td_value" colspan="3">'+"${deadName}"+'</td>'
+					 +'<td class="formtable_td_key"> 过逝日期</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${time3}"+'</td>'+'</tr>';
+					 if ($('#staff${rand}-tr2').length <= 0) {
+			         		$("#tr${rand}").after(tr);
+			         } 
+				 }
+				 if("${staffNumber}"){
+					 var tr='<tr id="staff${rand}-tr">'
+				     +'<td class="formtable_td_key"> 员工编号</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${staffNumber}"+'</td>'
+					 +'<td class="formtable_td_key"> 员工姓名</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${staffName}"+'</td>'+
+					 '</tr>';
+					 if ($('#staff${rand}-tr').length <= 0) {
+			         		$("#tr${rand}").after(tr);
+			         } 
+				 }
+			 }) */
+          </script>
+	</#if>
+	
+	
+	<!-- 修改表单 -->
+		<#if steps.key == 'nmb_updateWelfareTask'>
+		
+	<tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >福利修改申请表</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">员工编号：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["applyUserAccount"])!""}</td>
+		<td class="formtable_td_key">姓名：</td>
+		<td class="formtable_td_value"colspan="7">${(steps.vars["updateUserName"])!""}</td>
+	</tr>
+
+	<tr>
+		
+		<td class="formtable_td_key">部门：</td>
+		<td class="formtable_td_value"colspan="3">${(steps.vars["updateOrgName"])!""}</td>
+		<td class="formtable_td_key">岗位：</td>
+		<td class="formtable_td_value"colspan="7">${(steps.vars["updateDuty"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">申请人：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["applyUserName"])!""}</td>
+		<td class="formtable_td_key">申请时间：</td>
+		<td class="formtable_td_value" colspan="7">${(steps.vars["applyDate"])!""}</td>
+	</tr>
+	<tr id="tr2${rand}">
+	   <td class="formtable_td_key">申请事项：</td>
+	   <#if steps.vars["reqChannels"] == '1'>
+		<td class="formtable_td_value" > 新婚贺仪</td>
+		 <td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>
+		 <#assign time=steps.vars["startRecruitTime"]/>
+		 <#if steps.vars["deadRelation"] == '1'>
+		  <td class="formtable_td_value" > 是</td>
+             <td class="formtable_td_key"> 员工编号</td>
+			 <td class="formtable_td_value">${(steps.vars["staffNumber"])!""}</td>
+			 <td class="formtable_td_key"> 员工姓名</td>
+			 <td class="formtable_td_value" >${(steps.vars["staffName"])!""}</td>
+			 <td class="formtable_td_key"> 领证日期</td>
+		    <td class="formtable_td_value" >${(steps.vars["startRecruitTime"])!""}</td>
+		 </#if>
+		  <#if steps.vars["deadRelation"] == '2'>
+		  <td class="formtable_td_value" >否</td>
+		   <td class="formtable_td_key"> 领证日期</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["startRecruitTime"])!""}</td>
+		 </#if>
+		  
+		 <!-- <td class="formtable_td_key"> 领证日期</td>
+		 <td class="formtable_td_value">${(steps.vars["startRecruitTime2"])!""}</td> -->
+		</#if>
+		 <#if steps.vars["reqChannels"] == '2'>
+		   <td class="formtable_td_value" > 生育贺仪</td>
+		   <td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>
+			 <#if steps.vars["deadRelation"] == '1'>
+			  <td class="formtable_td_value" > 是</td>
+			        <td class="formtable_td_key"> 员工编号</td>
+					<td class="formtable_td_value">${(steps.vars["staffNumber"])!""}</td>
+					<td class="formtable_td_key"> 员工姓名</td>
+					<td class="formtable_td_value" >${(steps.vars["staffName"])!""}</td>
+					<td class="formtable_td_key">子女出生日期</td>
+		      <td class="formtable_td_value" >${(steps.vars["startRecruitTime2"])!""}</td>
+			   </#if>
+			  <#if steps.vars["deadRelation"] == '2'>
+			  <td class="formtable_td_value" >否</td>
+			  <td class="formtable_td_key">子女出生日期</td>
+		      <td class="formtable_td_value" colspan="5">${(steps.vars["startRecruitTime2"])!""}</td>
+			 </#if>
+			 
+		 </#if>
+		  <#if steps.vars["reqChannels"] == '3'>
+		  <td class="formtable_td_value" >奠仪</td>
+		   <td class="formtable_td_key">与逝者的关系：</td>
+		     <td class="formtable_td_value" > 
+		        <#if steps.vars["deadRelation"]== '1'>配偶</#if>
+		        <#if steps.vars["deadRelation"]== '2'>子女</#if>
+		        <#if steps.vars["deadRelation"]== '3'>父亲</#if>
+		        <#if steps.vars["deadRelation"]== '4'>母亲</#if>
+		        <#if steps.vars["deadRelation"]== '5'>配偶父亲</#if>
+		        <#if steps.vars["deadRelation"]== '6'>配偶母亲</#if>
+		     </td>
+		     <td class="formtable_td_key"> 逝者的姓名</td>
+		     <td class="formtable_td_value" >${(steps.vars["deadName"])!""}</td>
+		     <td class="formtable_td_key"> 过逝日期</td>
+		     <td class="formtable_td_value" colspan="3">${(steps.vars["startRecruitTime3"])!""}</td>
+		  </#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">事项简述2：</td>
+		<td class="formtable_td_value" colspan="10">${(steps.vars["updateRewardAndPenaltyDesc"])!""}</td>
+	</tr>
+	
+		<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="10">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if> 
+	        <script type="text/javascript">
+	      /*   $(function(){
+				 if("${time}"){
+					 var tr='<tr id="time${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 领证日期</td>'
+					 +'<td class="formtable_td_value" colspan="6">'+"${time}"+'</td>'+'</tr>';
+					 if ($('#time${rand}-tr2').length <= 0) {
+			         		$("#tr2${rand}").after(tr);
+			         } 
+				 }
+				 if("${time2}"){
+					 var tr='<tr id="time2${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 子女出生日期</td>'
+					 +'<td class="formtable_td_value" colspan="6">'+"${time2}"+'</td>'+'</tr>';
+					 $.messager.alert('提示',$('#time2${rand}-tr2').length)
+					 if ($('#time2${rand}-tr2').length <= 0) {
+						 $.messager.alert('提示2',tr)
+			         		$("#tr2${rand}").after(tr);
+			         	$.messager.alert('提示',$("#tr${rand}").text())
+			         } 
+				 }
+				 if("${time3}"){
+					 var tr='<tr id="time3${rand}-tr2">'
+					 +'<td class="formtable_td_key"> 逝者的姓名</td>'
+				     +'<td class="formtable_td_value" colspan="3">'+"${deadName}"+'</td>'
+					 +'<td class="formtable_td_key"> 过逝日期</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${time3}"+'</td>'+'</tr>';
+					 $("#time${rand}-tr2").remove();
+					 $("#time2${rand}-tr2").remove();
+					 if ($('#time3${rand}-tr2').length <= 0) {
+			         		$("#tr2${rand}").after(tr);
+			         } 
+				 }
+				 if("${staffNumber}"){
+					 var tr='<tr id="staff${rand}-tr">'
+				     +'<td class="formtable_td_key"> 员工编号</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${staffNumber}"+'</td>'
+					 +'<td class="formtable_td_key"> 员工姓名</td>'
+					 +'<td class="formtable_td_value" colspan="3">'+"${staffName}"+'</td>'+
+					 '</tr>';
+					 if ($('#staff${rand}-tr').length <= 0) {
+			         		$("#tr2${rand}").after(tr);
+			         } 
+				 }
+			 }) */
+           </script>
+	</#if>
+	<!-- 流程发起人确认流程是否结束 -->
+	<#if steps.key == 'confirmProcessEndTask'> <#if
+	steps.vars["confirmProcessEndAudi"] == '1'>
+	<tr>
+		<td class="formtable_td_key" rowspan="3">发起人确认流程是否结束</td>
+		<td class="formtable_td_key">是否结束该流程：</td>
+		<td class="formtable_td_value" colspan="4"><#if
+			steps.vars["confirmProcessEndAudi"] == '1'> 是 </#if> <#if
+			steps.vars["confirmProcessEndAudi"] == '0'> 否 </#if></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认意见：</td>
+		<td class="formtable_td_value" colspan="4"><textarea
+				class="easyui-validatebox"
+				style="font-size: 12px; width: 660px; height: 50px;"
+				readonly="readonly" disabled="disabled">${(steps.vars["applyUserAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发起人签字：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["applyUserName"])!""}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["applyUserAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">${attachs.name}_${attachs.revision}.0
+		</a><br /> </#list>
+		</td>
+	</tr>
+	</#if> </#if> </#if> 
+	<!-- 部门主管审核 -->
+<#if steps.key == 'mb_deptSupervisorTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key" >部门主管审核：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["deptSupervisorName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value" colspan="7">${(steps.vars["deptSupervisorAudiTime"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["deptSupervisorAudi"] == '0' >
+	<td class="formtable_td_value" colspan="10">同意</td> </#if> <#if
+	steps.vars["deptSupervisorAudi"] == '1' >
+	<td class="formtable_td_value" colspan="10">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="10">${(steps.vars["deptSupervisorAudiAdvice"])!""}</td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="10"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+    
+    
+    	<!-- 部门负责人审核 -->
+<#if steps.key == 'mb_deptManagerTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key" >部门负责人审核：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["deptManagerName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value" colspan="7">${(steps.vars["deptManagerAudiTime"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["deptManagerAudi"] == '0' >
+	<td class="formtable_td_value" colspan="10">同意</td> </#if> <#if
+	steps.vars["deptManagerAudi"] == '1' >
+	<td class="formtable_td_value" colspan="10">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="10">${(steps.vars["deptManagerAudiAdvice"])!""}</td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="10"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+	           
+	           
+<!-- 人力员工关系专员-->
+<#if steps.key == 'mb_hrStaffTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key" >人力员工关系专员：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["hrStaffName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value" colspan="7">${(steps.vars["hrStaffAudiTime"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["hrStaffAudi"] == '0' >
+	<td class="formtable_td_value" colspan="10">同意</td> </#if> <#if
+	steps.vars["hrStaffAudi"] == '1' >
+	<td class="formtable_td_value" colspan="10">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="10">${(steps.vars["hrStaffAudiAdvice"])!""}</td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="10"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>         
+
+
+	       	<!-- 人力资源总监 -->
+<#if steps.key == 'mb_hrManagerTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="10"
+			class="formtable_td_key" >${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key" >人力资源总监：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["hrManagerName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value" colspan="7">${(steps.vars["hrManagerAudiTime"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["hrManagerAudi"] == '0' >
+	<td class="formtable_td_value" colspan="10">同意</td> </#if> <#if
+	steps.vars["hrManagerAudi"] == '1' >
+	<td class="formtable_td_value" colspan="10">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="10">${(steps.vars["hrManagerAudiAdvice"])!""}</td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="10"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>  
+</#list>
+</table>
+</#if>
+
+
+
+
+
+<!-- 表单开始 -->
+<#if currentStep?exists> <#if currentStep == 'startevent1'>
+<div id="start">
+	<form id="startForm" method="post" enctype='multipart/form-data'>
+		<table id="startFormTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+				<td class="formtable_td_key">员工编号：</td>
+				<td class="formtable_td_value">
+				<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+				<input id="account${rand}" type="hidden" name="fp_applyUserId"  value="${appuser.account}"/>
+		         <input id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox"    type="text"  data-options="required:true" onblur="loadUserInfo()" value="${appuser.account}"/>
+		         </td>
+				<td class="formtable_td_key">姓名：</td>
+				<td class="formtable_td_value"><input id="userName${rand}"
+					class="easyui-validatebox" readonly="readonly" required="required"
+					type="text" name="fp_userName" /></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">部门：</td>
+				<td class="formtable_td_value"><input id="orgName${rand}"
+					class="easyui-validatebox" required="required" type="text"
+					name="fp_orgName" /></td>
+				<td class="formtable_td_key">岗位：</td>
+				<td class="formtable_td_value"><input id="job${rand}"
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_duty" />
+					<input id="hrDepa${rand}" type="hidden" name="fp_hrDepa">
+					<input id="maxManage${rand}" type="hidden" name="fp_maxManage" value="">
+					<input id="depaHead${rand}" type="hidden" name="fp_depaHead" value="">
+					<input id="isManager${rand}" type="hidden" name="fp_isManager" value="">
+					</td>
+			</tr>
+			<tr id="recruitmentChannels${rand}">
+				<td class="formtable_td_key">申请事项：</td>
+				  	<td  class="formtable_td_value" colspan="3">
+				  		<input type="radio"  name="fp_reqChannels" value="1" id="fp_reqChannels" />新婚贺仪
+				  		<font color="red"> (需要上传结婚证明) </font>
+				  		<input type="radio" name="fp_reqChannels" value="2" id="fp_reqChannels2" />生育贺仪
+				  		<font color="red"> (需要上传结婚证明,生育登记证明,出生证明) </font>
+				  		<input type="radio" name="fp_reqChannels" value="3" id="fp_reqChannels3"/>奠仪
+				  	    <font color="red"> (至少勾选一个) </font>
+	                    <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+				  	</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">事项简述：</td>
+				<td class="formtable_td_value" colspan="6"><textarea
+						name="fp_rewardAndPenaltyDesc" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 150px;"
+						data-options="required:true"></textarea></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_applyUserName" value="${appuser.name}" />
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+	function loadUserInfo() {
+		//界面通过接口加载个人信息
+		$.post("hrFlow/getHrUserInfoById.json", {
+			account : $("#curUserId${rand}").val() 
+		}, function(data) {
+			if (data.success) {
+				$("#userName${rand}").val(data.obj[0].name);//姓名
+				$("#job${rand}").val(data.obj[0].job);//职位
+				$("#education${rand}").val(data.obj[0].education);//学历
+				$("#major${rand}").val(data.obj[0].major);//专业
+				$("#gender${rand}").val(data.obj[0].sex);//性别
+				$("#age${rand}").val(data.obj[0].age);//年龄
+				$("#school${rand}").val(data.obj[0].school);//毕业学校
+				$("#email${rand}").val(data.obj[0].email);//邮箱
+				$("#entryTime${rand}").val(data.obj[0].entryDate);//入职日期
+				$("#orgName${rand}").val(data.obj[0].orgName);//部门
+				$("#telephone${rand}").val(data.obj[0].tel);//电话
+				$('#processName${rand}').val(
+						"[" + $("#curUserId${rand}").val() + ","
+								+data.obj[0].orgName+ ","+data.obj[0].job+ "," +"${.now?string('yyyy-MM-dd HH:mm:ss')}"+ "," + data.obj[0].name + "]");//流程实例名称
+			}
+		});
+		
+		$.post("lead/isHrDepa.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				if(data.msg=="总监"){
+					$("#hrDepa${rand}").val("3");
+				}else{
+					$("#hrDepa${rand}").val("1");
+				}
+			}else{
+				$("#hrDepa${rand}").val("2");
+			}
+		});
+		
+		 $.post("lead/maxManage.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				$("#maxManage${rand}").val(data.msg);
+			}
+		}); 
+		 
+		 $.post("lead/depaHead.json", {
+				account : $("#curUserId${rand}").val()  
+			}, function(data) {
+				if (data.success) {
+					$("#depaHead${rand}").val("0");
+				}else{
+					$("#depaHead${rand}").val("1");
+				}
+			});
+		 
+		 $.post("lead/isManager.json", {
+				account : $("#curUserId${rand}").val()  
+			}, function(data) {
+				if (data.success) {
+					if(data.msg=="2"){
+						$("#isManager${rand}").val("1");
+					}else{
+						$("#isManager${rand}").val("2");
+					}
+				}else{
+					$("#isManager${rand}").val("3");
+				}
+			});
+		
+		if($("input[name=fp_reqChannels]").get(0).checked){
+			$("#reqChannels${rand}-1st2").remove(); 
+			$("input[name=fp_reqChannels]").get(0).checked=false;
+		}else if($("input[name=fp_reqChannels]").get(1).checked){
+			$("#reqChannels${rand}-tr").remove(); 
+			$("input[name=fp_reqChannels]").get(1).checked=false;
+		}else if($("input[name=fp_reqChannels]").get(2).checked){
+			$("#reqChannels${rand}-1st").remove(); 
+       	    $("#reqChannels${rand}-2st").remove(); 
+       	 $("input[name=fp_reqChannels]").get(2).checked=false;
+		}
+		 $("#moduleName${rand}").val("")
+	}
+	
+	//界面通过接口加载个人信息
+	$.post("hrFlow/getHrUserInfoById.json", {
+		account : $("#account${rand}").val()
+	}, function(data) {
+		if (data.success) {
+			$("#userName${rand}").val(data.obj[0].name);//姓名
+			$("#job${rand}").val(data.obj[0].job);//职位
+			$("#education${rand}").val(data.obj[0].education);//学历
+			$("#major${rand}").val(data.obj[0].major);//专业
+			$("#gender${rand}").val(data.obj[0].sex);//性别
+			$("#age${rand}").val(data.obj[0].age);//年龄
+			$("#school${rand}").val(data.obj[0].school);//毕业学校
+			$("#email${rand}").val(data.obj[0].email);//邮箱
+			$("#entryTime${rand}").val(data.obj[0].entryDate);//入职日期
+			$("#orgName${rand}").val(data.obj[0].orgName);//部门
+			$("#telephone${rand}").val(data.obj[0].tel);//电话
+			$('#processName${rand}').val(
+						"[" + $("#curUserId${rand}").val() + ","
+								+data.obj[0].orgName+ ","+data.obj[0].job+ "," +"${.now?string('yyyy-MM-dd HH:mm:ss')}"+ "," + data.obj[0].name + "]");//流程实例名称
+		}
+	});
+	$.post("lead/isHrDepa.json", {
+		account : $("#curUserId${rand}").val()
+	}, function(data) {
+		if (data.success) {
+			if(data.msg=="总监"){
+				$("#hrDepa${rand}").val("3");
+			}else{
+				$("#hrDepa${rand}").val("1");
+			}
+		}else{
+			$("#hrDepa${rand}").val("2");
+		}
+	});
+	 //获取最高领导人
+	$.post("lead/maxManage.json", {
+		account : $("#curUserId${rand}").val()  
+	}, function(data) {
+		if (data.success) {
+			$("#maxManage${rand}").val(data.msg);
+		}
+	}); 
+	 
+	 $.post("lead/depaHead.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				$("#depaHead${rand}").val("0");
+			}else{
+				$("#depaHead${rand}").val("1");
+			}
+	});
+	 
+	 $.post("lead/isManager.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				if(data.msg=="2"){
+					$("#isManager${rand}").val("1");
+				}else{
+					$("#isManager${rand}").val("2");
+				}
+			}else{
+				$("#isManager${rand}").val("3");
+			}
+		});
+    var result;
+   
+    $("input[name='fp_reqChannels']").bind("click",function(){ 
+    	document.getElementById("moduleName${rand}").value = "";
+    	var str="";
+    	  $("input[name='fp_reqChannels']").each(function(){ 
+                if($(this).prop("checked")){
+                    str += $(this).val()+",";
+                    document.getElementById("moduleName${rand}").value = str;
+                }
+            })
+        //测试操作代码 
+         var $selectedvalue = $(this).val(); 
+    	  if($selectedvalue!=3){
+              //界面通过接口加载个人信息
+            	$.post("welfare/weddingIsRepeat.json", {
+            		account : $("#curUserId${rand}").val(),
+            		number:$selectedvalue
+            	}, function(data) {
+            		if(data.success){
+            			 $.messager.alert('提示',data.msg);
+            			if($("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked){
+            				$("#reqChannels${rand}-1st2").remove(); 
+            				$("#reqChannels${rand}-1st").remove(); 
+                     	    $("#reqChannels${rand}-2st").remove(); 
+                     	    $("#reqChannels${rand}-tr").remove(); 
+            				$("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked=false;
+            			}else if($("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked){
+            				$("#reqChannels${rand}-1st2").remove(); 
+            				$("#reqChannels${rand}-1st").remove(); 
+                     	    $("#reqChannels${rand}-2st").remove(); 
+                     	    $("#reqChannels${rand}-tr").remove(); 
+            				$("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked=false;
+            			}
+            			 if(document.getElementById('fp_reqChannels3').checked==false){
+                      	 $("#reqChannels${rand}-1st").remove(); 
+                      	 $("#reqChannels${rand}-2st").remove(); 
+                     } 
+            		}else{ 
+            			loaddata($selectedvalue);
+            		} 
+            		
+            	}); 
+          }
+        if ($selectedvalue == 3 && document.getElementById('fp_reqChannels3').checked) {
+        	loadFuneral();
+         }
+    });
+    function loaddata($selectedvalue){
+       if($selectedvalue == 1 && document.getElementById('fp_reqChannels').checked){
+    	   var processName= $("#processName${rand}").val();
+         	if($("#reqChannels${rand}-1st3").text()){
+           		 $("#reqChannels${rand}-1st3").remove();
+           	 }
+         	 if(processName.indexOf("--")!=-1){
+         		$("#processName${rand}").val(processName.split("--")[0])
+          	} 
+         	$("#deadName${rand}").val("");
+         	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:新婚贺仪]"); 
+         	var trObj = '<tr id="reqChannels${rand}-1st2">'
+         	    +'<td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>'
+         	    +'<td class="formtable_td_value">'
+         	    +'<input  type="radio"  name="fp_deadRelation" value="1"  onclick="loadContent();"/>是'
+         	    +'<input type="radio"  name="fp_deadRelation" value="2"  onclick="clearContent();"/>否'
+         	    +'<font color="red"> (至少勾选一个) </font>'
+   	  	        +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>'
+         	    +'<td class="formtable_td_key">领证日期：</td>'
+         	    +'<td class="formtable_td_value" colspan="3">'
+         	    +'<input id="getMarriedData" class="easyui-my97" type="text"   readonly="readonly" name="fp_startRecruitTime" onblur="loadMarriedData()"/>'
+         	    +'(<span style="color: red">日期必须在6个月之内</span>)</td>'+'</tr>';
+         	    if ($('#reqChannels${rand}-1st2').length <= 0) {
+         	    	$("#recruitmentChannels${rand}").after(trObj);
+ 	  			    $('#getMarriedData').my97({
+ 		            	minDate:'%y-{%M-6}-{%d}',
+ 		            	maxDate:'%y-%M-{%d}',
+ 		            	required:true
+ 		         }); 
+         	 }
+         	  if(document.getElementById('fp_reqChannels3').checked==false){
+                	 $("#reqChannels${rand}-1st").remove(); 
+                	 $("#reqChannels${rand}-2st").remove(); 
+               } 
+         	  if(document.getElementById('fp_reqChannels2').checked==false){
+               	 $("#reqChannels${rand}-tr").remove(); 
+              }
+         	  
+         	 $.parser.parse('#reqChannels${rand}-1st2');
+         }else if($selectedvalue == 2 && document.getElementById('fp_reqChannels2').checked){
+         	if($("#reqChannels${rand}-1st3").text()){
+        		 $("#reqChannels${rand}-1st3").remove();
+        	 }
+         	$("#deadName${rand}").val("");
+         	 var processName= $("#processName${rand}").val();
+         	 if(processName.indexOf("--")!=-1){
+          		$("#processName${rand}").val(processName.split("--")[0])
+          	} 
+         	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:生育贺仪]"); 
+         	var trObj = '<tr id="reqChannels${rand}-tr">'
+         	    +'<td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>'
+         	    +'<td class="formtable_td_value">'
+         	    +'<input  type="radio"  name="fp_deadRelation" value="1"  onclick="loadContent();"/>是'
+         	    +'<input type="radio"  name="fp_deadRelation" value="2"  onclick="clearContent();"/>否'
+         	    +'<font color="red"> (至少勾选一个) </font>'
+  	  	        +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>'
+         	    +'<td class="formtable_td_key">子女出生日期：</td>'
+         	    +'<td class="formtable_td_value" colspan="3">'
+         	    +'<input id="birthData" class="easyui-my97" type="text"   readonly="readonly" name="fp_startRecruitTime2" onchange="loadBirthData(this)"/>'
+         	    +'(<span style="color: red">日期必须在6个月之内</span>)</td>'+'</tr>';
+         	    if ($('#reqChannels${rand}-tr').length <= 0) {
+         	    	$("#recruitmentChannels${rand}").after(trObj);
+ 	  			    $('#birthData').my97({
+ 		            	minDate:'%y-{%M-6}-{%d}',
+ 		            	maxDate:'%y-%M-{%d}',
+ 		            	required:true
+ 		         }); 
+         	 }
+         	 /*   $.parser.parse('#reqChannels${rand}-1st2'); */
+         	  if(document.getElementById('fp_reqChannels3').checked==false){
+                	 $("#reqChannels${rand}-1st").remove(); 
+                	 $("#reqChannels${rand}-2st").remove(); 
+               }
+         	  if(document.getElementById('fp_reqChannels').checked==false){
+              	 $("#reqChannels${rand}-1st2").remove(); 
+              } 
+         	 $.parser.parse('#reqChannels${rand}-tr');
+         	
+         }  
+    }
+    function loadContent(){
+    	
+    	 var trObj = '<tr id="reqChannels${rand}-1st3">'
+     	    +'<td class="formtable_td_key">员工编号：</td>'
+     	    +'<td class="formtable_td_value">'
+     		+'<input id="staffNumber${rand}"  class="easyui-validatebox" maxLength="8" type="text"  name="fp_staffNumber" onchange="loadName()"/>'
+     		+'<td class="formtable_td_key">员工姓名：</td>'
+      	    +'<td class="formtable_td_value">'
+      		+'<input id="staffName${rand}" class="easyui-validatebox"  type="text" name="fp_staffName" />';
+      	  if ($('#reqChannels${rand}-1st3').length <= 0) {
+      		 if($("#reqChannels${rand}-1st2").text()){
+      			$("#reqChannels${rand}-1st2").after(trObj);
+      		 }else{
+      			$("#reqChannels${rand}-tr").after(trObj);
+      		 }
+      		
+      		$("#staffName${rand}").validatebox({
+      			required:true
+      		})
+      		$("#staffNumber${rand}").validatebox({
+      			required:true
+      		})
+      	  }
+    }
+       
+    function loadName() {
+    	$("#deadName${rand}").val("可以");
+    	var processName=$("#processName${rand}").val();
+    	if(processName.indexOf('---')!=-1){
+    		$("#processName${rand}").val(processName.split('---')[0])
+    	}
+    	if($("#staffNumber${rand}").val()==$("#curUserId${rand}").val()){
+    		$.messager.alert('提示','配偶不能是自己');
+    	}else if(isNaN(new Number($("#staffNumber${rand}").val()))){
+    		$("#staffNumber${rand}").val("")
+    		$("#staffName${rand}").val("")
+    		$.messager.alert('提示','请输入数字');
+    	}
+    	else{
+			//界面通过接口加载姓名
+			$.post("hrFlow/getHrUserInfoById.json", {
+				account : $("#staffNumber${rand}").val()
+			}, function(data) {
+				if (data.success) {
+					$("#staffName${rand}").val(data.obj[0].name);//姓名
+					$("#processName${rand}").val($("#processName${rand}").val()+'---'+"[配偶是否为金铭/金卓在职人员：是,员工编号:"+$("#staffNumber${rand}").val()+",员工姓名:"+data.obj[0].name+"]");
+				}
+			});
+    	}
+    	
+	}
+    function clearContent(){
+    	$("#deadName${rand}").val("可以");
+    	var processName=$("#processName${rand}").val();
+    	if(processName.indexOf('---')!=-1){
+    		$("#processName${rand}").val(processName.split('---')[0])
+    	}
+    	$("#processName${rand}").val($("#processName${rand}").val()+'---'+"[配偶是否为金铭/金卓在职人员：否]");
+    	if($("#reqChannels${rand}-1st3").text()){
+      		 $("#reqChannels${rand}-1st3").remove();
+      	 }
+    	
+    }
+   /*  function loadCheck($selectedvalue){
+    	//界面通过接口加载个人信息
+    	if($selectedvalue=="1"){
+    		isCanApply($selectedvalue,$("#getMarriedData"));
+    	}else{
+    		isCanApply($selectedvalue,$("#birthData"));
+    	}
+    }
+    function isCanApply($selectedvalue,birthData){
+    	$.post("welfare/weddingIsRepeat.json", {
+      		account : $("#curUserId${rand}").val(),
+      		number:$selectedvalue,
+      		date:birthData.val()
+      	}, function(data) {
+      		if(data.success){
+      			 $.messager.alert('提示',data.msg);
+      			 birthData.val("")
+      		}
+      	});
+    } */
+    function loadFuneral(){
+    	$("#deadName${rand}").val("");
+    	 var processName= $("#processName${rand}").val();
+    	  if(processName.indexOf("--")!=-1){
+     		$("#processName${rand}").val(processName.split("--")[0])
+     	} 
+    	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:祭奠]");
+    	var trObj = '<tr id="reqChannels${rand}-1st">'
+     	    +'<td class="formtable_td_key">与逝者的关系：</td>'
+     	    +'<td class="formtable_td_value">'
+     	    +'<input type="radio"  name="fp_deadRelation" value="1"  onclick="loadDeadRelation(this)"/>配偶'
+     	    +'<input type="radio"  name="fp_deadRelation" value="2" onclick="loadDeadRelation(this)"/>子女'
+     	    +'<input type="radio"  name="fp_deadRelation" value="3" onclick="loadDeadRelation(this)"/>父亲'
+     	    +'<input type="radio"  name="fp_deadRelation" value="4" onclick="loadDeadRelation(this)"/>母亲'
+     	    +'<input type="radio"  name="fp_deadRelation" value="5" onclick="loadDeadRelation(this)"/>配偶父亲'
+     	    +'<input type="radio"  name="fp_deadRelation" value="6" onclick="loadDeadRelation(this)"/>配偶母亲'
+     	    +'<font color="red"> (至少勾选一个) </font>'
+	  	    +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>'+'</td>'
+     	    
+     		+'<td class="formtable_td_key">逝者的姓名：</td>'
+     		+'<td class="formtable_td_value">'
+     		+'<input id="deadName" class="easyui-validatebox"  type="text" name="fp_deadName"  onchange="loadDeadName()"/>'
+	  				+'</tr>';
+	  		var trObj2='<tr id="reqChannels${rand}-2st">'
+	  			+'<td class="formtable_td_key">过逝的日期：</td>'
+     	    +'<td class="formtable_td_value" colspan="3">'
+     	    +'<input id="deadData" class="easyui-my97" type="text"  readonly="readonly" name="fp_startRecruitTime3" onblur="loaddeadDeadData()"/>'
+     	    +'(<span style="color: red">日期必须在3个月之内</span>)</td>'+'</tr>';
+     	    
+      	if ($('#reqChannels${rand}-1st').length <= 0) {
+      		$("#recruitmentChannels${rand}").after(trObj2);
+     		$("#recruitmentChannels${rand}").after(trObj);
+     		$('#deadData').my97({
+	            	minDate:'%y-{%M-3}-{%d}',
+	            	maxDate:'%y-%M-{%d}',
+	            	required:true
+	            });
+     		$("#deadName").validatebox({
+       			required:true
+       		})
+       		$.parser.parse('#reqChannels${rand}-1st');
+     	} 
+        if(document.getElementById('fp_reqChannels').checked==false){
+         	 $("#reqChannels${rand}-1st2").remove(); 
+         	 if($("#reqChannels${rand}-1st3")){
+         		 $("#reqChannels${rand}-1st3").remove();
+         	 }
+         }
+        if(document.getElementById('fp_reqChannels2').checked==false){
+          	 $("#reqChannels${rand}-tr").remove(); 
+         }
+        
+    }
+    function loadDeadName(){
+    	$("#processName${rand}").val($("#processName${rand}").val()+"--[逝者的姓名："+$("#deadName").val()+"]");
+    }
+    function loaddeadDeadData(){
+    	$("#processName${rand}").val($("#processName${rand}").val()+"--"+"[过逝的日期："+$("#deadData").val()+"]");
+    }
+    
+    function loadDeadRelation(vl){
+    	$("#deadName${rand}").val("可以");
+    	var name='';
+    	name=vl.value=='1'?'配偶':vl.value=='2'?'子女':vl.value=='3'?'父亲':vl.value=='4'?'母亲':vl.value=='5'?'配偶父亲':vl.value=='6'?'配偶母亲':'';
+    	$("#processName${rand}").val($("#processName${rand}").val()+"--"+"[与逝者的关系："+name+"]");
+    }
+    function loadBirthData(vl){
+    	var processName=$("#processName${rand}").val();
+    	var processNames=processName.split("--");
+        var arr=""
+    	for(var i=0;i<processNames.length;i++){
+    		if(processNames[i].indexOf("子女出生日期")!=-1){
+    			arr=processName.replace(processNames[i],"[子女出生日期："+$("#birthData").val()+"]")
+    			break;
+    		}
+    	}
+        if(arr.indexOf("子女出生日期")==-1){
+        	arr=processName+"--[子女出生日期："+$("#birthData").val()+"]";
+        }
+    	$("#processName${rand}").val(arr);
+    }
+    function loadMarriedData(){
+    	var processName=$("#processName${rand}").val();
+    	var processNames=processName.split("--");
+        var arr=""
+    	for(var i=0;i<processNames.length;i++){
+    		if(processNames[i].indexOf("领证日期")!=-1){
+    			arr=processName.replace(processNames[i],"[领证日期："+$("#getMarriedData").val()+"]")
+    			break;
+    		}
+    	}
+       
+        if(arr.indexOf("领证日期")==-1){
+        	arr=processName+"--[领证日期："+$("#getMarriedData").val()+"]";
+        }
+    	$("#processName${rand}").val(arr);
+    }
+</script>
+  </#if>
+  </#if>
+ 
+ 
+ 
+ <!-- 修改申请 -->
+<#if currentStep?exists> 
+	<#if processSteps??> 
+	<#if currentStep == 'nmb_updateWelfareTask'>
+	  <#list processSteps as steps> 
+	   <#if steps.key == 'startevent1'>
+	      <#assign reqChannels=steps.vars["reqChannels"]/>
+	      <#assign deadRelation=steps.vars["deadRelation"]/>
+		    <#if steps.vars["startRecruitTime"]??>
+		      <#assign time=steps.vars["startRecruitTime"]/>
+		    </#if>
+		    <#if steps.vars["staffNumber"]??>
+		      <#assign staffNumber=steps.vars["staffNumber"]/>
+		      <#assign staffName=steps.vars["staffName"]/>
+	       </#if>
+	        <#if steps.vars["deadName"]??>
+		      <#assign deadName=steps.vars["deadName"]/>
+	       </#if>
+	        <#if steps.vars["startRecruitTime3"]??>
+		      <#assign time3=steps.vars["startRecruitTime3"]/>
+		    </#if>
+		     <#if steps.vars["startRecruitTime2"]??>
+		      <#assign time2=steps.vars["startRecruitTime2"]/>
+		    </#if>
+		    <#if steps.vars["hrDepa"]??>
+		      <#assign hrDepa=steps.vars["hrDepa"]/>
+		    </#if>
+		    <#if steps.vars["maxManage"]??>
+		      <#assign maxManage=steps.vars["maxManage"]/>
+		    </#if>
+		    <#if steps.vars["depaHead"]??>
+		      <#assign depaHead=steps.vars["depaHead"]/>
+		    </#if>
+		     <#if steps.vars["isManager"]??>
+		      <#assign isManager=steps.vars["isManager"]/>
+		    </#if>
+		    
+		    
+	 <div id="nmb_updateWelfareTask">
+	<form id="nmb_updateWelfareTaskForm" method="post" enctype='multipart/form-data'>
+		<table id="nmb_updateWelfareTaskTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+			<td colspan="6"  style="font-size: 16px; height: 25px;"  class="formtable_td_key" align="center">修改福利申请表</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">员工编号：</td>
+				<td class="formtable_td_value">
+				<input id="processName${rand}" type="hidden" name="fp_updateProcessName" readonly="readonly" style="width:180px"/>
+				<input id="account${rand}" type="hidden" name="fp_updateApplyUserId"  value="${appuser.account}"/>
+		         <input id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox"    type="text"  data-options="required:true" onblur="loadUserInfo()" value="${(steps.vars["applyUserAccount"])!""}"/>
+		         </td>
+				<td class="formtable_td_key">姓名：</td>
+				<td class="formtable_td_value"><input id="userName${rand}"
+					class="easyui-validatebox" readonly="readonly" required="required"
+					type="text" name="fp_updateUserName" value="${(steps.vars["userName"])!""}"/>
+					<input id="hrDepa${rand}" type="hidden" name="fp_hrDepa">
+					<input id="maxManage${rand}" type="hidden" name="fp_maxManage" value="">
+					<input id="depaHead${rand}" type="hidden" name="fp_depaHead" value="">
+					<input id="isManager${rand}" type="hidden" name="fp_isManager" value="">
+					</td>
+				<!-- value="${appuser.name}" -->
+				
+
+			</tr>
+			<tr>
+			<td class="formtable_td_key">部门：</td>
+				<td class="formtable_td_value"><input id="orgName${rand}"
+					class="easyui-validatebox" required="required" type="text"
+					name="fp_updateOrgName" value="${(steps.vars["orgName"])!""}"/></td>
+				<td class="formtable_td_key">岗位：</td>
+				<td class="formtable_td_value"><input id="job${rand}"
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_updateDuty" value="${(steps.vars["duty"])!""}"/></td>
+			</tr>
+			<tr id="recruitmentChannels${rand}">
+				<td class="formtable_td_key">申请事项：</td>
+				  	<td  class="formtable_td_value" colspan="3">
+				  		<input type="radio"  name="fp_reqChannels" value="1" id="fp_reqChannels"  />新婚贺仪
+				  		<font color="red"> (需要上传结婚证明) </font>
+				  		<input type="radio" name="fp_reqChannels" value="2" id="fp_reqChannels2" />生育贺仪
+				  		<font color="red"> (需要上传结婚证明,生育登记证明,出生证明) </font>
+				  		<input type="radio" name="fp_reqChannels" value="3" id="fp_reqChannels3"/>奠仪
+				  	    <font color="red"> (至少勾选一个) </font>
+				  	     <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>
+				  	</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">事项简述：</td>
+				<td class="formtable_td_value" colspan="6"><textarea id="rewardAndPenaltyDesc${rand}"
+						name="fp_updateRewardAndPenaltyDesc" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 150px;"
+						data-options="required:true">${(steps.vars["rewardAndPenaltyDesc"])!""}</textarea></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+			</tr>
+		</table>
+	</form>
+</div>
+</#if>
+   <#if steps.key == 'nmb_updateWelfareTask'>
+	      <#assign reqChannels=steps.vars["reqChannels"]/>
+	      <#assign deadRelation=steps.vars["deadRelation"]/>
+		    <#if steps.vars["startRecruitTime"]??>
+		      <#assign time=steps.vars["startRecruitTime"]/>
+		    </#if>
+		    <#if steps.vars["staffNumber"]??>
+		      <#assign staffNumber=steps.vars["staffNumber"]/>
+		      <#assign staffName=steps.vars["staffName"]/>
+	       </#if>
+	        <#if steps.vars["deadName"]??>
+		      <#assign deadName=steps.vars["deadName"]/>
+	       </#if>
+	        <#if steps.vars["startRecruitTime3"]??>
+		      <#assign time3=steps.vars["startRecruitTime3"]/>
+		    </#if>
+		     <#if steps.vars["startRecruitTime2"]??>
+		      <#assign time2=steps.vars["startRecruitTime2"]/>
+		    </#if>
+		     <#if steps.vars["maxManage"]??>
+		      <#assign maxManage=steps.vars["maxManage"]/>
+		    </#if>
+		    <#if steps.vars["depaHead"]??>
+		      <#assign depaHead=steps.vars["depaHead"]/>
+		    </#if>
+		    <#assign rewardAndPenaltyDesc=steps.vars["updateRewardAndPenaltyDesc"]/>
+		    <#assign applyUserAccount=steps.vars["applyUserAccount"]/>
+		     <#assign hrDepa=steps.vars["hrDepa"]/>
+		     <#if steps.vars["isManager"]??>
+		      <#assign isManager=steps.vars["isManager"]/>
+		    </#if>
+   </#if>
+</#list>
+<script type="text/javascript">
+	function loadUserInfo() {
+		//界面通过接口加载个人信息
+		$.post("hrFlow/getHrUserInfoById.json", {
+			account : $("#curUserId${rand}").val()
+		}, function(data) {
+			if (data.success) {
+				$("#userName${rand}").val(data.obj[0].name);//姓名
+				$("#job${rand}").val(data.obj[0].job);//职位
+				$("#education${rand}").val(data.obj[0].education);//学历
+				$("#major${rand}").val(data.obj[0].major);//专业
+				$("#gender${rand}").val(data.obj[0].sex);//性别
+				$("#age${rand}").val(data.obj[0].age);//年龄
+				$("#school${rand}").val(data.obj[0].school);//毕业学校
+				$("#email${rand}").val(data.obj[0].email);//邮箱
+				$("#entryTime${rand}").val(data.obj[0].entryDate);//入职日期
+				$("#orgName${rand}").val(data.obj[0].orgName);//部门
+				$("#telephone${rand}").val(data.obj[0].tel);//电话
+				$('#processName${rand}').val(
+						"[" + $("#curUserId${rand}").val() + ","
+								+data.obj[0].orgName+ ","+data.obj[0].job+ "," +"${.now?string('yyyy-MM-dd HH:mm:ss')}"+ "," + data.obj[0].name + "]");//流程实例名称
+			}
+		});
+		$.post("lead/isHrDepa.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				if(data.msg=="总监"){
+					$("#hrDepa${rand}").val("3");
+				}else{
+					$("#hrDepa${rand}").val("1");
+				}
+			}else{
+				$("#hrDepa${rand}").val("2");
+			}
+		});
+		 $.post("lead/maxManage.json", {
+			account : $("#curUserId${rand}").val()  
+		}, function(data) {
+			if (data.success) {
+				$("#maxManage${rand}").val(data.msg);
+			}
+		}); 
+		 
+		 $.post("lead/depaHead.json", {
+				account : $("#curUserId${rand}").val()  
+			}, function(data) {
+				if (data.success) {
+					$("#depaHead${rand}").val("0");
+				}else{
+					$("#depaHead${rand}").val("1");
+				}
+			});
+		 $.post("lead/isManager.json", {
+				account : $("#curUserId${rand}").val()  
+			}, function(data) {
+				if (data.success) {
+					if(data.msg=="2"){
+						$("#isManager${rand}").val("1");
+					}else{
+						$("#isManager${rand}").val("2");
+					}
+				}else{
+					$("#isManager${rand}").val("3");
+				}
+			});
+		if($("input[name=fp_reqChannels]").get(0).checked){
+			$("#reqChannels${rand}-1st2").remove(); 
+			$("input[name=fp_reqChannels]").get(0).checked=false;
+		}else if($("input[name=fp_reqChannels]").get(1).checked){
+			$("#reqChannels${rand}-tr").remove(); 
+			$("input[name=fp_reqChannels]").get(1).checked=false;
+		}else if($("input[name=fp_reqChannels]").get(2).checked){
+			$("#reqChannels${rand}-1st").remove(); 
+       	    $("#reqChannels${rand}-2st").remove(); 
+       	 $("input[name=fp_reqChannels]").get(2).checked=false;
+		}
+		$("#moduleName${rand}").val("");
+	}
+	 $(function(){
+		   if("${maxManage}"){
+			   $("#maxManage${rand}").val("${maxManage}");
+		   }
+		   if("${depaHead}"){
+			   $("#depaHead${rand}").val("${depaHead}");
+		   }
+		   if("${isManager}"){
+			   $("#isManager${rand}").val("${isManager}");
+		   }
+		   if("${rewardAndPenaltyDesc}"){
+			   $('#rewardAndPenaltyDesc${rand}').text("${rewardAndPenaltyDesc}");
+		   }
+		   if("${hrDepa}"){
+			   $("#hrDepa${rand}").val("${hrDepa}");
+		   }
+		   if("${applyUserAccount}"){
+			 //界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfoById.json", {
+					account : "${applyUserAccount}"
+				}, function(data) {
+					if (data.success) {
+						$("#userName${rand}").val(data.obj[0].name);//姓名
+						$("#job${rand}").val(data.obj[0].job);//职位
+						$("#orgName${rand}").val(data.obj[0].orgName);//部门
+						$("#curUserId${rand}").val("${applyUserAccount}");
+					}
+				});
+		   }
+		   
+		   if("${reqChannels}"=="1"){
+			   $("input[name=fp_reqChannels]").get(0).checked=true;
+			   if("${deadRelation}"=="1"){
+				   loadWedding("${time}");
+				   $("input[name=fp_deadRelation]").get(0).checked=true;
+				   loadContent();
+				   $("#staffNumber${rand}").val("${staffNumber}");
+				   $("#staffName${rand}").val("${staffName}");
+			   }else{
+				   loadWedding("${time}");
+				   $("input[name=fp_deadRelation]").get(1).checked=true;
+			   }
+			   $("#moduleName${rand}").val("1");
+		   }else if("${reqChannels}"=="3"){
+			   $("#moduleName${rand}").val("1");
+			   $("input[name=fp_reqChannels]").get(2).checked=true;
+			   loadFuneral("${deadName}","${time3}");
+			   $("input[name=fp_deadRelation]").get(parseInt("${deadRelation}")-1).checked=true;
+		   }else if("${reqChannels}"=="2"){
+			   $("#moduleName${rand}").val("1");
+			   $("input[name=fp_reqChannels]").get(1).checked=true;
+			   if("${deadRelation}"=="1"){
+				   loadGive("${time2}");
+				   $("input[name=fp_deadRelation]").get(0).checked=true;
+				   loadContent();
+				   $("#staffNumber${rand}").val("${staffNumber}");
+				   $("#staffName${rand}").val("${staffName}");
+			   }else{ 
+				   loadGive("${time2}");
+				   $("input[name=fp_deadRelation]").get(1).checked=true;
+			   }
+		   }
+		 
+		 $("input[name='fp_reqChannels']").bind("click",function(){ 
+		        //测试操作代码 
+		        var $selectedvalue = $(this).val(); 
+		        $("#moduleName${rand}").val("1");
+		        if($selectedvalue!=3){
+		        	//界面通过接口加载个人信息
+	            	$.post("welfare/weddingIsRepeat.json", {
+	            		account : $("#curUserId${rand}").val(),
+	            		number:$selectedvalue
+	            	}, function(data) {
+	            		if(data.success){
+	            			 $.messager.alert('提示',data.msg);
+	            			if($("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked){
+	            				$("#reqChannels${rand}-1st2").remove(); 
+	            				$("#reqChannels${rand}-1st").remove(); 
+	                     	    $("#reqChannels${rand}-2st").remove(); 
+	                     	    $("#reqChannels${rand}-tr").remove(); 
+	            				$("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked=false;
+	            			}else if($("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked){
+	            				$("#reqChannels${rand}-1st2").remove(); 
+	            				$("#reqChannels${rand}-1st").remove(); 
+	                     	    $("#reqChannels${rand}-2st").remove(); 
+	                     	    $("#reqChannels${rand}-tr").remove(); 
+	            				$("input[name=fp_reqChannels]").get(parseInt($selectedvalue)-1).checked=false;
+	            			}
+	            			 if(document.getElementById('fp_reqChannels3').checked==false){
+	                      	 $("#reqChannels${rand}-1st").remove(); 
+	                      	 $("#reqChannels${rand}-2st").remove(); 
+	                     } 
+	            		}else{ 
+	            			loaddata($selectedvalue);
+	            		} 
+	            		
+	            	}); 
+		        }
+		        if ($selectedvalue == 3 && document.getElementById('fp_reqChannels3').checked) {
+		        	loadFuneral("","");
+		           if(document.getElementById('fp_reqChannels').checked==false){
+		            	 $("#reqChannels${rand}-1st2").remove(); 
+		            	 if($("#reqChannels${rand}-1st3")){
+		            		 $("#reqChannels${rand}-1st3").remove();
+		            	 }
+		            }
+		           if(document.getElementById('fp_reqChannels2').checked==false){
+		             	 $("#reqChannels${rand}-tr").remove(); 
+		            } 
+		        }
+		    });
+	 })
+	 
+		  function loaddata($selectedvalue){
+	       if($selectedvalue == 1 && document.getElementById('fp_reqChannels').checked){
+		         	if($("#reqChannels${rand}-1st3").text()){
+		           		 $("#reqChannels${rand}-1st3").remove();
+		           	 }
+	         		loadWedding("");
+	         	  if(document.getElementById('fp_reqChannels3').checked==false){
+	                	 $("#reqChannels${rand}-1st").remove(); 
+	                	 $("#reqChannels${rand}-2st").remove(); 
+	               } 
+	         	  if(document.getElementById('fp_reqChannels2').checked==false){
+	               	 $("#reqChannels${rand}-tr").remove(); 
+	              } 
+	         }else if($selectedvalue == 2 && document.getElementById('fp_reqChannels2').checked){
+	         		if($("#reqChannels${rand}-1st3").text()){
+		        		 $("#reqChannels${rand}-1st3").remove();
+		        	 }
+	         	   loadGive("");
+	         	 /*   $.parser.parse('#reqChannels${rand}-1st2'); */
+	         	  if(document.getElementById('fp_reqChannels3').checked==false){
+	                	 $("#reqChannels${rand}-1st").remove(); 
+	                	 $("#reqChannels${rand}-2st").remove(); 
+	               }
+	         	  if(document.getElementById('fp_reqChannels').checked==false){
+	              	 $("#reqChannels${rand}-1st2").remove(); 
+	              } 
+	         }  
+	    }
+	    function loadContent(){
+	    	 var trObj = '<tr id="reqChannels${rand}-1st3">'
+	     	    +'<td class="formtable_td_key">员工编号：</td>'
+	     	    +'<td class="formtable_td_value">'
+	     		+'<input id="staffNumber${rand}"  class="easyui-validatebox" maxLength="8"  type="text" name="fp_staffNumber" onblur="loadName()"/>'
+	     		+'<td class="formtable_td_key">员工姓名：</td>'
+	      	    +'<td class="formtable_td_value">'
+	      		+'<input id="staffName${rand}" class="easyui-validatebox"  type="text" name="fp_staffName" />';
+	      	  if ($('#reqChannels${rand}-1st3').length <= 0) {
+	      		 if($("#reqChannels${rand}-1st2").text()){
+	      			$("#reqChannels${rand}-1st2").after(trObj);
+	      		 }else{
+	      			$("#reqChannels${rand}-tr").after(trObj);
+	      		 }
+	      		
+	      		$("#staffName${rand}").validatebox({
+	      			required:true
+	      		})
+	      		$("#staffNumber${rand}").validatebox({
+	      			required:true
+	      		})
+	      	  }
+	          $.parser.parse('#reqChannels${rand}-1st3');
+	    }
+	       
+	    function loadName() {
+	    	$("#deadName${rand}").val("可以");
+	    	var processName=$("#processName${rand}").val();
+	    	if(processName.indexOf('---')!=-1){
+	    		$("#processName${rand}").val(processName.split('---')[0])
+	    	}
+	    	if($("#staffNumber${rand}").val()==$("#curUserId${rand}").val()){
+	    		$.messager.alert('提示','配偶不能是自己');
+	    	}else if(isNaN(new Number($("#staffNumber${rand}").val()))){
+	    		$("#staffNumber${rand}").val("")
+	    		$("#staffName${rand}").val("")
+	    		$.messager.alert('提示','请输入数字');
+	    	}else{
+				//界面通过接口加载姓名
+				$.post("hrFlow/getHrUserInfoById.json", {
+					account : $("#staffNumber${rand}").val()
+				}, function(data) {
+					if (data.success) {
+						$("#staffName${rand}").val(data.obj[0].name);//姓名
+						$("#processName${rand}").val($("#processName${rand}").val()+'---'+"[配偶是否为金铭/金卓在职人员：是,员工编号:"+$("#staffNumber${rand}").val()+",员工姓名:"+data.obj[0].name+"]");
+					}
+				});
+	    	}
+		}
+	    function clearContent(){
+	    	$("#deadName${rand}").val("可以");
+	    	var processName=$("#processName${rand}").val();
+	    	if(processName.indexOf('---')!=-1){
+	    		$("#processName${rand}").val(processName.split('---')[0])
+	    	}
+	    	$("#processName${rand}").val($("#processName${rand}").val()+'---'+"[配偶是否为金铭/金卓在职人员：否]");
+	    	if($("#reqChannels${rand}-1st3").text()){
+	      		 $("#reqChannels${rand}-1st3").remove();
+	      	 }
+	    }
+	    function loadWedding(time){
+	    	 if(processName.indexOf("--")!=-1){
+	         		$("#processName${rand}").val(processName.split("--")[0])
+	          	} 
+	         	$("#deadName${rand}").val("");
+	         	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:新婚贺仪]"); 
+	    	 var trObj = '<tr id="reqChannels${rand}-1st2">'
+	        	    +'<td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>'
+	        	    +'<td class="formtable_td_value">'
+	        	    +'<input  type="radio"  name="fp_deadRelation" value="1"   onclick="loadContent();"/>是'
+	        	    +'<input type="radio"  name="fp_deadRelation" value="2"   onclick="clearContent();"/>否'
+	        	    +'<font color="red"> (至少勾选一个) </font>'
+	   	  	        +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>'
+	        	    +'<td class="formtable_td_key">领证日期：</td>'
+	        	    +'<td class="formtable_td_value" colspan="3">'
+	        	    +'<input id="getMarriedData" class="easyui-my97" type="text"   readonly="readonly" name="fp_startRecruitTime" value="'+time+'" />'
+	        	    +'(<span style="color: red">日期必须在6个月之内</span>)</td>'+'</tr>';
+	        	    if ($('#reqChannels${rand}-1st2').length <= 0) {
+	        	    	$("#recruitmentChannels${rand}").after(trObj);
+		  			    $('#getMarriedData').my97({
+			            	minDate:'%y-{%M-6}-{%d}',
+			            	maxDate:'%y-%M-{%d}',
+			            	required:true
+			         }); 
+	        	 }
+	        	    $.parser.parse('#reqChannels${rand}-1st2');
+	    }
+	    function loadFuneral(deadName,time){
+	    	$("#deadName${rand}").val("");
+	    	 var processName= $("#processName${rand}").val();
+	    	  if(processName.indexOf("--")!=-1){
+	     		$("#processName${rand}").val(processName.split("--")[0])
+	     	} 
+	    	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:祭奠]");
+	    	var trObj = '<tr id="reqChannels${rand}-1st">'
+        	    +'<td class="formtable_td_key">与逝者的关系：</td>'
+        	    +'<td class="formtable_td_value">'
+        	    +'<input type="radio"  name="fp_deadRelation" value="1"    onclick="loadDeadRelation(this)"/>配偶'
+        	    +'<input type="radio"  name="fp_deadRelation" value="2"    onclick="loadDeadRelation(this)"/>子女'
+        	    +'<input type="radio"  name="fp_deadRelation" value="3"    onclick="loadDeadRelation(this)"/>父亲'
+        	    +'<input type="radio"  name="fp_deadRelation" value="4"    onclick="loadDeadRelation(this)"/>母亲'
+        	    +'<input type="radio"  name="fp_deadRelation" value="5"    onclick="loadDeadRelation(this)"/>配偶父亲'
+        	    +'<input type="radio"  name="fp_deadRelation" value="6"    onclick="loadDeadRelation(this)"/>配偶母亲'
+        	    +'<font color="red"> (至少勾选一个) </font>'
+   	  	        +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/></td>'
+        		+'<td class="formtable_td_key">逝者的姓名：</td>'
+        		+'<td class="formtable_td_value">'
+        		+'<input id="deadName" class="easyui-validatebox"  type="text" name="fp_deadName" value="'+deadName+'"  onchange="loadDeadName()"/>'
+	  				+'</tr>';
+	  		var trObj2='<tr id="reqChannels${rand}-2st">'
+	  			+'<td class="formtable_td_key">过逝的日期：</td>'
+        	    +'<td class="formtable_td_value" colspan="3">'
+        	    +'<input id="deadData" class="easyui-my97" type="text"   readonly="readonly" name="fp_startRecruitTime3"  value="'+time+'" onblur="loaddeadDeadData()"/>'
+        	    +'(<span style="color: red">日期必须在3个月之内</span>)</td>'+'</tr>';
+        	    
+         	if ($('#reqChannels${rand}-1st').length <= 0) {
+         		$("#recruitmentChannels${rand}").after(trObj2);
+        		$("#recruitmentChannels${rand}").after(trObj);
+        		$('#deadData').my97({
+	            	minDate:'%y-{%M-3}-{%d}',
+	            	maxDate:'%y-%M-{%d}',
+	            	required:true
+	            });
+        		$("#deadName").validatebox({
+          			required:true
+          		})
+          		$.parser.parse('#reqChannels${rand}-1st');
+         	}
+	    }
+	    
+	    function loadGive(time){
+	    	$("#deadName${rand}").val("");
+        	 var processName= $("#processName${rand}").val();
+        	 if(processName.indexOf("--")!=-1){
+         		$("#processName${rand}").val(processName.split("--")[0])
+         	} 
+        	$("#processName${rand}").val($("#processName${rand}").val()+'--'+"[申请福利类别:生育贺仪]"); 
+	    	var trObj = '<tr id="reqChannels${rand}-tr">'
+        	    +'<td class="formtable_td_key">配偶是否为金铭/金卓在职人员：</td>'
+        	    +'<td class="formtable_td_value">'
+        	    +'<input  type="radio"  name="fp_deadRelation" value="1"  onclick="loadContent();"/>是'
+        	    +'<input type="radio"  name="fp_deadRelation" value="2"  onclick="clearContent();"/>否'
+        	    +'<font color="red"> (至少勾选一个) </font>'
+   	  	        +'<input id="deadName${rand}"  class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>'
+        	    +'<td class="formtable_td_key">子女出生日期：</td>'
+        	    +'<td class="formtable_td_value" colspan="3">'
+        	    +'<input id="birthData" class="easyui-my97" type="text"   readonly="readonly" name="fp_startRecruitTime2" value="'+time+'"/>'
+        	    +'(<span style="color: red">日期必须在6个月之内</span>)</td>'+'</tr>';
+        	    if ($('#reqChannels${rand}-tr').length <= 0) {
+        	    	$("#recruitmentChannels${rand}").after(trObj);
+	  			    $('#birthData').my97({
+		            	minDate:'%y-{%M-6}-{%d}',
+		            	maxDate:'%y-%M-{%d}',
+		            	required:true
+		         }); 
+        	 }
+        	    $.parser.parse('#reqChannels${rand}-tr');
+	    }
+	    
+	    /* function loadCheck($selectedvalue){
+	    	//界面通过接口加载个人信息
+	    	if($selectedvalue=="1"){
+	    		isCanApply($selectedvalue,$("#getMarriedData"));
+	    	}else{
+	    		isCanApply($selectedvalue,$("#birthData"));
+	    	}
+	    }
+	    function isCanApply($selectedvalue,birthData){
+	    	$.post("welfare/weddingIsRepeat.json", {
+	      		account : $("#curUserId${rand}").val(),
+	      		number:$selectedvalue,
+	      		date:birthData.val()
+	      	}, function(data) {
+	      		if(data.success){
+	      			 $.messager.alert('提示',data.msg);
+	      			 birthData.val("")
+	      		}
+	      	});
+	    } */
+	    function loadDeadName(){
+	    	$("#processName${rand}").val($("#processName${rand}").val()+"--[逝者的姓名："+$("#deadName").val()+"]");
+	    }
+	    function loaddeadDeadData(){
+	    	$("#processName${rand}").val($("#processName${rand}").val()+"--"+"[过逝的日期："+$("#deadData").val()+"]");
+	    }
+	    
+	    function loadDeadRelation(vl){
+	    	$("#deadName${rand}").val("可以");
+	    	var name='';
+	    	name=vl.value=='1'?'配偶':vl.value=='2'?'子女':vl.value=='3'?'父亲':vl.value=='4'?'母亲':vl.value=='5'?'配偶父亲':vl.value=='6'?'配偶母亲':'';
+	    	$("#processName${rand}").val($("#processName${rand}").val()+"--"+"[与逝者的关系："+name+"]");
+	    }
+	    function loadBirthData(vl){
+	    	var processName=$("#processName${rand}").val();
+	    	var processNames=processName.split("--");
+	        var arr=""
+	    	for(var i=0;i<processNames.length;i++){
+	    		if(processNames[i].indexOf("子女出生日期")!=-1){
+	    			arr=processName.replace(processNames[i],"[子女出生日期："+$("#birthData").val()+"]")
+	    			break;
+	    		}
+	    	}
+	        if(arr.indexOf("子女出生日期")==-1){
+	        	arr=processName+"--[子女出生日期："+$("#birthData").val()+"]";
+	        }
+	    	$("#processName${rand}").val(arr);
+	    }
+	    function loadMarriedData(){
+	    	var processName=$("#processName${rand}").val();
+	    	var processNames=processName.split("--");
+	        var arr=""
+	    	for(var i=0;i<processNames.length;i++){
+	    		if(processNames[i].indexOf("领证日期")!=-1){
+	    			arr=processName.replace(processNames[i],"[领证日期："+$("#getMarriedData").val()+"]")
+	    			break;
+	    		}
+	    	}
+	       
+	        if(arr.indexOf("领证日期")==-1){
+	        	arr=processName+"--[领证日期："+$("#getMarriedData").val()+"]";
+	        }
+	    	$("#processName${rand}").val(arr);
+	    }
+</script>
+	</#if> 
+	</#if>  
+</#if>
+ 
+ <!-- 部门主管审核 -->
+<#if currentStep?exists && currentStep == 'mb_deptSupervisorTask'> 
+		<div id="mb_deptSupervisorTask">
+			<form id="mb_deptSupervisorTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_deptSupervisorTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">部门主管审核</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">部门主管审核</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptSupervisorAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptSupervisorName" value="${appuser.name}" mobile="部门主管审核"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_deptSupervisorAudi${rand}" name="fp_deptSupervisorAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_deptSupervisorAudi${rand}2" name="fp_deptSupervisorAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 660px; height: 100px"
+								 id="fp_deptSupervisorAudiAdvice${rand}" name="fp_deptSupervisorAudiAdvice" class="formtable_remark" mobile="审核意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptSupervisorAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_deptSupervisorAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptSupervisorAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptSupervisorAudiAdvice${rand}").val('');
+		$("#fp_deptSupervisorAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptSupervisorAudi${rand}").bind("click",success);
+	$("#fp_deptSupervisorAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptSupervisorAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptSupervisorAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptSupervisorAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+ <!-- 部门负责人审核-->
+<#if currentStep?exists && currentStep == 'mb_deptManagerTask'> 
+		<div id="mb_deptManagerTask">
+			<form id="mb_deptManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_deptManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">部门负责人审核</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">部门负责人审核</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptManagerName" value="${appuser.name}" mobile="部门负责人审核"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_deptManagerAudi${rand}" name="fp_deptManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_deptManagerAudi${rand}2" name="fp_deptManagerAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 660px; height: 100px"
+								 id="fp_deptManagerAudiAdvice${rand}" name="fp_deptManagerAudiAdvice" class="formtable_remark" mobile="审核意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptManagerAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_deptManagerAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptManagerAudiAdvice${rand}").val('');
+		$("#fp_deptManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptManagerAudi${rand}").bind("click",success);
+	$("#fp_deptManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptManagerAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptManagerAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+ <!-- 人力员工关系专员-->
+<#if currentStep?exists && currentStep == 'mb_hrStaffTask'> 
+		<div id="mb_hrStaffTask">
+			<form id="mb_hrStaffTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_hrStaffTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">人力员工关系专员</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">人力员工关系专员</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_hrStaffAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_hrStaffName" value="${appuser.name}" mobile="人力员工关系专员审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_hrStaffAudi${rand}" name="fp_hrStaffAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_hrStaffAudi${rand}2" name="fp_hrStaffAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 660px; height: 100px"
+								 id="fp_hrStaffAudiAdvice${rand}" name="fp_hrStaffAudiAdvice" class="formtable_remark" mobile="审核意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_hrStaffAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_hrStaffAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_hrStaffAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_hrStaffAudiAdvice${rand}").val('');
+		$("#fp_hrStaffAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_hrStaffAudi${rand}").bind("click",success);
+	$("#fp_hrStaffAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_hrStaffAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_hrStaffAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_hrStaffAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+
+ <!-- 人力资源部总监审核-->
+<#if currentStep?exists && currentStep == 'mb_hrManagerTask'> 
+		<div id="mb_hrManagerTask">
+			<form id="mb_hrManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_hrManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">人力资源部总监审核</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部总监审核</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_hrManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_hrManagerName" value="${appuser.name}" mobile="人力资源部总监审核"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_hrManagerAudi${rand}" name="fp_hrManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_hrManagerAudi${rand}2" name="fp_hrManagerAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 660px; height: 100px"
+								 id="fp_hrManagerAudiAdvice${rand}" name="fp_hrManagerAudiAdvice" class="formtable_remark" mobile="审核意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_hrManagerAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_hrManagerAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_hrManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_hrManagerAudiAdvice${rand}").val('');
+		$("#fp_hrManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_hrManagerAudi${rand}").bind("click",success);
+	$("#fp_hrManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_hrManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_hrManagerAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_hrManagerAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'confirmProcessEndTask'>
+<div id="confirmProcessEndTask">
+	<form id="confirmProcessEndTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="confirmProcessEndTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+
+			<tr>
+				<td class="formtable_td_key" rowspan="3">发起人确认</td>
+				<td class="formtable_td_key">是否结束该流程</td>
+				<td class="formtable_td_value" colspan="5"><input
+					id="endProcess-${rand}" type="radio"
+					name="fp_confirmProcessEndAudi" value="1" mobile="是否结束该流程_是" />是 <input
+					id="continueProcess-${rand}" type="radio"
+					name="fp_confirmProcessEndAudi" checked="checked" value="0"
+					mobile="是否结束该流程_否" />否</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">确认意见：</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						style="width: 660px; height: 100px" id="applyUserAudiAdvice${rand}"
+						name="fp_applyUserAudiAdvice" class="easyui-validatebox"
+						mobile="确认意见"></textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">确认人</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_applyUserAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_applyUserName" value="${appuser.name}"
+					mobile="确认人" /> ${appuser.name}</td>
+				<td class="formtable_td_key">确认时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_applyUserAudiTime" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="确认时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+		</table>
+	</form>
+</div>
+	<script type="text/javascript">
+			$("#applyUserAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#applyUserAudiAdvice${rand}").validatebox({required:false});//是否结束意见为非必填项
+			}
+			var failure=function(){
+				$("#applyUserAudiAdvice${rand}").val('');
+				$("#applyUserAudiAdvice${rand}").validatebox({required:true});//是否结束意见为必填项
+			};
+			$("#continueProcess-${rand}").bind("click",success);
+			$("#endProcess-${rand}").bind("click",failure);
+	</script>
+</#if>
+<#include "/common/foot.html">

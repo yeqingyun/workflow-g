@@ -1,0 +1,467 @@
+<!-- 展示表单 -->
+<#if processSteps??>
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+			<table class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请单号：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			${steps.vars["sapRequisitionSheetSer"].preqNo}
+		  	  		</td>
+		  	  		<input id="fp_preqNo" type="hidden" name="fp_preqNo" value='${steps.vars["sapRequisitionSheetSer"].preqNo}'/>
+		  	  		<td class="formtable_td_key">项目编号：</td>
+		  	  		<td class="formtable_td_value">${steps.vars["sapRequisitionSheetSer"].preqItem}</td>
+		  	  		<input id="fp_preqItem" type="hidden" name="fp_preqItem" value='${steps.vars["sapRequisitionSheetSer"].preqItem}'/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">凭证类型：</td>
+		  	  		<td class="formtable_td_value">${steps.vars["sapRequisitionSheetSer"].docType}</td>
+		  	  		<td class="formtable_td_key">创建人：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].createdBy}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">请求日期：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].preqDate?datetime}</td>
+		  	  		<td class="formtable_td_key">短文本：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].shortText}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料号：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].material?if_exists}</td>
+		  	  		<td class="formtable_td_key">工厂：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].plant}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">库存地点：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].storeLoc}</td>
+		  	  		<td class="formtable_td_key">需求跟踪号：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].trackingno}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料组：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].matGrp}</td>
+		  	  		<td class="formtable_td_key">采购申请数量：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].quantity}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请计量单位：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].unit}</td>
+		  	  		<td class="formtable_td_key">项目交货日期：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].delivDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请批准日期：</td>
+		  	  		<td class="formtable_td_value" colspan="3">${steps.vars["sapRequisitionSheetSer"].relDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购需求中的价格：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].cAmtBapi}</td>
+		  	  		<td class="formtable_td_key">价格单位：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].priceUnit}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购凭证中的项目类别：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].itemCat}</td>
+		  	  		<td class="formtable_td_key">科目分配类别：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].acctasscat}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	</#if>
+		  	  </table>
+	   </#if>
+	   <#if steps.key == 'projectAudiTask'>
+			  	  <table class="formtable" cellspacing="1" cellpadding="0">
+			  	  	<tr>
+			  	  		<td colspan="2" class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["projectAudi"] == '0' >
+			  	  			<td class="formtable_td_value">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["projectAudi"] == '1' >
+			  	  			<td class="formtable_td_value">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value">${steps.vars["treatmentAdvice"]}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	</#if>
+			  	  </table>
+	   </#if>
+	   <#if steps.key == 'generalManagerTask'>
+		  	  <table class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+			  	  	<td colspan="2" class="formtable_td_key">${steps.activityName}</td>
+			  	</tr>
+			  	<tr>
+			  	  	<td class="formtable_td_key">处理结果：</td>
+			  	  	<#if steps.vars["generalManagerAudi"] == '0' >
+			  	  		<td class="formtable_td_value">同意</td>
+			  	  	</#if>
+			  	  	<#if steps.vars["generalManagerAudi"] == '1' >
+			  	  		<td class="formtable_td_value">不同意</td>
+			  	  	</#if>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value">${steps.vars["generalManagerAdvice"]}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+		  	  </table>
+	   </#if>
+	    <#if steps.key == 'syncSapTask'>
+			<table class="formtable" cellspacing="1" cellpadding="0">
+				<tr>
+			  	  	<td colspan="4" class="formtable_td_key">${steps.activityName}</td>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请单号：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			${steps.vars["sapRequisitionSheetSer"].preqNo}
+		  	  		</td>
+		  	  		<input id="fp_preqNo" type="hidden" name="fp_preqNo" value='${steps.vars["sapRequisitionSheetSer"].preqNo}'/>
+		  	  		<td class="formtable_td_key">项目编号：</td>
+		  	  		<td class="formtable_td_value">${steps.vars["sapRequisitionSheetSer"].preqItem}</td>
+		  	  		<input id="fp_preqItem" type="hidden" name="fp_preqItem" value='${steps.vars["sapRequisitionSheetSer"].preqItem}'/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">凭证类型：</td>
+		  	  		<td class="formtable_td_value">${steps.vars["sapRequisitionSheetSer"].docType}</td>
+		  	  		<td class="formtable_td_key">创建人：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].createdBy}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">请求日期：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].preqDate?datetime}</td>
+		  	  		<td class="formtable_td_key">短文本：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].shortText}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料号：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].material?if_exists}</td>
+		  	  		<td class="formtable_td_key">工厂：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].plant}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">库存地点：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].storeLoc}</td>
+		  	  		<td class="formtable_td_key">需求跟踪号：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].trackingno}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料组：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].matGrp}</td>
+		  	  		<td class="formtable_td_key">采购申请数量：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].quantity}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请计量单位：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].unit}</td>
+		  	  		<td class="formtable_td_key">项目交货日期：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].delivDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请批准日期：</td>
+		  	  		<td class="formtable_td_value" colspan="3">${steps.vars["sapRequisitionSheetSer"].relDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购需求中的价格：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].cAmtBapi}</td>
+		  	  		<td class="formtable_td_key">价格单位：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].priceUnit}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购凭证中的项目类别：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].itemCat}</td>
+		  	  		<td class="formtable_td_key">科目分配类别：</td>
+		  	  		<td class="formtable_td_value"  >${steps.vars["sapRequisitionSheetSer"].acctasscat}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	</#if>
+		  	  </table>
+	   </#if>
+	</#list>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start" style="width:100%;">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请单号：</td>
+		  	  		<td class="formtable_td_value">${sapRequisitionSheet.preqNo}</td>
+		  	  		<input id="fp_preqNo" type="hidden" name="fp_preqNo" value="${sapRequisitionSheet.preqNo}"/>
+		  	  		<td class="formtable_td_key">项目编号：</td>
+		  	  		<td class="formtable_td_value">${sapRequisitionSheet.preqItem}</td>
+		  	  		<input id="fp_preqItem" type="hidden" name="fp_preqItem" value="${sapRequisitionSheet.preqItem}"/>
+		  	  		<input type="hidden" name="fp_curUserId" value="${appuser.userId?c}"/>
+		  	  		<input type="hidden" name="fp_startUserAccount" value="${appuser.account}"/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">凭证类型：</td>
+		  	  		<td class="formtable_td_value">${sapRequisitionSheet.docType}</td>
+		  	  		<td class="formtable_td_key">创建人：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.createdBy}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">请求日期：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.preqDate?datetime}</td>
+		  	  		<td class="formtable_td_key">短文本：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.shortText}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料号：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.material?if_exists}</td>
+		  	  		<td class="formtable_td_key">工厂：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.plant}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">库存地点：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.storeLoc}</td>
+		  	  		<td class="formtable_td_key">需求跟踪号：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.trackingno}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料组：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.matGrp}</td>
+		  	  		<td class="formtable_td_key">采购申请数量：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.quantity}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请计量单位：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.unit}</td>
+		  	  		<td class="formtable_td_key">项目交货日期：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.delivDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购申请批准日期：</td>
+		  	  		<td class="formtable_td_value" colspan="3">${sapRequisitionSheet.relDate?datetime}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购需求中的价格：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.cAmtBapi}</td>
+		  	  		<td class="formtable_td_key">价格单位：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.priceUnit}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">采购凭证中的项目类别：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.itemCat}</td>
+		  	  		<td class="formtable_td_key">科目分配类别：</td>
+		  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.acctasscat}</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<#if currentStep?exists>
+	<#if currentStep == 'projectAudiTask'>
+		<div id="projectAudiTask">
+		  <form id="projectAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="projectAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="2" class="formtable_td_key">工程部负责人审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<!-- 第几步审批,调SAP接口审批时使用 -->
+		  	  		<input type="hidden" name="fp_curStep" value="second"/>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					  	<input class="easyui-combobox" name="fp_projectAudi"
+    						data-options="required:true,valueField:'id',textField:'text',
+	    						data: [{
+									id: '0',
+									text: '同意'
+								},{
+									id: '1',
+									text: '不同意'
+								}]"/>
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<textarea style="width: 780px; height: 120px" name="fp_treatmentAdvice" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+
+<#if currentStep?exists>
+	<#if currentStep == 'generalManagerTask'>
+		<div id="generalManagerTask">
+			<form id="generalManagerTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="generalManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="2" class="formtable_td_key">总经理审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<input type="hidden" name="fp_curStep" value="third"/>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					  	<input class="easyui-combobox" name="fp_generalManagerAudi"
+    						data-options="required:true,valueField:'id',textField:'text',
+	    						data: [{
+									id: '0',
+									text: '同意'
+								},{
+									id: '1',
+									text: '不同意'
+								}]"/>
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<textarea style="width: 780px; height: 120px" name="fp_generalManagerAdvice" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<#if currentStep?exists>
+   <#if currentStep == 'syncSapTask'>
+		<#list processSteps as steps>
+	   		<#if steps.key == 'startevent1'>
+	      		<div id="syncSapTask" style="width:100%;">
+					<form id="syncSapTaskForm" method="post" enctype='multipart/form-data'>
+				  	  <table id="syncSapTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				  	  	<tr>
+			  	  			<td colspan="4" class="formtable_td_key">调整采购单</td>
+			  			</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">申请单号：</td>
+				  	  		<td class="formtable_td_value">${sapRequisitionSheet.preqNo}</td>
+				  	  		<input id="fp_preqNo" type="hidden" name="fp_preqNo" value="${sapRequisitionSheet.preqNo}"/>
+				  	  		<td class="formtable_td_key">项目编号：</td>
+				  	  		<td class="formtable_td_value">${sapRequisitionSheet.preqItem}</td>
+				  	  		<input id="fp_preqNo" type="hidden" name="fp_preqItem" value="${sapRequisitionSheet.preqItem}"/>
+				  	  		<input type="hidden" name="ser_saveSapSheetSer" value="true"/>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">凭证类型：</td>
+				  	  		<td class="formtable_td_value">${sapRequisitionSheet.docType}</td>
+				  	  		<td class="formtable_td_key">创建人：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.createdBy}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">请求日期：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.preqDate?datetime}</td>
+				  	  		<td class="formtable_td_key">短文本：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.shortText}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">物料号：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.material?if_exists}</td>
+				  	  		<td class="formtable_td_key">工厂：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.plant}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">库存地点：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.storeLoc}</td>
+				  	  		<td class="formtable_td_key">需求跟踪号：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.trackingno}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">物料组：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.matGrp}</td>
+				  	  		<td class="formtable_td_key">采购申请数量：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.quantity}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">采购申请计量单位：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.unit}</td>
+				  	  		<td class="formtable_td_key">项目交货日期：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.delivDate?datetime}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">采购申请批准日期：</td>
+				  	  		<td class="formtable_td_value" colspan="3">${sapRequisitionSheet.relDate?datetime}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">采购需求中的价格：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.cAmtBapi}</td>
+				  	  		<td class="formtable_td_key">价格单位：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.priceUnit}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">采购凭证中的项目类别：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.itemCat}</td>
+				  	  		<td class="formtable_td_key">科目分配类别：</td>
+				  	  		<td class="formtable_td_value"  >${sapRequisitionSheet.acctasscat}</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  		</#if>
+				  	  </table>
+					</form>
+				</div>
+	   		</#if>
+		</#list>
+   </#if>
+</#if>
+<script type="text/javascript">
+	
+</script>

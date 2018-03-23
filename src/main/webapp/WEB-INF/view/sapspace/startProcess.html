@@ -1,0 +1,419 @@
+<#assign title="流程"> 
+<#include "/common/head.ftl">
+ <div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">采购申请编号：</td>
+		    			<td width="200"> 
+		    			 	<input id="preqNo-${rand}" style="width:200px;" class="easyui-textbox" type="text" name="preqNo" data-options=""></input>
+		   				</td>
+		    			<td align="right" style="white-space:nowrap; padding-left:12px;">采购申请行号：</td>
+		   				<td width="200">
+		   				 	<input id="preqItem-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="preqItem" data-options="min:0,validType:'number',invalidMessage:'请输入数字'"></input>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="processGrid-${rand}"></div>
+	</div>
+ </div>
+
+<!-- win -->
+<div id="win-${rand}" class="easyui-dialog" title="Dialog"
+	style="width: 1000px; height: 500px; padding: 10px"
+	data-options="
+	   modal:true,
+	   closed:true,
+	   maximizable:true,
+	   onMaximize:winOnMax${rand},
+	   onRestore:winOnRestore${rand},
+	   toolbar: [{
+		 text:'提交表单',
+		 handler: commitForm${rand},
+		 iconCls:'icon-save'
+	   },{
+		 text:'添加附件',
+		 handler: addAttache${rand},
+		 iconCls:'icon-add'
+	   }]
+	 ">
+	<div id="formPanel-${rand}" class="easyui-panel"
+		data-options="border:false,width:955,onLoad:onFormPanelLoad" title="">
+	</div>
+	<br />
+	<div id="attchFilePanel-${rand}" class="easyui-panel"
+		data-options="border:false,width:955,closed:false" title="">
+		<div id="attchFileGrid-${rand}"></div>
+	</div>
+	<br />
+</div>
+
+
+<div id="upload-${rand}" class="easyui-dialog" title="上传附件"
+	data-options="iconCls:'icon-save',resizable:true,width:468,height:544,modal:true,closed:true,
+		buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: closeUploadDiag${rand}
+                }]
+	">
+	<iframe id="upl-${rand}" style="width: 450px; height: 470px;"
+		frameborder="0" scrolling="no"></iframe>
+</div>
+
+<div id="showProcessImageWin-${rand}"></div>
+
+<script type="text/javascript">
+$('#processGrid-${rand}').datagrid({
+  url:"sapspace/getSapRequisitionSheet.json",
+  columns:[[
+	{field:'preqNo',title:'采购申请编号', width:100},
+	{field:'preqItem',title:'采购申请行号 ',width:100},
+	//{field:'docType',title:'凭证类型',width:100},
+	{field:'createdBy',title:'创建人',width:150},
+	{field:'preqDate',title:'请求日期',width:150},
+	{field:'shortText',title:'短文本 ',width:150},
+	{field:'material',title:'物料号 ',width:150},
+	{field:'plant',title:'工厂',width:150},
+	{field:'storeLoc',title:'库存地点',width:150},
+	{field:'trackingno',title:'需求跟踪号',width:150},
+	{field:'matGrp',title:'物料组 ',width:150},
+	{field:'quantity',title:'采购申请数量',width:150},
+	{field:'unit',title:'采购申请计量单位',width:150},
+	{field:'delivDate',title:'项目交货日期',width:150},
+	{field:'relDate',title:'采购申请批准日期',width:150},
+	{field:'cAmtBapi',title:'采购需求中的价格',width:150},
+	{field:'priceUnit',title:'价格单位 ',width:150},
+	{field:'itemCat',title:'采购凭证中的项目类别',width:150},
+	{field:'acctasscat',title:'科目分配类别',width:150},
+	{field:'status',title:'单据状态',width:150,
+		formatter: function(value,row,index){
+			if (row.status == 0){
+				return "待审核";
+			} else if(row.status == 1){
+				return "审核中";
+			} else if(row.status == 2){
+				return "已审核";
+			} 
+		}
+	}
+  ]],
+   view: detailview,
+   detailFormatter:function(index,row){
+		return '<div style="padding:2px"><table class="ddv"></table></div>';
+	},
+	onExpandRow: function(index,row){
+		var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
+		ddv.datagrid({
+			url:'sapspace/loadAttachments.json?preqNo='+row.preqNo+'&preqItem='+row.preqItem,
+			fitColumns:false,
+			singleSelect:true,
+			rownumbers:true,
+			loadMsg:'正在加载,请等待...',
+			height:'auto',
+			columns:[[
+				{field:'fileNo',title:'文件编号',width:100},
+				{field:'fileName',title:'文件名',width:200},
+				{field:'operate',title:'操作',width:120,
+					formatter: function(value,row,index){
+						var returnStr = "<a href='${file_download_url}"+ row.fileNo +"'>下载</a>"
+						return returnStr;
+					}
+				}
+			]],
+			onResize:function(){
+				$('#processGrid-${rand}').datagrid('fixDetailRowHeight',index);
+			},
+			onLoadSuccess:function(){
+				setTimeout(function(){
+					$('#processGrid-${rand}').datagrid('fixDetailRowHeight',index);
+				},0);
+			}
+		});
+		$('#processGrid-${rand}').datagrid('fixDetailRowHeight',index);
+	},
+  rownumbers:true,
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar: [{
+	text : '批量启动流程',
+	iconCls: 'icon-start',
+	handler: batchStartProcss${rand}
+  },"-",{
+	text : '启动流程',
+	iconCls: 'icon-history',
+	handler: viewReqSheetDetail${rand}
+  },"-",{
+	text : '流程图',
+	iconCls: 'icon-history',
+	handler: showProcessImage${rand}
+  }]
+});
+//批量启动流程
+function batchStartProcss${rand}(){
+  var rows = $('#processGrid-${rand}').datagrid('getSelections');
+  var flag = true;
+	 if (rows.length > 0){
+	 	for(var i = 0;i<rows.length;i++){
+	 		if (rows[i].status != 0) {
+	 			flag = false;
+	 			break;
+	 		}
+	 	}
+	 	if (flag) {
+	 		$.messager.confirm('提示信息','您确定要批量启动审批流程吗?',function(r){
+				if (r){
+					var str = '{';
+					str += '"processDefId":"${processDefId}",';
+					str += '"curUserId":"${appuser.userId?c}"';  
+					for(var i = 0;i<rows.length;i++){
+						str += ',"reqSheet['+i+']":"'+rows[i].preqNo+ "_"+ rows[i].preqItem +'"';
+					}
+					str += '}';
+					$('#processGrid-${rand}').datagrid('loading');
+					$.post('sapspace/batchStartProcess.html',
+						JSON.parse(str),
+						function(result){
+						$('#processGrid-${rand}').datagrid('loaded');
+						$.messager.show({
+							title: '信息提示', msg: result.message
+				        });
+						if (result.success){
+							$('#processGrid-${rand}').datagrid('reload');
+						} 
+				  	},'json');
+				}
+			});
+	 	} else {
+	 		$.messager.alert('信息提示','选择的单据状态含有非待审核状态,不能够启动批量审批流程!','info');
+	 	}
+		
+	} else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	}
+  
+}
+
+//查看流程详情
+function viewReqSheetDetail${rand}(){
+  var row = $('#processGrid-${rand}').datagrid('getSelections');
+  if (row.length > 0){
+  	if (row.length == 1) {
+  		$('#win-${rand}').dialog('setTitle', '采购单[' + row[0].preqNo + '--' + row[0].preqItem  + ']详情');
+
+  		$('#formPanel-${rand}').panel('refresh', 'sapspace/start/form.html?procdefId=${processDefId}&preqNo='+row[0].preqNo + "&preqItem=" + row[0].preqItem);
+	  	
+		$('#win-${rand}').dialog('open');
+  	} else {
+  		$.messager.alert('信息提示','请选择一条记录查看详情!','info');
+  	}
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择列表中的一条记录！"
+	});
+  }
+}
+
+function commitForm${rand}() {
+  $('#startForm').form('submit', {
+	url: 'sapspace/create/startProcess.html?processDefId=${processDefId}',
+	onSubmit: function(param) {
+		if ($('#attchFileGrid-${rand}').length > 0) {
+			var rows = $('#attchFileGrid-${rand}').datagrid('getRows');
+			$.each(rows, function(i, d){
+				param['attch_' + i] = d.fileNo + "_" + d.fileName
+			});
+		}
+	},
+	success: function(data) {
+	  var data = JSON.parse(data);
+	  $('#win-${rand}').dialog('close');
+	  $.messager.show({
+		title: '信息提示',
+		msg: data.message
+	  });
+	  //重新加载
+	  $('#processGrid-${rand}').datagrid('reload');
+	}
+  });
+}
+
+function addAttache${rand}(){
+	var sap_preqNo = $("#fp_preqNo").val();
+	var sap_preqItem = $("#fp_preqItem").val();
+	var url = '${file_upload_url}' //文件服务器的上传的URl
+ 	         +'?syId=${file_param_syId}'    //系统ID
+ 	         +'&syNm=${file_param_syNm}'  //系统名字
+ 	         +'&usrId=${appuser.userId?c}' //用户ID
+ 	         +'&usrNm=${appuser.name}'//用户名字
+ 	         +'&diyFolder=${file_param_diyFolder}'//文件上传的目录中自定义部分
+ 	         +'&uploadType=${file_parma_uploadType}' //上传的是ProcFile，取值只能是ProcFile或者BaseLib
+          	 +'&fileVersion=${file_param_fileVersion}' //文件版本号，自己在业务逻辑中确定
+          	 +'&iframeUrl=${file_param_iframeUrl}'
+          	 +'&tempParams=preqNo:'+sap_preqNo + ",preqItem:" + sap_preqItem
+          	 +'&callBackUrl=${sap_file_upload_callback_url}';
+	/**RUL后面跟的参数 **/
+	url=encodeURI(url);  //encodeURI
+	$('#upl-${rand}').attr('src', url);
+	$('#upload-${rand}').dialog('open');
+}
+
+//显示流程图
+function showProcessImage${rand}(){
+	$('#showProcessImageWin-${rand}').dialog({
+	    title: '流程图',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    href: 'workspace/showProcessDefImage.html?processDefinitionId=${processDefId}',
+	    modal: true,
+	    resizable:true
+	});
+}
+
+function initAttchFileGrid(sap_preqNo, sap_preqItem){
+	$('#attchFileGrid-${rand}').datagrid({
+		url:'sapspace/loadAttachments.json?preqNo=' + sap_preqNo + "&preqItem=" + sap_preqItem,
+		columns:[[
+			{field:'fileNo',title:'文件编号',width:100},
+			{field:'fileName',title:'文件名',width:120},
+			{field:'operate',title:'操作',width:120,
+				formatter: function(value,row,index){
+					var returnStr = "<a href='${file_download_url}"+ row.fileNo +"'>下载</a>"
+						+ "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0)'"
+						+ "onclick='delAttch(\""+ row.fileNo + "\"," + index +");'>删除</a>"
+					return returnStr;
+				}
+			}
+		]],
+		title:'附件列表',
+		fitColumns:true,
+	 	rownumbers:true,
+		nowrap: true,       
+		border : true
+	});
+}
+
+//上传文件回调
+function afterUpload(fileNo,fileName,fileSize,syId,syNm,usrId,usrNm,diyFolder,callBackUrl,tempParams){
+	var sap_preqNo = $("#fp_preqNo").val();
+	var sap_preqItem = $("#fp_preqItem").val();
+	$('#attchFilePanel-${rand}').panel('open');
+	attachmentGridReload(sap_preqNo, sap_preqItem);
+	//Grid add row
+// 	$('#attchFileGrid-${rand}').datagrid('appendRow',{
+// 		fileNo: fileNo,
+// 		fileName: fileName,
+// 		fileSize: fileSize
+// 	});
+}
+
+function delAttch(fileNo,index){
+	var sap_preqNo = $("#fp_preqNo").val();
+	var sap_preqItem = $("#fp_preqItem").val();
+	$.messager.confirm('提示信息','您确定要删除附件吗?',function(r){
+		if (r){
+			$.post('sapspace/delAttachment.json',
+				{
+					preqNo:sap_preqNo,
+					preqItem:sap_preqItem,
+					fileNo:fileNo
+				},
+				function(result){
+					$.messager.show({
+						title: '信息提示', msg: result.msg
+				    });
+				if (result.success){
+					//删除行
+					$('#attchFileGrid-${rand}').datagrid('deleteRow',index);
+				} 
+				},'json');
+		}
+	});
+}
+
+function winOnMax${rand}(){
+	$('#formPanel-${rand}').panel('resize',{
+		width: document.body.clientWidth - 35
+	})
+	$('#attchFilePanel-${rand}').panel('resize',{
+		width: document.body.clientWidth - 35
+	})
+	//附件
+	if ($('#attchFileGrid-${rand}').datagrid) {
+		$('#attchFileGrid-${rand}').datagrid('resize',{
+			width: document.body.clientWidth - 35
+		});
+	}
+}
+
+function winOnRestore${rand}(){
+	$('#formPanel-${rand}').panel('resize',{
+		width: 955
+	})
+	$('#attchFilePanel-${rand}').panel('resize',{
+		width: 955
+	})
+	//附件
+	$('#attchFileGrid-${rand}').datagrid('resize',{
+		width: 955
+	});
+}
+
+function attachmentGridReload(preqNo,preqItem){
+	//重新加载
+	 $('#attchFileGrid-${rand}').datagrid('reload');
+}
+
+function onFormPanelLoad(){
+	var sap_preqNo = $("#fp_preqNo").val();
+	var sap_preqItem = $("#fp_preqItem").val();
+	setTimeout(initAttchFileGrid(sap_preqNo, sap_preqItem), 1000);
+}
+
+//Search
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+     search${rand}();
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+     reset${rand}();
+});
+
+function search${rand}(){
+	var preqNo = $('#preqNo-${rand}').val();
+	var preqItem = $('#preqItem-${rand}').val();
+	$('#processGrid-${rand}').datagrid('reload',{preqNo:preqNo,preqItem:preqItem,status:status});
+}
+
+function reset${rand}(){
+	$('#preqNo-${rand}').val('');
+	$('#preqItem-${rand}').val('');
+	$('#status-${rand}').combobox('reset');
+}
+//关闭上传文件框
+function closeUploadDiag${rand}(){
+	$('#upload-${rand}').dialog('close');
+}
+
+</script>
+<#include "/common/foot.ftl">

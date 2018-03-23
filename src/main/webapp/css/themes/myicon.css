@@ -1,0 +1,112 @@
+.icon-process{
+	background:url('icons/myicon/process.png') no-repeat center center;
+}
+.icon-flow{
+	background:url('icons/myicon/flow.png') no-repeat center center;
+}
+.icon-task{
+	background:url('icons/myicon/task.png') no-repeat center center;
+}
+.icon-promanager{
+	background:url('icons/myicon/pro_manger.png') no-repeat center center;
+}
+.icon-history{
+	background:url('icons/myicon/history.png') no-repeat center center;
+}
+.icon-stop{
+	background:url('icons/myicon/stop.png') no-repeat center center;
+}
+.icon-handle{
+	background:url('icons/myicon/handle.png') no-repeat center center;
+}
+.icon-start{
+	background:url('icons/myicon/start.png') no-repeat center center;
+}
+.icon-retrieve{
+	background:url('icons/myicon/retrieve.png') no-repeat center center;
+}
+.icon-sync{
+	background:url('icons/myicon/sync.png') no-repeat center center;
+}
+.icon-deploy{
+	background:url('icons/myicon/deploy.gif') no-repeat center center;
+}
+
+.icon-waittask{
+	background:url('icons/myicon/wait_task.png') no-repeat center center;
+}
+.icon-complatetask{
+	background:url('icons/myicon/complate_task.png') no-repeat center center;
+}
+.icon-startprocess{
+	background:url('icons/myicon/start_process.png') no-repeat center center;
+}
+.icon-endprocess{
+	background:url('icons/myicon/end_process.png') no-repeat center center;
+}
+.icon-endprocess{
+	background:url('icons/myicon/end_process.png') no-repeat center center;
+}
+.icon-joinprocess{
+	background:url('icons/myicon/join_process.png') no-repeat center center;
+}
+.icon-sapwaittask{
+	background:url('icons/myicon/sap_wait_task.gif') no-repeat center center;
+}
+.icon-sapcomtask{
+	background:url('icons/myicon/sap_complete_task.gif') no-repeat center center;
+}
+.icon-sapstartprocess{
+	background:url('icons/myicon/sap_start_process.png') no-repeat center center;
+}
+.icon-prosearch{
+	background:url('icons/myicon/pro_search.png') no-repeat center center;
+}
+.icon-procategory{
+	background:url('icons/myicon/pro_category.png') no-repeat center center;
+}
+.icon-prodefine{
+	background:url('icons/myicon/pro_define.png') no-repeat center center;
+}
+
+.icon-monitor{
+	background:url('icons/myicon/monitor.png') no-repeat center center;
+}
+
+.icon-turntodo{
+	background:url('icons/myicon/turn_todo_task.png') no-repeat center center;
+}
+.icon-batch_handle{
+	background:url('icons/myicon/batch_handle.png') no-repeat center center;
+}
+
+.icon-process_desc{
+	background:url('icons/myicon/process_description.png') no-repeat center center;
+}
+
+.icon-down_load{
+	background:url('icons/download.png') no-repeat center center;
+}
+
+.icon-pro_business_conf{
+	background:url('icons/myicon/process_business_conf.png') no-repeat center center;
+}
+
+.icon-job_preparation{
+	background:url('icons/myicon/job_preparation.png') no-repeat center center;
+}
+ .icon-layer{
+ 	background: url("icons/layers.png") no-repeat center center;
+ }
+ .icon-user{
+  	background: url("icons/user.png") no-repeat center center;
+ }
+ .icon-upload{
+  	background: url("icons/upload.png") no-repeat center center;
+ }
+  .icon-clear{
+  	background: url("icons/clear.png") no-repeat center center;
+ }
+   .icon-more{
+  	background: url("icons/myicon/more_info.png") no-repeat center center;
+ }

@@ -1,0 +1,1 @@
+INSERT INTO auth_resource (id, pid, type, name, code, index_, action, url, icon, status, remark, create_by, create_time, update_by, update_time) VALUES ('29', '5', '1', '流程角色管理', '', '1', '', 'processRole/confProcessRole.html', 'icon-prosearch', '0', NULL, 'ali', '2014-08-08 14:46:32.200', 'ali', '2014-08-08 14:47:13.000');

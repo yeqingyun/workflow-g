@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="179">
+  <process id="L-SendOrder-Process" name="派单流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="applyUserId"></startEvent>
+    <userTask id="nmb_recordTask" name="工程师处理" activiti:assignee="${processHelpService.getEmpAccount(engineerId)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="nmb_recordTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.message.LSendMessageToHardwareEngineer"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="replyTask" name="用户确认" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow2" sourceRef="nmb_recordTask" targetRef="replyTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.LastProListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="replyTask" targetRef="endevent1">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.CheckProListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-SendOrder-Process">
+    <bpmndi:BPMNPlane bpmnElement="L-SendOrder-Process" id="BPMNPlane_L-SendOrder-Process">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_recordTask" id="BPMNShape_nmb_recordTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="replyTask" id="BPMNShape_replyTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="110.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="400.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="55.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="205.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="355.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="137.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

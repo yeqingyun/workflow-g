@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${base}css/sunny/jquery-ui-1.10.4.custom.min.css"/>
+<script type="text/javascript" src="${base}js/jquery.min.js"></script>
+<script type="text/javascript" src="${base}js/jquery-ui.min.js"></script>
+<style type="text/css">
+body {
+  font-size: 14px;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+  $('.startprocess').click(function() {
+	var procdefId = $(this).parent().parent().find('td:first-child').text();
+	$.get('start/' + procdefId + '.html', function(data) {
+	  $('<div title="发起流程"/>').append($('<form id="createProcess" method="post" action="create/' + procdefId + '.html"/>').append(data))
+		.dialog(
+		  {height:300, width:400,
+		   buttons: [{text: '发起流程', click: function(){
+			 $('#createProcess').submit();
+		   }}]});
+	});
+  });
+});
+</script>
+</head>
+<body>
+<table>
+  <tr>
+	<th>ID</th>
+	<th>Name</th>
+	<th>Key</th>
+	<th>Category</th>
+	<th></th>
+  </tr>
+<#list flows as f>
+  <tr>
+	<td>${f.id}</td>
+	<td>${f.name!""}</td>
+	<td>${f.key}</td>
+	<td>${f.category}</td>
+	<td><a class="startprocess" href="javascript:void(0)">启动</a></td>
+  </tr>
+</#list>
+</table>
+</body>
+</html>

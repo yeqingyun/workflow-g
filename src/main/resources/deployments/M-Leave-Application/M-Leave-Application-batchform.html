@@ -1,0 +1,253 @@
+<#include "/common/head.html">
+
+<!-- 表单开始 -->
+
+<!-- 主管面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'ExecutiveDirectorAudiTask'>
+		<div id="ExecutiveDirectorAudiTask">
+			<form id="ExecutiveDirectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="ExecutiveDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td colspan="6" class="formtable_td_key">主管审批</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" >直属主管审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_ExecutiveDirectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input  type="radio" name="fp_ExecutiveDirectorAudi" checked="checked"  value="0"/>同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input  type="radio" name="fp_ExecutiveDirectorAudi"  value="1"/>不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >主管签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input   type="hidden" name="fp_ExecutiveDirectorAudiName" data-options="required:true" value="${appuser.name}"/>${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2" >
+							<input type="hidden" readonly="readonly" name="fp_ExecutiveDirectorAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+
+<!-- 部门经理面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'departMangerAudiTask'>
+		<div id="departMangerAudiTask">
+			<form id="departMangerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="departMangerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td colspan="6" class="formtable_td_key">部门经理审批</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" >部门经理审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_departMangerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_departMangerAudi" checked="checked"  value="0"/>同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_departMangerAudi" value="1"/>不同意&nbsp;&nbsp;&nbsp;&nbsp;
+						
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_departMangerAudiName"  value="${appuser.name}"/>${appuser.name}
+						</td>						
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="hidden" readonly="readonly" name="fp_departMangerAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}	
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+
+<!-- 人力资源部专员面谈结果-->
+<#if currentStep?exists> 
+	<#if currentStep == 'humanResouceAudiTask'>
+		<div id="humanResouceAudiTask">
+			<form id="humanResouceAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="humanResouceAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源部查核意见</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >人力资源部专员查核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_humanResouceAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">查核结果：</td>
+						<td class="formtable_td_value"  colspan="5" >
+							<input type="radio" name="fp_humanResouceAudi" checked="checked"  value="0"/>同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_humanResouceAudi"  value="1"/>不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源专员签字：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_humanResouceAudiName"  value="${appuser.name}"/>${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_humanResouceAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+
+<!-- 人力资源总监签名 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'hrChiefInspectorAudiTask'>
+		<div id="hrChiefInspectorAudiTask">
+			<form id="hrChiefInspectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="hrChiefInspectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源部总监审批</td>
+					</tr>
+					<tr>	
+						<td class="formtable_td_key" >人力资源总监审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_hrChiefInspectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_hrChiefInspectorAudi" checked="checked"  value="0"/>同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_hrChiefInspectorAudi"  value="1"/>不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部总监签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_hrChiefInspectorAudiName"  value="${appuser.name}"/>${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_hrChiefInspectorAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+	</#if> 
+</#if>
+
+
+<!-- 总经理签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'generalManagerAudiTask'>
+		<div id="generalManagerAudiTask">
+			<form id="generalManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="generalManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >总经理审批</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="3">总经理审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_generalManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_generalManagerAudi" checked="checked" onclick="sel(true)" value="0"/>同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_generalManagerAudi" onclick="sel(false)" value="1"/>不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							
+						</td>
+					</tr>
+					<tr>	
+						<td class="formtable_td_key">总经理签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input class="easyui-validatebox"  type="hidden" name="fp_generalManagerAudiName"  value="${appuser.name}"/>${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" readonly="readonly" name="fp_generalManagerAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+<!-- 人力资源部专员确认结果-->
+<#if currentStep?exists>  
+	<#if currentStep == 'humanResouceConfirmTask'>
+		<div id="humanResouceConfirmTask">
+			<form id="humanResouceConfirmTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="humanResouceConfirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源专员确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rolspan="2">人力资源专员确认：</td>
+						<td class="formtable_td_value" colspan="5">
+							<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出离职人员信息</a>
+							<span style="font-size: 13pt;  font-family:黑体">请前往  SAP 确认是否修改工资范围&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<!-- <input type="radio" name="fp_humanResouceConfirmAudi" checked="checked"  value="0" />是&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_humanResouceConfirmAudi"  value="1" />否&nbsp;&nbsp;&nbsp;&nbsp;
+							<textarea style="width: 600px; height: 50px" name="fp_humanResouceConfirmAdvice" class="formtable_remark"></textarea> -->
+						</td>
+					</tr>			
+					<tr>
+						<td class="formtable_td_key">人力资源专员签字：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_humanResouceConfirmName"  value="${appuser.name}"/>${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_humanResouceConfirmTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		//导出
+		$('#export_btn-${rand}').bind('click', function(){
+			var form = $("<form>");
+		   	form.attr('style', 'display:none');
+		   	form.appendTo($(document.body));
+		    form.form('submit',{url:'export/exportLeaveInfo.html'});
+		    form.remove();
+		});
+		</script>
+	</#if>
+</#if>
+<#include "/common/foot.html">

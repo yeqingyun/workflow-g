@@ -1,0 +1,987 @@
+<#include "/common/head.html">
+	<#assign orgNameVar=""/>
+	<#assign problemDescribeVar=""/>	
+	<#assign applyUserVar=""/>
+	<#assign applyDateVar=""/>
+	<#assign businessUnitLeaderAdviceVar=""/>
+	<#assign businessUnitLeaderNameVar=""/>	
+	<#assign businessUnitLeaderTimeVar=""/>
+	<#assign processEngineerAnalysisVar=""/>
+	<#assign processEngineerAdviceVar=""/>	
+	<#assign processEngineerAudiVar=""/>
+	<#assign processEngineerNameVar=""/>
+	<#assign processEngineerTimeVar=""/>
+	<#assign processDeptManagerAdviceVar=""/>	
+	<#assign processDeptManagerNameVar=""/>
+	<#assign processDeptManagerTimeVar=""/>	
+	<#assign businessUnitLeaderConfirmAdviceVar=""/>
+	<#assign businessUnitLeaderConfirmNameVar=""/>
+	<#assign businessUnitLeaderConfirmTimeVar=""/>
+<!-- 展示表单 -->
+<#if processSteps??>
+	 <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+	   	  	<tr>
+				 <td class="formtable_td_key">需求部门</td>
+				 <td class="formtable_td_value">
+				 	<#if steps.vars["orgName"]??>
+						${(steps.vars["orgName"])!""}
+						<#assign orgNameVar=steps.vars["orgName"]/>
+					</#if>
+				 </td>
+				 <td class="formtable_td_key">日期</td>
+				 <td class="formtable_td_value" colspan="3">
+					<#if steps.vars["applyDate"]??>
+						${(steps.vars["applyDate"])!""}
+						<#assign applyDateVar=steps.vars["applyDate"]/>
+					</#if>
+				 </td>
+			</tr>
+			<tr>
+		  	  	<td class="formtable_td_key" colspan="6">一、现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></td>
+		  	</tr>
+		  	<tr>
+				<td class="formtable_td_value" colspan="6">
+					<textarea  style="font-size: 12px; width: 800px; height: 60px;" readonly="readonly" disabled="disabled" ><#if steps.vars["problemDescribe"]??>${(steps.vars["problemDescribe"])!""}<#assign problemDescribeVar=steps.vars["problemDescribe"]?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/></#if></textarea>
+				</td>
+		  	</tr> 
+		  	<tr>
+		  		<td class="formtable_td_key">经办人</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["applyUser"]??>
+						${(steps.vars["applyUser"])!""}
+						<#assign applyUserVar=steps.vars["applyUser"]/>
+					</#if>
+				</td>
+				<!--  <td class="formtable_td_key">签字日期</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["applyDate"]??>
+						${(steps.vars["applyDate"])!""}
+						<#assign applyDateVar=steps.vars["applyDate"]/>
+					</#if>
+				</td>  -->
+		  	</tr>
+			<#if steps.attachments??>
+					<tr>
+					  	<td class="formtable_td_key">附件：</td>
+					  	  	<td class="formtable_td_value" colspan="5">
+					  	  		<#list steps.attachments as attachs>
+					  	  			<a href="${attachs.url}">
+					  	  				${attachs.name}_${attachs.revision}.0
+					  	  			</a><br/>
+					  	  		</#list>
+					  		</td>
+				  </tr>
+			</#if>
+	   </#if>
+	   <!-- 修改申请 -->
+		<!--  	<#if steps.key == 'nmb_updateProcessOptimizationTask'>
+			<#if steps.vars["endProcesssAudi"] == '0'>
+				<tr>
+					<td class="formtable_td_key" colspan="6" >修改申请</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" colspan="6">一、现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></td>
+				</tr>
+				 <tr>
+					<td class="formtable_td_value" colspan="6">
+					<textarea  style="font-size: 12px; width: 900px; height: 60px;" readonly="readonly"  >${(steps.vars["updateproblemDescribe"])!""}</textarea>
+				</td>
+			  </tr>
+			  </#if>
+			  <#if steps.vars["endProcesssAudi"] == '1'>
+			  <tr>
+			  		<td class="formtable_td_key" colspan="6" align="center">结束流程</td>
+			  </tr>
+			  <tr>
+					<td class="formtable_td_key" >结束原因</td>
+					<td class="formtable_td_value" colspan="5">
+					<textarea  style="font-size: 12px; width: 800px; height: 60px;" readonly="readonly"  >${(steps.vars["updateproblemDescribe"])!""}</textarea>
+				</td>
+			  </tr>
+			  </#if>
+		  	<tr>
+				 <td class="formtable_td_key">经办人</td>
+				 <td class="formtable_td_value" >${(steps.vars["updateapplyUser"])!""}</td>
+				 <td class="formtable_td_key">日期</td>
+				 <td class="formtable_td_value" colspan="3">${(steps.vars["updateapplyDate"])!""}</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件</td>
+				<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+						<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+					</#list>
+				</td>
+			</tr>
+			</#if>
+		</#if>
+		 -->
+	    <!-- 需求部门负责人 -->
+		<#if steps.key == 'businessUnitLeaderTask'>
+		<tr>
+			<td class="formtable_td_key" colspan="6" align="center">需求部门负责人审核</td>
+		</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["businessUnitLeaderAudi"]??>
+						<#if steps.vars["businessUnitLeaderAudi"]?contains("0")>同意</#if> 
+	   					<#if steps.vars["businessUnitLeaderAudi"]?contains("1")>不同意</#if>
+   					</#if>
+				</td>
+			</tr>
+			<#if steps.vars["businessUnitLeaderAdvice"]??>
+			<#if steps.vars["businessUnitLeaderAdvice"]?trim != "">
+			<tr>
+				<td class="formtable_td_key" >意见</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea style="font-size: 12px; width: 800px; height: 60px;" readonly="readonly" disabled="disabled" ><#if steps.vars["businessUnitLeaderAdvice"]??>${steps.vars["businessUnitLeaderAdvice"]!""}<#assign businessUnitLeaderAdviceVar=steps.vars["businessUnitLeaderAdvice"]?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/><#else><#assign businessUnitLeaderAdviceVar=""/></#if></textarea>
+				</td>
+			</tr>
+			<#else><#assign businessUnitLeaderAdviceVar=""/>
+			</#if>
+			</#if>
+			<tr>
+				<td class="formtable_td_key">需求部门负责人签字</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["businessUnitLeaderName"]??>
+						${steps.vars["businessUnitLeaderName"]!""}
+						<#assign businessUnitLeaderNameVar=steps.vars["businessUnitLeaderName"]/>
+					</#if>
+				</td>
+				<td class="formtable_td_key">签字时间</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["businessUnitLeaderTime"]??>
+						${steps.vars["businessUnitLeaderTime"]!""}
+						<#assign businessUnitLeaderTimeVar=steps.vars["businessUnitLeaderTime"]/>
+					</#if>
+				</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件</td>
+				<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+						<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+					</#list>
+				</td>
+			</tr>
+			</#if>
+		</#if>
+		 <!-- 工程师处理 -->
+		<#if steps.key == 'processEngineerAudiTask'>
+			<tr>
+					<td class="formtable_td_key" colspan="6" >二、问题分析</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >问题分析</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea style="font-size: 12px; width: 650px; height: 60px;" readonly="readonly" disabled="disabled" ><#if steps.vars["processEngineerAnalysis"]??>${steps.vars["processEngineerAnalysis"]!""}<#assign processEngineerAnalysisVar=steps.vars["processEngineerAnalysis"]?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/></#if></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >结论</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea style="font-size: 12px; width: 650px; height: 36px;" readonly="readonly" disabled="disabled" ><#if steps.vars["processEngineerAdvice"]??>${steps.vars["processEngineerAdvice"]!""}<#assign processEngineerAdviceVar=steps.vars["processEngineerAdvice"]?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/></#if></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">流程工程师签字</td>
+				<td class="formtable_td_value">
+					<#if steps.vars["processEngineerName"]??>
+						${steps.vars["processEngineerName"]!""}
+						<#assign processEngineerNameVar=steps.vars["processEngineerName"]/>
+					</#if>
+				</td>
+				<td class="formtable_td_key">签字时间</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["processEngineerTime"]??>
+						${steps.vars["processEngineerTime"]!""}
+						<#assign processEngineerTimeVar=steps.vars["processEngineerTime"]/>
+					</#if>
+				</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件</td>
+				<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+						<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+					</#list>
+				</td>
+			</tr>
+			</#if>
+		</#if>
+		 <!-- 流程管理部经理 -->
+		<#if steps.key == 'processDeptManagerAudiTask'>
+			<tr>
+					<td class="formtable_td_key" colspan="6" align="center">流程管理部经理审核</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["processDeptManagerAudi"] == '0'>同意</#if>
+					<#if steps.vars["processDeptManagerAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<#if steps.vars["processDeptManagerAdvice"]??>
+			<#if steps.vars["processDeptManagerAdvice"]?trim != "">
+			<tr>
+				<td class="formtable_td_key" >审核意见</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea style="font-size: 12px; width: 650px; height: 36px;" readonly="readonly" disabled="disabled" ><#if steps.vars["processDeptManagerAdvice"]??>${steps.vars["processDeptManagerAdvice"]!""}<#assign processDeptManagerAdviceVar=steps.vars["processDeptManagerAdvice"]?replace(' ','&nbsp;','i')?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/><#else><#assign processDeptManagerAdviceVar=""/></#if></textarea>
+				</td>
+			</tr>
+			<#else><#assign processDeptManagerAdviceVar=""/>
+			</#if>
+			</#if>
+			<tr>
+				<td class="formtable_td_key">流程管理部经理签字</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["processDeptManagerName"]??>
+						${steps.vars["processDeptManagerName"]!""}
+						<#assign processDeptManagerNameVar=steps.vars["processDeptManagerName"]/>
+					</#if>
+				</td>
+				<td class="formtable_td_key">签字时间</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["processDeptManagerTime"]??>
+						${steps.vars["processDeptManagerTime"]!""}
+						<#assign processDeptManagerTimeVar=steps.vars["processDeptManagerTime"]/>
+					</#if>
+				</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件</td>
+				<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+						<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+					</#list>
+				</td>
+			</tr>
+			</#if>
+		</#if>
+		
+		 <!-- 需求部门负责人 -->
+		<#if steps.key == 'businessUnitLeaderConfirmTask'>
+			<tr>
+					<td class="formtable_td_key" colspan="6" align="center">需求部门会签</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >会签意见</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea style="font-size: 12px; width: 650px; height: 36px;" readonly="readonly" disabled="disabled" ><#if steps.vars["businessUnitLeaderConfirmAdvice"]??>${steps.vars["businessUnitLeaderConfirmAdvice"]!""}<#assign businessUnitLeaderConfirmAdviceVar=steps.vars["businessUnitLeaderConfirmAdvice"]?replace(' ','&nbsp;','i')?replace('<','','i')?replace('>','','i')?replace('"',"''",'i')?replace('\r\n','<br>','i')/></#if></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">需求部门负责人签字</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["businessUnitLeaderConfirmName"]??>
+						${steps.vars["businessUnitLeaderConfirmName"]!""}
+						<#assign businessUnitLeaderConfirmNameVar=steps.vars["businessUnitLeaderConfirmName"]/>
+					</#if>
+				</td>
+				<td class="formtable_td_key">签字时间</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["businessUnitLeaderConfirmTime"]??>
+						${steps.vars["businessUnitLeaderConfirmTime"]!""}
+						<#assign businessUnitLeaderConfirmTimeVar=steps.vars["businessUnitLeaderConfirmTime"]/>
+					</#if>
+				</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件</td>
+				<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+						<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+					</#list>
+				</td>
+			</tr>
+			</#if>
+			
+			 <tr id="printStr${rand}">
+					<td class="formtable_td_value" colspan="6" align="center">
+						<a class="easyui-linkbutton" data-options="iconCls:'icon-print'" onClick="printProcessData()">打印流程优化需求表</a>
+						<div id="ProcesssOptimizationPrintDiv${rand}" style="display:none;">
+							<div id="btnDivPro${rand}" align="center" style="padding:8px;">
+						        <a id="printBtnPro${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-print'">打印</a>
+						        <a id="printHelpBtnPro${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-help'">打印帮助</a>
+						        <a id="closeBtnPro${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+						        <object  id="LODOP_OB_Pro${rand}" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0> 
+       								<embed id="LODOP_EM_Pro${rand}" type="application/x-print-lodop" width=0 height=0></embed>
+								</object>
+							</div>
+							<div id="ProcesssOptimizationProDiv${rand}" class="ProDiv">
+								<div class="ProDiv">
+									<div class="ProTitle">
+									深圳市金立通信设备有限公司</br>
+									流程优化需求表
+									</div>
+									<div class="ProTableDiv">
+										<table id="ProcesssOptimizationProTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+											<tbody>			       						
+							
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
+			</tr>
+			
+		</#if>
+		<style type="text/css" id="stylePro${rand}">
+			.ProDiv {
+				width:760px;margin:0 auto;margin-bottom:10px;
+			}
+			.ProTitle {
+				text-align:center;font-weight:bold;
+			}
+			.ProTableDiv {
+				height:auto;
+			}
+			table.gridtable {
+				font-family: verdana,arial,sans-serif;
+				font-size:11px;
+				color:#333333;
+				border-color: #666666;
+				border-collapse: collapse;
+			}
+			table.gridtable thead td {
+				padding: 4px;
+				border-top:solid 1px #666666;
+				border-right:solid 1px #666666;
+				border-left:solid 1px #666666;
+			}
+			table.gridtable tbody td {
+				padding: 4px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: #666666;
+			}
+		</style>
+		<script type="text/javascript">	
+			$(function() {
+	  			Date.prototype.Format = function (fmt) { //author: meizz 
+	  			    var o = {
+	  			        "M+": this.getMonth() + 1, //月份 
+	  			        "d+": this.getDate(), //日 
+	  			        "H+": this.getHours(), //小时 
+	  			        "m+": this.getMinutes(), //分 
+	  			        "s+": this.getSeconds(), //秒 
+	  			        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+	  			        "S": this.getMilliseconds() //毫秒 
+	  			    };
+	  			    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+	  			    for (var k in o)
+	  			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+	  			    return fmt;
+	  			}
+			});
+			
+			function printProcessData() {
+  	    		$('#ProcesssOptimizationPrintDiv${rand}').css('display','block');
+  	    		
+				var orgNameVarStr="${orgNameVar}";
+				var problemDescribeVarStr="${problemDescribeVar}";	
+				var applyUserVarStr="${applyUserVar}";
+				var applyDateVarStr="${applyDateVar}";
+				var businessUnitLeaderAdviceVarStr="${businessUnitLeaderAdviceVar}";
+				var businessUnitLeaderNameVarStr="${businessUnitLeaderNameVar}";	
+				var businessUnitLeaderTimeVarStr="${businessUnitLeaderTimeVar}";
+				var processEngineerAnalysisVarStr="${processEngineerAnalysisVar}";
+				var processEngineerAdviceVarStr="${processEngineerAdviceVar}";	
+				var processEngineerAudiVarStr="${processEngineerAudiVar}";
+				var processEngineerNameVarStr="${processEngineerNameVar}";
+				var processEngineerTimeVarStr="${processEngineerTimeVar}";
+				var processDeptManagerAdviceVarStr="${processDeptManagerAdviceVar}";	
+				var processDeptManagerNameVarStr="${processDeptManagerNameVar}";
+				var processDeptManagerTimeVarStr="${processDeptManagerTimeVar}";	
+				var businessUnitLeaderConfirmAdviceVarStr="${businessUnitLeaderConfirmAdviceVar}";
+				var businessUnitLeaderConfirmNameVarStr="${businessUnitLeaderConfirmNameVar}";
+				var businessUnitLeaderConfirmTimeVarStr="${businessUnitLeaderConfirmTimeVar}";
+				
+				var applyDate = '';
+				if(applyDateVarStr != null && applyDateVarStr != '') {
+					applyDate = applyDateVarStr.replace(/-/g,"/");
+					applyDate = new Date(applyDate).Format("yyyy年MM月dd日");
+				}
+				
+				var businessUnitLeaderTime = '';
+				if(businessUnitLeaderTimeVarStr != null && businessUnitLeaderTimeVarStr != '') {
+					businessUnitLeaderTime = businessUnitLeaderTimeVarStr.replace(/-/g,"/");
+					businessUnitLeaderTime = new Date(businessUnitLeaderTime).Format("yyyy年MM月dd日");
+				}
+
+				var processEngineerTime = '';
+				if(processEngineerTimeVarStr != null && processEngineerTimeVarStr != '') {
+					processEngineerTime = processEngineerTimeVarStr.replace(/-/g,"/");
+					processEngineerTime = new Date(processEngineerTime).Format("yyyy年MM月dd日");
+				}
+
+				var processDeptManagerTime = '';
+				if(processDeptManagerTimeVarStr != null && processDeptManagerTimeVarStr != '') {
+					processDeptManagerTime = processDeptManagerTimeVarStr.replace(/-/g,"/");
+					processDeptManagerTime = new Date(processDeptManagerTime).Format("yyyy年MM月dd日");
+				}
+
+				var businessUnitLeaderConfirmTime = '';
+				if(businessUnitLeaderConfirmTimeVarStr != null && businessUnitLeaderConfirmTimeVarStr != '') {
+					businessUnitLeaderConfirmTime = businessUnitLeaderConfirmTimeVarStr.replace(/-/g,"/");
+					businessUnitLeaderConfirmTime = new Date(businessUnitLeaderConfirmTime).Format("yyyy年MM月dd日");
+				}
+				
+				var str = ''
+				str += '<tr>';
+				str += '<td width="80" valign="top" align="center">'+'需求部门'+'</td>';
+				str += '<td width="300" valign="top">' + orgNameVarStr + '</td>';
+				str += '<td width="80" valign="top" align="center">'+'日期'+'</td>';
+				str += '<td width="300" valign="top">' + applyDate +  '</td>';
+				str += '</tr>';	
+				str += '<tr>';
+				str +='<td colspan="4" valign="top">'+ '一、现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></br></br>'
+						+problemDescribeVarStr+'</br></br>'
+						+'经办人:'+applyUserVarStr+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+						+'<span style="margin-left:350px;">需求部门负责人:'+businessUnitLeaderNameVarStr+'&nbsp;&nbsp;'
+						+'&nbsp;&nbsp;&nbsp;&nbsp;日期:'+businessUnitLeaderTime+'</span></td>';
+				str += '</tr>';
+				str += '<tr>';
+				str += '<td colspan="4" valign="top">'+ '二、问题分析</br></br>'
+						+processEngineerAnalysisVarStr+'</br></br>'
+						+'结论:'+processEngineerAdviceVarStr+'</br></br>'
+						+'流程工程师:'+processEngineerNameVarStr+'&nbsp;&nbsp;&nbsp;&nbsp;日期：'+processEngineerTime+'&nbsp;&nbsp;'
+						+'<span style="margin-left:180px;">  流程管理部负责人:'+processDeptManagerNameVarStr+'&nbsp;&nbsp;'
+						+'&nbsp;&nbsp;&nbsp;&nbsp;'+'日期：'+processDeptManagerTime+'</span>'
+						+'</td>';
+				str += '<tr>';
+				str += '<tr>';
+				str += '<td colspan="4" valign="top">'+ '需求部门会签</br></br>'
+						+businessUnitLeaderConfirmAdviceVarStr+'</br></br>'
+						+'<span style="margin-left:450px;"> 需求部门负责人:'+businessUnitLeaderConfirmNameVarStr+'&nbsp;&nbsp;&nbsp;&nbsp;'
+						+'日期：'+businessUnitLeaderConfirmTime+'</span>'
+						+'</td>';
+				str += '<tr>';
+				str += '</tr>';	
+				$('#ProcesssOptimizationProTb${rand} tbody').append(str);
+				 		
+  				var ProcesssDlg = $("#ProcesssOptimizationPrintDiv${rand}").dialog({
+  					width : 980,
+  					height : 600,
+  			        closed : true,
+  			        cache : false,
+  			        modal : true,
+  				    onClose: function() {					      
+  				    	$('#ProcesssOptimizationProTb${rand} tbody').html('');
+  				    }
+  				});
+  				
+  				$("#ProcesssOptimizationPrintDiv${rand}").dialog('open').dialog("center").dialog('setTitle', '打印');
+  				
+				$('#printBtnPro${rand}').bind('click',function(){
+					var btnDiv = $('#btnDivPro${rand}').hide();
+					LODOP = getLodop(document.getElementById('LODOP_OB_Pro${rand}'),document.getElementById('LODOP_EM_Pro${rand}'));
+					if ( typeof(LODOP) != "undefined" && LODOP != null) {
+			            var strBodyStyle = "<style>" + document.getElementById("stylePro${rand}").innerHTML + "</style>";
+			            var strFormHtml = strBodyStyle + "<body style='text-align:center;'>" + document.getElementById("ProcesssOptimizationProDiv${rand}").innerHTML + "</body>";
+			            LODOP.ADD_PRINT_HTM(10,10,730,1050,strFormHtml);
+						LODOP.PREVIEW(); //打印预览  
+					} else {
+						btnDiv.show();
+						$.messager.alert('信息提示','打印控件未安装,请点击打印帮助按钮,详细阅读打开的页面中的内容!','warning');
+					}
+					btnDiv.show();
+				});
+				
+				$('#printHelpBtnPro${rand}').bind('click',function(){
+					window.open("${base}common/printHelp/printHelp.html", "helpPrint", "");
+				});
+				
+				$('#closeBtnPro${rand}').bind('click',function(){
+					ProcesssDlg.dialog('close');
+				});
+				
+			}
+				</script>
+		</#list>
+	</table>
+</#if>
+<!-- 开始表单 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	 	<tr>
+			  	        <td class="formtable_td_key">需求部门</td>
+			  	        <td class="formtable_td_value">
+					  		<input type="hidden" id="applyUserId${rand}" name="fp_applyUserId" value="${appuser.account}"/>
+							<input  class="easyui-validatebox"  type="hidden" value="${appuser.orgName}" name="fp_orgName"  />${appuser.orgName}
+					  		<input type="hidden" id="empId${rand}" name="fp_empId"/>
+					  	</td>
+					  	<td class="formtable_td_key" >日期</td>
+						<td class="formtable_td_value" colspan="3" >
+						<input  type="hidden" name="fp_applyDate" readonly="readonly" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+				  	</tr>
+				  	<tr>
+		  	  			<td class="formtable_td_key" colspan="6">一、现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></td>
+		  	  		</tr>
+		  	  		<tr>
+					<td class="formtable_td_value" colspan="6">
+						<textarea name="fp_problemDescribe" class="easyui-validatebox"   
+							style="font-size: 12px; width: 800px; height: 100px;" data-options="required:true"></textarea>
+					</td>
+		  	  		</tr>
+		  	  		<tr>
+		  	  			<td class="formtable_td_key" >经办人</td>
+						<td class="formtable_td_value" colspan="5">
+						<input class="easyui-validatebox"  type="hidden" name="fp_applyUser" data-options="required:true" value="${appuser.name}" />${appuser.name}
+						</td>
+		  	  		</tr>
+				  </table>
+				 </form>
+		</div>
+		
+		<script type="text/javascript">
+		$.post("hrFlow/getHrUserInfo.json",
+				{
+					account:$("#applyUserId${rand}").val()
+				},
+				function(data){
+					if (data.success) {
+						$('#empId${rand}').val(('00000000'+data.obj.empId).substring(('00000000'+data.obj.empId).length-8,('00000000'+data.obj.empId).length));
+					}
+				});
+		</script>
+	</#if>
+</#if>	
+
+	
+<!-- 修改申请 -->
+<!--  <#if currentStep?exists>
+	<#if currentStep == 'nmb_updateProcessOptimizationTask'>
+		<div id="nmb_updateProcessOptimizationTask">
+			<form id="nmb_updateProcessOptimizationTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_updateProcessOptimizationTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	 	<tr id="showContent${rand}">
+		  	  	 		<td class="formtable_td_key" rowspan="4">修改申请</td>
+		  	  	 		<td class="formtable_td_key" >是否结束流程</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="endProcesssAudiAgree${rand}" type="radio" name="fp_endProcesssAudi" mobile="审核结果_同意" checked="checked" value="0" />修改申请
+							<input id="endProcesssAudiDisagree${rand}" type="radio" name="fp_endProcesssAudi" mobile="审核结果_不同意" value="1" />结束流程
+						</td>
+		  	  	 	</tr>
+				  	<tr id="showProblem${rand}">
+		  	  			<td class="formtable_td_key" colspan="6">现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></td>
+		  	  		</tr>
+		  	  		<tr>
+						<td class="formtable_td_value" colspan="6">
+							<textarea name="fp_updateproblemDescribe" class="easyui-validatebox"  id="updateproblemDescribe${rand}" 
+								style="font-size: 12px; width: 700px; height: 100px;" onblur="checkInput1();"  data-options="required:true"></textarea>
+						</td>
+		  	  		</tr>
+		  	  		<tr>
+			  	        <td class="formtable_td_key">需求部门</td>
+			  	        <td class="formtable_td_value">
+					  		<input type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input  class="easyui-validatebox"  type="hidden" value="${appuser.orgName}" name="fp_orgName"  />${appuser.orgName}
+					  	</td>
+					  	<td class="formtable_td_key" >经办人</td>
+						<td class="formtable_td_value" >
+						<input class="easyui-validatebox"  type="hidden" name="fp_updateapplyUser" data-options="required:true" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key" >签字时间</td>
+						<td class="formtable_td_value"  >
+						<input  type="hidden" name="fp_updateapplyDate" readonly="readonly" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+				  	</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			
+			$("input[name='fp_endProcesssAudi']").bind("click",function(){ 
+		        //测试操作代码 
+		        var $selectedvalue = $(this).val();
+			        if ($selectedvalue == 1) {
+			        	var trObj = '<tr id="endReason${rand}">'
+			        		+'<td class="formtable_td_key"  colspan="6">结束原因</td>'
+		  	  				+'</tr>';
+		  	  			if ($('#endReason${rand}').length <= 0) {
+			        		 $("#showContent${rand}").after(trObj);
+			        	}
+			            $.parser.parse('#endReason${rand}');
+			            
+			            $("#showProblem${rand}").remove();
+			            
+			        }else if ($selectedvalue == 0) {
+			        	var trObj = '<tr id="showProblem${rand}">'
+			        		+'<td class="formtable_td_key" colspan="6">现状及问题描述<span style="color:red">（简述业务现状、痛点、主要问题点等）</span></td>'
+		  	  				+'</tr>';
+		  	  			if ($('#showProblem${rand}').length <= 0) {
+			        		 $("#showContent${rand}").after(trObj);
+			        	}
+			            $.parser.parse('#showProblem${rand}');
+			            
+			            $("#endReason${rand}").remove();
+			        }
+		        });
+			
+			//用于限制文本框输入全空格
+			function checkInput1(){
+				if($("input[name='fp_endProcesssAudi']:checked").val() == '0'){
+					return;
+				}
+				var result=$("#updateproblemDescribe${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#updateproblemDescribe${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+		</script>
+	</#if>
+</#if>  -->
+				
+<!-- 需求部门负责人 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'businessUnitLeaderTask'>
+		<div id="businessUnitLeaderTask">
+			<form id="businessUnitLeaderTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="businessUnitLeaderTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" colspan="6" align="center">需求部门负责人审核</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >审核结果</td>
+						<td class="formtable_td_value" colspan="5" >
+							<!--  <input id="businessUnitLeaderAgree${rand}" type="radio" name="fp_businessUnitLeaderAudi" mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="businessUnitLeaderDisagree${rand}" type="radio" name="fp_businessUnitLeaderAudi" mobile="审核结果_不同意" value="1" />不同意  -->
+							<div style="float:left;width:800px;">
+								<div style="float:left;width:780px;margin-top:5px;margin-left:5px;">
+									<div style="float:left;width:5px;">
+									</div>
+									<div style="float:left;">
+										<input type="checkbox" name="businessUnitLeaderAudi"  mobile="审核结果_同意" value="0" />同意
+		                                <input type="checkbox" name="businessUnitLeaderAudi" mobile="审核结果_不同意" value="1" />不同意
+		                            </div>
+		                            <div style="float:left;margin-left:-10px;">
+		                                <input type="text" id="businessUnitLeaderAudi${rand}" name="fp_businessUnitLeaderAudi" class="easyui-validatebox" data-options="required:true" readonly="readonly"
+		                                	missingMessage="请必须勾选同意或不同意" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" autocomplete="off" />
+	                                </div>
+			                	</div>
+		                	</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value" colspan="6">
+							<textarea style="font-size: 12px; width: 800px; height: 100px;" id="businessUnitLeaderAdvice${rand}"
+								name="fp_businessUnitLeaderAdvice" class="formtable_remark" onblur="checkInput2();" mobile="意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">需求部门负责人签字</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" mobile="需求部门负责人签字" name="fp_businessUnitLeaderName" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间</td>
+						<td class="formtable_td_value" colspan="3" >
+							<input  mobile="签字时间"  timeEditor="1" type="hidden" name="fp_businessUnitLeaderTime"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		 	$(function() {
+				$('input[name=businessUnitLeaderAudi]').each(function(){ 
+					$(this).click(function(){ 
+						$('#businessUnitLeaderAudi${rand}').val('');
+						if($(this).prop('checked')){
+							$('input[name=businessUnitLeaderAudi]').prop("checked", false);
+							$(this).prop("checked", true);
+							$('#businessUnitLeaderAudi${rand}').val($(this).val());
+							
+							if($(this).val() == '0') {
+								$('#businessUnitLeaderAdvice${rand}').validatebox({
+				   					required : false
+				   				});
+							} else {
+								$('#businessUnitLeaderAdvice${rand}').validatebox({
+				   					required : true
+				   				});
+							}
+						} 	
+					});
+				});			
+			 });
+	 	
+			/*$("#businessUnitLeaderAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#businessUnitLeaderAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#businessUnitLeaderAdvice${rand}").val('');
+				$("#businessUnitLeaderAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#businessUnitLeaderAgree${rand}").bind("click",success);
+			$("#businessUnitLeaderDisagree${rand}").bind("click",failure);*/
+			//用于限制文本框输入全空格
+			function checkInput2(){
+				/*if($("input[name='fp_businessUnitLeaderAudi']:checked").val() == '0'){
+					return;
+				}*/
+				if($("#businessUnitLeaderAudi${rand}").val() == '0'){
+					return;
+				}
+				var result=$("#businessUnitLeaderAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#businessUnitLeaderAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+		</script>
+	</#if> 
+</#if>
+
+				
+<!-- 流程工程师 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'processEngineerAudiTask'>
+		<div id="processEngineerAudiTask">
+			<form id="processEngineerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="processEngineerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" colspan="6">二、问题分析</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">问题分析</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="font-size: 12px; width: 700px; height: 100px;" id="processEngineerAnalysis${rand}" class="easyui-validatebox" data-options="required:true"
+								name="fp_processEngineerAnalysis" class="formtable_remark" onblur="checkInput3();" mobile="问题分析"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">结论</td>
+						<td class="formtable_td_value" colspan="5" >
+							<textarea style="font-size: 12px; width: 700px; height: 36px;" id="processEngineerAdvice${rand}" class="easyui-validatebox" data-options="required:true"
+								name="fp_processEngineerAdvice" class="formtable_remark" onblur="checkInput3();" mobile="结论"></textarea>
+							<!--  <input id="processEngineerAgree${rand}" type="radio" name="fp_processEngineerAudi" mobile="结论_启动流程梳理/优化项目" checked="checked" value="0" />启动流程梳理/优化项目； -->
+							<!-- <input id="processEngineerDisagree${rand}" type="radio" name="fp_processEngineerAudi" mobile="结论_不需要梳理/优化流程" value="1" />不需要梳理/优化流程 -->
+						</td>
+					</tr>
+					<!--  <tr>
+						<td class="formtable_td_value" colspan="2" >
+							<input id="processEngineerDisagree${rand}" type="radio" name="fp_processEngineerAudi" mobile="结论_不需要梳理/优化流程" value="1" />不需要梳理/优化流程;&nbsp;&nbsp;&nbsp;&nbsp;原因:
+						</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="font-size: 12px; width: 400px; height: 50px;" id="processEngineerAdvice${rand}"
+								name="fp_processEngineerAdvice" class="formtable_remark" onblur="checkInput3();" mobile="原因"></textarea>
+						</td>
+					</tr>  -->
+					<tr>
+						<td class="formtable_td_key">流程工程师签字</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" mobile="流程工程师签字" name="fp_processEngineerName" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间</td>
+						<td class="formtable_td_value" colspan="3">
+							<input  mobile="签字时间"  timeEditor="1" type="hidden" name="fp_processEngineerTime"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			/*$("#processEngineerAnalysis${rand}").validatebox({required:true});
+			$("#processEngineerAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#processEngineerAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#processEngineerAdvice${rand}").val('');
+				$("#processEngineerAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#processEngineerAgree${rand}").bind("click",success);
+			$("#processEngineerDisagree${rand}").bind("click",failure);*/
+			//用于限制文本框输入全空格
+			function checkInput3(){
+				var result=$("#processEngineerAnalysis${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#processEngineerAnalysis${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+				var result1=$("#processEngineerAdvice${rand}").val();
+				if(result1.indexOf(" ") != -1 && $.trim(result1) == ""){
+					$("#processEngineerAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+		</script>
+	</#if> 
+</#if>  
+
+<!-- 流程管理部经理 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'processDeptManagerAudiTask'>
+		<div id="processDeptManagerAudiTask">
+			<form id="processDeptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="processDeptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+					 	<td class="formtable_td_key" colspan="6" align="center">流程管理部经理</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >问题分析结果</td>
+						<td class="formtable_td_value" colspan="5" >
+							<!--  <input id="processDeptManagerAgree${rand}" type="radio" name="fp_processDeptManagerAudi" mobile="分析结果_同意" checked="checked" value="0" />同意
+							<input id="processDeptManagerDisagree${rand}" type="radio" name="fp_processDeptManagerAudi" mobile="分析结果_不同意" value="1" />不同意   -->
+							<div style="float:left;width:800px;">
+								<div style="float:left;width:780px;margin-top:5px;margin-left:5px;">
+									<div style="float:left;width:5px;">
+									</div>
+									<div style="float:left;">
+										<input type="checkbox" name="processDeptManagerAudi" mobile="问题分析结果_同意" value="0" />同意
+		                                <input type="checkbox" name="processDeptManagerAudi" mobile="问题分析结果_不同意" value="1" />不同意
+		                            </div>
+		                            <div style="float:left;margin-left:-10px;">
+		                                <input type="text" id="processDeptManagerAudi${rand}" name="fp_processDeptManagerAudi" class="easyui-validatebox" data-options="required:true" readonly="readonly"
+		                                	missingMessage="请必须勾选同意或不同意" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" autocomplete="off" />
+	                                </div>
+			                	</div>
+		                	</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >意见</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="font-size: 12px; width: 700px; height: 36px;" id="processDeptManagerAdvice${rand}"
+								name="fp_processDeptManagerAdvice" class="formtable_remark" onblur="checkInput4();" mobile="意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">流程管理部经理签字</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" mobile="流程管理部经理签字" name="fp_processDeptManagerName" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input  mobile="签字时间"  timeEditor="1" type="hidden" name="fp_processDeptManagerTime"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		 	$(function() {
+				$('input[name=processDeptManagerAudi]').each(function(){ 
+					$(this).click(function(){ 
+						$('#processDeptManagerAudi${rand}').val('');
+						if($(this).prop('checked')){
+							$('input[name=processDeptManagerAudi]').prop("checked", false);
+							$(this).prop("checked", true);
+							$('#processDeptManagerAudi${rand}').val($(this).val());
+							if($(this).val() == '0') {
+								$('#processDeptManagerAdvice${rand}').validatebox({
+				   					required : false
+				   				});
+							} else {
+								$('#processDeptManagerAdvice${rand}').validatebox({
+				   					required : true
+				   				});
+							}
+						}	
+					});
+				});	
+				
+				/*if($('#processDeptManagerAudi${rand}').val() == '0') {
+					$('#processDeptManagerAdvice${rand}').validatebox({
+	   					required : false
+	   				});
+				} else {
+					$('#processDeptManagerAdvice${rand}').validatebox({
+	   					required : true
+	   				});
+				}*/
+			 });
+	 	
+			/*$("#processDeptManagerAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#processDeptManagerAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#processDeptManagerAdvice${rand}").val('');
+				$("#processDeptManagerAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#processDeptManagerAgree${rand}").bind("click",success);
+			$("#processDeptManagerDisagree${rand}").bind("click",failure);*/
+			//用于限制文本框输入全空格
+			function checkInput4(){
+				/*if($("input[name='fp_processDeptManagerAudi']:checked").val() == '0'){
+					return;
+				}*/
+				if($("#processDeptManagerAudi${rand}").val() == '0'){
+					return;
+				}
+				var result=$("#processDeptManagerAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#processDeptManagerAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+		</script>
+	</#if> 
+</#if> 	
+
+<!-- 需求部门负责人确认 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'businessUnitLeaderConfirmTask'>
+		<div id="businessUnitLeaderConfirmTask">
+			<form id="businessUnitLeaderConfirmTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="businessUnitLeaderConfirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" colspan="6" align="center">需求部门会签</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >会签意见</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="font-size: 12px; width: 700px; height: 36px;" id="businessUnitLeaderConfirmAdvice${rand}" required="required"
+								name="fp_businessUnitLeaderConfirmAdvice" class="formtable_remark" onblur="checkInput5();" mobile="会签意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">需求部门负责人签字</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" mobile="需求部门负责人签字" name="fp_businessUnitLeaderConfirmName" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input  mobile="签字时间"  timeEditor="1" type="hidden" name="fp_businessUnitLeaderConfirmTime"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#businessUnitLeaderConfirmAdvice${rand}").validatebox({required:true});
+			function checkInput5(){
+				var result=$("#businessUnitLeaderConfirmAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#businessUnitLeaderConfirmAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+		</script>
+	</#if> 
+</#if> 	
+			  
+				  
+<#include "/common/foot.html">

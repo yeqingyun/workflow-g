@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="218">
+  <process id="L-Training-Record" name="金立导师制流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start" activiti:initiator="applyUserAccount"></startEvent>
+    <userTask id="nmb_deptManagerAudiTask" name="部门负责人确认导师" activiti:assignee="${processHelpService.getRelevantOrgLeader(applyUserAccount)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="nmb_deptManagerAudiTask"></sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow2" sourceRef="nmb_deptManagerAudiTask" targetRef="parallelgateway1">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.SaveEmpAndTeacherInfoListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="nmb_traineeAudiTask" name="学员确认导师信息" activiti:assignee="${applyUserAccount}"></userTask>
+    <sequenceFlow id="flow3" sourceRef="parallelgateway1" targetRef="nmb_traineeAudiTask"></sequenceFlow>
+    <userTask id="nmb_deptTeacherAudiTask" name="导师制定培养计划" activiti:assignee="${teacherAccount}"></userTask>
+    <sequenceFlow id="flow4" sourceRef="parallelgateway1" targetRef="nmb_deptTeacherAudiTask"></sequenceFlow>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow5" sourceRef="nmb_traineeAudiTask" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="nmb_deptTeacherAudiTask" targetRef="parallelgateway2"></sequenceFlow>
+    <userTask id="studentConfirmPlanTask" name="学员确认培养计划" activiti:assignee="${applyUserAccount}"></userTask>
+    <sequenceFlow id="flow7" sourceRef="parallelgateway2" targetRef="studentConfirmPlanTask"></sequenceFlow>
+    <userTask id="teachTrainPlanResultTask" name="导师月度反馈" activiti:assignee="${teacherAccount}"></userTask>
+    <sequenceFlow id="flow8" sourceRef="studentConfirmPlanTask" targetRef="teachTrainPlanResultTask"></sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow9" sourceRef="teachTrainPlanResultTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow10" name="继续月度考核" sourceRef="exclusivegateway1" targetRef="teachTrainPlanResultTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(trainTime<6)&&(empGroup!='A')&&(studentStatus=='在职')}]]></conditionExpression>
+    </sequenceFlow>
+    <parallelGateway id="parallelgateway3" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow11" name="转正" sourceRef="exclusivegateway1" targetRef="parallelgateway3">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${((empGroup=='A')||(trainTime>=6))&&(studentStatus=='在职')}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="studentScoreByTeacherTask" name="导师对学员评分" activiti:assignee="${teacherAccount}"></userTask>
+    <sequenceFlow id="flow12" sourceRef="parallelgateway3" targetRef="studentScoreByTeacherTask"></sequenceFlow>
+    <userTask id="studentScoreByDeptManagerTask" name="部门负责人对学员评分" activiti:assignee="${processHelpService.getRelevantOrgLeader(applyUserAccount)}"></userTask>
+    <sequenceFlow id="flow13" sourceRef="studentScoreByTeacherTask" targetRef="studentScoreByDeptManagerTask"></sequenceFlow>
+    <userTask id="studentScoreByHrTask" name="人力资源部对学员评分" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人力资源部对学员评分&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow14" sourceRef="studentScoreByDeptManagerTask" targetRef="studentScoreByHrTask"></sequenceFlow>
+    <userTask id="teacherScoreByStudentTask" name="学员对导师评分" activiti:assignee="${applyUserAccount}"></userTask>
+    <sequenceFlow id="flow15" sourceRef="parallelgateway3" targetRef="teacherScoreByStudentTask"></sequenceFlow>
+    <userTask id="teacherScoreByDeptManagerTask" name="部门负责人对导师评分" activiti:assignee="${processHelpService.getRelevantOrgLeader(applyUserAccount)}"></userTask>
+    <sequenceFlow id="flow16" sourceRef="teacherScoreByStudentTask" targetRef="teacherScoreByDeptManagerTask"></sequenceFlow>
+    <userTask id="teacherScoreByHrTask" name="人力资源部对导师评分" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人力资源部对导师评分&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow17" sourceRef="teacherScoreByDeptManagerTask" targetRef="teacherScoreByHrTask"></sequenceFlow>
+    <parallelGateway id="parallelgateway4" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow18" sourceRef="teacherScoreByHrTask" targetRef="parallelgateway4"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="studentScoreByHrTask" targetRef="parallelgateway4"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow20" sourceRef="parallelgateway4" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow21" name="未转正" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.postadjust.LSendEmailToTeacherListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${(studentStatus!='在职' && studentStatus!='')}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Training-Record">
+    <bpmndi:BPMNPlane bpmnElement="L-Training-Record" id="BPMNPlane_L-Training-Record">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_deptManagerAudiTask" id="BPMNShape_nmb_deptManagerAudiTask">
+        <omgdc:Bounds height="62.0" width="105.0" x="151.0" y="117.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_traineeAudiTask" id="BPMNShape_nmb_traineeAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="385.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_deptTeacherAudiTask" id="BPMNShape_nmb_deptTeacherAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="385.0" y="30.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="550.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="studentConfirmPlanTask" id="BPMNShape_studentConfirmPlanTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="635.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="teachTrainPlanResultTask" id="BPMNShape_teachTrainPlanResultTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="785.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="940.0" y="127.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway3" id="BPMNShape_parallelgateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="300.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="studentScoreByTeacherTask" id="BPMNShape_studentScoreByTeacherTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="385.0" y="263.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="studentScoreByDeptManagerTask" id="BPMNShape_studentScoreByDeptManagerTask">
+        <omgdc:Bounds height="60.0" width="105.0" x="535.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="studentScoreByHrTask" id="BPMNShape_studentScoreByHrTask">
+        <omgdc:Bounds height="60.0" width="105.0" x="685.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="teacherScoreByStudentTask" id="BPMNShape_teacherScoreByStudentTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="385.0" y="350.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="teacherScoreByDeptManagerTask" id="BPMNShape_teacherScoreByDeptManagerTask">
+        <omgdc:Bounds height="65.0" width="105.0" x="535.0" y="345.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="teacherScoreByHrTask" id="BPMNShape_teacherScoreByHrTask">
+        <omgdc:Bounds height="60.0" width="105.0" x="685.0" y="348.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway4" id="BPMNShape_parallelgateway4">
+        <omgdc:Bounds height="40.0" width="40.0" x="830.0" y="311.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="915.0" y="314.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="105.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="151.0" y="148.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="256.0" y="148.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="340.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="320.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="57.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="490.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="490.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="57.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="590.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="740.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="785.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="890.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="960.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="959.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="74.0"></omgdi:waypoint>
+        <omgdi:waypoint x="837.0" y="120.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="72.0" x="921.0" y="101.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="960.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="959.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="270.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="960.0" y="167.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="340.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="490.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="535.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="640.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="685.0" y="290.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="320.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="320.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="385.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="490.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="535.0" y="377.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="640.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="685.0" y="378.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="790.0" y="378.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="377.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="351.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="790.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="290.0"></omgdi:waypoint>
+        <omgdi:waypoint x="850.0" y="311.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="870.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="915.0" y="331.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="980.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="998.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="998.0" y="331.0"></omgdi:waypoint>
+        <omgdi:waypoint x="950.0" y="331.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="100.0" x="980.0" y="147.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

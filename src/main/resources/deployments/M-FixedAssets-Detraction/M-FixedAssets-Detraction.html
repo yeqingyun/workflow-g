@@ -1,0 +1,2731 @@
+<#include "/common/head.html">
+<style>
+	 input.hidden-input{
+	 padding:0px;
+	 margin:0px;
+	 width:0px;
+	 height:0px;
+	 border-width:0px;
+	 display: block;
+	 float: left;
+ }
+</style>
+<#assign text=""/>
+<#assign applyNo=""/>
+<#assign managerNo=""/>
+<#assign fixedNo=""/>
+<#assign curAccount=appuser.account/>
+<#assign orgId=""/>
+<#assign scrapWay=""/>
+<#assign participantList=""/>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		<#assign applyNo=steps.vars["curLoginNo"]/>
+		<#assign scrapWay=steps.vars["scrapWay"]/>
+		<tr>
+			<td colspan="6" class="formtable_td_key"  align="center">固定资产报废申请单</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">使用部门：</td>
+			<td class="formtable_td_value">${steps.vars["departmentName"]!""}</td>
+			<td class="formtable_td_key">申请人：</td>
+			<td class="formtable_td_value">${steps.vars["applyEmpName"]!""}</td>
+			<td class="formtable_td_key">资产类别：</td>
+			<td class="formtable_td_value">
+				<input type="radio" <#if steps.vars["fixedAssetType"] == '1'>checked</#if>  disabled  />办公电脑
+				<input type="radio" <#if steps.vars["fixedAssetType"] == '2'>checked</#if>  disabled  />非办公电脑
+			</td>
+		</tr>
+		<#if scrapWay=='1'>
+		<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="25" align="center">序号</td>
+											<td width="100" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="120" align="center">设备名称</td>
+											<td width="125" align="center">购入日期</td>
+											<td width="220" align="center">故障说明</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<input type="hidden" id="assets${rand}" value='${(steps.vars["MFixedAssetsDetraction"])!""}'/>
+								<table id="assetsTable${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  </#if>
+				  <#if scrapWay=='2'>
+				  	<tr>
+						<td class="formtable_td_key">资产报废清单：</td>
+						<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+					</tr>
+				  </#if>
+				  	<tr>
+				  		<td class="formtable_td_key">申请日期：</td>
+						<td class="formtable_td_value" colspan="5">${steps.vars["applyDate"]!""}</td>
+				  	</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+			<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>		
+		
+		<script type="text/javascript">
+			$(function(){
+				if('${scrapWay}' == '1' && $('#assets${rand}').val() != ''){
+					var json = eval("("+$('#assets${rand}').val()+")");
+					var str='';
+					for(var i=0;i<json.accessoryData.length;i++){
+						str+='<tr>'
+								+'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+								+'<td width="100" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+								+'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+								+'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+								+'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+								+'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+								+'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+								+'<td width="125" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+								+'<td width="220" align="top">'+json.accessoryData[i].fault+'</td>'
+							+'</tr>';
+					}
+					$('#assetsTable${rand} tbody').append(str);
+				}
+			});
+		</script>
+</#if>
+
+<!-- 流程发起人确认流程是否结束 -->
+<#if steps.key == 'confirmProcessEndTask'>
+<#if steps.vars["confirmProcessEndAudi"] == '1'>
+	<tr>
+	<td class="formtable_td_key" rowspan="3">发起人确认流程是否结束</td>
+		<td class="formtable_td_key">是否结束该流程：</td>	
+		<td class="formtable_td_value" colspan="4">
+			<#if steps.vars["confirmProcessEndAudi"] == '1'>
+			是
+			</#if>
+			<#if steps.vars["confirmProcessEndAudi"] == '0'>
+			否
+			</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认意见：</td>	
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["applyUserAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发起人签字：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["applyUserName"])!""}
+		</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["applyUserAudiTime"])!""}
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 修改表单申请 -->
+	<#if steps.key =='updateFixedAssetsProcTask'>
+		<#assign scrapWay=steps.vars["scrapWay"]/>
+		<tr>
+			<td colspan="6" class="formtable_td_key"  align="center">修改固定资产报废申请单</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">使用部门：</td>
+			<td class="formtable_td_value">${steps.vars["departmentName"]!""}</td>
+			<td class="formtable_td_key">申请人：</td>
+			<td class="formtable_td_value">${steps.vars["applyEmpName"]!""}</td>
+			<td class="formtable_td_key">资产类别：</td>
+			<td class="formtable_td_value">
+				<input type="radio" <#if steps.vars["fixedAssetType"] == '1'>checked</#if>  disabled  />办公电脑
+				<input type="radio" <#if steps.vars["fixedAssetType"] == '2'>checked</#if>  disabled  />非办公电脑
+			</td>
+		</tr>
+		<#if scrapWay=='1'>
+		<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="25" align="center">序号</td>
+											<td width="100" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="120" align="center">设备名称</td>
+											<td width="125" align="center">购入日期</td>
+											<td width="220" align="center">故障说明</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<input type="hidden" class="updateAssets" value='${(steps.vars["updateMFixedAssetsDetraction"])!""}'/>
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody class="updateAssetsTable">
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  </#if>
+				  <#if scrapWay=='2'>
+				  	<tr>
+						<td class="formtable_td_key">资产报废清单：</td>
+						<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+					</tr>
+				  </#if>
+				  	<tr>
+				  		<td class="formtable_td_key">申请日期：</td>
+						<td class="formtable_td_value" colspan="5">${steps.vars["updateApplyDate"]!""}</td>
+				  	</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+			<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>	
+			
+			<script type="text/javascript">
+				$(function(){
+					for(var j=0;j<$('.updateAssets').length;j++){
+						if('${scrapWay}' == '1' && $('.updateAssets').eq(j).val() != ''){
+							var json = eval("("+$('.updateAssets').eq(j).val()+")");
+							var str='';
+							for(var i=0;i<json.accessoryData.length;i++){
+								str+='<tr>'
+										+'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+										+'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+										+'<td width="125" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+										+'<td width="220" align="top">'+json.accessoryData[i].fault+'</td>'
+									+'</tr>';
+							}
+							$('.updateAssetsTable').eq(j).html(str);
+						}
+					}
+				});
+		</script>		
+		</#if>
+
+<!-- 部门经理审核 -->
+<#if steps.key == 'departManagerTask'>
+	<#assign managerNo=steps.vars["deptManagerAccount"]/>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	部门经理审核
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门经理：</td>
+				<td class="formtable_td_value">${(steps.vars["deptManagerName"])!""}</td>
+			<td class="formtable_td_key">审核结果：</td>
+				<td class="formtable_td_value" colspan="3">
+					<#if steps.vars["deptManagerAudi"] == '0' >同意</#if>
+					<#if steps.vars["deptManagerAudi"] == '1' >不同意</#if>
+				</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >审核时间：</td>
+			<td class="formtable_td_value"  colspan="5">${(steps.vars["deptManagerAudiTime"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">使用部门意见：</td>
+			<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+						style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["deptManagerAudiAdvice"])!""}</textarea>
+			</td>
+		</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 信息部管理员-->
+<#if steps.key == 'infoDepartAdministratorTask'>
+	<#assign fixedNo=steps.vars["infoDepartAdmAccount"]/>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	信息部管理员审核
+			</td>
+		</tr>
+		<#if curAccount==applyNo || curAccount==managerNo || scrapWay=='2'>
+		<#else>
+	<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="25" align="center">序号</td>
+											<td width="80" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="120" align="center">设备名称</td>
+											<td width="105" align="center">购入日期</td>
+											<td width="180" align="center">故障说明</td>
+											<td width="80" align="center">处理方式：是否报废</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<input type="hidden" class="infoAssets" value='${(steps.vars["MFixedAssetsDetraction"])!""}'/>
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody class="infoAssetsTable">
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  </#if>
+	<tr>
+		<td class="formtable_td_key">信息部管理员：</td>
+			<td class="formtable_td_value">${(steps.vars["infoDepartAdmName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+			<td class="formtable_td_value" colspan="3">
+				<#if steps.vars["infoDepartAdmAudi"] == '0' >同意</#if>
+				<#if steps.vars["infoDepartAdmAudi"] == '1' >不同意</#if>
+			</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["infoDepartAdmAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["infoDepartAdmAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+		<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>	
+			
+			<script type="text/javascript">
+				$(function(){
+					for(var j=0;j<$('.infoAssets').length;j++){
+						if('${curAccount}' != '${applyNo}' && '${curAccount}' != '${managerNo}' && '${scrapWay}' == '1' && $('.infoAssets').eq(j).val() != ''){
+							var json = eval("("+$('.infoAssets').eq(j).val()+")");
+							var str='';
+							for(var i=0;i<json.accessoryData.length;i++){
+								str+='<tr>'
+										+'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+										+'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+										+'<td width="105" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+										+'<td width="180" align="top">'+json.accessoryData[i].fault+'</td>';
+								if(json.accessoryData[i].isScrap == '1'){
+									str+='<td width="80" align="top">是</td>';
+								}else{
+									str+='<td width="80" align="top">否</td>';
+								}
+								str+='</tr>';
+							}
+							$('.infoAssetsTable').eq(j).html(str);
+						}
+					}
+				});
+		</script>		
+</#if>
+<!-- 资产管理员审核 -->
+<#if steps.key == 'assetManagerTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	资产管理员审核
+			</td>
+		</tr>
+		<#if curAccount==applyNo || curAccount==managerNo || scrapWay=='2'>
+		<#else>
+	<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="25" align="center">序号</td>
+											<td width="80" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="120" align="center">设备名称</td>
+											<td width="105" align="center">购入日期</td>
+											<td width="180" align="center">故障说明</td>
+											<td width="80" align="center">处理方式：是否报废</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<input type="hidden" class="managerAssets" value='${(steps.vars["MFixedAssetsDetraction"])!""}'/>
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody class="managerAssetsTable">
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  </#if>
+	<tr>
+		<td class="formtable_td_key">资产管理员：</td>
+			<td class="formtable_td_value">${(steps.vars["assetManagerName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+			<td class="formtable_td_value" colspan="3">
+				<#if steps.vars["assetManagerAudi"] == '0' >同意</#if>
+				<#if steps.vars["assetManagerAudi"] == '1' >不同意</#if>
+			</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["assetManagerAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">减损原因及申请处理办法：</td>
+		<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["assetManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+	<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>	
+			
+		<script type="text/javascript">
+			$(function(){
+				for(var j=0;j<$('.managerAssets').length;j++){
+					if('${curAccount}' != '${applyNo}' && '${curAccount}' != '${managerNo}' && '${scrapWay}' == '1' && $('.managerAssets').eq(j).val() != ''){
+						var json = eval("("+$('.managerAssets').eq(j).val()+")");
+						var str='';
+						for(var i=0;i<json.accessoryData.length;i++){
+							str+='<tr>'
+									+'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+									+'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+									+'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+									+'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+									+'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+									+'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+									+'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+									+'<td width="105" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+									+'<td width="180" align="top">'+json.accessoryData[i].fault+'</td>';
+							if(json.accessoryData[i].isScrap == '1'){
+								str+='<td width="80" align="top">是</td>';
+							}else{
+								str+='<td width="80" align="top">否</td>';
+							}
+							str+='</tr>';
+						}
+						$('.managerAssetsTable').eq(j).html(str);
+					}
+				}
+			});
+	</script>				
+</#if>
+
+<!-- 财务部审核 -->
+<#if steps.key == 'financialAuditTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	账务部审核
+			</td>
+		</tr>
+	<#if scrapWay=='2'>
+	   <#if curAccount==applyNo || curAccount==managerNo || curAccount==fixedNo>
+	   <#else>
+		<tr>
+			<td class="formtable_td_key">资产报废清单：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+		</tr>
+	  </#if>
+	</#if>
+	<#if curAccount==applyNo || curAccount==managerNo || curAccount==fixedNo || scrapWay=='2'>
+	<#else>
+	<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="25" align="center">序号</td>
+											<td width="80" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="100" align="center">设备名称</td>
+											<td width="100" align="center">购入日期</td>
+											<td width="145" align="center">故障说明</td>
+											<td width="80" align="center">处理方式：是否报废</td>
+											<td width="60" align="center">购置金额</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<input type="hidden" class="financialAssets" value='${(steps.vars["MFixedAssetsDetraction"])!""}'/>
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody class="financialAssetsTable">
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  </#if>
+	<tr>
+		<td class="formtable_td_key">账务部负责人：</td>
+			<td class="formtable_td_value">${(steps.vars["financialName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+			<td class="formtable_td_value" colspan="3">
+				<#if steps.vars["financialAudi"] == '0' >同意</#if>
+				<#if steps.vars["financialAudi"] == '1' >不同意</#if>
+			</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["financialAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">财务部意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["financialAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+	<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>
+			
+			<script type="text/javascript">
+				$(function(){
+					for(var j=0;j<$('.financialAssets').length;j++){
+						if('${curAccount}' != '${applyNo}' && '${curAccount}' != '${managerNo}' && '${scrapWay}' == '1' && '${curAccount}' != '${fixedNo}' && $('.financialAssets').eq(j).val() != ''){
+							var json = eval("("+$('.financialAssets').eq(j).val()+")");
+							var str='';
+							for(var i=0;i<json.accessoryData.length;i++){
+								str+='<tr>'
+										+'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+										+'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].name+'</td>'
+										+'<td width="100" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+										+'<td width="145" align="top">'+json.accessoryData[i].fault+'</td>'
+										+'<td width="80" align="top">'+json.accessoryData[i].isScrap+'</td>'
+										+'<td width="60" align="top">'+json.accessoryData[i].price+'</td>'
+									+'</tr>';
+							}
+							$('.financialAssetsTable').eq(j).html(str);
+						}
+					}
+				});
+		</script>					
+</#if>
+
+<!-- 后勤部经理 -->
+<#if steps.key == 'logisticsDepartManagerTask'>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	后勤部经理审核
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">后勤部经理：</td>
+			<td class="formtable_td_value">${(steps.vars["logisticManagerName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+		<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["logisticManagerAudi"] == '0' >同意</#if>
+			<#if steps.vars["logisticManagerAudi"] == '1' >不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value"  colspan="5">${(steps.vars["logisticManagerAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">后勤部经理意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["logisticManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 总经理-->
+<#if steps.key == 'generalManagerTask'>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	总经理审核
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">总经理：</td>
+			<td class="formtable_td_value">${(steps.vars["generalManagerName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+		<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["generalManagerAudi"] == '0' >同意</#if>
+			<#if steps.vars["generalManagerAudi"] == '1' >不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value"  colspan="5">${(steps.vars["generalManagerAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["generalManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 资产管理员确认 -->
+<#if steps.key == 'assetManagerVerifyTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	资产管理员确认
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">确认意见：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["assetManagerVerifyAdvice"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">资产管理员:</td>
+			<td class="formtable_td_value">${(steps.vars["assetManagerName"])!""}</td>
+			<td class="formtable_td_key">处理时间：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["assetManagerAudiTime"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+	</#if>
+</#if>
+
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<#assign orgId=appuser.orgId/>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">使用部门：</td>
+					<td class="formtable_td_value">
+					    <input id="useDepartment${rand}" class='easyui-combotree' data-options="required:true" type="text" name="fp_useDepartment" value="${appuser.orgName}"/>
+						<input id="departmentName${rand}" type="hidden" name="fp_departmentName" value="${appuser.orgName}"/>
+						<input id="departmentId${rand}" type="hidden" name="fp_departmentId"/>
+					</td>
+		  	  		<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="curEmpLoginId${rand}" type="hidden" name="fp_curLoginNo" value="${appuser.account}"/>
+		  	  			<input id="curAccount${rand}" name="fp_applyEmpId" type="hidden"/>
+		  	  			<input id="applyEmpName" class="easyui-validatebox"  name="fp_applyEmpName" type="text" value="${appuser.name}"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">资产类别：<span style="color: red">*</span></td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="fixedAssetType${rand}" name="fp_fixedAssetType" type="text" class="easyui-validatebox hidden-input" style="position: relative;top:11px" data-options="required:true" missingMessage="如果是办公电脑需信息部<br/>评估，请选择“办公电脑”<br/>否则选择“非办公电脑”"/>
+		  	  			<input type="radio" name="fixedAssetTypeRadio" value="1" />办公电脑
+		  	  			<input type="radio" name="fixedAssetTypeRadio" value="2" />非办公电脑
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">选择报废方式：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<input type="radio" name="fp_scrapWay" value="1" checked/>少量报废
+		  	  			<input type="radio" name="fp_scrapWay" value="2"/>批量报废
+		  	  		</td>
+		  	  	</tr>
+				<tr class="scrapWay1">
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr class="scrapWay1">
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="1" align="center"><input type="checkbox" class="thchk" /></td>
+											<td width="25" align="center">序号</td>
+											<td width="80" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="130" align="center">设备名称</td>
+											<td width="105" align="center">购入日期</td>
+											<td width="188" align="center">故障说明</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="accessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  	<tr class="scrapWay2">
+					<td class="formtable_td_key">资产报废清单</td>
+					<td class="formtable_td_value" colspan="5">
+						<input id="partAccount" type="hidden" name="fp_partList" /> 
+						<input id="participantList_val" type="hidden" name="fp_participantList" /> 
+						<input id="scrapWay2JsonStr${rand}" type="hidden" name="fp_scrapWay2JsonStr" />
+						<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-upload'">导入资产报废清单</a>
+						<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+						<div id="participantList" style="font-size: 12px; "></div>
+					</td>
+				</tr>
+				  	<tr>
+				  		<td class="formtable_td_key">申请日期：</td>
+		  	  			<td class="formtable_td_value" colspan="5">${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  				<input name="fp_applyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+		  	  				<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  			</td>
+				  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		
+		<div id="importWin-${rand}" class="easyui-dialog"
+		data-options="modal:true, title:'导入设备清单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+		<div  style="padding:10px 10px;">
+		<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+					<td>
+						<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+		<style type="text/css">
+				table.gridtable {
+					font-family: verdana,arial,sans-serif;
+					font-size:11px;
+					color:#333333;
+					border-width: 1px;
+					border-color: #666666;
+					border-collapse: collapse;
+				}
+				table.gridtable thead td {
+					padding: 4px;
+					border-top:solid 1px #666666;
+					border-right:solid 1px #666666;
+					border-left:solid 1px #666666;
+				}
+				table.gridtable tbody td {
+					padding: 4px;
+					border-width: 1px;
+					border-style: solid;
+					border-color: #666666;
+				}
+			</style>	
+	<script type="text/javascript">
+		$('#useDepartment${rand}')
+		.combotree(
+			{
+				//valueField : 'id',
+				//textField : 'name',
+				width:200,
+				url : 'hrFlow/auth/orgs.json',
+				/*onBeforeSelect:function(node){
+					if(node.state){
+						$("#useDepartment${rand}").tree("unselect");
+					}
+				},*/
+				onClick:function(record) {
+					$('#departmentId${rand}').val(record.id);
+					$('#departmentName${rand}').val(record.text);
+				}
+				/*required : true,
+				editable : false,
+				onSelect : function(record) {
+					//$('#companyId${rand}').val(record.id);
+					//$('#comname${rand}').val(record.name);
+				}*/
+			});
+		
+		$(function(){
+			$("input[name='fixedAssetTypeRadio']").change(function(){
+				$("#fixedAssetType${rand}").val($(this).val());
+			})
+			$('#processName${rand}').val(
+					"[" + "${appuser.account}" + ","
+							+ "${appuser.name}" + "]固定资产报废申请");//流程实例名称
+			
+			var orgId='${orgId}';
+			$("#departmentId${rand}").val(orgId.replace("\,",""));
+			
+			
+			$(".scrapWay2").hide();
+			$(":radio[name='fp_scrapWay']").click(function(){
+				$("#rows${rand}").val(0);
+				var scrapWay=$('input[name="fp_scrapWay"]:checked').val();
+				if(scrapWay=='1'){
+					$(".scrapWay1").show();
+					$("#participantList").empty();
+					$("#participantList_val").val('');
+					$("#scrapWay2JsonStr${rand}").val('');
+					$(".scrapWay2").hide();
+				}else{
+					$(".scrapWay2").show();
+					$("#accessoryInfoTb${rand} tbody").html('');
+					$("#AccessoriesJsonStr${rand}").val('');
+					$(".scrapWay1").hide();
+				}
+			});
+			
+			$.post("hrFlow/getHrUserInfo.json",{
+				account:$("#curEmpLoginId${rand}").val()
+			},function(data){
+				if(data.success){
+					var accounts='00000000'+data.obj.empId;
+					$("#curAccount${rand}").val(accounts.substring(accounts.length-8,accounts.length));
+				}
+			});
+			
+			$('.thchk').each(function(){ 
+				$(this).click(function(){ 
+					if($(this).prop('checked')){
+						$('.tdchk').prop("checked", true);
+					} else {
+						$('.tdchk').prop("checked", false);
+					} 	
+				});
+			});
+		});
+		function addAccessory() {
+			var rows = $('#accessoryInfoTb${rand} tbody tr'); 
+			var rowno = rows.length + 1;
+			var str = '<tr>';
+			str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+			str += '<td width="25" align="center">' + rowno + '</td>';
+			str += '<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getPropertyInfo('+rowno+')"/></td>';
+			str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly/></td>';
+			str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="100"><input type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="80"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="130"><input type="text" class="easyui-validatebox" style="width:125px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="105"><input type="text" class="easyui-validatebox" style="width:100px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="188"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:185px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str += '</tr>';
+	    	$('#accessoryInfoTb${rand} tbody').append(str);
+	    	$.parser.parse($('#accessoryInfoTb${rand}').parent());
+	    	
+	    	$("#rows${rand}").val(rowno);
+		}
+		
+		function getPropertyInfo(n){
+			var assetsNo=$.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("input").val());
+			
+			//判断此编号的固定资产是否正在申请报废中
+			if(assetsNo==null||assetsNo==''){
+				return;
+			}
+			$.post("workspace/assetsNoisOffApply.json",{
+				assetsNo:assetsNo
+			},function(data){
+				if(data){
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+					$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+					$.messager.alert("提示信息","您好，此编号的固定资产正在申请报废中!");
+					return;
+				}else{
+					var count=0;
+					$("#accessoryInfoTb${rand} tbody tr").each(function(){
+						if(assetsNo!=null&&assetsNo!=''&&assetsNo==$.trim($(this).find('td').eq(2).find("input").val())){
+							count++;
+						}
+					});
+					if(count>=2){
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+						$.messager.alert("提示信息","您好，申请报废的固定资产编号不可重复!");
+						return;
+					}
+					//获取固定资产信息
+					$.get("hrFlow/getAssetInfo.json",{
+						functionName:'ZHR_OA44',vars:'I_TYPE_VALUE_S_NEXT_I_EQUNR_VALUE_'+assetsNo,exportTableName:'OT_EQUI',
+						exportlist:'GROES_B_NEXT_GROES_A_NEXT_TYPBZ_NEXT_INVNR_NEXT_EQKTX_NEXT_ANSDT_NEXT_ANSWT_NEXT_STORT'
+					},function(data){
+						if(data==''||data==null){
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+							$.messager.alert("提示信息","您好，不存在该编号的固定资产!");
+							return;
+						}
+						var jsondata=eval("("+data+")");
+						if(jsondata.STORT=='A3'){
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+							$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+							$.messager.alert("提示信息","您好，该编号的固定资产已报废，不可重新发起申请!");
+							return;
+						}
+						var reg1=/\'/g;
+						var type=(jsondata.TYPBZ).replace(reg1,'’');
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val(jsondata.GROES_B);
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val(jsondata.GROES_A);
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val(type);
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val(jsondata.INVNR);
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val(jsondata.EQKTX);
+						$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val(jsondata.ANSDT);
+						
+					});
+				}
+			});
+			makeAccessory();
+		}
+		
+		function removeAccessory() {
+	    	var rows = $('#accessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+            if (rows.length == 0) {
+        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+        		return false;
+            }
+
+            $.each(rows, function () {        
+                $(this).parent("td").parent("tr").remove();
+            });
+            
+            var accessoryArr = [];
+    		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+    			var assetsNo = $.trim($(this).find('td').eq(2).find("input").val());
+    			var monad = $.trim($(this).find('td').eq(3).find("input").val());
+    			var count = $.trim($(this).find('td').eq(4).find("input").val());
+    			var type = $.trim($(this).find('td').eq(5).find("input").val());
+    			var repertoryNo = $.trim($(this).find('td').eq(6).find("input").val());
+    			var name = $.trim($(this).find('td').eq(7).find("input").val());
+    			var intakeDate = $.trim($(this).find('td').eq(8).find("input").val());
+    			var fault = $.trim($(this).find('td').eq(9).find("input").val());
+    			accessoryArr.push({
+    				assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault
+    			});
+    		});
+
+        	var rowno = 1;
+        	var str = '';
+        	$("#accessoryInfoTb${rand} tbody").html('');
+    		$.each(accessoryArr, function(idx, obj) {
+				str += '<tr>';    				
+				str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+				str += '<td width="25" align="center">' + rowno + '</td>';
+				str += '<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" value="'+obj.assetsNo+'" onblur="makeAccessory()"/></td>';
+				str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" value="'+obj.monad+'" onblur="makeAccessory()" readonly/></td>';
+				str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" value="'+obj.count+'" onblur="makeAccessory()" readonly/></td>';
+				str +='<td width="100"><input type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+obj.type+'" onblur="makeAccessory()" readonly/></td>';
+				str +='<td width="80"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" value="'+obj.repertoryNo+'" onblur="makeAccessory()" readonly/></td>';
+				str +='<td width="130"><input type="text" class="easyui-validatebox" style="width:125px;border:solid 1px #007ACC;" value="'+obj.name+'" onblur="makeAccessory()" readonly/></td>';
+				str +='<td width="105"><input type="text" class="easyui-validatebox" style="width:100px;border:solid 1px #007ACC;" value="'+obj.intakeDate+'" onblur="makeAccessory()" readonly/></td>';
+				str +='<td width="188"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:185px;border:solid 1px #007ACC;" value="'+obj.fault+'" onblur="makeAccessory()"/></td>';
+				str += '</tr>';
+				rowno++;			    		    	
+    		});  
+    		$('#accessoryInfoTb${rand} tbody').append(str);
+    		$.parser.parse($('#accessoryInfoTb${rand}').parent());
+    		$("#rows${rand}").val($('#accessoryInfoTb${rand} tbody tr').length);
+    		makeAccessory();
+		}
+		
+		function makeAccessory() {
+			var rows = $('#accessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#AccessoriesJsonStr${rand}').val('');
+			} else {				
+				var MFixedAssetsDetraction = { accessoryData:[] };
+				var rowno = 1;
+        		$('#accessoryInfoTb${rand} tbody tr').each(function () {	        			
+        			var assetsNo = $.trim($(this).find('td').eq(2).find("input").val());
+        			var monad = $.trim($(this).find('td').eq(3).find("input").val());
+        			var count = $.trim($(this).find('td').eq(4).find("input").val());
+        			var type = $.trim($(this).find('td').eq(5).find("input").val());
+        			var repertoryNo = $.trim($(this).find('td').eq(6).find("input").val());
+        			var name = $.trim($(this).find('td').eq(7).find("input").val());
+        			var intakeDate = $.trim($(this).find('td').eq(8).find("input").val());
+        			var fault = $.trim($(this).find('td').eq(9).find("input").val());
+        			
+        			MFixedAssetsDetraction.accessoryData.push({
+        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault
+        			})
+        			rowno++;
+        		});
+        		
+        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+			}
+		}
+		
+		//下载模板
+		$("#downloadTravelExcel${rand}").bind('click',function(){
+			submitForm("download.mFixedAssetsDetraction.name");
+		});
+		function submitForm(value){
+			var form = $("<form>");
+			form.attr('style','display:none');
+			form.attr('method','post');
+			form.attr('action','${base}sysprocess/task/mDownload.html');
+			
+			var key = $("<input>");
+			key.attr('type','hidden');
+			key.attr('name','key');
+			key.attr('value',value);
+			
+			$("body").append(form);
+			form.append(key);
+			
+			form.submit();
+			form.remove();
+		}
+		
+		//导入非生产物资清单
+		 $("#openImportPersonBtn-${rand}").bind('click',function(){
+			 $("#importWin-${rand}").dialog('open');
+		 });
+		
+		 function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input_${rand}');
+			}
+		 
+		 $("#upfile-${rand}").bind('click',function(){
+			 $.messager.progress();
+			 $("#upform-${rand}").form('submit',{
+					url:'teamActivities/imporFixedAssets.json',
+					onSubmit:function(){
+						var validateResult = $(this).form('validate');
+				    	if (!validateResult) {
+				    		$.messager.progress('close');
+							return false;
+				    	} else {
+				    		return true;
+				    	}
+				    },
+					success:function(data){
+						if(typeof(data).toLowerCase()=='string'){
+							data=eval("("+data+")");
+						}
+						if(data.success){
+							if(data.obj == null || data.obj.length == 0){
+								$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+							}else{
+								var str = "";
+								var MFixedAssetsDetraction = { accessoryData:[] };
+								if(data.obj.length>0){
+									$("#rows${rand}").val(data.obj.length);
+									$('#participantList').val("");
+									str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=5%>序号</td><td width=10%>设备编码</td><td width=10%>单位</td><td width=10%>数量</td><td width=10%>型号</td><td width=10%>库存号</td><td width=10%>设备名称</td><td width=10%>购入日期</td><td width=15%>故障说明</td></tr>";
+									for(var i = 0;i < data.obj.length;i++){
+									  str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].assetsNo+"</td><td>"+data.obj[i].monad+"</td><td>"+data.obj[i].count+"</td><td>"+data.obj[i].type+"</td><td>"+data.obj[i].repertoryNo+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].intakeDate+"</td><td>"+data.obj[i].fault+"</td>";
+									  MFixedAssetsDetraction.accessoryData.push({
+										  number:data.obj[i].number,assetsNo:data.obj[i].assetsNo,monad:data.obj[i].monad,count:data.obj[i].count,type:data.obj[i].type,repertoryNo:data.obj[i].repertoryNo,name:data.obj[i].name,intakeDate:data.obj[i].intakeDate,fault:data.obj[i].fault
+					        			})
+									  $.ajaxSetup({async : false});
+									}
+									str+="</table>"
+									document.getElementById("participantList").innerHTML=str;
+							  }
+								$('#scrapWay2JsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+								document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+								$.messager.alert("提示信息",data.msg);
+							}
+						}else{ 
+							$.messager.alert("提示信息",data.msg);
+						}
+						$("#importWin-${rand}").dialog('close');
+						$.messager.progress('close');
+					}
+				});
+		 });
+	</script>
+	</#if>
+</#if>
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'confirmProcessEndTask'> 
+		<div id="confirmProcessEndTask">
+			<form id="confirmProcessEndTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="confirmProcessEndTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				
+			   	<tr>
+			   		<td class="formtable_td_key" rowspan="3">发起人确认</td>
+			  	  	<td class="formtable_td_key">是否结束该流程：</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+								<input id="endProcess-${rand}" type="radio" name="fp_confirmProcessEndAudi"  value="1" mobile="是否结束该流程_是"/>是
+								<input id="continueProcess-${rand}" type="radio" name="fp_confirmProcessEndAudi" checked="checked" value="0" mobile="是否结束该流程_否"/>否
+					</td>
+		  	  	</tr>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px" id="applyUserAudiAdvice${rand}" name="fp_applyUserAudiAdvice" class="easyui-validatebox" mobile="确认意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认人</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_applyUserAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_applyUserName" value="${appuser.name}" mobile="确认人"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_applyUserAudiTime" timeEditor="1"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="确认时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#applyUserAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#applyUserAudiAdvice${rand}").validatebox({required:false});//是否结束流程意见为非必填项
+			}
+			var failure=function(){
+				$("#applyUserAudiAdvice${rand}").val('');
+				$("#applyUserAudiAdvice${rand}").validatebox({required:true});//是否结束流程意见为必填项
+			};
+			$("#continueProcess-${rand}").bind("click",success);
+			$("#endProcess-${rand}").bind("click",failure);
+		</script>
+</#if>
+<!-- 修改固定资产报废申请 -->
+<#if currentStep?exists>
+   <#if currentStep == 'updateFixedAssetsProcTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+		<div id="updateFixedAssetsProcTask">
+			<form id="updateFixedAssetsProcTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="updateFixedAssetsProcTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	 	<tr>
+		  	  		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  			修改固定资产报废申请表
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">使用部门：</td>
+					<td class="formtable_td_value">
+					    <input id="updateUseDepartment${rand}" class='easyui-validatebox' data-options="required:true" type="text" name="fp_updateUseDepartment" value='${(steps.vars["departmentName"])!""}'/>
+						<input id="departmentName${rand}" type="hidden" name="fp_departmentName" value='${(steps.vars["departmentName"])!""}'/>
+						<input id="departmentId${rand}" type="hidden" name="fp_departmentId" value='${(steps.vars["departmentId"])!""}'/>
+					</td>
+		  	  		<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="curEmpLoginId${rand}" type="hidden" name="fp_curLoginNo" value="${appuser.account}"/>
+		  	  			<input id="curAccount${rand}" name="fp_applyEmpId" type="hidden"/>
+		  	  			<input id="applyEmpName" class="easyui-validatebox"  name="fp_applyEmpName" type="text" value="${appuser.name}"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">资产类别：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="fixedAssetType${rand}" name="fp_fixedAssetType" type="text" value='${(steps.vars["fixedAssetType"])!""}' class="easyui-validatebox hidden-input" style="position: relative;top:11px" data-options="required:true" missingMessage="如果是办公电脑需信息部<br/>评估，请选择“办公电脑”<br/>否则选择“非办公电脑”"/>
+		  	  			<input type="radio"  name="fixedAssetTypeRadio" value="1" <#if  steps.vars["fixedAssetType"] == '1'>checked="checked"</#if>/>办公电脑
+		  	  			<input type="radio" name="fixedAssetTypeRadio" value="2" <#if  steps.vars["fixedAssetType"] == '2'>checked="checked"</#if>/>非办公电脑
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">选择报废方式：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<input type="radio" name="fp_scrapWay" value="1" checked/>少量报废
+		  	  			<input type="radio" name="fp_scrapWay" value="2"/>批量报废
+		  	  		</td>
+		  	  	</tr>
+				<tr class="scrapWay1">
+				  	<td colspan="6" class="formtable_td_key" align="center">资产报废清单</td>
+				</tr>
+				<tr class="scrapWay1">
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="updateAccessoriesJsonStr${rand}" name="fp_updateMFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    						<input type="hidden" id="scrapWay${rand}" value='${(steps.vars["scrapWay"])!""}'/>
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="1" align="center"><input type="checkbox" class="abcd" /></td>
+											<td width="25" align="center">序号</td>
+											<td width="80" align="center">设备编号</td>
+											<td width="70" align="center">单位</td>
+											<td width="70" align="center">数量</td>
+											<td width="100" align="center">型号</td>
+											<td width="80" align="center">库存号</td>
+											<td width="130" align="center">设备名称</td>
+											<td width="105" align="center">购入日期</td>
+											<td width="188" align="center">故障说明</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="updateAccessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  	<tr class="scrapWay2">
+					<td class="formtable_td_key">资产报废清单</td>
+					<td class="formtable_td_value" colspan="5">
+						<input id="partAccount" type="hidden" name="fp_partList" /> 
+						<input id="participantList_val" type="hidden" name="fp_participantList" value='${(steps.vars["participantList"])!""}'/> 
+						<input id="scrapWay2JsonStr${rand}" type="hidden" name="fp_updateScrapWay2JsonStr" value='${(steps.vars["scrapWay2JsonStr"])!""}'/>
+						<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-upload'">导入资产报废清单</a>
+						<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+						<div id="participantList" style="font-size: 12px; ">${(steps.vars["participantList"])!""}</div>
+					</td>
+					</tr>
+				  	<tr>
+				  		<td class="formtable_td_key">申请日期：</td>
+		  	  			<td class="formtable_td_value" colspan="5">${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  				<input name="fp_updateApplyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+		  	  			</td>
+				  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		
+		<div id="importWin-${rand}" class="easyui-dialog"
+		data-options="modal:true, title:'导入设备清单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+		<div  style="padding:10px 10px;">
+		<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+					<td>
+						<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+		<style type="text/css">
+				table.gridtable {
+					font-family: verdana,arial,sans-serif;
+					font-size:11px;
+					color:#333333;
+					border-width: 1px;
+					border-color: #666666;
+					border-collapse: collapse;
+				}
+				table.gridtable thead td {
+					padding: 4px;
+					border-top:solid 1px #666666;
+					border-right:solid 1px #666666;
+					border-left:solid 1px #666666;
+				}
+				table.gridtable tbody td {
+					padding: 4px;
+					border-width: 1px;
+					border-style: solid;
+					border-color: #666666;
+				}
+			</style>	
+	<script type="text/javascript">
+	$('#updateUseDepartment${rand}')
+	.combotree(
+		{
+			//valueField : 'id',
+			//textField : 'name',
+			width:200,
+			url : 'hrFlow/auth/orgs.json',
+			/*onBeforeSelect:function(node){
+				if(node.state){
+					$("#useDepartment${rand}").tree("unselect");
+				}
+			},*/
+			onClick:function(record) {
+				$('#departmentId${rand}').val(record.id);
+				$('#departmentName${rand}').val(record.text);
+			}
+			/*required : true,
+			editable : false,
+			onSelect : function(record) {
+				//$('#companyId${rand}').val(record.id);
+				//$('#comname${rand}').val(record.name);
+			}*/
+		});
+	
+	$(function(){
+		$("input[name='fixedAssetTypeRadio']").change(function(){
+			$("#fixedAssetType${rand}").val($(this).val());
+		})
+		$.post("hrFlow/getHrUserInfo.json",{
+			account:$("#curEmpLoginId${rand}").val()
+		},function(data){
+			if(data.success){
+				var accounts='00000000'+data.obj.empId;
+				$("#curAccount${rand}").val(accounts.substring(accounts.length-8,accounts.length));
+			}
+		});
+		if($("#scrapWay${rand}").val()=='1'){
+			$("input[name=fp_scrapWay]:eq(0)").attr("checked",'checked'); 
+			$(".scrapWay2").hide();
+			$(".scrapWay1").show();
+		}else{
+			$("input[name=fp_scrapWay]:eq(1)").attr("checked",'checked'); 
+			$("#rows${rand}").val(1);
+			$(".scrapWay1").hide();
+			$(".scrapWay2").show();
+		}
+		$(":radio[name='fp_scrapWay']").click(function(){
+			$("#rows${rand}").val(0);
+			var scrapWay=$('input[name="fp_scrapWay"]:checked').val();
+			if(scrapWay=='1'){
+				$(".scrapWay1").show();
+				$("#participantList").empty();
+				$("#participantList_val").val('');
+				$("#scrapWay2JsonStr${rand}").val('');
+				$(".scrapWay2").hide();
+			}else{
+				$(".scrapWay2").show();
+				$("#updateAccessoryInfoTb${rand} tbody").empty();
+				$("#updateAccessoriesJsonStr${rand}").val('');
+				$(".scrapWay1").hide();
+			}
+		});
+		
+		if('${text}'!=''){
+			var json=eval("("+'${text}'+")"); 
+			var str='';
+			for(var i=0;i<json.accessoryData.length;i++){
+				str+='<tr>'
+						  +'<td width="1"><input type="checkbox" class="tdchk" /></td>'
+						  +'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+						  +'<td width="80" align="top"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getInfo('+json.accessoryData[i].rowno+');" value="'+json.accessoryData[i].assetsNo+'"/></td>'
+						  +'<td width="70" align="top"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].monad+'"/></td>'
+						  +'<td width="70" align="top"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].count+'"/></td>'
+						  +'<td width="100" align="top"><input type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].type+'"/></td>'
+						  +'<td width="80" align="top"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].repertoryNo+'"/></td>'
+						  +'<td width="130" align="top"><input type="text" class="easyui-validatebox" style="width:125px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].name+'"/></td>'
+						  +'<td width="105" align="top"><input type="text" class="easyui-validatebox" style="width:100px;border:solid 1px #007ACC;" readonly value="'+json.accessoryData[i].intakeDate+'"/></td>'
+						  +'<td width="188" align="top"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:185px;border:solid 1px #007ACC;" onblur="makeAccessory();" value="'+json.accessoryData[i].fault+'"/></td>'
+					  +'</tr>'
+			}
+			$('#updateAccessoryInfoTb${rand} tbody').append(str);
+			$("#rows${rand}").val($('#updateAccessoryInfoTb${rand} tbody tr').length);
+			$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+			makeAccessory();
+		}
+			/*var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#updateAccessoriesJsonStr${rand}').val('');
+			} else {				
+				var MFixedAssetsDetraction = { accessoryData:[] };
+				var rowno = 1;
+        		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {	        			
+        			var assetsNo = $.trim($(this).find('td').eq(2).text());
+        			var monad = $.trim($(this).find('td').eq(3).text());
+        			var count = $.trim($(this).find('td').eq(4).text());
+        			var type = $.trim($(this).find('td').eq(5).text());
+        			var repertoryNo = $.trim($(this).find('td').eq(6).text());
+        			var name = $.trim($(this).find('td').eq(7).text());
+        			var intakeDate = $.trim($(this).find('td').eq(8).text());
+        			var fault = $.trim($(this).find('td').eq(9).text());
+        			
+        			MFixedAssetsDetraction.accessoryData.push({
+        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault
+        			})
+        			rowno++;
+        		});
+        		
+        		$('#updateAccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+			}*/
+		
+		$('.abcd').each(function(){ 
+			$(this).click(function(){ 
+				if($(this).prop('checked')){
+					$('.abcd').prop("checked", true);
+				} else {
+					$('.abcd').prop("checked", false);
+				} 	
+			});
+		});
+	});
+	
+	function addAccessory() {
+		var rows = $('#updateAccessoryInfoTb${rand} tbody tr'); 
+		var rowno = rows.length + 1;
+		var str = '<tr>';
+		str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+		str += '<td width="25" align="center">' + rowno + '</td>';
+		str += '<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getInfo('+rowno+');"/></td>';
+		str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly/></td>';
+		str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" readonly/></td>';
+		str +='<td width="100"><input type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" readonly/></td>';
+		str +='<td width="80"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" readonly/></td>';
+		str +='<td width="130"><input type="text" class="easyui-validatebox" style="width:125px;border:solid 1px #007ACC;" readonly/></td>';
+		str +='<td width="105"><input type="text" class="easyui-validatebox" style="width:100px;border:solid 1px #007ACC;" readonly/></td>';
+		str +='<td width="188"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:185px;border:solid 1px #007ACC;" onblur="makeAccessory();"/></td>';
+		str += '</tr>';
+    	$('#updateAccessoryInfoTb${rand} tbody').append(str);
+    	$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+    	$("#rows${rand}").val(rowno);
+	}
+	function getInfo(n){
+		var assetsNo=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("input").val());
+		
+		if(assetsNo==null||assetsNo==''){
+			return;
+		}
+		//判断此编号的固定资产是否正在申请报废中
+		$.post("workspace/assetsNoisOffApply.json",{
+			assetsNo:assetsNo
+		},function(data){
+			if(data){
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+				$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+				$.messager.alert("提示信息","您好，此编号的固定资产正在申请报废中!");
+				return;
+			}else{
+				var count=0;
+				$("#updateAccessoryInfoTb${rand} tbody tr").each(function(){
+					if(assetsNo!=null&&assetsNo!=''&&assetsNo==$.trim($(this).find('td').eq(2).find("input").val())){
+						count++;
+					}
+				});
+				if(count>=2){
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+					$.messager.alert("提示信息","您好，申请报废的固定资产编号不可重复!");
+					return;
+				}
+				//获取固定资产信息
+				$.get("hrFlow/getAssetInfo.json",{
+					functionName:'ZHR_OA44',vars:'I_TYPE_VALUE_S_NEXT_I_EQUNR_VALUE_'+assetsNo,exportTableName:'OT_EQUI',
+					exportlist:'GROES_B_NEXT_GROES_A_NEXT_TYPBZ_NEXT_INVNR_NEXT_EQKTX_NEXT_ANSDT_NEXT_ANSWT_NEXT_STORT'
+				},function(data){
+					if(data==''||data==null){
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+						$.messager.alert("提示信息","您好，不存在该编号的固定资产!");
+						return;
+					}
+					var jsondata=eval("("+data+")");
+					if(jsondata.STORT=='A3'){
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val('');
+						$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val('');
+						$.messager.alert("提示信息","您好，该编号的固定资产已报废，不可重新发起申请!");
+						return;
+					}
+					
+					var reg1=/\'/g;
+					var type=(jsondata.TYPBZ).replace(reg1,'’');
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val(jsondata.GROES_B);
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input").val(jsondata.GROES_A);
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val(type);
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input").val(jsondata.INVNR);
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").val(jsondata.EQKTX);
+					$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input").val(jsondata.ANSDT);
+					
+				});
+			}
+		});
+		
+		makeAccessory();
+	}
+	
+	function removeAccessory() {
+    	var rows = $('#updateAccessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+        if (rows.length == 0) {
+    		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+    		return false;
+        }
+
+        $.each(rows, function () {        
+            $(this).parent("td").parent("tr").remove();
+        });
+        
+        var accessoryArr = [];
+		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {
+			var assetsNo = $.trim($(this).find('td').eq(2).find("input").val());
+			var monad = $.trim($(this).find('td').eq(3).find("input").val());
+			var count = $.trim($(this).find('td').eq(4).find("input").val());
+			var type = $.trim($(this).find('td').eq(5).find("input").val());
+			var repertoryNo = $.trim($(this).find('td').eq(6).find("input").val());
+			var name= $.trim($(this).find('td').eq(7).find("input").val());
+			var intakeDate = $.trim($(this).find('td').eq(8).find("input").val());
+			var fault = $.trim($(this).find('td').eq(9).find("input").val());
+			accessoryArr.push({
+				assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault
+			});
+		});
+
+    	var rowno = 1;
+    	var str = '';
+    	$("#updateAccessoryInfoTb${rand} tbody").html('');
+		$.each(accessoryArr, function(idx, obj) {
+			str += '<tr>';    				
+			str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+			str += '<td width="25" align="center">' + rowno + '</td>';
+			str += '<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" value="'+obj.assetsNo+'" onblur="makeAccessory()"/></td>';
+			str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" value="'+obj.monad+'" onblur="makeAccessory()" readonly/></td>';
+			str += '<td width="70"><input type="text" class="easyui-validatebox" style="width:65px;border:solid 1px #007ACC;" value="'+obj.count+'" onblur="makeAccessory()" readonly/></td>';
+			str +='<td width="100"><input type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+obj.type+'" onblur="makeAccessory()" readonly/></td>';
+			str +='<td width="80"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" value="'+obj.repertoryNo+'" onblur="makeAccessory()" readonly/></td>';
+			str +='<td width="130"><input type="text" class="easyui-validatebox" style="width:125px;border:solid 1px #007ACC;" value="'+obj.name+'" onblur="makeAccessory()" readonly/></td>';
+			str +='<td width="105"><input type="text" class="easyui-validatebox" style="width:100px;border:solid 1px #007ACC;" value="'+obj.intakeDate+'" onblur="makeAccessory()" readonly/></td>';
+			str +='<td width="188"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:185px;border:solid 1px #007ACC;" value="'+obj.fault+'" onblur="makeAccessory()"/></td>';
+			str += '</tr>';
+			rowno++;			    		    	
+		});  
+		$('#updateAccessoryInfoTb${rand} tbody').append(str);
+		$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+		$("#rows${rand}").val($('#updateAccessoryInfoTb${rand} tbody tr').length);
+		makeAccessory();
+	}
+	
+	function makeAccessory() {
+		var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+		if(rows.length == 0) {		
+			$('#updateAccessoriesJsonStr${rand}').val('');
+		}else {				
+			var updateMFixedAssetsDetraction = { accessoryData:[] };
+			var rowno = 1;
+    		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {	        			
+    			var assetsNo = $.trim($(this).find('td').eq(2).find("input").val());
+    			var monad = $.trim($(this).find('td').eq(3).find("input").val());
+    			var count = $.trim($(this).find('td').eq(4).find("input").val());
+    			var type = $.trim($(this).find('td').eq(5).find("input").val());
+    			var repertoryNo = $.trim($(this).find('td').eq(6).find("input").val());
+    			var name = $.trim($(this).find('td').eq(7).find("input").val());
+    			var intakeDate = $.trim($(this).find('td').eq(8).find("input").val());
+    			var fault = $.trim($(this).find('td').eq(9).find("input").val());
+    			
+    			updateMFixedAssetsDetraction.accessoryData.push({
+    				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault
+    			})
+    			rowno++;
+    		});
+    		
+    		$('#updateAccessoriesJsonStr${rand}').val(JSON.stringify(updateMFixedAssetsDetraction));
+		}
+	}
+	
+	//下载模板
+	$("#downloadTravelExcel${rand}").bind('click',function(){
+		submitForm("download.mFixedAssetsDetraction.name");
+	});
+	function submitForm(value){
+		var form = $("<form>");
+		form.attr('style','display:none');
+		form.attr('method','post');
+		form.attr('action','${base}sysprocess/task/mDownload.html');
+		
+		var key = $("<input>");
+		key.attr('type','hidden');
+		key.attr('name','key');
+		key.attr('value',value);
+		
+		$("body").append(form);
+		form.append(key);
+		
+		form.submit();
+		form.remove();
+	}
+	
+	//导入非生产物资清单
+	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+		 $("#importWin-${rand}").dialog('open');
+	 });
+	
+	 function clearInputFile${rand}(){
+			//清空文件框
+			$("#upload_file-${rand}").remove(); //移除原来的
+		    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+		   	$('#td_input_${rand}').html(newFileInput); //添加新的
+		    $.parser.parse('#td_input_${rand}');
+		}
+	 
+	 $("#upfile-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform-${rand}").form('submit',{
+				url:'teamActivities/imporFixedAssets.json',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						if(data.obj == null || data.obj.length == 0){
+							$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+						}else{
+							var str = "";
+							var MFixedAssetsDetraction = { accessoryData:[] };
+							if(data.obj.length>0){
+								$("#rows${rand}").val(data.obj.length);
+								$('#participantList').val("");
+								str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=5%>序号</td><td width=10%>设备编码</td><td width=10%>单位</td><td width=10%>数量</td><td width=10%>型号</td><td width=10%>库存号</td><td width=10%>设备名称</td><td width=10%>购入日期</td><td width=15%>故障说明</td></tr>";
+								for(var i = 0;i < data.obj.length;i++){
+								  str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].assetsNo+"</td><td>"+data.obj[i].monad+"</td><td>"+data.obj[i].count+"</td><td>"+data.obj[i].type+"</td><td>"+data.obj[i].repertoryNo+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].intakeDate+"</td><td>"+data.obj[i].fault+"</td>";
+								  MFixedAssetsDetraction.accessoryData.push({
+									  number:data.obj[i].number,assetsNo:data.obj[i].assetsNo,monad:data.obj[i].monad,count:data.obj[i].count,type:data.obj[i].type,repertoryNo:data.obj[i].repertoryNo,name:data.obj[i].name,intakeDate:data.obj[i].intakeDate,fault:data.obj[i].fault
+				        			})
+								  $.ajaxSetup({async : false});
+								}
+								str+="</table>"
+								document.getElementById("participantList").innerHTML=str;
+						  }
+							$('#scrapWay2JsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+							document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+							$.messager.alert("提示信息",data.msg);
+						}
+					}else{ 
+						$.messager.alert("提示信息",data.msg);
+					}
+					$("#importWin-${rand}").dialog('close');
+					$.messager.progress('close');
+				}
+			});
+	 });
+	</script>
+			</#if>
+		</#list>
+	  </#if>
+	</#if>
+</#if>
+
+<!-- 部门经理审核 -->
+<#if currentStep?exists && currentStep == 'departManagerTask'> 
+		<div id="departManagerTask">
+			<form id="departManagerTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="departManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				部门负责人审核
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td style="width:133px" class="formtable_td_key">部门负责人：</td>
+						<td width="325px" class="formtable_td_value">
+							<input type="hidden" name="fp_deptManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptManagerName" mobile="部门负责人审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="deptManagerAudiAgree${rand}" type="radio" name="fp_deptManagerAudi" mobile="处理结果_同意"checked="checked" value="0"/>同意
+							<input id="deptManagerAudiDisAgree${rand}" type="radio" name="fp_deptManagerAudi" mobile="处理结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">使用部门意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea id="deptManagerAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="使用部门意见" name="fp_deptManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptManagerAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#deptManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#deptManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#deptManagerAudiAdvice${rand}").val('');
+				$("#deptManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#deptManagerAudiAgree${rand}").bind("click",success);
+			$("#deptManagerAudiDisAgree${rand}").bind("click",failure);
+		</script>
+</#if>
+
+<!-- 信息部管理员处理 -->
+<#if currentStep?exists>
+   <#if currentStep == 'infoDepartAdministratorTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+		<div id="infoDepartAdministratorTask">
+			<form id="infoDepartAdministratorTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="infoDepartAdministratorTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				信息部管理员处理
+		  	  			</td>
+		  	  		</tr>
+		  	  		<#if scrapWay=='1'>
+		  	  		<tr id="tr1">
+				  		<td colspan="4" class="formtable_td_key" align="center">资产报废清单</td>
+				  		<div><input id="AccessoriesJsonStr${rand}" type="hidden" name="fp_MFixedAssetsDetraction"/></div>
+					</tr>
+					<tr id="tr2">
+				  		<td class="formtable_td_value" colspan="4">
+				  	  		<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  		<div style="border-top:solid 1px #666666;">
+									<table class="gridtable">
+										<thead>
+											<tr>
+												<td width="25" align="center">序号</td>
+												<td width="80" align="center">设备编号</td>
+												<td width="70" align="center">单位</td>
+												<td width="70" align="center">数量</td>
+												<td width="100" align="center">型号</td>
+												<td width="80" align="center">库存号</td>
+												<td width="120" align="center">设备名称</td>
+												<td width="105" align="center">购入日期</td>
+												<td width="180" align="center">故障说明</td>
+												<td width="80" align="center">处理方式：是否报废</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+									<table id="scrapDetailedList" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+				  	  	</td>
+				  	</tr>
+				  	</#if>
+					<tr>
+						<td style="width:133px" class="formtable_td_key">信息部管理员：</td>
+						<td width="325px" class="formtable_td_value">
+							<input type="hidden" name="fp_infoDepartAdmAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_infoDepartAdmName"mobile="信息部管理员处理" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="infoDepartAdmAgree${rand}" type="radio" name="fp_infoDepartAdmAudi" mobile="处理结果_同意" checked="checked" value="0"/>同意
+							<input id="infoDepartAdmDisagree${rand}" type="radio" name="fp_infoDepartAdmAudi" mobile="处理结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="infoDepartAdmAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="处理意见"
+								name="fp_infoDepartAdmAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_infoDepartAdmAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if steps.key == 'updateFixedAssetsProcTask'>
+      	<#assign text=steps.vars["updateMFixedAssetsDetraction"]!""/>
+    </#if>
+    </#list>
+		<script type="text/javascript">
+			$(function(){
+				if('${text}'!=''){
+					var json=eval("("+'${text}'+")"); 
+					var str='';
+					for(var i=0;i<json.accessoryData.length;i++){
+						str+='<tr>'
+								  +'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+								  +'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+								  +'<td width="105" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+								  +'<td width="180" align="top">'+json.accessoryData[i].fault+'</td>'
+								  +'<td width="80" align="top">'
+									  +'<input type="radio" value="1" name="'+json.accessoryData[i].assetsNo+'" checked onclick="makeAccessory();"/>是'
+									  +'<input type="radio" value="0" name="'+json.accessoryData[i].assetsNo+'" onclick="makeAccessory();"/>否'
+								  +'</td>'
+							  +'</tr>'
+					}
+					$('#scrapDetailedList tbody').append(str);
+					$.parser.parse($('#scrapDetailedList').parent());
+				}
+				
+				var rows = $('#scrapDetailedList tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rowno = 1;
+	        		$('#scrapDetailedList tbody tr').each(function () {	        			
+	        			var assetsNo = $.trim($(this).find('td').eq(1).text());
+	        			var monad = $.trim($(this).find('td').eq(2).text());
+	        			var count = $.trim($(this).find('td').eq(3).text());
+	        			var type = $.trim($(this).find('td').eq(4).text());
+	        			var repertoryNo = $.trim($(this).find('td').eq(5).text());
+	        			var name = $.trim($(this).find('td').eq(6).text());
+	        			var intakeDate = $.trim($(this).find('td').eq(7).text());
+	        			var fault = $.trim($(this).find('td').eq(8).text());
+	        			var isScrap=$.trim($(this).find('td').eq(9).find("input[name='"+assetsNo+"']:checked").val());
+	        			
+	        			MFixedAssetsDetraction.accessoryData.push({
+	        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault,isScrap:isScrap
+	        			})
+	        			rowno++;
+	        		});
+	        		
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			});
+			function makeAccessory() {
+				var rows = $('#scrapDetailedList tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rowno = 1;
+	        		$('#scrapDetailedList tbody tr').each(function () {	        			
+	        			var assetsNo = $.trim($(this).find('td').eq(1).text());
+	        			var monad = $.trim($(this).find('td').eq(2).text());
+	        			var count = $.trim($(this).find('td').eq(3).text());
+	        			var type = $.trim($(this).find('td').eq(4).text());
+	        			var repertoryNo = $.trim($(this).find('td').eq(5).text());
+	        			var name = $.trim($(this).find('td').eq(6).text());
+	        			var intakeDate = $.trim($(this).find('td').eq(7).text());
+	        			var fault = $.trim($(this).find('td').eq(8).text());
+	        			var isScrap=$.trim($(this).find('td').eq(9).find("input[name='"+assetsNo+"']:checked").val());
+	        			
+	        			MFixedAssetsDetraction.accessoryData.push({
+	        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault,isScrap:isScrap
+	        			})
+	        			rowno++;
+	        		});
+	        		
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			}
+		
+			$("#infoDepartAdmAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#infoDepartAdmAudiAdvice${rand}").validatebox({required:false});//采购员意见为非必填项
+			}
+			var failure=function(){
+				$("#infoDepartAdmAudiAdvice${rand}").val('');
+				$("#infoDepartAdmAudiAdvice${rand}").validatebox({required:true});//采购员意见为必填项
+			};
+			$("#infoDepartAdmAgree${rand}").bind("click",success);
+			$("#infoDepartAdmDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+</#if>
+</#if>
+
+<!-- 资产管理员审核 -->
+<#if currentStep?exists>
+   <#if currentStep == 'assetManagerTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+		<div id="assetManagerTask">
+			<form id="assetManagerTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="assetManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr>
+						<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">资产管理员审核</td>
+					</tr>
+					<#if scrapWay=='1'>
+					<tr id="tr1">
+				  		<td colspan="4" class="formtable_td_key" align="center">资产报废清单</td>
+				  		<div><input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/></div>
+					</tr>
+					<tr id="tr2">
+				  		<td class="formtable_td_value" colspan="4">
+				  	  		<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  		<div style="border-top:solid 1px #666666;">
+									<table class="gridtable">
+										<thead>
+											<tr>
+												<td width="25" align="center">序号</td>
+												<td width="80" align="center">设备编号</td>
+												<td width="70" align="center">单位</td>
+												<td width="70" align="center">数量</td>
+												<td width="100" align="center">型号</td>
+												<td width="80" align="center">库存号</td>
+												<td width="120" align="center">设备名称</td>
+												<td width="105" align="center">购入日期</td>
+												<td width="180" align="center">故障说明</td>
+												<td width="80" align="center">处理方式：是否报废</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+									<table id="scrapDetailedList" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+				  	  	</td>
+				  	</tr>
+				  	</#if>
+					<tr>
+						<td class="formtable_td_key" width="">资产管理员：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_assetManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_assetManagerName" mobile="资产管理员审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="assetManagerAgree${rand}" type="radio" name="fp_assetManagerAudi"mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="assetManagerDisagree${rand}" type="radio" name="fp_assetManagerAudi" mobile="审核结果_不同意"value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">减损原因及申请处理办法：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="assetManagerAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="审批意见"
+								name="fp_assetManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_assetManagerAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if steps.key == 'updateFixedAssetsProcTask'>
+       	<#assign text=steps.vars["updateMFixedAssetsDetraction"]!""/>
+    </#if>
+    <#if steps.key == 'infoDepartAdministratorTask'>
+       	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+    </#if>
+  </#list>
+		<script type="text/javascript">
+			$(function(){
+				//$('#AccessoriesJsonStr${rand}').val('${text}');
+				if('${text}'!=''){
+					var json=eval("("+'${text}'+")"); 
+					var str='';
+					for(var i=0;i<json.accessoryData.length;i++){
+						str+='<tr>'
+								  +'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+								  +'<td width="120" align="top">'+json.accessoryData[i].name+'</td>'
+								  +'<td width="105" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+								  +'<td width="180" align="top">'+json.accessoryData[i].fault+'</td>'
+								  +'<td width="80" align="top">';
+						if(json.accessoryData[i].isScrap=='0'){
+							str+='否';
+						}else{
+							str+='<input type="radio" name="'+json.accessoryData[i].assetsNo+'" value="1" checked onclick="makeAccessory();"/>是'
+							  +'<input type="radio" name="'+json.accessoryData[i].assetsNo+'" value="0" onclick="makeAccessory();"/>否';
+						}
+						str+='</td></tr>';
+					}
+					$('#scrapDetailedList tbody').append(str);
+					$.parser.parse($('#scrapDetailedList').parent());
+					makeAccessory();
+				}
+			});
+			
+			function makeAccessory() {
+				var rows = $('#scrapDetailedList tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rowno = 1;
+	        		$('#scrapDetailedList tbody tr').each(function () {	        			
+	        			var assetsNo = $.trim($(this).find('td').eq(1).text());
+	        			var monad = $.trim($(this).find('td').eq(2).text());
+	        			var count = $.trim($(this).find('td').eq(3).text());
+	        			var type = $.trim($(this).find('td').eq(4).text());
+	        			var repertoryNo = $.trim($(this).find('td').eq(5).text());
+	        			var name = $.trim($(this).find('td').eq(6).text());
+	        			var intakeDate = $.trim($(this).find('td').eq(7).text());
+	        			var fault = $.trim($(this).find('td').eq(8).text());
+	        			var isScrap='';
+	        			if($(this).find('td').eq(9).text()=='否'){
+	        				isScrap='0';
+	        			}else{
+	        				isScrap=$.trim($(this).find('td').eq(9).find("input[name='"+assetsNo+"']:checked").val());
+	        			}
+	        			
+	        			MFixedAssetsDetraction.accessoryData.push({
+	        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault,isScrap:isScrap
+	        			})
+	        			rowno++;
+	        		});
+	        		
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			}
+			
+			$("#assetManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#assetManagerAudiAdvice${rand}").validatebox({required:false});//后勤部经理意见为非必填项
+			}
+			var failure=function(){
+				$("#assetManagerAudiAdvice${rand}").val('');
+				$("#assetManagerAudiAdvice${rand}").validatebox({required:true});//后勤部经理意见为必填项
+			};
+			$("#assetManagerAgree${rand}").bind("click",success);
+			$("#assetManagerDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+</#if>
+</#if>
+
+<!-- 财务部审核 -->
+<#if currentStep?exists>
+   <#if currentStep == 'financialAuditTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	 <#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+      	 <#assign participantList=steps.vars["participantList"]!""/>
+		<div id="financialAuditTask">
+			<form id="financialAuditTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="financialAuditTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+				<tr><td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">账务部审核</td></tr>
+					<#if scrapWay=='1'>
+					<tr id="tr1">
+				  		<td colspan="4" class="formtable_td_key" align="center">资产报废清单</td>
+				  		<div>
+				  			<input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/>
+				  		</div>
+					</tr>
+					<tr id="tr2">
+				  		<td class="formtable_td_value" colspan="4">
+				  	  		<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  		<div style="border-top:solid 1px #666666;">
+									<table class="gridtable">
+										<thead>
+											<tr>
+												<td width="25" align="center">序号</td>
+												<td width="80" align="center">设备编号</td>
+												<td width="70" align="center">单位</td>
+												<td width="70" align="center">数量</td>
+												<td width="100" align="center">型号</td>
+												<td width="80" align="center">库存号</td>
+												<td width="100" align="center">设备名称</td>
+												<td width="100" align="center">购入日期</td>
+												<td width="145" align="center">故障说明</td>
+												<td width="80" align="center">处理方式：是否报废</td>
+												<td width="60" align="center">购置金额</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+									<table id="scrapDetailedList" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+				  	  	</td>
+				  	</tr>
+				  	</#if>
+				  	<#if scrapWay=='2'>
+				  		<tr>
+				  			<td class="formtable_td_key">资产报废清单：</td>
+							<td class="formtable_td_value" id="scrapWay2${rand}" colspan="3">
+							</td>
+				  		</tr>
+				  	</#if>
+					<tr>
+						<td class="formtable_td_key" width="">财务负责人：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_participantList" id="participantList${rand}"/>
+							<input type="hidden" name="fp_financialAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_financialName" mobile="财务部审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="financialAgree${rand}" type="radio" name="fp_financialAudi"mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="financialDisagree${rand}" type="radio" name="fp_financialAudi" mobile="审核结果_不同意"value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">财务部意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="financialAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="审批意见"
+								name="fp_financialAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_financialAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if steps.key == 'updateFixedAssetsProcTask'>
+       	<#assign text=steps.vars["updateMFixedAssetsDetraction"]!""/>
+       	<#assign participantList=steps.vars["participantList"]!""/>
+    </#if>
+    <#if steps.key == 'infoDepartAdministratorTask'>
+       	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+    </#if>
+	<#if steps.key == 'assetManagerTask'>
+      	 <#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+	</#if>
+  </#list>
+		<script type="text/javascript">
+			$(function(){
+				if('${participantList}'!=''){
+					$("#scrapWay2${rand}").html('${participantList}');
+					var counts = $('#scrapWay2${rand} table tr');
+					var count=1;
+					counts.each(function () {	     
+						if(count==1){
+							$(this).find('td').eq(7).after("<td width=10%>购置金额</td>")
+						}else{
+							var assetNo = $.trim($(this).find('td').eq(1).text());
+		        			var pric=getPrice(assetNo);
+		        			$(this).find('td').eq(7).after("<td>"+pric+"</td>");
+						}
+	        			count++;
+	        		});
+					$("#participantList${rand}").val($("#scrapWay2${rand}").html());
+				}
+				if('${text}'!=''){
+					var json=eval("("+'${text}'+")"); 
+					var str='';
+					for(var i=0;i<json.accessoryData.length;i++){
+						str+='<tr>'
+								  +'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].name+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+								  +'<td width="145" align="top">'+json.accessoryData[i].fault+'</td>'
+								  +'<td width="80" align="top">';
+							if(json.accessoryData[i].isScrap=='0'){
+								str+='否';
+							}else{
+								str+='是';
+							}
+								  str+='</td>'
+								  +'<td width="60" align="top"></td></tr>';
+								  
+					}
+					$('#scrapDetailedList tbody').append(str);
+					$.parser.parse($('#scrapDetailedList').parent());
+				}
+				
+				var rows = $('#scrapDetailedList tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rowno = 1;
+					
+	        		$('#scrapDetailedList tbody tr').each(function () {	        			
+	        			var assetsNo = $.trim($(this).find('td').eq(1).text());
+	        			showPrice(this,assetsNo);
+	        			var monad = $.trim($(this).find('td').eq(2).text());
+	        			var count = $.trim($(this).find('td').eq(3).text());
+	        			var type = $.trim($(this).find('td').eq(4).text());
+	        			var repertoryNo = $.trim($(this).find('td').eq(5).text());
+	        			var name = $.trim($(this).find('td').eq(6).text());
+	        			var intakeDate = $.trim($(this).find('td').eq(7).text());
+	        			var fault = $.trim($(this).find('td').eq(8).text());
+	        			var isScrap=$.trim($(this).find('td').eq(9).text());
+	        			//var price=$.trim($(this).find('td').eq(10).text());
+	        			var price=getPrice(assetsNo);
+	        			
+	        			MFixedAssetsDetraction.accessoryData.push({
+	        				rowno:rowno,assetsNo:assetsNo,monad:monad,count:count,type:type,repertoryNo:repertoryNo,name:name,intakeDate:intakeDate,fault:fault,isScrap:isScrap,price:price
+	        			})
+	        			rowno++;
+	        		});
+	        		
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			});
+			
+			function showPrice(i,no){
+				$.get("hrFlow/getAssetInfo.json",{
+					functionName:'ZHR_OA44',vars:'I_TYPE_VALUE_S_NEXT_I_EQUNR_VALUE_'+no,exportTableName:'OT_EQUI',
+					exportlist:'GROES_B_NEXT_GROES_A_NEXT_TYPBZ_NEXT_INVNR_NEXT_EQKTX_NEXT_ANSDT_NEXT_ANSWT'
+				},function(data){
+						var jsondata=eval("("+data+")");
+						$(i).find('td').eq(10).text(jsondata.ANSWT);
+				});
+			}
+			
+			function getPrice(no){
+				var result='';
+				 $.ajax({
+			           type: "post",
+			           url: "hrFlow/getAssetInfo.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {functionName:'ZHR_OA44',vars:'I_TYPE_VALUE_S_NEXT_I_EQUNR_VALUE_'+no,exportTableName:'OT_EQUI',
+							exportlist:'GROES_B_NEXT_GROES_A_NEXT_TYPBZ_NEXT_INVNR_NEXT_EQKTX_NEXT_ANSDT_NEXT_ANSWT'},
+			           success: function (data) {
+			            	var jsondata=eval("("+data+")");
+			                result=jsondata.ANSWT;
+			            }
+			          });
+				return result;
+			}
+			$("#financialAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#financialAudiAdvice${rand}").validatebox({required:false});//后勤部经理意见为非必填项
+			}
+			var failure=function(){
+				$("#financialAudiAdvice${rand}").val('');
+				$("#financialAudiAdvice${rand}").validatebox({required:true});//后勤部经理意见为必填项
+			};
+			$("#financialAgree${rand}").bind("click",success);
+			$("#financialDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+</#if>
+</#if>
+
+<!-- 后勤部经理审核 -->
+<#if currentStep?exists && currentStep == 'logisticsDepartManagerTask'> 
+		<div id="logisticsDepartManagerTask">
+			<form id="logisticsDepartManagerTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="logisticsDepartManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+				<tr><td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">后勤部经理审核</td></tr>
+					<tr>
+						<td class="formtable_td_key" width="">后勤部经理：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_logisticManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_logisticManagerName" mobile="后勤部经理审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="logisticManagerAgree${rand}" type="radio" name="fp_logisticManagerAudi"mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="logisticManagerDisagree${rand}" type="radio" name="fp_logisticManagerAudi" mobile="审核结果_不同意"value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">后勤部经理意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="logisticManagerAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="后勤部经理意见"
+								name="fp_logisticManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_logisticManagerAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#logisticManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#logisticManagerAudiAdvice${rand}").validatebox({required:false});//后勤部经理意见为非必填项
+			}
+			var failure=function(){
+				$("#logisticManagerAudiAdvice${rand}").val('');
+				$("#logisticManagerAudiAdvice${rand}").validatebox({required:true});//后勤部经理意见为必填项
+			};
+			$("#logisticManagerAgree${rand}").bind("click",success);
+			$("#logisticManagerDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+
+<!-- 总经理审核 -->
+<#if currentStep?exists && currentStep == 'generalManagerTask'> 
+		<div id="generalManagerTask">
+			<form id="generalManagerTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="generalManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+				<tr><td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">总经理审核</td></tr>
+					<tr>
+						<td class="formtable_td_key" width="">总经理：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_generalManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_generalManagerName" mobile="总经理审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="generalManagerAgree${rand}" type="radio" name="fp_generalManagerAudi" mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="generalManagerDisagree${rand}" type="radio" name="fp_generalManagerAudi" mobile="审核结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">总经理意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="generalManagerAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="审核意见"
+								name="fp_generalManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_generalManagerAudiTime" mobile="审核时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#generalManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#generalManagerAudiAdvice${rand}").validatebox({required:false});//总经理意见为非必填项
+			}
+			var failure=function(){
+				$("#generalManagerAudiAdvice${rand}").val('');
+				$("#generalManagerAudiAdvice${rand}").validatebox({required:true});//总经理意见为必填项
+			};
+			$("#generalManagerAgree${rand}").bind("click",success);
+			$("#generalManagerDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+<!-- 资产管理员确认 -->
+<#if currentStep?exists>
+   <#if currentStep == 'assetManagerVerifyTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+		<div id="assetManagerVerifyTask">
+			<form id="assetManagerVerifyTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="assetManagerVerifyTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr><td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">资产管理员确认</td></tr>
+					<#if scrapWay=='1'>
+					<tr id="tr1">
+				  		<td colspan="4" class="formtable_td_key" align="center">资产报废清单</td>
+				  		<div><input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_assetMFixedAssetsDetraction"/></div>
+					</tr>
+					<tr id="tr2">
+				  		<td class="formtable_td_value" colspan="4">
+				  	  		<div style="width:960px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  		<div style="border-top:solid 1px #666666;">
+									<table class="gridtable">
+										<thead>
+											<tr>
+												<td width="25" align="center">序号</td>
+												<td width="80" align="center">设备编号</td>
+												<td width="70" align="center">单位</td>
+												<td width="70" align="center">数量</td>
+												<td width="100" align="center">型号</td>
+												<td width="80" align="center">库存号</td>
+												<td width="100" align="center">设备名称</td>
+												<td width="100" align="center">购入日期</td>
+												<td width="145" align="center">故障说明</td>
+												<td width="80" align="center">处理方式：是否报废</td>
+												<td width="60" align="center">购置金额</td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+								<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+									<table id="scrapDetailedList" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>	
+				  	  	</td>
+				  	</tr>
+				  	</#if>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px" name="fp_assetManagerVerifyAdvice" class="formtable_remark" mobile="确认意见"></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+						<td class="formtable_td_key" width="">资产管理员:</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_assetManagerAccount" value="${appuser.account}" />
+							<input type="hidden" mobile="资产管理员" name="fp_assetManagerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_assetManagerAudiTime" mobile="确认时间" timeEditor="1"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if steps.key == 'updateFixedAssetsProcTask'>
+       	<#assign text=steps.vars["updateMFixedAssetsDetraction"]!""/>
+    </#if>
+    <#if steps.key == 'infoDepartAdministratorTask'>
+       	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+    </#if>
+	<#if steps.key == 'assetManagerTask'>
+      	 <#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+	</#if>
+	<#if steps.key == 'financialAuditTask'>
+      	<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+    </#if>
+  </#list>
+		<script type="text/javascript">
+			$(function(){
+				if('${text}'!=''){
+					$("#AccessoriesJsonStr${rand}").val('${text}');
+					var json=eval("("+'${text}'+")"); 
+					var str='';
+					for(var i=0;i<json.accessoryData.length;i++){
+						str+='<tr>'
+								  +'<td width="25" align="center">'+json.accessoryData[i].rowno+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].assetsNo+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].monad+'</td>'
+								  +'<td width="70" align="top">'+json.accessoryData[i].count+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].type+'</td>'
+								  +'<td width="80" align="top">'+json.accessoryData[i].repertoryNo+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].name+'</td>'
+								  +'<td width="100" align="top">'+json.accessoryData[i].intakeDate+'</td>'
+								  +'<td width="145" align="top">'+json.accessoryData[i].fault+'</td>'
+								  +'<td width="80" align="top">'
+								  +json.accessoryData[i].isScrap+'</td>'
+								  +'<td width="60" align="top">'+json.accessoryData[i].price+'</td>'
+								  +'</tr>';
+					}
+					$('#scrapDetailedList tbody').append(str);
+					$.parser.parse($('#scrapDetailedList').parent());
+				}
+			});
+		</script>
+	 </#if>
+   </#if>
+</#if>
+<#include "/common/foot.html">

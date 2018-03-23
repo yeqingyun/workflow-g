@@ -1,0 +1,88 @@
+ process(id:"L-Extramural-Training-Application"){
+	step(id:"startevent1"){
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserId",validType:"required",label:"员工账号")
+		
+		field(name:"applyEmpNo",validType:"required",label:"员工编号")
+		
+		field(name:"applyUserName",validType:"required",label:"员工姓名")
+		
+		field(name:"applyOrgName",validType:"required",label:"部门")
+		
+		field(name:"applyUserJob",validType:"required",label:"岗位")
+		
+		field(name:"trainingSubject",validType:"required",label:"培训主题")
+		
+		field(name:"trainingRequirement",validType:"required",label:"培训需求")
+		
+		field(name:"trainingSyllabus",validType:"required",label:"课程大纲")
+		
+		field(name:"trainingType",validType:"required",label:"培训形式")
+		
+		field(name:"trainingTimeStart",validType:"required",label:"培训起始时间")
+		
+		field(name:"trainingTimeStartEnd",validType:"required",label:"培训结束时间")
+		
+		field(name:"trainingPlace",validType:"required",label:"培训地点")
+		
+		field(name:"trainingInstitution",validType:"required",label:"培训机构")
+		
+		field(name:"trainingLecturer",validType:"required",label:"培训讲师")
+		
+		field(name:"trainingedEmpInfo",validType:"required",label:"培训对象人员信息")
+		
+		field(name:"trainingEmpCount",validType:"required min(0)",label:"培训对象人数")
+		
+		field(name:"perTrainingExpenses",validType:"required min(0)",label:"人均培训预算费用")
+		
+		field(name:"trainingExpenses",validType:"required min(0)",label:"合计培训预算费用")
+		
+		field(name:"managerType",validType:"required",label:"管理者等级")
+		
+		
+	}
+	
+	step(id:"nmb_updateApplicationInfoTask"){
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserId",validType:"required",label:"员工账号")
+		
+		field(name:"applyEmpNo",validType:"required",label:"员工编号")
+		
+		field(name:"applyUserName",validType:"required",label:"员工姓名")
+		
+		field(name:"applyOrgName",validType:"required",label:"部门")
+		
+		field(name:"applyUserJob",validType:"required",label:"岗位")
+		
+		field(name:"trainingSubject",validType:"required",label:"培训主题")
+		
+		field(name:"trainingRequirement",validType:"required",label:"培训需求")
+		
+		field(name:"trainingSyllabus",validType:"required",label:"课程大纲")
+		
+		field(name:"trainingType",validType:"required",label:"培训形式")
+		
+		field(name:"trainingTimeStart",validType:"required",label:"培训起始时间")
+		
+		field(name:"trainingTimeStartEnd",validType:"required",label:"培训结束时间")
+		
+		field(name:"trainingPlace",validType:"required",label:"培训地点")
+		
+		field(name:"trainingInstitution",validType:"required",label:"培训机构")
+		
+		field(name:"trainingLecturer",validType:"required",label:"培训讲师")
+		
+		field(name:"trainingedEmpInfo",validType:"required",label:"培训对象人员信息")
+		
+		field(name:"trainingEmpCount",validType:"required min(0)",label:"培训对象人数")
+		
+		field(name:"perTrainingExpenses",validType:"required min(0)",label:"人均培训预算费用")
+		
+		field(name:"trainingExpenses",validType:"required min(0)",label:"合计培训预算费用")
+		
+		field(name:"managerType",validType:"required",label:"管理者等级")
+		
+	}
+}

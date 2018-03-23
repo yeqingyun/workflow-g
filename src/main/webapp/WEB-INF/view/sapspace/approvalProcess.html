@@ -1,0 +1,675 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">采购申请编号：</td>
+		    			<td width="200"> 
+		    			 	<input id="preqNo-${rand}" style="width:200px;" class="easyui-textbox" type="text" name="preqNo" data-options=""></input>
+		   				</td>
+		    			<td align="right" style="white-space:nowrap; padding-left:12px;">采购申请行号：</td>
+		   				<td width="200">
+		   				 	<input id="preqItem-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="preqItem" data-options="min:0,validType:'number',invalidMessage:'请输入数字'"></input>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap;padding-left:12px;">状态：</td>
+		    			<td width="200">
+		    			 <input id="status-${rand}" style="width:200px;" class="easyui-combobox" name="status" value="" data-options="valueField:'id',textField:'name',data:[{id:'',name:'请选择'},{id:1,name:'审核中'},{id:3,name:'待修改'}],panelHeight:'auto',editable:false"/>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="personalTaskGrid-${rand}"></div>
+	</div>
+ </div>
+
+<div id="win-${rand}" class="easyui-dialog" title="Dialog" style="width:1030px;height:500px;padding:0px 10px 10px 10px"
+	 data-options="
+	   modal:true,
+	   closed:true,
+	   maximizable:true,
+	   cache: false,
+	   onMaximize:winOnMax${rand},
+	   onRestore:winOnRestore${rand},
+	   onClose:winOnClose${rand},
+	   resizable:true">
+	<div id="tab-${rand}">
+	    <div title="处理任务" style="overflow:auto;padding:0px;">
+	    	 <div id="formOperatePanel-${rand}" class="easyui-panel" data-options="width:975" style="padding:5px;">
+		        <a href="javascript:void(0)" id="submitBtn-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">提交表单</a>
+		       <!-- <a href="javascript:void(0)" id="uploadBtn-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-back'">上传附件</a> -->
+		    </div>
+			<div id="loadFormPanel-${rand}" data-options="width:975" style="overflow-y:visible;overflow-x:visible;padding:10px 0px 0px 0px;">
+		    </div>
+	    </div>
+	    <div title="流程流转详情" style="overflow:auto;padding:5px;">
+	    </div>
+	</div>
+</div>
+
+<div id="upload-${rand}" class="easyui-dialog" title="上传附件" style="width:400px;height:200px;"
+        data-options="iconCls:'icon-save',resizable:true,width:464,height:509,modal:true,closed:true,
+        buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: closeUploadDiag${rand}
+                }]">
+   <iframe id="upl-${rand}"  style="width:450px;height:470px;" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<div id="projectAudiWin-${rand}" class="easyui-dialog" title="批量审批任务" style="width:1030px;height:500px;padding:0px 10px 10px 10px"
+	 data-options="
+	   modal:true,
+	   closed:true,
+	   maximizable:true,
+	   cache: false,
+	   resizable:true,
+	   toolbar: [{
+		 text:'提交表单',
+		 handler: projectCommitForm${rand},
+		 iconCls:'icon-save'
+	   }]">
+	   <div>
+		  <form id="projectAudiForm-${rand}" method="post" enctype='multipart/form-data'>
+		  	  <br/>
+		  	  <table class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="2" class="formtable_td_key">工程部负责人审批</td>
+		  	  		<input type="hidden" name="fp_curStep" value="second"/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					  	<input class="easyui-combobox" name="fp_projectAudi"
+    						data-options="required:true,valueField:'id',textField:'text',
+	    						data: [{
+									id: '0',
+									text: '同意'
+								},{
+									id: '1',
+									text: '不同意'
+								}]"/>
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<textarea style="width: 780px; height: 120px" name="fp_treatmentAdvice" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+</div>
+
+<div id="generalManAudiWin-${rand}" class="easyui-dialog" title="批量审批任务" style="width:1030px;height:500px;padding:0px 10px 10px 10px"
+	 data-options="
+	   modal:true,
+	   closed:true,
+	   maximizable:true,
+	   cache: false,
+	   resizable:true,
+	   toolbar: [{
+		 text:'提交表单',
+		 handler: generalManCommitForm${rand},
+		 iconCls:'icon-save'
+	   }]">
+	   <div>
+		  <form id="generalManAudiForm-${rand}" method="post" enctype='multipart/form-data'>
+		  	  <br/>
+		  	  <table class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="2" class="formtable_td_key">总经理审批</td>
+		  	  		<input type="hidden" name="fp_curStep" value="third"/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					  	<input class="easyui-combobox" name="fp_generalManagerAudi"
+    						data-options="required:true,valueField:'id',textField:'text',
+	    						data: [{
+									id: '0',
+									text: '同意'
+								},{
+									id: '1',
+									text: '不同意'
+								}]"/>
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<textarea style="width: 780px; height: 120px" name="fp_generalManagerAdvice" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+</div>
+
+<script type="text/javascript">
+$('#personalTaskGrid-${rand}').datagrid({
+  url:'sapspace/personalTask.json',
+  columns:[[
+  	{field:'id',title:'编号',hidden:true,checkbox:false},
+  	{field:'processInstanceId',title:'流程实例编号',width:80},
+	{field:'processDefinitionId',title:'流程定义',width:180},
+	{field:'name',title:'审批节点',width:120},
+	{field:'createTime',title:'创建时间',width:120},
+  	{field:'preqNo',title:'采购申请编号', width:100},
+	{field:'preqItem',title:'采购申请行号 ',width:100},
+	{field:'docType',title:'凭证类型',width:100},
+	{field:'createdBy',title:'创建人',width:150},
+	{field:'preqDate',title:'请求日期',width:150},
+	{field:'shortText',title:'短文本 ',width:150},
+	{field:'material',title:'物料号 ',width:150},
+	{field:'plant',title:'工厂',width:150},
+	{field:'storeLoc',title:'库存地点',width:150},
+	{field:'trackingno',title:'需求跟踪号',width:150},
+	{field:'matGrp',title:'物料组 ',width:150},
+	{field:'quantity',title:'采购申请数量',width:150},
+	{field:'unit',title:'采购申请计量单位',width:150},
+	{field:'delivDate',title:'项目交货日期',width:150},
+	{field:'relDate',title:'采购申请批准日期',width:150},
+	{field:'grPrTime',title:'以天计的收货处理时间',width:150},
+	{field:'cAmtBapi',title:'采购需求中的价格',width:150},
+	{field:'priceUnit',title:'价格单位 ',width:150},
+	{field:'itemCat',title:'采购凭证中的项目类别',width:150},
+	{field:'acctasscat',title:'科目分配类别',width:150},
+	{field:'status',title:'单据状态',width:150,
+		formatter: function(value,row,index){
+			if (row.status == 0){
+				return "待审核";
+			} else if(row.status == 1){
+				return "审核中";
+			} else if(row.status == 2){
+				return "已审核";
+			} else if(row.status == 3){
+				return "待修改";
+			} 
+		}
+	},
+	{field:'assignee',title:'负责人',width:100},
+	{field:'suspensionState',title:'状态',width:100,
+		formatter: function(value,row,index){
+			if (row.suspensionState == 1){
+				return "激活";
+			} else if(row.suspensionState == 2){
+				return "挂起";
+			}
+		}
+	},
+	{field:'taskDefinitionKey',title:'TaskKey',width:100,hidden:true}
+  ]],
+    view: detailview,
+   detailFormatter:function(index,row){
+		return '<div style="padding:2px"><table class="ddv"></table></div>';
+	},
+	onExpandRow: function(index,row){
+		var ddv = $(this).datagrid('getRowDetail',index).find('table.ddv');
+		ddv.datagrid({
+			url:'sapspace/loadAttachments.json?preqNo='+row.preqNo+'&preqItem='+row.preqItem,
+			fitColumns:false,
+			singleSelect:true,
+			rownumbers:true,
+			loadMsg:'正在加载,请等待...',
+			height:'auto',
+			columns:[[
+				{field:'fileNo',title:'文件编号',width:100},
+				{field:'fileName',title:'文件名',width:200},
+				{field:'operate',title:'操作',width:120,
+					formatter: function(value,row,index){
+						var returnStr = "<a href='${file_download_url}"+ row.fileNo +"'>下载</a>"
+						return returnStr;
+					}
+				}
+			]],
+			onResize:function(){
+				$('#personalTaskGrid-${rand}').datagrid('fixDetailRowHeight',index);
+			},
+			onLoadSuccess:function(){
+				setTimeout(function(){
+					$('#personalTaskGrid-${rand}').datagrid('fixDetailRowHeight',index);
+				},0);
+			}
+		});
+		$('#personalTaskGrid-${rand}').datagrid('fixDetailRowHeight',index);
+	},
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  rownumbers:true,
+  toolbar: [{
+	text : '批量审批',
+	iconCls: 'icon-handle',
+	handler: batchHandleProcess${rand}
+  },'-',{
+	text : '审批任务',
+	iconCls: 'icon-handle',
+	handler: handleProcess${rand}
+  },'-',{
+	text : '同步SAP数据',
+	iconCls: 'icon-sync',
+	handler: syncSAPSheet${rand}
+  }]
+});
+
+
+$('#tab-${rand}').tabs({
+    border:false,
+    fit:true,
+    onSelect:function(title){
+        if (title == '流程流转详情') {
+        	var tab = $('#tab-${rand}').tabs('getSelected');
+			$('#tab-${rand}').tabs('update', {
+				tab: tab,
+				options: {
+					href: 'sapspace/personalTaskHistory.html?processInstanceId=' + processInstanceId
+				}
+			});
+        }
+    }
+});
+
+
+var taskId = null;
+var taskDefKey = null;
+var processInstanceId = null;
+//处理任务
+function handleProcess${rand}(){
+  var row = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+  if (row.length > 0){
+  	if(row.length != 1){
+  		$.messager.alert('信息提示','请选择一条记录查看详情!','info');
+  		return;
+  	} else if (row[0].status == 3) {
+  		//需要同步才能审批
+  		$.messager.alert('信息提示','当前单据状态为待修改,请同步SAP数据后,再进行流程审批处理!','info');
+  		return;
+  	} else {
+  		$('#win-${rand}').dialog('setTitle', '采购单[' + row[0].preqNo + '--' + row[0].preqItem  + ']详情');
+		taskId = row[0].id;
+		taskDefKey = row[0].taskDefinitionKey;
+		processInstanceId = row[0].processInstanceId;
+  		$('#win-${rand}').dialog('open');
+  		
+  		//初始化表单
+  		$('#loadFormPanel-${rand}').panel({
+  			border:false,
+		    href:'sapspace/task/form.html?taskId=' + taskId
+		}); 
+  	}
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+//批量处理任务
+function batchHandleProcess${rand}(){
+  var row = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+  if (row.length > 0){
+  		for (var i=0;i<row.length;i++) {
+  			if (row[i].status == 3) {
+  				$.messager.alert('信息提示','当前选择的单据含有待修改状态的单据,请将待修改状态的单据进行SAP数据同步后,再进行流程审批处理!','info');
+  				return;
+  			}
+  		}
+  		if (row[0].taskDefinitionKey == 'projectAudiTask') {
+  			$('#projectAudiWin-${rand}').dialog('open');
+  		} else if (row[0].taskDefinitionKey == 'generalManagerTask'){
+  			$('#generalManAudiWin-${rand}').dialog('open');
+  		} else if (row[0].taskDefinitionKey == 'syncSapTask') {
+  			syncSapDataCommitForm${rand}();
+  		}
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+function commitForm${rand}() {
+  $('#' + taskDefKey + 'Form').form('submit', {
+	url: 'sapspace/complete/'+taskId+".html",
+	onSubmit: function(param) {
+		var validateResult = $(this).form('enableValidation').form('validate');
+		if (validateResult) {
+			if ($('#attchFileGrid-${rand}').length > 0) {
+				var rows = $('#attchFileGrid-${rand}').datagrid('getRows');
+				$.each(rows, function(i, d){
+					param['attch_' + i] = d.fileNo + "_" + d.fileName
+				});
+			}
+		} else {
+			return false;
+		}
+	},
+	success: function(data) {
+	  var data = JSON.parse(data);
+	  $('#win-${rand}').dialog('close');
+	  $.messager.show({
+		title: '信息提示',
+		msg: data.message
+	  });
+	  //重新加载
+	  $('#personalTaskGrid-${rand}').datagrid('reload');
+	}
+  });
+}
+
+//提交
+$('#submitBtn-${rand}').bind('click', function(){
+    commitForm${rand}()
+});
+
+//上传
+$('#uploadBtn-${rand}').bind('click', function(){
+     addAttache${rand}()
+});
+
+
+function winOnMax${rand}(){
+	$('#loadFormPanel-${rand}').panel('resize',{
+		width: document.body.clientWidth - 35
+	});
+	$('#formOperatePanel-${rand}').panel('resize',{
+		width: document.body.clientWidth - 35,
+		height: 35
+	});
+	$('#attchFileGrid-${rand}').datagrid('resize',{
+		width: document.body.clientWidth - 35
+	});
+	
+	//流程图
+	$('#viewTaskProcessImage').panel('resize',{
+		width: document.body.clientWidth - 65
+	});
+	//任务列表
+	$('#viewTaskHisTaskGrid').datagrid('resize',{
+		width: document.body.clientWidth - 65
+	});
+	//历史表单
+	$('#viewTaskHisFormContent').panel('resize',{
+		width: document.body.clientWidth - 65
+	});
+	//附件
+	$('#viewTaskHisAttachmentGrid').datagrid('resize',{
+		width: document.body.clientWidth - 65
+	});
+}
+
+function winOnRestore${rand}(){
+	$('#loadFormPanel-${rand}').panel('resize',{
+		width: 975
+	});
+	
+	$('#formOperatePanel-${rand}').panel('resize',{
+		width: 975,
+		height: 35
+	});
+	
+	$('#attchFileGrid-${rand}').datagrid('resize',{
+		width: 975
+	});
+	
+	//流程图
+	$('#viewTaskProcessImage').panel('resize',{
+		width: 965
+	});
+	//任务列表
+	$('#viewTaskHisTaskGrid').datagrid('resize',{
+		width: 965
+	});
+	//历史表单
+	$('#viewTaskHisFormContent').panel('resize',{
+		width: 965
+	});
+	//附件
+	$('#viewTaskHisAttachmentGrid').datagrid('resize',{
+		width: 965
+	});
+}
+
+function winOnClose${rand}(){
+	//$('#win-${rand}').dialog('destroy');
+}
+
+function addAttache${rand}(){
+	var url = '${file_upload_url}' //文件服务器的上传的URl
+ 	         +'?syId=${file_param_syId}'    //系统ID
+ 	         +'&syNm=${file_param_syNm}'  //系统名字
+ 	         +'&usrId=${appuser.userId?c}' //用户ID
+ 	         +'&usrNm=${appuser.name}'//用户名字
+ 	         +'&diyFolder=${file_param_diyFolder}'//文件上传的目录中自定义部分
+ 	         +'&uploadType=${file_parma_uploadType}' //上传的是ProcFile，取值只能是ProcFile或者BaseLib
+          	 +'&fileVersion=${file_param_fileVersion}' //文件版本号，自己在业务逻辑中确定
+          	 +'&iframeUrl=${file_param_iframeUrl}'
+          	 +'&tempParams='
+          	 +'&callBackUrl=';
+	/**RUL后面跟的参数 **/
+	url=encodeURI(url);  //encodeURI
+	$('#upl-${rand}').attr('src', url);
+	$('#upload-${rand}').dialog('open');
+}
+
+////上传文件回调
+function afterUpload(fileNo,fileName,fileSize,syId,syNm,usrId,usrNm,diyFolder,callBackUrl,tempParams){
+	if($('#attchFileGrid-${rand}').length <= 0){
+		var $table= $("#" + taskDefKey + "Form");
+		var div = '<br/><div id="attchFileGrid-${rand}"></div>';
+		$table.after(div);
+		
+		$('#attchFileGrid-${rand}').datagrid({
+		  columns:[[
+			{field:'fileNo',title:'文件编号',width:100},
+			{field:'fileName',title:'文件名',width:120},
+			{field:'fileSize',title:'文件大小',width:120},
+			{field:'operate',title:'操作',width:120,
+				formatter: function(value,row,index){
+					var returnStr = "<a href='${file_download_url}"+ row.fileNo +"'>下载</a>"
+						+ "&nbsp;&nbsp;<a href='javascript:void(0)' onclick='delAttch("+ index +");'>删除</a>"
+					return returnStr;
+				}
+			}
+		  ]],
+		  title:'附件列表',
+		  fitColumns:true,
+		  rownumbers:true,
+		  nowrap: true,       
+		  border : true
+		});
+	}
+	//Grid add row
+	$('#attchFileGrid-${rand}').datagrid('appendRow',{
+		fileNo: fileNo,
+		fileName: fileName,
+		fileSize: fileSize
+	});
+}
+
+function delAttch(index){
+	$('#attchFileGrid-${rand}').datagrid('deleteRow',index);
+}
+//工程部负责人审批
+function projectCommitForm${rand}(){
+  //获取处理任务的ids
+  var rows = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+  var taskIdStr = "";
+  for(var i=0; i< rows.length; i++){
+	 taskIdStr += rows[i].id + ",";
+  }
+  taskIdStr = taskIdStr.substring(0, taskIdStr.length - 1);
+
+  $('#projectAudiForm-${rand}').form('submit', {
+	url: 'sapspace/batchCompleteTask.html',
+	onSubmit: function(param) {
+		var validateResult = $(this).form('enableValidation').form('validate');
+		if (validateResult) {
+			param.taskIds = taskIdStr;
+		} else {
+			return false;
+		}
+	},
+	success: function(data) {
+	  var data = JSON.parse(data);
+	  $('#projectAudiWin-${rand}').dialog('close');
+	  $.messager.show({
+		title: '信息提示',
+		msg: data.message
+	  });
+	  //重新加载
+	  $('#personalTaskGrid-${rand}').datagrid('reload');
+	}
+  });
+}
+
+function generalManCommitForm${rand}(){
+  //获取处理任务的ids
+  var rows = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+  var taskIds = "";
+  for(var i=0; i< rows.length; i++){
+	 taskIds += rows[i].id + ",";
+  }
+  taskIds = taskIds.substring(0, taskIds.length - 1);
+  
+  $('#generalManAudiForm-${rand}').form('submit', {
+	url: 'sapspace/batchCompleteTask.html',
+	onSubmit: function(param) {
+		var validateResult = $(this).form('enableValidation').form('validate');
+		if (validateResult) {
+			param.taskIds = taskIds;
+		} else {
+			return false;
+		}
+	},
+	success: function(data) {
+	  var data = JSON.parse(data);
+	  $('#generalManAudiWin-${rand}').dialog('close');
+	  $.messager.show({
+		title: '信息提示',
+		msg: data.message
+	  });
+	  //重新加载
+	  $('#personalTaskGrid-${rand}').datagrid('reload');
+	}
+  });
+}
+
+//调整采购申请提交
+function syncSapDataCommitForm${rand}(){
+  //获取处理任务的ids
+  var rows = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+  var taskIds = "";
+  for(var i=0; i< rows.length; i++){
+	 taskIds += rows[i].id + ",";
+  }
+  //同步操作
+  $.messager.confirm('提示信息','您确定要批量处理任务吗?',function(r){
+		if (r){
+			$('#personalTaskGrid-${rand}').datagrid("loading");
+			$.post('sapspace/batchCompleteSyncTask.html',
+				{
+					taskIds:taskIds,
+					ser_saveSapSheetSer: true
+				},
+				function(result){
+					$('#personalTaskGrid-${rand}').datagrid("loaded");
+					$.messager.show({
+						title: '信息提示', msg: result.msg
+					});
+					if (result.success){
+						$('#personalTaskGrid-${rand}').datagrid('reload');
+					} 
+				},'json');
+		}
+});
+}
+
+function syncSAPSheet${rand}(){
+	var row = $('#personalTaskGrid-${rand}').datagrid('getSelections');
+	if (row.length > 0){
+		//
+		if (row.length == 1) {
+			if (row[0].status != 3) {
+				$.messager.alert('提示信息','只有状态为待修改的数据才需要同步!','warning');
+			} else {
+				//同步操作
+			  	$.messager.confirm('提示信息','您确定要同步SAP采购单据数据吗?',function(r){
+						if (r){
+							$('#personalTaskGrid-${rand}').datagrid("loading");
+							$.post('sapspace/syncSapReqSheet.json',
+								{
+									preqNo:row[0].preqNo,
+									preqItem: row[0].preqItem
+								},
+								function(result){
+									$('#personalTaskGrid-${rand}').datagrid("loaded");
+									$.messager.show({
+										title: '信息提示', msg: result.msg
+							        });
+									if (result.success){
+										$('#personalTaskGrid-${rand}').datagrid('reload');
+									} 
+						  	},'json');
+						}
+				});
+			}
+		} else {
+			$.messager.show({
+		  		title: '信息提示',
+		  		msg: "请选择一条记录！"
+			});
+		}
+	} else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择一条记录！"
+		});
+	}
+}
+
+//Search
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+     search${rand}();
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+     reset${rand}();
+});
+
+function search${rand}(){
+	var preqNo = $('#preqNo-${rand}').val();
+	var preqItem = $('#preqItem-${rand}').val();
+	var status = $('#status-${rand}').combobox('getValue');
+	$('#personalTaskGrid-${rand}').datagrid('reload',{preqNo:preqNo,preqItem:preqItem,status:status});
+}
+
+function reset${rand}(){
+	$('#preqNo-${rand}').val('');
+	$('#preqItem-${rand}').val('');
+	$('#status-${rand}').combobox('reset');
+}
+
+//关闭上传文件框
+function closeUploadDiag${rand}(){
+	$('#upload-${rand}').dialog('close');
+}
+
+</script>
+<#include "/common/foot.ftl">

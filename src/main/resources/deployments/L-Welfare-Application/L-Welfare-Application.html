@@ -1,0 +1,414 @@
+<#include "/common/head.html">
+<!-- 展示表单  -->
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">福利申请表</td>
+			</tr>
+			<tr>
+	        	<td class="formtable_td_key" >发起人姓名：</td>
+				<td class="formtable_td_value" >${steps.vars["curUserName"]!""}</td>
+		     	<td class="formtable_td_key">员工编码：</td>
+				<td class="formtable_td_value">${(steps.vars["updateappnew"])!""}</td>
+				<td class="formtable_td_key">职位：</td>
+				<td class="formtable_td_value">${(steps.vars["jobDuty"])!""}</td>
+	        </tr>
+			<tr>
+	        	<td class="formtable_td_key" >新婚贺仪：</td>
+	        	<td class="formtable_td_key" >申请人数：</td>
+				<td class="formtable_td_value" >${steps.vars["weddingApplicationCount"]!""}</td>
+	        	<td class="formtable_td_key" >申请金额：</td>
+				<td class="formtable_td_value" colspan="2">${steps.vars["weddingApplicationMoney"]!""}</td>
+	        </tr>
+			<tr>
+	        	<td class="formtable_td_key" >奠仪：</td>
+	        	<td class="formtable_td_key" >申请人数：</td>
+				<td class="formtable_td_value" >${steps.vars["dainYiApplicationCount"]!""}</td>
+	        	<td class="formtable_td_key" >申请金额：</td>
+				<td class="formtable_td_value" colspan="2">${steps.vars["dainYiApplicationMoney"]!""}</td>
+	        </tr>
+			<tr>
+				<td class="formtable_td_key" >事项简述：</td>
+				<td class="formtable_td_value" colspan="5" >${steps.vars["applyWelfare"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">申请人：</td>
+				<td class="formtable_td_value" >${steps.vars["curUserName"]}</td>
+				<td class="formtable_td_key">申请时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]}</td>
+			</tr>		 
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>
+	   
+	   <!-- 表单修改  -->
+	   	   <#if steps.key == 'UpdateWelfareApplication'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">福利申请表</td>
+			</tr>
+			<tr>
+	        	<td class="formtable_td_key" >发起人姓名：</td>
+				<td class="formtable_td_value" >${steps.vars["curUserName"]!""}</td>
+		     	<td class="formtable_td_key">员工编码：</td>
+				<td class="formtable_td_value">${(steps.vars["updateappnew"])!""}</td>
+				<td class="formtable_td_key">职位：</td>
+				<td class="formtable_td_value">${(steps.vars["jobDuty"])!""}</td>
+	        </tr>
+			<tr>
+	        	<td class="formtable_td_key" >新婚贺仪：</td>
+	        	<td class="formtable_td_key" >申请人数：</td>
+				<td class="formtable_td_value" >${steps.vars["weddingApplicationCount"]!""}</td>
+	        	<td class="formtable_td_key" >申请金额：</td>
+				<td class="formtable_td_value" colspan="2">${steps.vars["weddingApplicationMoney"]!""}</td>
+	        </tr>
+			<tr>
+	        	<td class="formtable_td_key" >奠仪：</td>
+	        	<td class="formtable_td_key" >申请人数：</td>
+				<td class="formtable_td_value" >${steps.vars["dainYiApplicationCount"]!""}</td>
+	        	<td class="formtable_td_key" >申请金额：</td>
+				<td class="formtable_td_value" colspan="2">${steps.vars["dainYiApplicationMoney"]!""}</td>
+	        </tr>
+			<tr>
+				<td class="formtable_td_key" >事项简述：</td>
+				<td class="formtable_td_value" colspan="5" >${steps.vars["applyWelfare"]!""}</td>
+			</tr> 
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>
+	   <!-- 绩效薪酬总监审核 -->
+	   <#if steps.key == 'MeritPayLeaderAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">绩效薪酬总监审核</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["MeritPayLeaderAudi"] == '0'>同意</#if>
+					<#if steps.vars["MeritPayLeaderAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["MeritPayLeaderAudiAdvice"]!""}</td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">绩效薪酬总监签名：</td>
+				<td class="formtable_td_value" >${steps.vars["MeritPayLeaderName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["MeritPayLeaderTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 薪酬经理 -->
+	   <#if steps.key == 'PaymentLeaderAudiTask'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">薪酬经理</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["PaymentLeaderAudiAdvice"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">薪酬经理签字：</td>
+				<td class="formtable_td_value" >${steps.vars["PaymentLeaderAudiName"]}</td>
+				<td class="formtable_td_key">签字时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["PaymentLeaderAudiTime"]}</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   </#list>
+	</table>
+</#if>
+ 
+<script type="text/javascript">
+
+$(function(){
+	$.post("hrFlow/getHrUserInfo.json",
+			{
+				account:$("#account").val()
+			},
+			function(data){
+				if (data.success) {
+					$("#job").val(data.obj.job);
+					$("#userCardId").val(data.obj.idCard);
+				}
+			});
+});
+
+
+
+$("#weddingCount${rand}").bind("change",function(){
+	$("#weddingMoney${rand}").val($("#weddingCount${rand}").val()*1000)
+ });
+
+$("#dainYiCount${rand}").bind("change",function(){
+	$("#dainYiMoney${rand}").val($("#dainYiCount${rand}").val()*1000)
+ });
+ 
+ 
+ 
+</script>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+ 		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">福利申请表</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input id="account" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input id="userName" class="easyui-validatebox" readonly="readonly" name="fp_userName"   value="${appuser.name}"
+								data-options="required:true"/> 
+							<input type="hidden" name="fp_userCardId" id="userCardId">	
+					</td>
+					<td class="formtable_td_key">员工编码：</td>
+					<td class="formtable_td_value">
+						<input  colspan="1" class="easyui-validatebox" readonly="readonly" value="${appuser.account}" type="text" name="fp_updateappnew" data-options="required:true" />
+					</td>
+					<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+							<input id="job" class="easyui-validatebox" readonly="readonly"  type="text" name="fp_jobDuty"  />
+					</td>
+				</tr>
+				<tr>
+		        	<td class="formtable_td_key" >新婚贺仪：</td>
+		        	<td class="formtable_td_key" >申请人数：</td>
+					<td class="formtable_td_value">
+							<input id="weddingCount${rand}" class="easyui-validatebox"  type="text" name="fp_weddingApplicationCount"  data-options="required:true" />
+					</td>
+					<td class="formtable_td_key" >申请金额：</td>
+				    <td class="formtable_td_value" colspan="2">
+							<input id="weddingMoney${rand}" class="easyui-validatebox"  readonly="readonly"  type="text" name="fp_weddingApplicationMoney"  />
+					</td>
+	            </tr>
+				<tr>
+		        	<td class="formtable_td_key" >奠仪：</td>
+		        	<td class="formtable_td_key" >申请人数：</td>
+		        	<td class="formtable_td_value">
+							<input id="dainYiCount${rand}" class="easyui-validatebox"  type="text" name="fp_dainYiApplicationCount" data-options="required:true"  />
+					</td>
+		        	<td class="formtable_td_key" >申请金额：</td>
+		        	<td class="formtable_td_value" colspan="2">
+							<input id="dainYiMoney${rand}" class="easyui-validatebox"  readonly="readonly"  type="text" name="fp_dainYiApplicationMoney"   />
+					</td>
+		        </tr>
+				<tr>	
+		  	  		<td class="formtable_td_key">事项描述：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_applyWelfare" style="width: 750px; height: 150px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_curUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<#if currentStep?exists>
+	<#if currentStep == 'UpdateWelfareApplication'>
+							<div id="UpdateWelfareApplication">
+			<form id="UpdateWelfareApplicationForm" method="post" enctype='multipart/form-data'>
+				<table id="UpdateWelfareApplicationFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">修改申请信息</td>
+		  	  	<tr>
+		  	  	    <td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input id="account" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input id="userName" class="easyui-validatebox" readonly="readonly" name="fp_userName"   value="${appuser.name}"
+								data-options="required:true"/> 
+							<input type="hidden" name="fp_userCardId" id="userCardId">	
+					</td>
+					<td class="formtable_td_key">员工编码：</td>
+					<td class="formtable_td_value">
+						<input  class="easyui-validatebox" readonly="readonly" value="${appuser.account}" type="text" name="fp_updateappnew" data-options="required:true" />
+					</td>
+					<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+							<input id="job" class="easyui-validatebox" readonly="readonly"  type="text" name="fp_jobDuty"  />
+					</td>
+				</tr>
+				<tr>
+		        	<td class="formtable_td_key" >新婚贺仪：</td>
+		        	<td class="formtable_td_key" >申请人数：</td>
+					<td class="formtable_td_value">
+							<input id="weddingCount${rand}" class="easyui-validatebox"  type="text" name="fp_weddingApplicationCount" data-options="required:true"  />
+					</td>
+					<td class="formtable_td_key" >申请金额：</td>
+				    <td class="formtable_td_value" colspan="2">
+							<input id="weddingMoney${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_weddingApplicationMoney"  />
+					</td>
+	            </tr>
+				<tr>
+		        	<td class="formtable_td_key" >奠仪：</td>
+		        	<td class="formtable_td_key" >申请人数：</td>
+		        	<td class="formtable_td_value">
+							<input id="dainYiCount${rand}" class="easyui-validatebox"  type="text" name="fp_dainYiApplicationCount" data-options="required:true"  />
+					</td>
+		        	<td class="formtable_td_key" >申请金额：</td>
+		        	<td class="formtable_td_value" colspan="2">
+							<input id="dainYiMoney${rand}" class="easyui-validatebox"  readonly="readonly" type="text" name="fp_dainYiApplicationMoney"   />
+					</td>
+		        </tr>
+				<tr>	
+		  	  		<td class="formtable_td_key">事项描述：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_applyWelfare" style="width: 750px; height: 150px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_curUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+				</table>
+			</form>
+		</div>
+		</#if>
+</#if>
+				
+
+
+<!-- 绩效薪酬总监审核-->
+<#if currentStep?exists>
+	<#if currentStep == 'MeritPayLeaderAudiTask'>
+		<div id="MeritPayLeaderAudiTask">
+		  <form id="MeritPayLeaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="MeritPayLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">绩效薪酬总监审核</td>
+				</tr>
+				<tr id="checekResult${rand}">
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="checkResult0${rand}" type="radio" name="fp_MeritPayLeaderAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input id="checkResult1${rand}" type="radio" name="fp_MeritPayLeaderAudi" value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_MeritPayLeaderAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">绩效薪酬总监签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_MeritPayLeaderName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_MeritPayLeaderTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 薪酬经理 -->
+<#if currentStep?exists>
+	<#if currentStep == 'PaymentLeaderAudiTask'>
+		<div id="PaymentLeaderAudiTask">
+		  <form id="PaymentLeaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="PaymentLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	 	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">薪酬经理</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_PaymentLeaderAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">薪酬经理签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_PaymentLeaderName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_PaymentLeaderTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>	
+		  	 	
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if> 
+<#include "/common/foot.html">

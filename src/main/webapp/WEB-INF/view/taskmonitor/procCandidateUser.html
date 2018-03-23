@@ -1,0 +1,233 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="monitorTaskGrid-${rand}"></div>
+	</div>
+ </div>
+ 
+ <div id="updateCandidateDialog${rand}" style="width:600px;height:300px;" >  
+	<div style="padding: 26.5px 35px;">
+		<table border="0" >
+			<tr>
+				<td align="left" width="120">流程定义：</td>
+				<td align="left" >
+					<input id="updateProcDefId${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" width="120">类型：</td>
+				<td align="left" >
+					<input id="updateType${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" width="120">用户编号集(中间以,间隔)：</td>
+				<td align="left" >
+					<textarea id="updateEmpIds${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"></textarea>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div id="addCandidateDialog${rand}" style="width:600px;height:300px;" >  
+	<div style="padding: 26.5px 35px;">
+		<table border="0" >
+			<tr>
+				<td align="left" width="120">流程定义：</td>
+				<td align="left" >
+					<input id="procDefId${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" width="120">任务类型：</td>
+				<td align="left" >
+					<input id="type${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="left" width="120">用户编号集(中间以,间隔)：</td>
+				<td align="left">
+					<textarea id="empIds${rand}" class="easyui-validatebox" style="width:300px" data-options="required:true"></textarea>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+ 
+ <script type="text/javascript">
+$('#monitorTaskGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'onlineFlow/getAllCandidateUser.json',
+  columns:[[
+    {checkbox:true},
+  	{field:'id',title:'ID',width:50,align:'center'},
+  	{field:'procDefId',title:'流程定义',width:90,align:'center'},
+  	{field:'type',title:'类型',width:90,align:'center'},
+  	{field:'empIds',title:'候选人账号',width:170,align:'center'}
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:false,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar: [{
+	text : '添加',
+	iconCls: 'icon-add',
+	handler: saveCandidatePage${rand}
+  },{
+	  text:'编辑',
+	  iconCls:'icon-edit',
+	  handler:updateCandidate${rand}
+  },{
+	  text:'删除',
+	  iconCls:'icon-remove',
+	  handler:deleteCandidate${rand}
+  }]
+  //onDblClickRow:function(rowIndex, rowData){
+	//	 viewHisProcss${rand}();
+	  //}
+});
+
+var id='';
+
+//添加候选人信息
+function saveCandidatePage${rand}(){
+	$.parser.parse($('#addCandidateDialog${rand}'));
+	$("#addCandidateDialog${rand}").dialog("open");
+}
+
+$('#addCandidateDialog${rand}').dialog({
+	modal:true, 
+	closed:true,
+	iconCls:'icon-add',
+	title:"添加",
+	buttons: [{
+        text:'确认',
+        plain:true,
+        iconCls:'icon-ok',
+        handler: function(){
+        	var procDefId=$('#procDefId${rand}').val();
+        	var type=$('#type${rand}').val();
+        	var empIds=$('#empIds${rand}').val();
+        	if((procDefId==null || procDefId=='') || (type==null || type=='') || (empIds==null || empIds=='')){
+        		$.messager.alert('信息提示','流程定义、类型、用户编号集不可为空！');
+        		return;
+        	}
+        	$.post('onlineFlow/addCandidateInfo.json',{
+        		procDefId:procDefId,
+        		type:type,
+        		empIds:empIds
+        	},function(data){
+        		$.messager.alert('提示', data);
+        		$("#procDefId${rand}").val('');
+             	$("#type${rand}").val('');
+             	$("#empIds${rand}").val('');
+        		//重新加载
+                $('#monitorTaskGrid-${rand}').datagrid('reload');
+        	},'json');
+        	
+       		$('#addCandidateDialog${rand}').dialog("close");
+        }
+    },{
+        text:'取消',
+        plain:true,
+        iconCls:'icon-cancel',
+        handler: function(){
+        	  $("#procDefId${rand}").val('');
+           	  $("#type${rand}").val('');
+           	  $("#empIds${rand}").val('');
+           	  $('#addCandidateDialog${rand}').dialog("close");
+        }
+    }]
+});
+
+//编辑候选人信息
+function updateCandidate${rand}(){
+	var rows=$('#monitorTaskGrid-${rand}').datagrid('getSelections');
+	if(rows.length==0 || rows.length > 1){
+		$.messager.alert('信息提示','只可选择一条记录!','warning');
+		return ;
+	}
+	$.parser.parse($('#updateCandidateDialog${rand}'));
+	$("#updateCandidateDialog${rand}").dialog("open");
+	var row=rows[0];
+	id=row.id;
+	$('#updateProcDefId${rand}').val(row.procDefId);
+	$('#updateType${rand}').val(row.type);
+	$('#updateEmpIds${rand}').val(row.empIds);
+}
+
+$('#updateCandidateDialog${rand}').dialog({
+	modal:true, 
+	closed:true,
+	iconCls:'icon-update',
+	title:"编辑",
+	buttons: [{
+        text:'确认',
+        plain:true,
+        iconCls:'icon-ok',
+        handler: function(){
+        	var updateProcDefId=$('#updateProcDefId${rand}').val();
+        	var updateType=$('#updateType${rand}').val();
+        	var updateEmpIds=$('#updateEmpIds${rand}').val();
+        	if((updateProcDefId==null || updateProcDefId=='') || (updateType==null || updateType=='') || (updateEmpIds==null || updateEmpIds=='')){
+        		$.messager.alert('信息提示','流程定义、类型、用户编号集不可为空！');
+        		return;
+        	}
+        	$.post('onlineFlow/editCandidateInfoById.json',{
+        		id:id,
+        		procDefId:updateProcDefId,
+        		type:updateType,
+        		empIds:updateEmpIds
+        	},function(data){
+        		$.messager.alert('提示', data);
+        		$("#updateProcDefId${rand}").val('');
+             	$("#updateType${rand}").val('');
+             	$("#updateEmpIds${rand}").val('');
+        		//重新加载
+                $('#monitorTaskGrid-${rand}').datagrid('reload');
+        	},'json');
+        	
+       		$('#updateCandidateDialog${rand}').dialog("close");
+        }
+    },{
+        text:'取消',
+        plain:true,
+        iconCls:'icon-cancel',
+        handler: function(){
+        	  $("#updateProcDefId${rand}").val('');
+           	  $("#updateType${rand}").val('');
+           	  $("#updateEmpIds${rand}").val('');
+           	  $('#updateCandidateDialog${rand}').dialog("close");
+        }
+    }]
+});
+
+function deleteCandidate${rand}(){
+	var rows=$('#monitorTaskGrid-${rand}').datagrid('getSelections');
+	if(rows.length==0){
+		$.messager.alert('信息提示','请至少选择一条记录!','warning');
+		return ;
+	}
+	var ids = [];
+	for(var i=0;i<rows.length;i++){
+		var row = rows[i];
+		ids.push(row.id);
+	}
+	ids=ids.join(",");
+	$.post('onlineFlow/delCandidateInfoById.json',{
+		ids:ids
+	},function(data){
+		$.messager.alert('提示', data);
+		//重新加载
+        $('#monitorTaskGrid-${rand}').datagrid('reload');
+	},'json');
+}
+</script>
+<#include "/common/foot.ftl">

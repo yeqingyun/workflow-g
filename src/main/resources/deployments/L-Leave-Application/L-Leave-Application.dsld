@@ -1,0 +1,33 @@
+ process(id:"L-Leave-Application"){
+	step(id:"startevent1"){
+		field(name:"userAccount",validType:"required",label:"员工编码")
+		
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserName",validType:"required",label:"申请人名字")
+		
+		field(name:"applyUserId",validType:"required",label:"申请人账号")
+		
+		field(name:"orgId",validType:"required",label:"部门编号")
+		
+		field(name:"isManager",validType:"required",label:"是否为经理级")
+		
+		field(name:"userName",validType:"required",label:"用户名字")
+		
+		field(name:"userSystem",validType:"required",label:"所属系统")
+		
+		field(name:"orgName",validType:"required",label:"部门名称")
+		
+		field(name:"duty",validType:"required",label:"职位")
+		
+		field(name:"entryDate",validType:"required",label:"入职日期")
+		
+		field(name:"planLeaveDate",validType:"required",label:"计划离职日期")
+		
+		field(name:"isOfficeWorker",validType:"required",label:"职员级别")
+		
+		field(name:"leaveReason",validType:"required",label:"离职原因")
+		
+		field(name:"hrCommissionerAccount",validType:"required",label:"相应审核人")
+	}
+}

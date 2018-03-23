@@ -1,0 +1,4387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.ActivitiHelpDao">
+ 
+  <sql id="proDefColumns">
+    ID_, CATEGORY_, NAME_,KEY_,VERSION_,DEPLOYMENT_ID_,RESOURCE_NAME_,DGRM_RESOURCE_NAME_,DESCRIPTION_,
+    SUSPENSION_STATE_
+  </sql>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.Probation" id="probation">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID_" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON_" jdbcType="VARCHAR" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="startUserName" column="START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processStatus" column="PROCESS_STATUS_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+    
+    <result property="checkUserName" column="CHECKUSERNAME" jdbcType="VARCHAR" />
+    <result property="changeId" column="CHANGEID" jdbcType="VARCHAR" />
+   	<result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+    <result property="actName" column="ACT_NAME_" jdbcType="VARCHAR" />
+    
+  	<result property="orgName" column="ORG_NAME"/>
+  	<result property="agreeTime" column="AGREE_TIME"/>
+  	<result property="account" column="ACCOUNT"/>
+  	<result property="empName" column="EMP_NAME"/>
+  	<result property="empJob" column="EMP_JOB"/>
+  	<result property="salAdjust" column="SAL_ADJUST"/>
+  	<result property="curSalaryGroup" column="CUR_SALARY_GROUP"/>
+  	<result property="curSalary" column="CUR_SALARY"/>
+  	<result property="fuSalaryGroup" column="FU_SALARY_GROUP"/>
+  	<result property="fuSalary" column="FU_SALARY"/>
+  </resultMap>
+  
+  
+  <resultMap type="com.gionee.gniflow.biz.model.Requirements" id="requirements">
+  	<result property="processInstanceId" column="PROCESS_INST_ID"/>
+  	<result property="processStatus" column="STATUS" />
+  	<result property="reqDate" column="EMP_REQDATE"/>
+  	<result property="reqSystem" column="EMP_REQSYSTEM"/>
+  	<result property="orgName" column="EMP_ORGNAME"/>
+  	<result property="reqJob" column="EMP_REQJOB"/>
+  	<result property="reqRank" column="EMP_REQRANK"/>
+  	<result property="reqNumber" column="EMP_REQNUMBER"/>
+  	<result property="reqHopeDate" column="EMP_REQHOPEDATE"/>
+  	<result property="reqType" column="EMP_REQTYPE"/>
+  	<result property="sex" column="EMP_SEX"/>
+  	<result property="education" column="EMP_EDUCATION"/>
+  	<result property="major" column="EMP_MAJOR"/>
+  	<result property="reqChannels" column="EMP_REQCHANNELS"/>
+  	<result property="actName" column="act_name_"/>
+	<result property="checkUserName" column="checkusername"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.AccountHandel" id="accounthandel">
+  
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID_" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON_" jdbcType="VARCHAR" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="startUserName" column="START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processStatus" column="PROCESS_STATUS_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+    
+    <result property="checkUserName" column="CHECKUSERNAME" jdbcType="VARCHAR" />
+    <result property="changeId" column="CHANGEID" jdbcType="VARCHAR" />
+   	<result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+    <result property="actName" column="ACT_NAME_" jdbcType="VARCHAR" />
+    
+  	<result property="depa" column="EMP_DEPA"/>
+  	<result property="empId" column="EMP_EMPID"/>
+  	<result property="name" column="EMP_NAME"/>
+  	<result property="job" column="EMP_JOB"/>
+  	<result property="entryDate" column="EMP_ENTRYDATE"/>
+  	<result property="education" column="EMP_EDUCATION"/>
+  	<result property="applyDate" column="EMP_APPLYDATE"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.EngineerCollect" id="collectResult">
+  	<result property="engineerName" column="ENGINEER_NAME"/>
+  	<result property="perCount" column="PER_COUNT"/>
+  	<result property="perTime" column="PER_TIME"/>
+  	<result property="perSatisfaction" column="PER_SATISFACTION"/>
+  	<result property="perSatisfactionRate" column="PER_SATISFACTION_RATE"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.InterviewEntity" id="interviewEntityResult">
+    <result property="processInstanceId" column="PROCESS_INST_ID"/>
+  	<result property="processStatus" column="STATUS" />
+  	<result property="applyTime" column="APPLY_TIME"/>
+	<result property="appliName" column="APPLI_NAME"/>
+	<result property="inSysName" column="IN_SYS_NAME"/>
+	<result property="inOrgName" column="IN_ORG_NAME"/>
+	<result property="rank" column="RANK"/>
+	<result property="inJob" column="IN_JOB"/>
+	<result property="age" column="AGE"/>
+	<result property="education" column="EDUCATION"/>
+	<result property="specialty" column="SPECIALTY"/>
+	<result property="workYear" column="WORK_YEAR"/>
+	<result property="hrTotalEval" column="HR_TOTAL_EVAL"/>
+	<result property="depTotalEval" column="DEP_TOTAL_EVAL"/>
+	<result property="teacherName" column="TEACHER_NAME"/>
+	<result property="salaryLevel" column="SALARY_LEVEL"/>
+	<result property="alaryProbation" column="ALARY_PROBATION"/>
+	<result property="salaryPositive" column="SALARY_POSITIVE"/>
+	<result property="actName" column="act_name_"/>
+	<result property="checkUserName" column="checkusername"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.web.bmp.SendOrderApplyEntity" id="sendOrderResult">
+  	<result property="id" column="ID_"/>
+	<result property="processInstanceId" column="PROC_INST_ID_"/>
+	<result property="processInstanceName" column="PROCESS_INSTANCE_NAME"/>
+	<result property="processDefName" column="PROCESS_DEF_NAME"/>
+	<result property="taskName" column="TASK_NAME"/>
+	<result property="engineerName" column="ENGINEER_NAME"/>
+	<result property="startTime" column="START_TIME"/>
+	<result property="endTime" column="END_TIME"/>
+	<result property="processStatus" column="PROCESS_STATUS"/>
+	<result property="satisfaction" column="TEXT_"/>
+  </resultMap>
+ 
+  <resultMap type="com.gionee.gniflow.dto.ProcessDefinitionDto" id="proDefResult">
+	<result property="id" column="ID_"/>
+	<result property="category" column="CATEGORY_"/>
+	<result property="name" column="NAME_"/>
+	<result property="key" column="KEY_"/>
+	<result property="version" column="VERSION_"/>
+	<result property="deploymentId" column="DEPLOYMENT_ID_"/>
+	<result property="resourceName" column="RESOURCE_NAME_"/>
+	<result property="diagramResourceName" column="DGRM_RESOURCE_NAME_"/>
+	<result property="description" column="DESCRIPTION_"/>
+	<result property="suspensionState" column="SUSPENSION_STATE_"/>
+	<result property="categoryName" column="CATEGORY_NAME"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.web.bmp.BpmHisActivityEntity" id="bpmHisActivityEntity">
+	<result property="id" column="ID_"/>
+	<result property="processDefinitionId" column="PROC_DEF_ID_"/>
+	<result property="processInstanceId" column="PROC_INST_ID_"/>
+	<result property="executionId" column="EXECUTION_ID_"/>
+	<result property="activityId" column="ACT_ID_"/>
+	<result property="taskId" column="TASK_ID_"/>
+	<result property="calledProcessInstanceId" column="CALL_PROC_INST_ID_"/>
+	<result property="activityName" column="ACT_NAME_"/>
+	<result property="activityType" column="ACT_TYPE_"/>
+	<result property="assignee" column="ASSIGNEE_"/>
+	<result property="startTime" column="START_TIME_"/>
+	<result property="endTime" column="END_TIME_"/>
+	<result property="durationInMillis" column="DURATION_"/>
+	<result property="tenantId" column="TENANT_ID_"/>
+	<result property="userAccount" column="USERACCOUNT_"/>
+	<result property="userName" column="USERNAME_"/>
+	<result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="historicActivityInstanceEntity" type="org.activiti.engine.impl.persistence.entity.HistoricActivityInstanceEntity">
+    <id property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR" />
+    <result property="activityId" column="ACT_ID_" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID_" jdbcType="VARCHAR" />
+    <result property="calledProcessInstanceId" column="CALL_PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="activityName" column="ACT_NAME_" jdbcType="VARCHAR" />
+    <result property="activityType" column="ACT_TYPE_" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap type="com.gionee.gniflow.web.bmp.BpmHisActivityEntity" id="bpmHisActivityDetailEntity" extends="bpmHisActivityEntity">
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.web.bmp.BpmTaskEntity" id="taskEntityResult">
+	<result property="id" column="ID_" jdbcType="VARCHAR"/>
+    <result property="revision" column="REV_" jdbcType="INTEGER"/>
+    <result property="nameWithoutCascade" column="NAME_" jdbcType="VARCHAR"/>
+    <result property="parentTaskIdWithoutCascade" column="PARENT_TASK_ID_" jdbcType="VARCHAR"/>
+    <result property="descriptionWithoutCascade" column="DESCRIPTION_" jdbcType="VARCHAR"/>
+    <result property="priorityWithoutCascade" column="PRIORITY_" jdbcType="INTEGER"/>
+    <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP" />
+    <result property="ownerWithoutCascade" column="OWNER_" jdbcType="VARCHAR"/>
+    <result property="assigneeWithoutCascade" column="ASSIGNEE_" jdbcType="VARCHAR"/>
+    <result property="delegationStateString" column="DELEGATION_" jdbcType="VARCHAR"/>
+    <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR"/>
+    <result property="taskDefinitionKeyWithoutCascade" column="TASK_DEF_KEY_" jdbcType="VARCHAR"/>
+    <result property="dueDateWithoutCascade" column="DUE_DATE_" jdbcType="TIMESTAMP"/>
+    <result property="categoryWithoutCascade" column="CATEGORY_" jdbcType="VARCHAR" />
+    <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="proStartUserId" column="PRO_START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="proStartUserName" column="PRO_START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processStatus" column="PROCESS_STATUS_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+    
+    <result property="conShowInMobile" column="CAN_SHOWINMOBILE" jdbcType="INTEGER" />
+    
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.web.bmp.BpmHisTaskEntity" id="hisTaskEntityResult" >
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR" />
+    <result property="name" column="NAME_" jdbcType="VARCHAR" />
+    <result property="parentTaskId" column="PARENT_TASK_ID_" jdbcType="VARCHAR" />
+    <result property="description" column="DESCRIPTION_" jdbcType="VARCHAR" />
+    <result property="owner" column="OWNER_" jdbcType="VARCHAR" />
+    <result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="claimTime" column="CLAIM_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="deleteReason" column="DELETE_REASON_" jdbcType="VARCHAR" />
+    <result property="taskDefinitionKey" column="TASK_DEF_KEY_" jdbcType="VARCHAR" />
+    <result property="formKey" column="FORM_KEY_" jdbcType="VARCHAR" />
+    <result property="priority" column="PRIORITY_" jdbcType="INTEGER" />
+    <result property="dueDate" column="DUE_DATE_" jdbcType="TIMESTAMP" />
+    <result property="category" column="CATEGORY_" jdbcType="VARCHAR" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="proStartUserId" column="PRO_START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="proStartUserName" column="PRO_START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.web.bmp.BpmHisProcessInstanceEntity" id="hisProcessInstanceEntityResultMap">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID_" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON_" jdbcType="VARCHAR" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="startUserName" column="START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processStatus" column="PROCESS_STATUS_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+    
+    <result property="checkUserName" column="CHECKUSERNAME" jdbcType="VARCHAR" />
+    <result property="changeId" column="changeId" jdbcType="VARCHAR" />
+   	<result property="assignee" column="user_name" jdbcType="VARCHAR" />
+    <result property="actName" column="ACT_NAME_" jdbcType="VARCHAR" />
+    
+    
+  </resultMap>
+  
+  <resultMap id="bpmIdentityLinkEntityResultMap" type="com.gionee.gniflow.web.bmp.BpmIdentityLinkEntity">
+    <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="type" column="TYPE_" jdbcType="VARCHAR" />
+    <result property="userId" column="USER_ID_" jdbcType="VARCHAR" />
+    <result property="groupId" column="GROUP_ID_" jdbcType="VARCHAR" />
+    <result property="taskId" column="TASK_ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />    
+    <result property="processDefId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />  
+    <result property="userName" column="USER_NAME_" jdbcType="VARCHAR" /> 
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="processDefinitionEntityMap" type="org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity">
+    <id property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="revision" column="REV_" />
+    <result property="category" column="CATEGORY_" />
+    <result property="name" column="NAME_" />
+    <result property="key" column="KEY_" jdbcType="VARCHAR" />
+    <result property="version" column="VERSION_" jdbcType="INTEGER"/>
+    <result property="deploymentId" column="DEPLOYMENT_ID_" jdbcType="VARCHAR"/>
+    <result property="resourceName" column="RESOURCE_NAME_" jdbcType="VARCHAR"/>
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="diagramResourceName" column="DGRM_RESOURCE_NAME_" jdbcType="VARCHAR"/>
+    <result property="description" column="DESCRIPTION_" jdbcType="VARCHAR" />
+    <result property="hasStartFormKey" column="HAS_START_FORM_KEY_" jdbcType="BOOLEAN"/>
+    <result property="suspensionState" column="SUSPENSION_STATE_" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.LaborContractRenewalEntity" id="LaborContractRenewalEntityResult">
+    <result property="processInstanceId" column="PROCESS_INSTANCE_ID"/>
+	<result property="principalOrgName" column="PRINCIPAL_ORGNAME"/>
+	<result property="principalOrgId" column="PRINCIPAL_ORGID"/>
+	<result property="principalAccount" column="PRINCIPAL_ACCOUNT"/>
+	<result property="principalEmpId" column="PRINCIPAL_EMPID"/>
+	<result property="principalName" column="PRINCIPAL_NAME"/>
+	<result property="principalJob" column="PRINCIPAL_JOB"/>
+	<result property="principalEntryTime" column="PRINCIPAL_ENTRYTIME"/>
+	<result property="principalContractExpire" column="PRINCIPAL_CONTRACTEXPIRE"/>
+	<result property="principalContractType" column="PRINCIPAL_CONTRACTTYPE"/>
+	<result property="principalContractStartTime" column="PRINCIPAL_CONTRACTSTARTTIME"/>
+	<result property="principalContractEndTime" column="PRINCIPAL_CONTRACTENDTIME"/>
+	<result property="approvalOpinion" column="APPROVAL_OPINION"/>
+	<result property="status" column="STATUS"/>
+	<result property="approvalUserName" column="APPROVAL_USERNAME"/>
+	<result property="startTime" column="STARTTIME"/>
+	<result property="endTime" column="ENDTIME"/>
+	<result property="actName" column="act_name_"/>
+	<result property="checkUserName" column="checkusername"/>
+  </resultMap>
+ 
+  <select id="findActHiActinstId" parameterType="string" resultType="string">
+	 select id_ from ACT_HI_ACTINST where task_id_= #{taskId}
+  </select>
+  
+  <select id="findActHiActinstTaskId" parameterType="string" resultType="string">
+	 select task_id_ from ACT_HI_ACTINST where id_= #{id}
+  </select>
+  
+  <delete id="deleteActHiActinst4Id" parameterType="string">
+	 delete from ACT_HI_ACTINST where id_= #{id}
+  </delete>
+  
+  <!-- Query Process -->
+  <select id="page4ProcessDefinition4Page" parameterType="map" resultMap="proDefResult">
+    SELECT SUB.* FROM( SELECT RES.*, row_number () OVER (ORDER BY RES.ID_ ASC) rnk FROM (
+      select DISTINCT <include refid="proDefColumns"/>,ca.name as CATEGORY_NAME 
+      FROM ACT_RE_PROCDEF RES
+	  LEFT JOIN category ca on RES.CATEGORY_ = ca.id
+      <where>
+        <if test="categoryName != null">
+          and CATEGORY_NAME = #{categoryName}
+        </if>
+        <if test="key != null">
+          and KEY_ = #{key}
+        </if>
+        <if test="version != null">
+          and VERSION_ = #{version}
+        </if>
+        <if test="description != null">
+          and DESCRIPTION_ = #{description}
+        </if>
+        <if test="name != null">
+          and NAME_ = #{name}
+        </if>
+      </where>
+      <![CDATA[
+    )RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <select id="count4ProcessDefinition" parameterType="map" resultType="int">
+    SELECT count(*) FROM ACT_RE_PROCDEF RES
+	LEFT JOIN category ca on RES.CATEGORY_ = ca.id
+    <where>
+        <if test="categoryName != null">
+          and CATEGORY_NAME = #{categoryName}
+        </if>
+        <if test="key != null">
+          and KEY_ = #{key}
+        </if>
+        <if test="version != null">
+          and VERSION_ = #{version}
+        </if>
+        <if test="description != null">
+          and DESCRIPTION_ = #{description}
+        </if>
+        <if test="name != null">
+          and NAME_ = #{name}
+        </if>
+      </where>
+  </select>
+  
+  <update id="updateProCategory">
+    update ACT_RE_PROCDEF set CATEGORY_ = #{categoryId}
+    where  ID_ = #{processDefId}
+  </update>
+  
+  <!-- 查询历史步骤的节点 -->
+  <select id="loadBpmHisActivity" parameterType="map" resultMap="bpmHisActivityEntity">
+ 	SELECT DISTINCT
+		act.ID_,act.PROC_DEF_ID_,act.PROC_INST_ID_,
+		act.EXECUTION_ID_,act.ACT_ID_,act.TASK_ID_,act.CALL_PROC_INST_ID_,
+		act.ACT_NAME_,act.ACT_TYPE_,act.ASSIGNEE_,act.START_TIME_,
+		act.END_TIME_,act.DURATION_, act.TENANT_ID_,
+		us.account as USERACCOUNT_,us.name as USERNAME_
+	FROM
+		ACT_HI_ACTINST act
+	LEFT JOIN auth_user us on act.ASSIGNEE_ = us.account
+	<where>
+		 <if test="procInstId != null">
+          and act.PROC_INST_ID_ = #{procInstId}
+        </if>
+	</where>
+	and act.ACT_TYPE_ not in ('exclusiveGateway','inclusiveGateway','parallelGateway')
+	ORDER BY act.START_TIME_ 
+  </select>
+  
+  <!-- 更新历史节点开始表单的发起人 -->
+  <update id="updateStartAssignee">
+    update ACT_HI_ACTINST set ASSIGNEE_ = #{assignee}
+    where  ACT_ID_ = #{actId} and PROC_INST_ID_ = #{procInstId}
+  </update>
+  
+  <!-- 查询任务处理人的任务 -->
+  <select id="page4AssigneeTask" parameterType="map" resultMap="taskEntityResult">
+	SELECT SUB.* FROM(
+			SELECT DISTINCT RES.*, row_number () OVER (ORDER BY RES.CREATE_TIME_ DESC) rnk
+				FROM (
+					(SELECT DISTINCT
+						RES.*,pro.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,
+						pc.START_USER_ID_ as PRO_START_USER_ID_,u.name as PRO_START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME,processconf.CAN_SHOWINMOBILE         
+					FROM
+						ACT_RU_TASK RES
+						INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+						LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+						LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+						LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+						LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+						LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_  
+					<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+						<if test="suspensionState != null">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startDueTime != null and startDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startDueTime}
+							]]>
+						</if>
+						<if test="endDueTime != null and endDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endDueTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+						
+						<if test="name != null and name !=''">
+							<![CDATA[
+							AND RES.NAME_ like #{name} || '%'
+							]]>
+						</if>
+						<if test="conShowInMobile != null">
+							AND processconf.CAN_SHOWINMOBILE= #{conShowInMobile}  
+						</if>
+						
+					</where>
+					)
+					
+					UNION
+					
+					(SELECT DISTINCT
+							RES.*,pro.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,
+							pc.START_USER_ID_ as PRO_START_USER_ID_,u.name as PRO_START_USER_NAME_,
+							run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME,processconf.CAN_SHOWINMOBILE         
+						FROM
+							ACT_RU_TASK RES
+						INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+						INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+						LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+						LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+						LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+						LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id   
+						LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_   
+						WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate'
+						<if test="assignee != null">
+							AND I.USER_ID_ = #{assignee}
+						</if>
+						<if test="suspensionState != null">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						        #{item}  
+						    </foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startDueTime != null and startDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startDueTime}
+							]]>
+						</if>
+						<if test="endDueTime != null and endDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endDueTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+						<if test="conShowInMobile != null">
+							AND processconf.CAN_SHOWINMOBILE= #{conShowInMobile}  
+						</if>
+					)
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询任务处理人的任务总数 -->
+  <select id="count4AssigneeTask" parameterType="map" resultType="java.lang.Integer">
+  		SELECT SUM(COUNT_) from (
+  		(SELECT COUNT (DISTINCT RES.ID_) AS COUNT_ FROM ACT_RU_TASK RES
+  			INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id    
+			LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_    
+			
+			<where>
+				<if test="assignee != null">
+					AND RES.ASSIGNEE_ = #{assignee}
+				</if>
+				<if test="suspensionState != null">
+					AND RES.SUSPENSION_STATE_ = #{suspensionState}
+				</if>
+				<if test="sapProcessIds != null and sapProcessIds != ''">
+					AND pro.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						 #{item}
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.CREATE_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.CREATE_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startDueTime != null and startDueTime !=''">
+					<![CDATA[
+					AND RES.DUE_DATE_ >= #{startDueTime}
+					]]>
+				</if>
+				<if test="endDueTime != null and endDueTime !=''">
+					<![CDATA[
+					AND RES.DUE_DATE_ <= #{endDueTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+					<![CDATA[
+						AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="processStatus != null">
+					AND run.status = #{processStatus}   
+				</if>
+				<if test="conShowInMobile != null">
+			        AND processconf.CAN_SHOWINMOBILE= #{conShowInMobile}      
+			</if>
+			</where>
+		)
+			
+		UNION
+			
+		(SELECT COUNT (DISTINCT RES.ID_) AS COUNT_ FROM ACT_RU_TASK RES
+			INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+			INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id   
+			LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_      
+			WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate'   
+			
+			<if test="assignee != null">
+				AND I.USER_ID_ = #{assignee}
+			</if>
+			<if test="suspensionState != null">
+				AND RES.SUSPENSION_STATE_ = #{suspensionState}
+			</if>
+			<if test="sapProcessIds != null and sapProcessIds != ''">
+				AND pro.KEY_ NOT IN
+				<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					#{item}
+				</foreach>
+			</if>
+			<if test="startCreateTime != null and startCreateTime !=''">
+				<![CDATA[
+				AND RES.CREATE_TIME_ >= #{startCreateTime}
+				]]>
+			</if>
+			<if test="endCreateTime != null and endCreateTime !=''">
+				<![CDATA[
+				AND RES.CREATE_TIME_ <= #{endCreateTime}
+				]]>
+			</if>
+			<if test="startDueTime != null and startDueTime !=''">
+				<![CDATA[
+				AND RES.DUE_DATE_ >= #{startDueTime}
+				]]>
+			</if>
+			<if test="endDueTime != null and endDueTime !=''">
+				<![CDATA[
+				AND RES.DUE_DATE_ <= #{endDueTime}
+				]]>
+			</if>
+			<if test="proInstId != null and proInstId !=''">
+				<![CDATA[
+				AND RES.PROC_INST_ID_ = #{proInstId}
+				]]>
+			</if>
+			<if test="processDefId != null and processDefId !=''">
+				<![CDATA[
+				AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+				]]>
+			</if>
+			<if test="categoryId != null and categoryId !=''">
+				<![CDATA[
+				AND ca.id = #{categoryId}
+				]]>
+			</if>
+			<if test="processStatus != null">
+				AND run.status = #{processStatus}
+			</if>
+			<if test="conShowInMobile != null">
+			    AND processconf.CAN_SHOWINMOBILE= #{conShowInMobile}    
+			</if>
+		)
+	) tab
+  </select>
+  
+  
+  
+   <!-- 查询硬件部派单申请流程流程工程师的派单任务 -->
+  <select id="page4EngineerTask" parameterType="map" resultMap="taskEntityResult">
+	SELECT SUB.* FROM(
+			SELECT DISTINCT RES.*, row_number () OVER (ORDER BY RES.CREATE_TIME_ DESC) rnk
+				FROM (
+					(SELECT DISTINCT
+						RES.*,pro.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,
+						pc.START_USER_ID_ as PRO_START_USER_ID_,u.name as PRO_START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME      
+					FROM
+						ACT_RU_TASK RES
+						INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+						LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+						LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+						LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+						LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+					<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+						<if test="suspensionState != null">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startDueTime != null and startDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startDueTime}
+							]]>
+						</if>
+						<if test="endDueTime != null and endDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endDueTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+							and run.process_inst_id
+		  					in (select RES.EXECUTION_ID_ from ACT_RU_TASK where RES.PROC_DEF_ID_ 
+		  					like 'L-SendOrder-Process%' )
+						</if>
+						
+						<if test="name != null and name !=''">
+							<![CDATA[
+							AND RES.NAME_ like #{name} || '%'
+							]]>
+						</if>
+						
+					</where>
+					)
+					
+					UNION
+					
+					(SELECT DISTINCT
+							RES.*,pro.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,
+							pc.START_USER_ID_ as PRO_START_USER_ID_,u.name as PRO_START_USER_NAME_,
+							run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME       
+						FROM
+							ACT_RU_TASK RES
+						INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+						INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+						LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+						LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+						LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+						LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+						WHERE run.process_inst_id
+		  				in (select RES.EXECUTION_ID_ from ACT_RU_TASK where RES.PROC_DEF_ID_ 
+		  				like 'L-SendOrder-Process%' ) 
+  					 	and RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate'
+						<if test="assignee != null">
+							AND I.USER_ID_ = #{assignee}
+						</if>
+						<if test="suspensionState != null">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						        #{item}  
+						    </foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startDueTime != null and startDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startDueTime}
+							]]>
+						</if>
+						<if test="endDueTime != null and endDueTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endDueTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+					)
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询硬件部派单申请流程流程工程师的派单的任务总数 -->
+  <select id="count4EngineerTask" parameterType="map" resultType="java.lang.Integer">
+  		SELECT SUM(COUNT_) from (
+  		(SELECT COUNT (DISTINCT RES.ID_) AS COUNT_ FROM ACT_RU_TASK RES
+  			INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			<where>
+				<if test="assignee != null">
+					AND RES.ASSIGNEE_ = #{assignee}
+				</if>
+				<if test="suspensionState != null">
+					AND RES.SUSPENSION_STATE_ = #{suspensionState}
+				</if>
+				<if test="sapProcessIds != null and sapProcessIds != ''">
+					AND pro.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						 #{item}
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.CREATE_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.CREATE_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startDueTime != null and startDueTime !=''">
+					<![CDATA[
+					AND RES.DUE_DATE_ >= #{startDueTime}
+					]]>
+				</if>
+				<if test="endDueTime != null and endDueTime !=''">
+					<![CDATA[
+					AND RES.DUE_DATE_ <= #{endDueTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+					<![CDATA[
+						AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="processStatus != null">
+					AND run.status = #{processStatus} 
+					and run.process_inst_id
+		  			in (select RES.EXECUTION_ID_ from ACT_RU_TASK where RES.PROC_DEF_ID_ 
+		  			like 'L-SendOrder-Process%' ) 
+				</if>
+			</where>
+		)
+			
+		UNION
+			
+		(SELECT COUNT (DISTINCT RES.ID_) AS COUNT_ FROM ACT_RU_TASK RES
+			INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+			INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			WHERE run.process_inst_id
+  			in (select RES.EXECUTION_ID_ from ACT_RU_TASK where RES.PROC_DEF_ID_ 
+  			like 'L-SendOrder-Process%' ) 
+			and RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate' 
+			<if test="assignee != null">
+				AND I.USER_ID_ = #{assignee}
+			</if>
+			<if test="suspensionState != null">
+				AND RES.SUSPENSION_STATE_ = #{suspensionState}
+			</if>
+			<if test="sapProcessIds != null and sapProcessIds != ''">
+				AND pro.KEY_ NOT IN
+				<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					#{item}
+				</foreach>
+			</if>
+			<if test="startCreateTime != null and startCreateTime !=''">
+				<![CDATA[
+				AND RES.CREATE_TIME_ >= #{startCreateTime}
+				]]>
+			</if>
+			<if test="endCreateTime != null and endCreateTime !=''">
+				<![CDATA[
+				AND RES.CREATE_TIME_ <= #{endCreateTime}
+				]]>
+			</if>
+			<if test="startDueTime != null and startDueTime !=''">
+				<![CDATA[
+				AND RES.DUE_DATE_ >= #{startDueTime}
+				]]>
+			</if>
+			<if test="endDueTime != null and endDueTime !=''">
+				<![CDATA[
+				AND RES.DUE_DATE_ <= #{endDueTime}
+				]]>
+			</if>
+			<if test="proInstId != null and proInstId !=''">
+				<![CDATA[
+				AND RES.PROC_INST_ID_ = #{proInstId}
+				]]>
+			</if>
+			<if test="processDefId != null and processDefId !=''">
+				<![CDATA[
+				AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+				]]>
+			</if>
+			<if test="categoryId != null and categoryId !=''">
+				<![CDATA[
+				AND ca.id = #{categoryId}
+				]]>
+			</if>
+			<if test="processStatus != null">
+				AND run.status = #{processStatus}
+			</if>
+		)
+	) tab
+  </select>
+  
+  <!-- 查询已办任务 -->
+  <select id="page4CompletedTask" parameterType="map" resultMap="hisTaskEntityResult">
+	SELECT SUB.* FROM(
+			SELECT DISTINCT RES.*, row_number () OVER (ORDER BY RES.END_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*, pro.NAME_ as PROCESS_DEFNAME_,run.PROCESS_INST_NAME , ca.name as CATEGORY_NAME_,
+						pc.START_USER_ID_ as PRO_START_USER_ID_,u.name as PRO_START_USER_NAME_
+					FROM
+						ACT_HI_TASKINST RES
+					INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+					LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+					LEFT JOIN ACT_HI_PROCINST pc ON RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+					LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+					<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+							AND RES.END_TIME_ IS NOT NULL
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="proInstApply != null and proInstApply !=''">
+							<![CDATA[
+							AND pc.START_USER_ID_ = #{proInstApply} or  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询任务处理人的任务总数 -->
+  <select id="count4CompletedTask" parameterType="map" resultType="java.lang.Integer">
+  		SELECT COUNT (DISTINCT RES.ID_) AS COUNT_ FROM ACT_HI_TASKINST RES
+  			INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			LEFT JOIN ACT_HI_PROCINST pc ON RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			<where>
+				<if test="assignee != null">
+					AND RES.ASSIGNEE_ = #{assignee}
+				</if>
+					AND RES.END_TIME_ IS NOT NULL
+				<if test="sapProcessIds != null and sapProcessIds != ''">
+					AND pro.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						 #{item}
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+					<![CDATA[
+					AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+					]]>
+				</if>
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="proInstApply != null and proInstApply !=''">
+					<![CDATA[
+					AND pc.START_USER_ID_ = #{proInstApply} or  u.name = #{proInstApply}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+			</where>
+  </select>
+  <select id="page4AssigneeAllTask" parameterType="map" resultType="com.gionee.gniflow.biz.model.EoaTaskInfoEntity">
+  	SELECT SUB.* FROM(
+			SELECT DISTINCT RES.*, row_number () OVER (ORDER BY RES."createTime" DESC) rnk
+				FROM (
+					(
+					SELECT DISTINCT 
+						RES.PROC_INST_ID_     as "processInstanceId",
+		                run.PROCESS_INST_NAME as "processInstanceName",
+		                pro.NAME_             as "processDefName",
+		                u.name                as "proStartUserName",
+		                pc.START_USER_ID_     as "proStartUserId",
+		                ca.name               as "categoryName",
+		                RES.ID_               as "id",
+		                RES.NAME_             as "name",
+		                RES.CREATE_TIME_      as "createTime",
+		                null		 		  as "endTime",
+		                RES.SUSPENSION_STATE_ as "suspensionState",
+		                run.STATUS 			  as "processStatus" ,
+		                RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                null		 		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description",
+		                0 as "ifSign"
+		                 
+					  FROM ACT_RU_TASK RES
+					  INNER JOIN ACT_RE_PROCDEF pro
+					    on RES.PROC_DEF_ID_ = pro.ID_
+					  LEFT JOIN category ca
+					    on pro.CATEGORY_ = ca.id
+					  LEFT JOIN ACT_HI_PROCINST pc
+					    on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+					  LEFT JOIN auth_user u
+					    on pc.START_USER_ID_ = u.account
+					  LEFT JOIN bpm_process_run run
+					    on RES.PROC_INST_ID_ = run.process_inst_id
+					  LEFT JOIN BPM_PROCESS_CONF processconf
+				   		on processconf.PROCESS_DEF_KEY = pro.KEY_ 
+						<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="suspensionState != null and suspensionState !=''">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+						<if test="name != null and name !=''">
+							<![CDATA[
+							AND RES.NAME_ like #{name} || '%'
+							]]>
+						</if>
+					</where>
+					)
+					UNION
+					(SELECT DISTINCT 
+						RES.PROC_INST_ID_     as "processInstanceId",
+		                run.PROCESS_INST_NAME as "processInstanceName",
+		                pro.NAME_             as "processDefName",
+		                u.name                as "proStartUserName",
+		                pc.START_USER_ID_     as "proStartUserId",
+		                ca.name               as "categoryName",
+		                RES.ID_               as "id",
+		                RES.NAME_             as "name",
+		                RES.CREATE_TIME_      as "createTime",
+		                null		 		  as "endTime",
+		                RES.SUSPENSION_STATE_ as "suspensionState",
+		                run.STATUS 			  as "processStatus" ,
+		                RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                null		 		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description" ,
+		                1 as "ifSign"
+						FROM  ACT_RU_TASK RES
+			            INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+			            INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			            LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			            LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			            LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			            LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id   
+			            LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_   
+			            WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate'
+						<if test="assignee != null">
+							AND I.USER_ID_ = #{assignee}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						        #{item}  
+						    </foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="suspensionState != null and suspensionState !=''">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+					)
+					<if test="suspensionState == 0 || suspensionState == '' || suspensionState == null">
+					UNION
+					(
+					SELECT DISTINCT
+						RES.PROC_INST_ID_     as "processInstanceId",
+	                    run.PROCESS_INST_NAME as "processInstanceName",
+	                    pro.NAME_             as "processDefName",
+	                    u.name                as "proStartUserName",
+	                    pc.START_USER_ID_     as "proStartUserId",
+	                    ca.name               as "categoryName",
+	                    RES.ID_               as "id",
+	                    RES.NAME_             as "name",
+	                    RES.START_TIME_       as "createTime",
+	                    RES.END_TIME_ 		  as "endTime",
+	                    decode(RES.DELETE_REASON_,'completed',0,'跳过',0) as "suspensionState",
+	                    run.STATUS 			  as "processStatus" ,
+	                    RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                RES.DURATION_		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description" ,
+		                0 as "ifSign" 
+					FROM
+						ACT_HI_TASKINST RES
+					INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+					LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+					LEFT JOIN ACT_HI_PROCINST pc ON RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+					LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+					<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+							AND RES.END_TIME_ IS NOT NULL
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+					</where>
+				)
+				</if>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  <select id="count4AssigneeAllTask" parameterType="map" resultType="java.lang.Integer">
+  	SELECT count(distinct RES."id")
+				FROM (
+					(
+					SELECT DISTINCT 
+						RES.PROC_INST_ID_     as "processInstanceId",
+		                run.PROCESS_INST_NAME as "processInstanceName",
+		                pro.NAME_             as "processDefName",
+		                u.name                as "proStartUserName",
+		                pc.START_USER_ID_     as "proStartUserId",
+		                ca.name               as "categoryName",
+		                RES.ID_               as "id",
+		                RES.NAME_             as "name",
+		                RES.CREATE_TIME_      as "createTime",
+				        null		 		  as "endTime",
+		                RES.SUSPENSION_STATE_ as "suspensionState",
+		                run.STATUS 			  as "processStatus" ,
+		                RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                null		 		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description"   
+					  FROM ACT_RU_TASK RES
+					  INNER JOIN ACT_RE_PROCDEF pro
+					    on RES.PROC_DEF_ID_ = pro.ID_
+					  LEFT JOIN category ca
+					    on pro.CATEGORY_ = ca.id
+					  LEFT JOIN ACT_HI_PROCINST pc
+					    on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+					  LEFT JOIN auth_user u
+					    on pc.START_USER_ID_ = u.account
+					  LEFT JOIN bpm_process_run run
+					    on RES.PROC_INST_ID_ = run.process_inst_id
+					  LEFT JOIN BPM_PROCESS_CONF processconf
+				   		on processconf.PROCESS_DEF_KEY = pro.KEY_ 
+						<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="suspensionState != null and suspensionState !=''">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+						<if test="name != null and name !=''">
+							<![CDATA[
+							AND RES.NAME_ like #{name} || '%'
+							]]>
+						</if>
+					</where>
+					)
+					UNION
+					(SELECT DISTINCT 
+						RES.PROC_INST_ID_     as "processInstanceId",
+		                run.PROCESS_INST_NAME as "processInstanceName",
+		                pro.NAME_             as "processDefName",
+		                u.name                as "proStartUserName",
+		                pc.START_USER_ID_     as "proStartUserId",
+		                ca.name               as "categoryName",
+		                RES.ID_               as "id",
+		                RES.NAME_             as "name",
+		                RES.CREATE_TIME_      as "createTime",
+		                null		 		  as "endTime",
+		                RES.SUSPENSION_STATE_ as "suspensionState",
+		                run.STATUS 			  as "processStatus" ,
+		                RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                null		 		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description" 
+						FROM  ACT_RU_TASK RES
+			            INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+			            INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+			            LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+			            LEFT JOIN ACT_HI_PROCINST pc on RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+			            LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+			            LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id   
+			            LEFT JOIN BPM_PROCESS_CONF processconf on processconf.PROCESS_DEF_KEY = pro.KEY_   
+			            WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = 'candidate'
+						<if test="assignee != null">
+							AND I.USER_ID_ = #{assignee}
+						</if>
+						<if test="suspensionState != null and suspensionState !=''">
+							AND RES.SUSPENSION_STATE_ = #{suspensionState}
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+						        #{item}  
+						    </foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.CREATE_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.DUE_DATE_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+					)
+					<if test="suspensionState == 0 || suspensionState =='' || suspensionState == null">
+					UNION
+					(
+					SELECT DISTINCT
+						RES.PROC_INST_ID_     as "processInstanceId",
+	                    run.PROCESS_INST_NAME as "processInstanceName",
+	                    pro.NAME_             as "processDefName",
+	                    u.name                as "proStartUserName",
+	                    pc.START_USER_ID_     as "proStartUserId",
+	                    ca.name               as "categoryName",
+	                    RES.ID_               as "id",
+	                    RES.NAME_             as "name",
+	                    RES.START_TIME_       as "createTime",
+	                    RES.END_TIME_ 		  as "endTime",
+	                    decode(RES.DELETE_REASON_,'completed',0,'跳过',0) as "suspensionState",
+	                    run.STATUS 			  as "processStatus",
+	                    RES.TASK_DEF_KEY_ 	  as "taskDefinitionKey",
+		                RES.PROC_DEF_ID_	  as "processDefinitionId",
+		                RES.PRIORITY_ 		  as "priority",
+		                RES.DURATION_		  as "duration",
+		                RES.DESCRIPTION_ 	  as "description"   
+					FROM
+						ACT_HI_TASKINST RES
+					INNER JOIN ACT_RE_PROCDEF pro on RES.PROC_DEF_ID_ = pro.ID_
+					LEFT JOIN category ca on pro.CATEGORY_ = ca.id
+					LEFT JOIN ACT_HI_PROCINST pc ON RES.PROC_INST_ID_ = pc.PROC_INST_ID_
+					LEFT JOIN auth_user u on pc.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+					<where>
+						<if test="assignee != null">
+							AND RES.ASSIGNEE_ = #{assignee}
+						</if>
+							AND RES.END_TIME_ IS NOT NULL
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND pro.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND ( u.name like '%'|| #{processInstanceName} || '%' or run.process_inst_name    like '%'|| #{processInstanceName} || '%')
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null">
+							AND run.status = #{processStatus}
+						</if>
+					</where>
+				)
+				</if>
+				) RES
+  </select>
+  <!-- 查询用户发起的 -->
+  <select id="page4StartProcess" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME      
+					FROM
+						ACT_HI_PROCINST RES
+					INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+					LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+					LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+					LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1  
+					LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_    and task.end_time_ is null 
+					LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account  
+					<where>
+						<if test="assignee != null">
+							AND RES.START_USER_ID_ = #{assignee}
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds != ''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="proInstName != null and proInstName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{proInstName} || '%'
+							]]>
+						</if>
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询用户发起的，非结束的流程总数 -->
+  <select id="count4StartProcess" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(distinct RES.ID_) FROM ACT_HI_PROCINST RES 
+  			INNER JOIN ACT_RE_PROCDEF DEF on RES.PROC_DEF_ID_ = DEF.ID_
+  			LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+  			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			<where>
+				<if test="assignee != null">
+					AND RES.START_USER_ID_ = #{assignee}
+				</if>
+				<if test="finished != null and finished == 'false'">
+					AND RES.END_TIME_ IS NULL
+				</if>
+				<if test="finished != null and finished == 'true'">
+					AND RES.END_TIME_ IS NOT NULL
+				</if>
+				<if test="sapProcessIds != null and sapProcessIds != ''">
+					AND DEF.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					    #{item}  
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if>
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="proInstName != null and proInstName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{proInstName} || '%'
+							]]>
+						</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="processStatus != null and processStatus !=''">
+					<![CDATA[
+					AND run.status = #{processStatus}
+					]]>
+				</if>
+			</where>
+  </select>
+  
+  
+  <!-- 查询用户参与的流程 -->
+  <select id="page4InvolvedUserProcess" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,ruart.name_ as act_name_
+					FROM
+						ACT_HI_PROCINST RES
+                  inner join act_re_procdef def  on res.proc_def_id_ = def.id_ 
+                  left join category ca on def.category_ = ca.id
+                  left join auth_user u on res.start_user_id_ = u.account
+                  left join bpm_process_run run on res.proc_inst_id_ = run.process_inst_id
+                  
+                  left join act_ru_execution rutask  on res.proc_inst_id_ = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  left join auth_user checkuser on ruart.assignee_ = checkuser.account
+                  
+                  left join bpm_role_procdef bpm on bpm.procdef_key = def.key_
+                  left join bpm_user_role role on role.role_id = bpm.role_id
+					<where>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN 
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[ 
+							AND RES.START_TIME_ >=  #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND checkuser.name like '%'|| #{assigneeUser} || '%'
+						</if>
+						<if test="proInstName != null ">
+							AND run.process_inst_name like CONCAT(CONCAT('%',#{proInstName}),'%')
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+								    <if test="isForNewSystem != null">
+										AND TYPE_ != 'starter'
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}   
+    ]]>
+  </select>
+  <!-- 查询用户参与的流程总数 -->
+  <select id="count4InvolvedUserProcess" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(distinct RES.ID_) FROM ACT_HI_PROCINST RES 
+             inner join act_re_procdef def  on res.proc_def_id_ = def.id_ 
+             left join category ca on def.category_ = ca.id
+             left join auth_user u on res.start_user_id_ = u.account
+             left join bpm_process_run run on res.proc_inst_id_ = run.process_inst_id
+             
+             left join act_ru_execution rutask  on res.proc_inst_id_ = rutask.proc_inst_id_ and rutask.is_active_ = 1  and rutask.is_scope_ = 1
+             left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+             left join auth_user checkuser on ruart.assignee_ = checkuser.account
+             
+             left join bpm_role_procdef bpm on bpm.procdef_key = def.key_
+             left join bpm_user_role role on role.role_id = bpm.role_id
+			<where>
+				<if test="sapProcessIds != null and sapProcessIds !=''">
+					AND DEF.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					    #{item}  
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if> 
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="finished != null and finished == 'false'">
+					AND RES.END_TIME_ IS NULL
+				</if>
+				<if test="finished != null and finished == 'true'">
+					AND RES.END_TIME_ IS NOT NULL
+				</if>
+				<if test="userId != null ">
+					AND role.user_id = #{userId}
+				</if>
+				<if test="processStatus != null and processStatus !=''">
+					<![CDATA[
+					AND run.status = #{processStatus}
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+				</if>
+				<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+				</if>
+				<if test="assigneeUser != null ">
+					AND checkuser.name like '%'|| #{assigneeUser} || '%'
+				</if>
+					AND (
+						EXISTS (
+							SELECT
+								LINK.USER_ID_
+							FROM
+								ACT_HI_IDENTITYLINK LINK
+							<where>
+								<if test="assignee != null">
+									AND USER_ID_ = #{assignee}
+								</if>
+								<if test="isForNewSystem != null">
+									AND TYPE_ != 'starter'
+								</if>
+								AND LINK.PROC_INST_ID_ = RES.ID_
+							</where>
+						)
+					)
+			</where>
+  </select>
+  <!-- 招聘专员监控相关的人员需求、录用流程 -->
+  <select id="page4RecruiterUserProcess" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,actinst.ACT_NAME_,AUTH_USER.Name user_Name
+					FROM
+						ACT_HI_PROCINST RES
+			    INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+			    LEFT JOIN ACT_HI_DETAIL detail ON RES.PROC_INST_ID_ = detail.PROC_INST_ID_ and detail.name_='threeDepartName'
+                LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+                LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+                LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+          
+                LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1
+                left join act_ru_task ruart on rutask.id_=ruart.execution_id_    
+                LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_   
+                LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account   
+                LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+                LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+                LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='业务顾问导出数据' 
+                left join AUTH_USER on AUTH_USER.Account=actinst.assignee_
+					<where>
+						<if test="departNames != null and departNames !=''">
+							AND dbms_lob.substr(detail.TEXT_,4000) IN
+							<foreach collection="departNames" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[ 
+							AND RES.START_TIME_ >=  #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<!--<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>-->
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+						<if test="proInstName != null ">
+							AND run.process_inst_name like CONCAT(CONCAT('%',#{proInstName}),'%')
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}   
+    ]]>
+  </select>
+  
+  <!-- 招聘专员监控相关的人员需求、录用流程的数量 -->
+  <select id="page4RecruiterUserProcessCount" parameterType="map" resultType="Integer">
+	SELECT count(*) FROM(
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,actinst.ACT_NAME_,AUTH_USER.Name user_Name
+					FROM
+						ACT_HI_PROCINST RES
+			    INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+			    LEFT JOIN ACT_HI_DETAIL detail ON RES.PROC_INST_ID_ = detail.PROC_INST_ID_ and detail.name_='threeDepartName'
+                LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+                LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+                LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+          
+                LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1
+                left join act_ru_task ruart on rutask.id_=ruart.execution_id_    
+                LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_   
+                LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account   
+                LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+                LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+                LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='业务顾问导出数据' 
+                left join AUTH_USER on AUTH_USER.Account=actinst.assignee_
+					<where>
+						<if test="departNames != null and departNames !=''">
+							AND dbms_lob.substr(detail.TEXT_,4000) IN
+							<foreach collection="departNames" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[ 
+							AND RES.START_TIME_ >=  #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<!--<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>-->
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+						<if test="proInstName != null ">
+							AND run.process_inst_name like CONCAT(CONCAT('%',#{proInstName}),'%')
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+		)
+  </select>
+  
+  <!-- 派单申请查询 -->
+  <select id="page4SendOrderProcess" parameterType="map" resultMap="sendOrderResult">
+  		SELECT US.* FROM(
+	  		SELECT RS.*,row_number () OVER (ORDER BY RS.START_TIME DESC) rnk FROM(
+			  	SELECT distinct ar.*,dbms_lob.substr(ad.TEXT_,4000) as TEXT_,
+			  		at.NAME_ as TASK_NAME,at.START_TIME_ as START_TIME,at.END_TIME_ as END_TIME,ap.NAME_ as PROCESS_DEF_NAME,
+			  		dbms_lob.substr(av.TEXT_,4000) as ENGINEER_NAME,br.PROCESS_INST_NAME as PROCESS_INSTANCE_NAME,br.STATUS as PROCESS_STATUS
+			  		FROM ACT_HI_PROCINST ar
+			  		INNER JOIN ACT_HI_DETAIL ad ON ar.ID_=ad.PROC_INST_ID_
+			  		LEFT JOIN BPM_PROCESS_RUN br ON ar.ID_=br.PROCESS_INST_ID and br.STATUS='2'
+			  		LEFT JOIN ACT_HI_TASKINST at ON ar.ID_=at.PROC_INST_ID_ and at.NAME_='工程师处理'
+			  		INNER JOIN ACT_RE_PROCDEF ap ON at.PROC_DEF_ID_=ap.ID_
+			  		LEFT JOIN act_hi_varinst av ON ar.ID_=av.PROC_INST_ID_ and av.name_='engineerName'
+			  		<where>
+			  		ad.NAME_='satisfaction'
+			  			<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND ap.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+			  			<if test="proInstId != null and proInstId != ''">
+			  				AND ad.PROC_INST_ID_ = #{proInstId}
+			  			</if>
+			  			<if test="processInstanceName !=null and processInstanceName !=''">
+			  				AND br.PROCESS_INST_NAME like '%'|| #{processInstanceName} || '%'
+			  			</if>
+			  			<if test="startCreateTime !=null and startCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ >= #{startCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="endCreateTime !=null and endCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="startFinishTime !=null and startFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.END_TIME_ >= #{startFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="endFinishTime !=null and endFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="engineerName !=null and engineerName !=''">
+			  				AND dbms_lob.substr(av.TEXT_,4000)= #{engineerName}
+			  			</if>
+			  		</where>
+			  	)RS
+			  )US
+    		<![CDATA[
+    			WHERE US.rnk >= #{firstRow} AND US.rnk < #{lastRow} 
+    		]]>
+  </select>
+  
+  <!-- 派单汇总查询 -->
+  <select id="getMaintainCollect" parameterType="map" resultMap="collectResult">
+		SELECT dbms_lob.substr(av.TEXT_,4000) as ENGINEER_NAME,count(ar.ID_) as PER_COUNT,
+			avg(to_number(substr(to_char((nvl(at.END_TIME_,sysdate)-nvl(at.START_TIME_,sysdate))*24*60*60),0,10))) as PER_TIME,
+            avg(dbms_lob.substr(ad.TEXT_,4000)) as PER_SATISFACTION
+			  		FROM ACT_HI_PROCINST ar
+			  		INNER JOIN ACT_HI_DETAIL ad ON ar.ID_=ad.PROC_INST_ID_
+			  		LEFT JOIN BPM_PROCESS_RUN br ON ar.ID_=br.PROCESS_INST_ID and br.STATUS='2'
+			  		LEFT JOIN ACT_HI_TASKINST at ON ar.ID_=at.PROC_INST_ID_ and at.NAME_='工程师处理'
+			  		INNER JOIN ACT_RE_PROCDEF ap ON at.PROC_DEF_ID_=ap.ID_
+			  		LEFT JOIN act_hi_varinst av ON ar.ID_=av.PROC_INST_ID_ and av.name_='engineerName'
+			  		<where>
+			  		ad.NAME_='satisfaction'
+			  			<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND ap.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+			  			<if test="startCreateTime !=null and startCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ >= #{startCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="endCreateTime !=null and endCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="startFinishTime !=null and startFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.END_TIME_ >= #{startFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="endFinishTime !=null and endFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="engineerName !=null and engineerName !=''">
+			  				AND dbms_lob.substr(av.TEXT_,4000)= #{engineerName}
+			  			</if>
+			  		</where>
+			  		group by dbms_lob.substr(av.TEXT_,4000)
+            		order by count(ar.ID_),
+            		avg(to_number(substr(to_char((nvl(at.END_TIME_,sysdate)-nvl(at.START_TIME_,sysdate))*24*60*60),0,10))),
+        			avg(dbms_lob.substr(ad.TEXT_,4000))
+  </select>
+  
+  <!--派单申请总数查询-->
+  <select id="count4SendOrderProcess" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(*) FROM(SELECT distinct ar.*,dbms_lob.substr(ad.TEXT_,4000) as TEXT_,
+			  		at.NAME_ as TASK_NAME,at.START_TIME_ as START_TIME,at.END_TIME_ as END_TIME,ap.NAME_ as PROCESS_DEF_NAME,
+			  		dbms_lob.substr(av.TEXT_,4000) as ENGINEER_NAME,br.PROCESS_INST_NAME as PROCESS_INSTANCE_NAME,br.STATUS as PROCESS_STATUS
+			  		FROM ACT_HI_PROCINST ar
+			  		INNER JOIN ACT_HI_DETAIL ad ON ar.ID_=ad.PROC_INST_ID_
+			  		LEFT JOIN BPM_PROCESS_RUN br ON ar.ID_=br.PROCESS_INST_ID and br.STATUS='2'
+			  		LEFT JOIN ACT_HI_TASKINST at ON ar.ID_=at.PROC_INST_ID_ and at.NAME_='工程师处理'
+			  		INNER JOIN ACT_RE_PROCDEF ap ON at.PROC_DEF_ID_=ap.ID_
+			  		LEFT JOIN act_hi_varinst av ON ar.ID_=av.PROC_INST_ID_ and av.name_='engineerName'
+			  		<where>
+			  		ad.NAME_='satisfaction'
+			  			<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND ap.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+			  			<if test="proInstId != null and proInstId != ''">
+			  				AND ad.PROC_INST_ID_ = #{proInstId}
+			  			</if>
+			  			<if test="processInstanceName !=null and processInstanceName !=''">
+			  				AND br.PROCESS_INST_NAME like '%'|| #{processInstanceName} || '%'
+			  			</if>
+			  			<if test="startCreateTime !=null and startCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ >= #{startCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="endCreateTime !=null and endCreateTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endCreateTime}
+			  				]]>
+			  			</if>
+			  			<if test="startFinishTime !=null and startFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.END_TIME_ >= #{startFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="endFinishTime !=null and endFinishTime !=''">
+			  				<![CDATA[
+			  					AND at.START_TIME_ <= #{endFinishTime}
+			  				]]>
+			  			</if>
+			  			<if test="engineerName !=null and engineerName !=''">
+			  				AND dbms_lob.substr(av.TEXT_,4000)= #{engineerName}
+			  			</if>
+			  		</where>)RS
+</select>
+  
+  
+  
+  
+  
+  <!-- 查询用户参与的流程SAP数据申请 -->
+  <select id="page4InvolvedUserProcessInfo" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,actinst.ACT_NAME_,AUTH_USER.Name user_Name
+					FROM
+						ACT_HI_PROCINST RES
+					INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+					LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+					LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+					
+					LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1
+					left join act_ru_task ruart on rutask.id_=ruart.execution_id_    
+					LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_   
+					LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account   
+					LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+					LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          			LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='业务顾问导出数据' 
+          			left join AUTH_USER on AUTH_USER.Account=actinst.assignee_
+					<where>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询用户参与的流程总数SAP数据申请 -->
+  <select id="count4InvolvedUserProcessInfo" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(distinct RES.ID_) FROM ACT_HI_PROCINST RES 
+  			INNER JOIN ACT_RE_PROCDEF DEF on RES.PROC_DEF_ID_ = DEF.ID_
+			LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+			LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+			LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          	LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='业务顾问导出数据'
+          	LEFT JOIN AUTH_USER on AUTH_USER.Account=actinst.assignee_
+			<where>
+				<if test="sapProcessIds != null and sapProcessIds !=''">
+					AND DEF.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					    #{item}  
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if>
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="finished != null and finished == 'false'">
+					AND RES.END_TIME_ IS NULL
+				</if>
+				<if test="finished != null and finished == 'true'">
+					AND RES.END_TIME_ IS NOT NULL
+				</if>
+				<if test="userId != null ">
+					AND role.user_id = #{userId}
+				</if>
+				<if test="processStatus != null and processStatus !=''">
+					<![CDATA[
+					AND run.status = #{processStatus}
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+				</if>
+				<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+				AND (
+					EXISTS (
+						SELECT
+							LINK.USER_ID_
+						FROM
+							ACT_HI_IDENTITYLINK LINK
+						<where>
+							<if test="assignee != null">
+								AND USER_ID_ = #{assignee}
+							</if>
+							AND LINK.PROC_INST_ID_ = RES.ID_
+						</where>
+					)
+				)
+			</where>
+  </select>
+  
+  <!-- 查询用户参与的流程SAP数据申请 -->
+  <select id="page4InvolvedUserProcessEngineer" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,actinst.ACT_NAME_,AUTH_USER.Name user_Name
+					FROM
+						ACT_HI_PROCINST RES
+					INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+					LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+					LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+					
+					LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1
+					left join act_ru_task ruart on rutask.id_=ruart.execution_id_    
+					LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_   
+					LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account   
+					LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+					LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          			LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='工程师处理' 
+          			left join AUTH_USER on AUTH_USER.Account=actinst.assignee_
+					<where>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询用户参与的流程总数SAP数据申请 -->
+  <select id="count4InvolvedUserProcessEngineer" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(distinct RES.ID_) FROM ACT_HI_PROCINST RES 
+  			INNER JOIN ACT_RE_PROCDEF DEF on RES.PROC_DEF_ID_ = DEF.ID_
+			LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+			LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+			LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          	LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='工程师处理'
+          	LEFT JOIN AUTH_USER on AUTH_USER.Account=actinst.assignee_
+			<where>
+				<if test="sapProcessIds != null and sapProcessIds !=''">
+					AND DEF.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					    #{item}  
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if>
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="finished != null and finished == 'false'">
+					AND RES.END_TIME_ IS NULL
+				</if>
+				<if test="finished != null and finished == 'true'">
+					AND RES.END_TIME_ IS NOT NULL
+				</if>
+				<if test="userId != null ">
+					AND role.user_id = #{userId}
+				</if>
+				<if test="processStatus != null and processStatus !=''">
+					<![CDATA[
+					AND run.status = #{processStatus}
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+				</if>
+				<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+				AND (
+					EXISTS (
+						SELECT
+							LINK.USER_ID_
+						FROM
+							ACT_HI_IDENTITYLINK LINK
+						<where>
+							<if test="assignee != null">
+								AND USER_ID_ = #{assignee}
+							</if>
+							AND LINK.PROC_INST_ID_ = RES.ID_
+						</where>
+					)
+				)
+			</where>
+  </select>
+  
+  <!-- 查询用户参与的流程SAP需求 -->
+  <select id="page4InvolvedUserProcessReq" parameterType="map" resultMap="hisProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+						RES.*,DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_,u.name as START_USER_NAME_,
+						run.status as PROCESS_STATUS_,run.PROCESS_INST_NAME , checkUser.NAME as   CHECKUSERNAME,
+						ruart.id_ as changeId,actinst.ACT_NAME_,AUTH_USER.Name user_Name
+					FROM
+						ACT_HI_PROCINST RES
+					INNER JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+					LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+					LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+					LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+					
+					LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_  and  rutask.is_active_=1 and rutask.is_scope_=1
+					left join act_ru_task ruart on rutask.id_=ruart.execution_id_    
+					LEFT JOIN ACT_HI_TASKINST task on RES.PROC_INST_ID_ = task.PROC_INST_ID_  and  task.TASK_DEF_KEY_ =rutask.ACT_ID_   
+					LEFT JOIN auth_user checkUser on task.assignee_ = checkUser.account   
+					LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+					LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          			LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='模组顾问处理' 
+          			left join AUTH_USER on AUTH_USER.Account=actinst.assignee_
+					<where>
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ >= #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="processDefId != null and processDefId !=''">
+							<![CDATA[
+							AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+							]]>
+						</if>
+						<if test="categoryId != null and categoryId !=''">
+							<![CDATA[
+							AND ca.id = #{categoryId}
+							]]>
+						</if>
+						<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="userId != null ">
+							AND role.user_id = #{userId}
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<![CDATA[
+							AND run.status = #{processStatus}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+						<!-- <if test="actName != null ">
+							AND actinst.ACT_NAME_ = #{actName}
+						</if> -->
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 查询用户参与的流程总数SAP需求 -->
+  <select id="count4InvolvedUserProcessReq" parameterType="map" resultType="java.lang.Integer">
+  		SELECT count(distinct RES.ID_) FROM ACT_HI_PROCINST RES 
+  			INNER JOIN ACT_RE_PROCDEF DEF on RES.PROC_DEF_ID_ = DEF.ID_
+			LEFT JOIN category ca on DEF.CATEGORY_ = ca.id
+			LEFT JOIN auth_user u on RES.START_USER_ID_ = u.account
+			LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+			LEFT JOIN bpm_role_procdef bpm on  bpm.procdef_key = DEF.KEY_
+			LEFT JOIN bpm_user_role role on role.role_id  = bpm.role_id 
+          	LEFT JOIN ACT_HI_ACTINST actinst on actinst.PROC_INST_ID_=RES.PROC_INST_ID_ and actinst.ACT_NAME_='模组顾问处理'
+          	LEFT JOIN AUTH_USER on AUTH_USER.Account=actinst.assignee_
+			<where>
+				<if test="sapProcessIds != null and sapProcessIds !=''">
+					AND DEF.KEY_ NOT IN
+					<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					    #{item}  
+					</foreach>
+				</if>
+				<if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ >= #{startCreateTime}
+					]]>
+				</if>
+				<if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+					AND RES.START_TIME_ <= #{endCreateTime}
+					]]>
+				</if>
+				<if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ >= #{startFinishTime}
+					]]>
+				</if>
+				<if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+					AND RES.END_TIME_ <= #{endFinishTime}
+					]]>
+				</if>
+				<if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+					AND RES.PROC_INST_ID_ = #{proInstId}
+					]]>
+				</if>
+				<if test="processDefId != null and processDefId !=''">
+					<![CDATA[
+					AND RES.PROC_DEF_ID_ like #{processDefId} || '%'
+					]]>
+				</if>
+				<if test="categoryId != null and categoryId !=''">
+					<![CDATA[
+					AND ca.id = #{categoryId}
+					]]>
+				</if>
+				<if test="finished != null and finished == 'false'">
+					AND RES.END_TIME_ IS NULL
+				</if>
+				<if test="finished != null and finished == 'true'">
+					AND RES.END_TIME_ IS NOT NULL
+				</if>
+				<if test="userId != null ">
+					AND role.user_id = #{userId}
+				</if>
+				<if test="processStatus != null and processStatus !=''">
+					<![CDATA[
+					AND run.status = #{processStatus}
+					]]>
+				</if>
+				<if test="processInstanceName != null and processInstanceName !=''">
+							<![CDATA[
+							AND run.process_inst_name   like '%'|| #{processInstanceName} || '%'
+							]]>
+				</if>
+				<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name = #{proInstApply}
+							]]>
+						</if>
+						<if test="assigneeUser != null ">
+							AND AUTH_USER.name = #{assigneeUser}
+						</if>
+				AND (
+					EXISTS (
+						SELECT
+							LINK.USER_ID_
+						FROM
+							ACT_HI_IDENTITYLINK LINK
+						<where>
+							<if test="assignee != null">
+								AND USER_ID_ = #{assignee}
+							</if>
+							AND LINK.PROC_INST_ID_ = RES.ID_
+						</where>
+					)
+				)
+			</where>
+  </select>
+  
+  
+  <!-- 查询任务的候选人 -->
+  <select id="queryTaskCandidates" parameterType="map" resultMap="bpmIdentityLinkEntityResultMap">
+  	SELECT DISTINCT I.*,u.name as USER_NAME_
+	FROM
+		ACT_RU_TASK RES
+	INNER JOIN ACT_RU_IDENTITYLINK I ON I.TASK_ID_ = RES.ID_
+	INNER JOIN auth_user u on I.USER_ID_ = u.account
+	WHERE RES.ASSIGNEE_ IS NULL AND I.TYPE_ = #{type}
+	AND RES.PROC_INST_ID_ = #{procInstId}
+  </select>
+  
+  <!-- 根据ACT_HI_ACTINST的ID_获取数据 -->
+  <select id="queryHisActivity" parameterType="java.lang.String" resultMap="bpmHisActivityDetailEntity">
+ 	SELECT DISTINCT
+		act.ID_,act.PROC_DEF_ID_,act.PROC_INST_ID_,
+		act.EXECUTION_ID_,act.ACT_ID_,act.TASK_ID_,act.CALL_PROC_INST_ID_,
+		act.ACT_NAME_,act.ACT_TYPE_,act.ASSIGNEE_,act.START_TIME_,
+		act.END_TIME_,act.DURATION_, act.TENANT_ID_,
+		us.account as USERACCOUNT_,us.name as USERNAME_,
+		DEF.NAME_ as PROCESS_DEFNAME_, ca.name as CATEGORY_NAME_
+	FROM
+		ACT_HI_ACTINST act
+	INNER JOIN ACT_RE_PROCDEF DEF ON act.PROC_DEF_ID_ = DEF.ID_
+	INNER JOIN category ca on DEF.CATEGORY_ = ca.id
+	LEFT JOIN auth_user us on act.ASSIGNEE_ = us.account
+	WHERE act.ID_ = #{id}
+  </select>
+  
+  <!-- 根据ACT_HI_ACTINST的ID_获取数据 -->
+  <select id="queryTrackHistoricActivityInstance" parameterType="java.lang.String" resultMap="historicActivityInstanceEntity">
+	SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES 
+	WHERE RES.PROC_INST_ID_ = #{processInstanceId}
+	AND RES.END_TIME_ is not null
+	AND (NOT EXISTS (
+		SELECT ta.ID_
+		FROM ACT_HI_TASKINST ta
+		WHERE (ta.DELETE_REASON_ = '跳过') and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{processInstanceId}))
+	ORDER BY Res.START_TIME_ 
+  </select>
+  
+  <select id="queryHistoricActivityInstance" parameterType="java.lang.String" resultMap="historicActivityInstanceEntity">
+	SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES 
+	WHERE RES.PROC_INST_ID_ = #{processInstanceId}
+	AND RES.END_TIME_ is not null
+	ORDER BY Res.START_TIME_ 
+  </select>
+  
+  <update id="updateHisInclusivegatewayEndTime">
+    UPDATE ACT_HI_ACTINST SET END_TIME_ = #{endTime} 
+    WHERE PROC_INST_ID_ = #{procInstId} AND EXECUTION_ID_ = #{executionId} 
+    AND END_TIME_ IS NULL AND ACT_TYPE_ = 'inclusiveGateway'
+  </update>
+  
+  <!-- 查询进入该包含网关的非包含网关节点 -->
+  <select id="queryPreviousNotInclusivegatewayHisActInst4CurNode" parameterType="java.lang.String" resultMap="historicActivityInstanceEntity">
+	SELECT
+		t.*
+	FROM
+		ACT_HI_ACTINST t
+	WHERE
+		t.PROC_INST_ID_ = #{procInstId} 
+	AND t.End_TIME_ IS NOT NULL
+	AND t.EXECUTION_ID_ = #{executionId}
+	AND t.ACT_TYPE_ != #{actType}
+  </select>
+  
+  <!-- 查询包含网关的最近的节点id -->
+  <select id="queryInclusivegatewayHisActInstMaxId" parameterType="java.lang.String" resultType="java.lang.String">
+    select id_ from (
+		select id_ from ACT_HI_ACTINST where PROC_INST_ID_ = #{instanceId} 
+		   and id_ &lt; #{lastId} and act_type_ != 'inclusiveGateway' order by id_ desc
+    ) where rownum = 1
+  </select>
+  
+   <!-- 查询包含网关的开始id -->
+  <select id="queryInclusivegatewayHisActInstMinId" parameterType="java.lang.String" resultType="java.lang.String">
+  	select max(id_) from ACT_HI_ACTINST where PROC_INST_ID_ = #{instanceId} and ACT_TYPE_ = 'inclusiveGateway'
+     and id_ &lt; #{maxId}
+  </select>
+  
+  <!-- 查询包含网关之间的最近节点 -->
+  <select id="queryInclusivegatewayBetNode" parameterType="java.lang.String" resultMap="historicActivityInstanceEntity">
+  	select * from ACT_HI_ACTINST where id_ in (
+    	select max(id_) from ACT_HI_ACTINST 
+		 where PROC_INST_ID_ = #{instanceId} and id_ &gt; #{minId} and id_ &lt;= #{maxId} 
+      group by ACT_ID_)
+   order by id_ 
+  </select>
+  
+  <!-- 根据ProcInstId查找包含网关遍历次数-->
+  <select id="getActHiDetailLoopTimesByProcInstId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from (
+      select t.* from (
+        SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} AND RES.END_TIME_ is not null 
+           AND (NOT EXISTS ( SELECT ta.ID_ FROM ACT_HI_TASKINST ta WHERE (ta.DELETE_REASON_ = '跳过') 
+           and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{procInstId})) ORDER BY Res.START_TIME_
+      ) t where t.act_id_ = 'inclusivegateway1' 
+    )
+  </select>
+  
+  <!-- 根据ProcInstId查找当前节点的最近的上一个流程专员审核id-->
+  <select id="getActHiDetailLastFlowByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select max(t.id_) from ( 
+      SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} AND RES.END_TIME_ is not null 
+         AND (NOT EXISTS ( SELECT ta.ID_ FROM ACT_HI_TASKINST ta WHERE (ta.DELETE_REASON_ = '跳过') 
+         and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{procInstId})) ORDER BY Res.START_TIME_ 
+    ) t where t.act_id_ = 'FlowAudit' and t.id_ &lt; #{actInstId}
+  </select>
+  
+  <!-- 根据ProcInstId查找当前节点的最近的上一个节点id-->
+  <select id="getActHiDetailLastIdByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select max(t.id_) from ( 
+      SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} AND RES.END_TIME_ is not null 
+         AND (NOT EXISTS ( SELECT ta.ID_ FROM ACT_HI_TASKINST ta WHERE (ta.DELETE_REASON_ = '跳过') 
+         and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{procInstId})) ORDER BY Res.START_TIME_ 
+    ) t where t.act_id_ = #{nodeId} and t.id_ &lt; #{actInstId}
+  </select>
+   
+  <!-- 获取该次遍历的开始id-->
+  <select id="getActHiDetailBeginIdByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select max(id_) from ACT_HI_DETAIL where PROC_INST_ID_ = #{procInstId} and act_inst_id_ = #{lastFlowAuditId}
+  </select>
+  
+  <!-- 根据ProcInstId查找当前节点的最近的下一个流程专员审核id-->
+  <select id="getActHiDetailNextFlowByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select min(t.id_) from ( 
+      SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} AND RES.END_TIME_ is not null 
+         AND (NOT EXISTS ( SELECT ta.ID_ FROM ACT_HI_TASKINST ta WHERE (ta.DELETE_REASON_ = '跳过') 
+         and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{procInstId})) ORDER BY Res.START_TIME_ 
+    ) t where t.act_id_ = 'FlowAudit' and t.id_ &gt; #{actInstId}
+  </select>
+  
+  <!-- 根据ProcInstId查找当前节点的最近的下一个节点id-->
+  <select id="getActHiDetailNextIdByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select min(t.id_) from ( 
+      SELECT DISTINCT RES.* FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} AND RES.END_TIME_ is not null 
+         AND (NOT EXISTS ( SELECT ta.ID_ FROM ACT_HI_TASKINST ta WHERE (ta.DELETE_REASON_ = '跳过') 
+         and res.TASK_ID_ = ta.ID_ AND ta.PROC_INST_ID_ = #{procInstId})) ORDER BY Res.START_TIME_ 
+    ) t where t.act_id_ = #{nodeId} and t.id_ &gt; #{actInstId}
+  </select>
+   
+  <!-- 获取该次遍历的结束id-->
+  <select id="getActHiDetailEndIdByProcInstId" parameterType="java.lang.String" resultType="java.lang.String">
+    select min(id_) from ACT_HI_DETAIL where PROC_INST_ID_ = #{procInstId} and act_inst_id_ = #{nextFlowAuditId}
+  </select>
+  
+  <!-- 开启新事务查询最新的历史节点数据 -->
+  <select id="queryHisActInst4NewTransaction" parameterType="java.lang.String" resultMap="historicActivityInstanceEntity">
+	SELECT DISTINCT RES.* 
+	FROM ACT_HI_ACTINST RES WHERE RES.PROC_INST_ID_ = #{procInstId} 
+	ORDER BY RES.START_TIME_ ASC
+  </select>
+  
+  <!-- 更新任务的执行人 -->
+  <update id="updateTaskAssignee">
+	update ACT_RU_TASK set ASSIGNEE_=#{userAccount} where ID_=#{taskId}
+  </update>
+  
+  <!-- 更新历史任务执行人ACT_HI_ACTINST -->
+  <update id="updateHisTaskAssignee">
+	update ACT_HI_ACTINST set ASSIGNEE_=#{userAccount} where TASK_ID_=#{taskId}
+  </update>
+  
+  <!-- 更新历史任务执行人ACT_HI_TASKINST -->
+  <update id="updateHisTaskInstAssignee">
+	update ACT_HI_TASKINST set ASSIGNEE_=#{userAccount} where ID_=#{id}
+  </update>
+  
+  
+  <!-- 平台流程树节点升序查询 -->
+  <select id="queryLastVersionAndCategoryBySort" parameterType="java.lang.String" resultMap="processDefinitionEntityMap">
+	SELECT DISTINCT RES.*, p.sort from ACT_RE_PROCDEF RES
+	LEFT JOIN bpm_process_conf p ON RES.KEY_ = p.process_def_key
+	WHERE RES.CATEGORY_ = #{category}
+	AND RES.VERSION_ = (SELECT MAX(VERSION_) FROM ACT_RE_PROCDEF WHERE KEY_ = RES.KEY_ ) 
+	ORDER BY p.sort ASC
+  </select>
+  
+  <!-- 验证流程是否能够重复发起 -->
+  <select id="validateRepeatStartProcess" resultType="java.lang.Integer">
+  	select count(*) from ACT_HI_PROCINST p 
+	INNER join ACT_RE_PROCDEF def on p.PROC_DEF_ID_ = def.ID_
+	left join bpm_process_run run on p.PROC_DEF_ID_ = run.process_def_key
+	where run.status = #{processStatus} and p.END_TIME_ is null and p.START_USER_ID_ = #{startUser}
+	and def.KEY_ = #{processDefKey}
+  </select>
+  <!--获取用户频繁发起过的流程  -->
+  <select id="getFrequentlyStartedProcess" resultType="java.util.LinkedHashMap">
+	     select c.process_def_key as "processDefinitionKey",
+	            a1.name_          as "processDefinitionName",
+	            a1.id_            as "processDefinitionId"
+	     from (select substr(t.process_def_key, 0, instr(t.process_def_key, ':') - 1) as process_def_key,
+	                  row_number() over(order by count(*) desc) row_number
+	             from bpm_process_run t
+	            where t.start_user_account = #{startuser}
+	            group by substr(t.process_def_key, 0,instr(t.process_def_key, ':') - 1)) c
+	     INNER join act_re_procdef a1
+	       on a1.version_ = (select max(version_)
+	                           from act_re_procdef
+	                          where key_ = c.process_def_key)
+	      and a1.key_ = c.process_def_key
+	    <![CDATA[
+	    where c.row_number < 8
+	    ]]>
+  </select>
+  <!-- 获取最近申请的流程 -->
+  <select id="getRecentlyStartedProcess" resultType="java.util.LinkedHashMap">
+	  select d.process_def_key as "processDefinitionKey",
+	         a1.id_            as "processDefinitionId",
+	         a1.name_          as "processDefinitionName"
+	  from (select c.process_Def_Key, row_number() over(order by c.start_time desc) row_number
+	          from (select substr(t.process_def_key, 0,instr(t.process_def_key, ':') - 1) as process_Def_Key, 
+	                       t.start_time,
+	                       row_number() over(partition by  substr(t.process_def_key, 0,instr(t.process_def_key, ':') - 1) order by t.start_time desc) row_number
+	                from BPM_PROCESS_RUN t
+	                where t.start_user_account = #{startUser}) c
+	         where c.row_number = 1
+	         ) d
+	  INNER join act_re_procdef a1
+	    on a1.version_ = (SELECT MAX(VERSION_)
+	                        FROM ACT_RE_PROCDEF
+	                       WHERE KEY_ = d.process_Def_Key)
+	   AND a1.key_ = d.process_Def_Key
+	     <![CDATA[
+	   where d.row_number <8
+	      ]]>
+  </select>
+  <!-- 根据TasId删除ACT_HI_ACTINST -->
+  <update id="deleteHisActivityByTaskId">
+	delete ACT_HI_ACTINST where TASK_ID_ = #{taskId}
+  </update>
+  
+  <!-- 根据ProInstId删除ACT_RU_VARIABLE -->
+  <delete id="deleteActRuVariable4ProInstId" parameterType="string">
+	 delete from ACT_RU_VARIABLE where PROC_INST_ID_ = #{procInstId}
+  </delete>
+  
+  <select id="getNoFinishTask" parameterType="map" resultType="java.util.LinkedHashMap">
+  	select PROC_INST_ID_,NAME_,ASSIGNEE_ from ACT_HI_TASKINST 
+  	 where PROC_DEF_ID_ like '%' || #{code} || '%' 
+	   and END_TIME_ is null 
+	   and TO_DATE(TO_CHAR(START_TIME_,'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS') &gt; (sysdate-#{beginDays})
+       and TO_DATE(TO_CHAR(START_TIME_,'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS') &lt; (sysdate-#{endDays})
+  </select>
+  
+  <!-- 查询录用流程信息 -->
+  <select id="getInterviewInfo" parameterType="map" resultMap="interviewEntityResult">
+  select SUB.* from(
+  	SELECT RES.*, row_number () OVER (ORDER BY RES.APPLY_TIME DESC) rnk
+			FROM (
+				  	select distinct  to_char(run.start_time,'yyyy-mm-dd') as apply_time,dbms_lob.substr(b.text_,4000) as appli_name,dbms_lob.substr(c.text_,4000) as in_sys_name,
+				  	dbms_lob.substr(d.text_,4000) as in_org_name,
+				  	decode( dbms_lob.substr(e.text_,4000),'1','助理级','2','中级','3','高级') as rank,
+				  	dbms_lob.substr(f.text_,4000) as in_job,
+				  	dbms_lob.substr(g.text_,4000) as age,dbms_lob.substr(h.text_,4000) as education,dbms_lob.substr(t.text_,4000) as specialty,
+				  	dbms_lob.substr(r.text_,4000) as work_year,
+				  	decode( dbms_lob.substr(o.text_,4000),'1','卓越','2','优秀','3','胜任','4','基本胜任') as hr_total_eval,
+				  	decode( dbms_lob.substr(w.text_,4000),'1','卓越','2','优秀','3','胜任','4','基本胜任') as dep_total_eval,
+				  	dbms_lob.substr(q.text_,4000) as teacher_name,dbms_lob.substr(u.text_,4000) as salary_level,dbms_lob.substr(s.text_,4000) as alary_probation,
+				  	dbms_lob.substr(x.text_,4000) as salary_positive ,
+				  	run.status as status,
+		         	run.process_inst_id as process_inst_id,
+		         	checkuser.name as   checkusername,
+					ruart.id_ as changeid,
+					ruart.name_ as act_name_
+				  	from bpm_process_run run 
+				  	inner join act_re_procdef def on run.process_def_key = def.id_
+				  	left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  	left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  	left join auth_user checkuser on ruart.assignee_ = checkuser.account
+				  	left join act_hi_varinst a on run.process_inst_id=a.proc_inst_id_ and a.name_='applyTime' 
+				  	left join act_hi_varinst b on run.process_inst_id=b.proc_inst_id_  and b.name_='applicanter'
+				  	left join act_hi_varinst c on run.process_inst_id=c.proc_inst_id_  and c.name_='inSysName'
+				  	left join act_hi_varinst d on run.process_inst_id=d.proc_inst_id_  and d.name_='inOrgName'
+				  	left join act_hi_varinst e on run.process_inst_id=e.proc_inst_id_  and e.name_='rank'
+				  	left join act_hi_varinst f on run.process_inst_id=f.proc_inst_id_  and f.name_='inJob'
+				  	left join act_hi_varinst g on run.process_inst_id=g.proc_inst_id_  and g.name_='age'
+				  	left join act_hi_varinst h on run.process_inst_id=h.proc_inst_id_  and h.name_='education'
+				  	left join act_hi_varinst t on run.process_inst_id=t.proc_inst_id_  and t.name_='specialty'
+				  	left join act_hi_varinst r on run.process_inst_id=r.proc_inst_id_  and r.name_='workExp'
+				  	left join act_hi_varinst o on run.process_inst_id=o.proc_inst_id_  and o.name_='overallEvaluation'
+				  	left join act_hi_varinst w on run.process_inst_id=w.proc_inst_id_  and w.name_='departOverallEvaluation'
+				  	left join act_hi_varinst q on run.process_inst_id=q.proc_inst_id_  and q.name_='teacherName'
+				  	left join act_hi_varinst u on run.process_inst_id=u.proc_inst_id_  and u.name_='salaryLevel'
+				  	left join act_hi_varinst s on run.process_inst_id=s.proc_inst_id_  and s.name_='salaryProbation' 
+				  	left join act_hi_varinst x on run.process_inst_id=x.proc_inst_id_  and x.name_='salaryPositive'
+				  	left join act_hi_varinst y on run.process_inst_id=y.proc_inst_id_  and y.name_='threeDepartName'
+				  	<where>
+				  	and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Interview-Assessment'
+					  		   <if test="departNames != null and departNames !=''">
+								AND dbms_lob.substr(y.TEXT_,4000) IN
+								<foreach collection="departNames" index="index" item="item" open="(" separator="," close=")">  
+						        	#{item}  
+						    	</foreach>
+							  </if>
+				  		      <if test="startCreateTime != null and startCreateTime !=''">
+								<![CDATA[
+									AND run.start_time >= #{startCreateTime}
+								]]>
+						  	  </if>
+							  <if test="endCreateTime != null and endCreateTime !=''">
+									<![CDATA[
+										AND run.start_time <= #{endCreateTime}
+									]]>
+							  </if>
+							  <if test="startFinishTime != null and startFinishTime !=''">
+								<![CDATA[
+									AND run.end_time >= #{startFinishTime}
+								]]>
+						  	  </if>
+							  <if test="endFinishTime != null and endFinishTime !=''">
+									<![CDATA[
+										AND run.end_time <= #{endFinishTime}
+									]]>
+							  </if>
+							  <if test="applicanter !=null and applicanter !=''">
+									AND dbms_lob.substr(b.text_,4000) like '%'|| #{applicanter} ||'%'
+							  </if>
+							  <if test="inOrgName !=null and inOrgName !=''">
+									AND dbms_lob.substr(d.text_,4000) like '%'|| #{inOrgName} ||'%'
+							  </if>
+							  <if test="rank !=null and rank !=''">
+									AND dbms_lob.substr(e.text_,4000) = #{rank}
+							  </if>
+							   <if test="inJob !=null and inJob !=''">
+									AND dbms_lob.substr(f.text_,4000) like '%'|| #{inJob} ||'%'
+							  </if>
+							  <if test="processStatus !=null and processStatus !=''">
+									AND run.status = #{processStatus}
+							  </if>
+				  	 </where>
+		    )RES
+		)SUB
+		<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 获取录用流程记录数 -->
+  <select id="getInterviewCount" parameterType="map" resultType="java.lang.Integer">
+  		select count(*) from (
+				  	select DISTINCT to_char(run.start_time,'yyyy-mm-dd') as APPLY_TIME,dbms_lob.substr(b.text_,4000) as APPLI_NAME,dbms_lob.substr(c.text_,4000) as IN_SYS_NAME,
+				  	dbms_lob.substr(d.text_,4000) as IN_ORG_NAME,dbms_lob.substr(e.text_,4000) as RANK,dbms_lob.substr(f.text_,4000) as IN_JOB,
+				  	dbms_lob.substr(g.text_,4000) as AGE,dbms_lob.substr(h.text_,4000) as EDUCATION,dbms_lob.substr(t.text_,4000) as SPECIALTY,
+				  	dbms_lob.substr(r.text_,4000) as WORK_YEAR,dbms_lob.substr(o.text_,4000) as HR_TOTAL_EVAL,dbms_lob.substr(w.text_,4000) as DEP_TOTAL_EVAL,
+				  	dbms_lob.substr(q.text_,4000) as TEACHER_NAME,dbms_lob.substr(u.text_,4000) as SALARY_LEVEL,dbms_lob.substr(s.text_,4000) as ALARY_PROBATION,
+				  	dbms_lob.substr(x.text_,4000) as SALARY_POSITIVE  ,
+				  	run.status as STATUS,
+		          	run.process_inst_id as PROCESS_INST_ID,
+		          	checkuser.name as   checkusername,
+					ruart.id_ as changeid,
+					ruart.name_ as act_name_
+				  	from bpm_process_run run 
+				  	inner join act_re_procdef def on run.process_def_key = def.id_
+				  	left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  	left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  	left join auth_user checkuser on ruart.assignee_ = checkuser.account
+				    left join act_hi_varinst a on run.process_inst_id=a.proc_inst_id_  and a.name_='applyTime' 
+				  	left join act_hi_varinst b on run.process_inst_id=b.proc_inst_id_  and b.name_='applicanter'
+				  	left join act_hi_varinst c on run.process_inst_id=c.proc_inst_id_  and c.name_='inSysName'
+				  	left join act_hi_varinst d on run.process_inst_id=d.proc_inst_id_  and d.name_='inOrgName'
+				  	left join act_hi_varinst e on run.process_inst_id=e.proc_inst_id_  and e.name_='rank'
+				  	left join act_hi_varinst f on run.process_inst_id=f.proc_inst_id_  and f.name_='inJob'
+				  	left join act_hi_varinst g on run.process_inst_id=g.proc_inst_id_  and g.name_='age'
+				  	left join act_hi_varinst h on run.process_inst_id=h.proc_inst_id_  and h.name_='education'
+				  	left join act_hi_varinst t on run.process_inst_id=t.proc_inst_id_  and t.name_='specialty'
+				  	left join act_hi_varinst r on run.process_inst_id=r.proc_inst_id_  and r.name_='workExp'
+				  	left join act_hi_varinst o on run.process_inst_id=o.proc_inst_id_  and o.name_='overallEvaluation'
+				  	left join act_hi_varinst w on run.process_inst_id=w.proc_inst_id_  and w.name_='departOverallEvaluation'
+				  	left join act_hi_varinst q on run.process_inst_id=q.proc_inst_id_  and q.name_='teacherName'
+				  	left join act_hi_varinst u on run.process_inst_id=u.proc_inst_id_  and u.name_='salaryLevel'
+				  	left join act_hi_varinst s on run.process_inst_id=s.proc_inst_id_  and s.name_='salaryProbation' 
+				  	left join act_hi_varinst x on run.process_inst_id=x.proc_inst_id_  and x.name_='salaryPositive'
+				  	left join act_hi_varinst y on run.process_inst_id=y.proc_inst_id_  and y.name_='threeDepartName'
+				  	<where>
+				  			and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Interview-Assessment'
+				  		  <if test="departNames != null and departNames !=''">
+							AND dbms_lob.substr(y.TEXT_,4000) IN
+							<foreach collection="departNames" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						  </if>
+			  		      <if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[
+								AND run.start_time >= #{startCreateTime}
+							]]>
+					  	  </if>
+						  <if test="endCreateTime != null and endCreateTime !=''">
+								<![CDATA[
+									AND run.start_time <= #{endCreateTime}
+								]]>
+						  </if>
+						  <if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+								AND run.end_time >= #{startFinishTime}
+							]]>
+					  	  </if>
+						  <if test="endFinishTime != null and endFinishTime !=''">
+								<![CDATA[
+									AND run.end_time <= #{endFinishTime}
+								]]>
+						  </if>
+						  <if test="applicanter !=null and applicanter !=''">
+								AND dbms_lob.substr(b.text_,4000) like '%'|| #{applicanter} ||'%'
+						  </if>
+						  <if test="inOrgName !=null and inOrgName !=''">
+								AND dbms_lob.substr(d.text_,4000) like '%'|| #{inOrgName} ||'%'
+						  </if>
+						  <if test="rank !=null and rank !=''">
+								AND dbms_lob.substr(e.text_,4000) = #{rank}
+						  </if>
+						  <if test="inJob !=null and inJob !=''">
+								AND dbms_lob.substr(f.text_,4000) like '%'|| #{inJob} ||'%'
+						  </if>
+						  <if test="processStatus !=null and processStatus !=''">
+								AND run.status = #{processStatus}
+						  </if>
+				  	  </where>
+  		) 
+  </select>
+  <select id="getApprover" parameterType="string" resultType="string">
+        select u.name as name from ACT_HI_TASKINST   task,auth_user u where task.assignee_=u.account and task.proc_inst_id_=#{id} and task.end_time_ is null
+  </select>
+  
+  <!-- 获取两个部门的父级部门 -->
+  <select id="getFatherDepartmentName" parameterType="map" resultType="string">
+  		select old.name from auth_organization old inner join auth_organization new on old.pid=new.pid where old.id=#{oldOrgId} and new.id=#{accepterOrgId}
+  </select>
+  
+  <!-- 判断固定资产编号是否在申请报废中 -->
+  <select id="assetsNoisOffApply" resultType="string">
+  	select dbms_lob.substr(v.TEXT_,4000) from act_hi_varinst v inner join act_hi_procinst p on 
+		v.proc_inst_id_=p.proc_inst_id_ where 
+		substr(p.proc_def_id_,0,24)='M-FixedAssets-Detraction' 
+		and v.name_ in ('MFixedAssetsDetraction','updateMFixedAssetsDetraction','scrapWay2JsonStr','updateScrapWay2JsonStr') 
+		and v.proc_inst_id_ in (select proc_inst_id_ 
+		from act_ru_task where substr(proc_def_id_,0,24)='M-FixedAssets-Detraction') 
+  </select>
+  
+  <!-- 获取部门 orgId-->
+  
+  <select id="getOrgId" parameterType="string" resultType="java.lang.Integer">
+         select org_id from auth_user where account=#{account}
+  </select> 
+  
+  <!-- 试用期转正申请查询 -->
+  <select id="getIprobationEation" parameterType="map" resultMap="probation">
+  select SUB.* from(
+  	SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+			FROM (
+				select DISTINCT prc.* from (
+					select
+ 					res.*,
+                     def.name_ as process_defname_,
+                     u.name as start_user_name_,
+                     run.status as process_status_,
+                     run.process_inst_name,
+                     checkuser.name as checkusername,
+                     ruart.id_ as changeid,
+                     ruart.name_ as act_name_,
+                     ruart.assignee_,
+					dbms_lob.substr(a.text_,4000) as org_name,
+					dbms_lob.substr(c.text_,4000) as account,
+					dbms_lob.substr(d.text_,4000) as emp_name,
+					dbms_lob.substr(e.text_,4000) as emp_job,
+					dbms_lob.substr(f.text_,4000) as sal_adjust,
+					dbms_lob.substr(g.text_,4000) as agree_time
+					from act_hi_procinst res
+					inner join act_re_procdef def on res.proc_def_id_ = def.id_
+					left join auth_user u  on res.start_user_id_ = u.account
+					left join bpm_process_run run  on res.proc_inst_id_ = run.process_inst_id
+					left join act_ru_execution rutask on res.proc_inst_id_ = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+					left join act_ru_task ruart  on rutask.id_ = ruart.execution_id_
+					left join auth_user checkuser on ruart.assignee_ = checkuser.account
+	                left join ACT_HI_VARINST a on RES.proc_inst_id_=a.proc_inst_id_ and a.name_='orgName'
+					left join ACT_HI_VARINST c on RES.proc_inst_id_=c.proc_inst_id_ and c.name_='applyUserAccount'
+					left join ACT_HI_VARINST d on RES.proc_inst_id_=d.proc_inst_id_ and d.name_='empName'
+					left join ACT_HI_VARINST e on RES.proc_inst_id_=e.proc_inst_id_ and e.name_='empJob'
+					left join ACT_HI_VARINST f on RES.proc_inst_id_=f.proc_inst_id_ and f.name_='Salaryadjustment'
+					left join ACT_HI_VARINST g on RES.proc_inst_id_=g.proc_inst_id_ and g.name_='wageManagerAgreeTime'
+					<where> 
+					and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Probation-Exam' 
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="startAgreeTime != null and startAgreeTime !=''">
+					<![CDATA[
+						AND to_date(dbms_lob.substr(g.TEXT_,4000),'yyyy-MM-dd') >= #{startAgreeTime}
+					]]>
+				  </if>
+				  <if test="endAgreeTime != null and endAgreeTime !=''">
+					<![CDATA[
+						AND to_date(dbms_lob.substr(g.TEXT_,4000),'yyyy-MM-dd') <= #{endAgreeTime}
+					]]>
+				  </if>
+				  <if test="account !=null and account !=''">
+				  	<![CDATA[
+				  		AND dbms_lob.substr(c.TEXT_,4000) = #{account}
+				  	]]>
+				  </if>
+				  <if test="orgName !=null and orgName !=''">
+						AND dbms_lob.substr(a.text_,4000) like '%'|| #{orgName} ||'%'
+				  </if>
+				  <if test="empName !=null and empName !=''">
+						AND dbms_lob.substr(d.text_,4000) like '%'|| #{empName} ||'%'
+				  </if>
+				  <if test="salAdjust !=null and salAdjust !=''">
+						AND dbms_lob.substr(f.text_,4000) = #{salAdjust}
+				  </if>
+				  <if test="processStatus !=null and processStatus !=''">
+						AND  run.status = #{processStatus}
+				  </if>
+				</where>)prc
+		    )RES
+		)SUB
+		<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  <!-- 获取试用期薪级、薪资-->
+  <select id="getSalaryGroup" parameterType="string" resultMap="probation">
+  		select DISTINCT prc.* from (
+					select dbms_lob.substr(a.TEXT_,4000) as CUR_SALARY_GROUP,
+					dbms_lob.substr(c.TEXT_,4000) as CUR_SALARY,
+					dbms_lob.substr(d.TEXT_,4000) as FU_SALARY_GROUP,
+					dbms_lob.substr(e.TEXT_,4000) as FU_SALARY from
+					ACT_HI_VARINST a 
+					left join ACT_HI_VARINST c on a.proc_inst_id_=c.proc_inst_id_
+					left join ACT_HI_VARINST d on c.proc_inst_id_=d.proc_inst_id_
+					left join ACT_HI_VARINST e on d.proc_inst_id_=e.proc_inst_id_
+					left join BPM_PROCESS_RUN run on e.proc_inst_id_=run.process_inst_id
+					where a.name_='curSalaryGroupByWage'
+					and c.name_='curSalary1ByWage'
+					and d.name_='fuSalaryGroupByWage'
+					and e.name_='fuSalary1ByWage'
+					and a.proc_inst_id_=#{procId}
+					order by run.update_time desc
+				)prc
+  </select>
+  
+  <!-- 试用期转正发起流程的总数 -->
+  <select id="getProbationCount" parameterType="map" resultType="Integer">
+  	select count(*) from (
+  		select DISTINCT prc.* from (
+					select  					
+					 res.*,
+                     def.name_ as process_defname_,
+                     u.name as start_user_name_,
+                     run.status as process_status_,
+                     run.process_inst_name,
+                     checkuser.name as checkusername,
+                     ruart.id_ as changeid,
+                     ruart.name_ as act_name_,
+                     ruart.assignee_,
+					 dbms_lob.substr(a.text_,4000) as org_name,
+					 dbms_lob.substr(c.text_,4000) as account,
+					 dbms_lob.substr(d.text_,4000) as emp_name,
+					 dbms_lob.substr(e.text_,4000) as emp_job,
+					 dbms_lob.substr(f.text_,4000) as sal_adjust,
+					 dbms_lob.substr(g.text_,4000) as agree_time
+					 from act_hi_procinst res
+					 inner join act_re_procdef def on res.proc_def_id_ = def.id_
+					 left join auth_user u on res.start_user_id_ = u.account
+					 left join bpm_process_run run on res.proc_inst_id_ = run.process_inst_id
+					 left join act_ru_execution rutask on res.proc_inst_id_ = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+					 left join act_ru_task ruart on rutask.id_ = ruart.execution_id_
+					 left join auth_user checkuser on ruart.assignee_ = checkuser.account
+	                 left join ACT_HI_VARINST a on RES.proc_inst_id_=a.proc_inst_id_ and a.name_='orgName'
+					 left join ACT_HI_VARINST c on RES.proc_inst_id_=c.proc_inst_id_ and c.name_='applyUserAccount'
+					 left join ACT_HI_VARINST d on RES.proc_inst_id_=d.proc_inst_id_ and d.name_='empName'
+					 left join ACT_HI_VARINST e on RES.proc_inst_id_=e.proc_inst_id_ and e.name_='empJob'
+					 left join ACT_HI_VARINST f on RES.proc_inst_id_=f.proc_inst_id_ and f.name_='Salaryadjustment'
+					 left join ACT_HI_VARINST g on RES.proc_inst_id_=g.proc_inst_id_ and g.name_='wageManagerAgreeTime'
+					<where>
+					and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Probation-Exam' 
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="startAgreeTime != null and startAgreeTime !=''">
+					<![CDATA[
+						AND to_date(dbms_lob.substr(g.TEXT_,4000),'yyyy-MM-dd') >= #{startAgreeTime}
+					]]>
+				  </if>
+				  <if test="endAgreeTime != null and endAgreeTime !=''">
+					<![CDATA[
+						AND to_date(dbms_lob.substr(g.TEXT_,4000),'yyyy-MM-dd') <= #{endAgreeTime}
+					]]>
+				  </if>
+				  <if test="account !=null and account !=''">
+				  	<![CDATA[
+				  		AND dbms_lob.substr(c.TEXT_,4000) = #{account}
+				  	]]>
+				  </if>
+				  <if test="orgName !=null and orgName !=''">
+						AND dbms_lob.substr(a.text_,4000) like '%'|| #{orgName} ||'%'
+				  </if>
+				  <if test="empName !=null and empName !=''">
+						AND dbms_lob.substr(d.text_,4000) like '%'|| #{empName} ||'%'
+				  </if>
+				  <if test="salAdjust !=null and salAdjust !='' and salAdjust == 1">
+						AND dbms_lob.substr(f.text_,4000) in (0,1)
+				  </if>
+				  <if test="salAdjust !=null and salAdjust !='' and (salAdjust ==2 or salAdjust == 3)">
+						AND dbms_lob.substr(f.text_,4000) = #{salAdjust}
+				  </if>
+				  <if test="processStatus !=null and processStatus !=''">
+						AND  run.status = #{processStatus}
+				  </if>
+				</where>)prc
+  	)
+  </select>
+  
+   <!-- 人员需求申请查询 -->
+  <select id="getRequirementReport" parameterType="map" resultMap="requirements">
+  select SUB.* from(
+  	SELECT RES.*, row_number () OVER (ORDER BY RES.startTime DESC) rnk
+			FROM (
+				select DISTINCT prc.* from (
+				  select
+		          dbms_lob.substr(a.TEXT_,4000) as EMP_REQDATE,
+		          dbms_lob.substr(d.TEXT_,4000) as EMP_REQSYSTEM,
+		          dbms_lob.substr(e.TEXT_,4000) as EMP_ORGNAME,
+		          dbms_lob.substr(f.TEXT_,4000) as EMP_REQJOB,
+		          decode(dbms_lob.substr(g.TEXT_,4000),'1','助理级','2','中级','3','高级') as EMP_REQRANK,
+		          dbms_lob.substr(h.TEXT_,4000) as EMP_REQNUMBER,
+		          dbms_lob.substr(i.TEXT_,4000) as EMP_REQHOPEDATE,
+		          decode(dbms_lob.substr(j.TEXT_,4000),'3','社会招聘','2','实习生招聘','1','校园招聘') as EMP_REQTYPE,
+		          decode(dbms_lob.substr(k.TEXT_,4000),'3','不限','2','女','1','男') as EMP_SEX,
+		          dbms_lob.substr(l.TEXT_,4000) as EMP_EDUCATION,
+		          dbms_lob.substr(m.TEXT_,4000) as EMP_MAJOR,
+		          decode(dbms_lob.substr(o.TEXT_,4000),'1','只向内部招聘','2','只向外部招聘','3','同步启动猎头招聘','4','同步内招') as EMP_REQCHANNELS,
+		          run.status as STATUS,
+		          run.process_inst_id as PROCESS_INST_ID,
+		          run.start_time as startTime,
+	          	  checkuser.name as   checkusername,
+				  ruart.id_ as changeid,
+				  ruart.name_ as act_name_
+                  from BPM_PROCESS_RUN run
+                  inner join act_re_procdef def on run.process_def_key = def.id_
+                  left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  left join auth_user checkuser on ruart.assignee_ = checkuser.account
+                  left join act_hi_varinst a on run.process_inst_id = a.proc_inst_id_ and a.name_ = 'reqDate' 
+                  left join act_hi_varinst c on run.process_inst_id = c.proc_inst_id_ and c.name_ = 'applyUserId'
+                  left join act_hi_varinst d on run.process_inst_id = d.proc_inst_id_ and d.name_ = 'reqSystem'
+                  left join act_hi_varinst e on run.process_inst_id = e.proc_inst_id_ and e.name_ = 'orgName'
+                  left join act_hi_varinst f on run.process_inst_id = f.proc_inst_id_ and f.name_ = 'reqJob'
+                  left join act_hi_varinst g on run.process_inst_id = g.proc_inst_id_ and g.name_ = 'reqRank'
+                  left join act_hi_varinst h on run.process_inst_id = h.proc_inst_id_ and h.name_ = 'reqNumber'
+                  left join act_hi_varinst i on run.process_inst_id = i.proc_inst_id_ and i.name_ = 'reqHopeDate'
+                  left join act_hi_varinst j on run.process_inst_id = j.proc_inst_id_ and j.name_ = 'reqType'
+                  left join act_hi_varinst k on run.process_inst_id = k.proc_inst_id_ and k.name_ = 'sex'
+                  left join act_hi_varinst l on run.process_inst_id = l.proc_inst_id_ and l.name_ = 'education'
+                  left join act_hi_varinst m on run.process_inst_id = m.proc_inst_id_ and m.name_ = 'major'
+                  left join act_hi_varinst o on run.process_inst_id = o.proc_inst_id_ and o.name_ = 'reqChannels'
+                  left join act_hi_varinst p on run.process_inst_id = p.proc_inst_id_ and p.name_ = 'firstPersonAccount'
+		          <where>
+		           and substr(run.process_def_key, 0,instr(run.process_def_key, ':') - 1) = 'L-Personnel-Requirement'  
+				  <if test="account !=null and account !=''">
+				  	<![CDATA[
+				  		AND dbms_lob.substr(c.TEXT_,4000) = #{account}
+				  	]]>
+				  </if>
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="orgName !=null and orgName !=''">
+						AND dbms_lob.substr(e.text_,4000) like '%'|| #{orgName} ||'%'
+				  </if>
+				  <if test="reqRank !=null and reqRank !=''">
+						AND dbms_lob.substr(g.text_,4000) = #{reqRank}
+				  </if>
+				  <if test="reqType !=null and reqType !=''">
+						AND dbms_lob.substr(j.text_,4000) = #{reqType}
+				  </if>
+				  <if test="reqChannels !=null and reqChannels !=''">
+						AND dbms_lob.substr(o.text_,4000) = #{reqChannels}
+				  </if>
+				  <if test="status != null and status !=''">
+			        	AND run.status = #{status}
+				  </if>
+				  <if test="processInstanceId != null">
+						AND run.process_inst_id = #{processInstanceId}
+				  </if>
+				  <if test="departNames !=null and departNames !=''">
+						AND dbms_lob.substr(p.text_,4000) in
+						  <foreach item="item" index="index" collection="departNames" 
+		                    open="(" separator="," close=")">
+		                   #{item}
+	                    </foreach>
+				  </if>
+				</where>)prc
+		    )RES
+		)SUB
+		<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <!-- 人员需求流程的总数 -->
+  <select id="getRequirementReportCount" parameterType="map" resultType="Integer">
+  	select count(*) from (
+  		select DISTINCT prc.* from (
+				  select   
+		          dbms_lob.substr(a.TEXT_,4000) as EMP_REQDATE,
+		          dbms_lob.substr(d.TEXT_,4000) as EMP_REQSYSTEM,
+		          dbms_lob.substr(e.TEXT_,4000) as EMP_ORGNAME,
+		          dbms_lob.substr(f.TEXT_,4000) as EMP_REQJOB,
+		          decode(dbms_lob.substr(g.TEXT_,4000),'1','助理级','2','中级','3','高级') as EMP_REQRANK,
+		          dbms_lob.substr(h.TEXT_,4000) as EMP_REQNUMBER,
+		          dbms_lob.substr(i.TEXT_,4000) as EMP_REQHOPEDATE,
+		          decode(dbms_lob.substr(j.TEXT_,4000),'3','社会招聘','2','实习生招聘','1','校园招聘') as EMP_REQTYPE,
+		          decode(dbms_lob.substr(k.TEXT_,4000),'3','不限','2','女','1','男') as EMP_SEX,
+		          dbms_lob.substr(l.TEXT_,4000) as EMP_EDUCATION,
+		          dbms_lob.substr(m.TEXT_,4000) as EMP_MAJOR,
+		          decode(dbms_lob.substr(o.TEXT_,4000),'1','只向内部招聘','2','只向外部招聘','3','同步启动猎头招聘','4','同步内招') as EMP_REQCHANNELS,
+		          run.status as STATUS,
+		          run.process_inst_id as PROCESS_INST_ID,
+		          run.start_time as startTime ,
+		          checkuser.name as   checkusername,
+				  ruart.id_ as changeid,
+				  ruart.name_ as act_name_
+                  from BPM_PROCESS_RUN run
+                  inner join act_re_procdef def on run.process_def_key = def.id_
+                  left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  left join auth_user checkuser on ruart.assignee_ = checkuser.account
+                  left join act_hi_varinst a on run.process_inst_id = a.proc_inst_id_  and a.name_ = 'reqDate' 
+                  left join act_hi_varinst c on run.process_inst_id = c.proc_inst_id_ and c.name_ = 'applyUserId'
+                  left join act_hi_varinst d on run.process_inst_id = d.proc_inst_id_ and d.name_ = 'reqSystem'
+                  left join act_hi_varinst e on run.process_inst_id = e.proc_inst_id_ and e.name_ = 'orgName'
+                  left join act_hi_varinst f on run.process_inst_id = f.proc_inst_id_ and f.name_ = 'reqJob'
+                  left join act_hi_varinst g on run.process_inst_id = g.proc_inst_id_ and g.name_ = 'reqRank'
+                  left join act_hi_varinst h on run.process_inst_id = h.proc_inst_id_ and h.name_ = 'reqNumber'
+                  left join act_hi_varinst i on run.process_inst_id = i.proc_inst_id_ and i.name_ = 'reqHopeDate'
+                  left join act_hi_varinst j on run.process_inst_id = j.proc_inst_id_ and j.name_ = 'reqType'
+                  left join act_hi_varinst k on run.process_inst_id = k.proc_inst_id_ and k.name_ = 'sex'
+                  left join act_hi_varinst l on run.process_inst_id = l.proc_inst_id_ and l.name_ = 'education'
+                  left join act_hi_varinst m on run.process_inst_id = m.proc_inst_id_ and m.name_ = 'major'
+                  left join act_hi_varinst o on run.process_inst_id = o.proc_inst_id_ and o.name_ = 'reqChannels'
+                  left join act_hi_varinst p on run.process_inst_id = p.proc_inst_id_ and p.name_ = 'firstPersonAccount'
+		          <where>
+		           and substr(run.process_def_key, 0,instr(run.process_def_key, ':') - 1) = 'L-Personnel-Requirement'  
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="account !=null and account !=''">
+				  	<![CDATA[
+				  		AND dbms_lob.substr(c.TEXT_,4000) = #{account}
+				  	]]>
+				  </if>
+				  <if test="orgName !=null and orgName !=''">
+						AND dbms_lob.substr(e.text_,4000) like '%'|| #{orgName} ||'%'
+				  </if>
+				  <if test="reqRank !=null and reqRank !=''">
+						AND dbms_lob.substr(g.text_,4000) = #{reqRank}
+				  </if>
+				  <if test="reqType !=null and reqType !=''">
+						AND dbms_lob.substr(j.text_,4000) = #{reqType}
+				  </if>
+				  <if test="reqChannels !=null and reqChannels !=''">
+						AND dbms_lob.substr(o.text_,4000) = #{reqChannels}
+				  </if>
+				  <if test="status != null and status !=''">
+			        	AND run.status = #{status}
+				  </if>
+				  <if test="processInstanceId != null">
+						AND run.process_inst_id = #{processInstanceId}
+				  </if>
+				  <if test="departNames !=null and departNames !=''">
+						AND dbms_lob.substr(p.text_,4000) in
+						  <foreach item="item" index="index" collection="departNames" 
+		                    open="(" separator="," close=")">
+		                   #{item}
+	                    </foreach>
+				  </if>
+				</where>)prc
+  	)
+  </select>
+  
+    <!-- 户口申请查看-->
+  <select id="getAllAccountHandelProcess" parameterType="map" resultMap="accounthandel">
+	  select SUB.* from(
+	  	SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+				select DISTINCT prc.* from (
+				   select RES.*,
+                   DEF.NAME_ as PROCESS_DEFNAME_,
+                   u.name as START_USER_NAME_,
+                   run.status as PROCESS_STATUS_,
+                   run.PROCESS_INST_NAME,
+                   checkUser.NAME as CHECKUSERNAME,
+                   ruart.id_ as changeId,
+                   ruart.name_ as act_name_,
+                   ruart.assignee_,
+	               dbms_lob.substr(a.TEXT_,4000) as EMP_DEPA,
+	               dbms_lob.substr(c.TEXT_,4000) as EMP_EMPID,
+	               dbms_lob.substr(d.TEXT_,4000) as EMP_NAME,
+	               dbms_lob.substr(e.TEXT_,4000) as EMP_JOB,
+	               dbms_lob.substr(f.TEXT_,4000) as EMP_ENTRYDATE,
+	               dbms_lob.substr(g.TEXT_,4000) as EMP_EDUCATION,
+	               dbms_lob.substr(h.TEXT_,4000) as EMP_APPLYDATE
+                   from ACT_HI_PROCINST RES
+                   inner JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+                   LEFT JOIN auth_user u  on RES.START_USER_ID_ = u.account
+                   LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id
+                   LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_ and rutask.is_active_ = 1   and rutask.is_scope_ = 1
+                   left join act_ru_task ruart on rutask.id_ = ruart.execution_id_
+                   LEFT JOIN auth_user checkUser on ruart.assignee_ = checkUser.account 
+                            
+	               left join ACT_HI_VARINST a on RES.PROC_INST_ID_=a.proc_inst_id_ and   a.name_= 'orgName'
+	               left join ACT_HI_VARINST c on RES.PROC_INST_ID_=c.proc_inst_id_ and   c.name_= 'empId'
+	               left join ACT_HI_VARINST d on RES.PROC_INST_ID_=d.proc_inst_id_ and   d.name_='userName'
+	               left join ACT_HI_VARINST e on RES.PROC_INST_ID_=e.proc_inst_id_ and   e.name_='job'
+	               left join ACT_HI_VARINST f on RES.PROC_INST_ID_=f.proc_inst_id_ and   f.name_='entryTime'
+	               left join ACT_HI_VARINST g on RES.PROC_INST_ID_=g.proc_inst_id_ and   g.name_='education'
+	               left join ACT_HI_VARINST h on RES.PROC_INST_ID_=h.proc_inst_id_ and   h.name_='recruitagentsSignDate'
+	              <where>
+	              and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Account-Handle' 
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="processStatus != null and processStatus !=''">
+						AND run.status = #{processStatus}
+				  </if>
+			  	  <if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+						AND  run.process_inst_id = #{processInstanceId}
+					]]>
+				 </if>
+				  <if test="depa != null and depa !=''">
+					<![CDATA[
+					   AND dbms_lob.substr(a.TEXT_,4000) like '%'|| #{depa} ||'%' 
+					]]>
+			     </if>
+			     <if test="empId != null and empId !=''">
+					<![CDATA[
+					   AND dbms_lob.substr(c.TEXT_,4000) = #{empId}
+					]]>
+			     </if>
+			     <if test="userName != null and userName !=''">
+					<![CDATA[
+					   AND dbms_lob.substr(d.TEXT_,4000) like '%'|| #{userName} ||'%' 
+					]]>
+			     </if>
+				</where>)prc
+		    )RES
+		)SUB
+		<![CDATA[
+    		WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+   		 ]]>
+  </select>
+  
+  <!-- 户口申请流程总数 -->
+  <select id="getAllAccountHandelProcessCount" parameterType="map" resultType="Integer">
+  	select count(*) from (
+  		select DISTINCT prc.* from (
+					select RES.*,
+                        DEF.NAME_ as PROCESS_DEFNAME_,
+                        u.name as START_USER_NAME_,
+                        run.status as PROCESS_STATUS_,
+                        run.PROCESS_INST_NAME,
+                        checkUser.NAME as CHECKUSERNAME,
+                        ruart.id_ as changeId,
+                        ruart.name_ as act_name_,
+                        ruart.assignee_,
+            			dbms_lob.substr(a.TEXT_,4000) as EMP_DEPA,
+			            dbms_lob.substr(c.TEXT_,4000) as EMP_EMPID,
+			            dbms_lob.substr(d.TEXT_,4000) as EMP_NAME,
+			            dbms_lob.substr(e.TEXT_,4000) as EMP_JOB,
+			            dbms_lob.substr(f.TEXT_,4000) as EMP_ENTRYDATE,
+			            dbms_lob.substr(g.TEXT_,4000) as EMP_EDUCATION,
+			            dbms_lob.substr(h.TEXT_,4000) as EMP_APPLYDATE
+                   from ACT_HI_PROCINST RES
+                   inner JOIN ACT_RE_PROCDEF DEF ON RES.PROC_DEF_ID_ = DEF.ID_
+                   LEFT JOIN auth_user u  on RES.START_USER_ID_ = u.account
+                   LEFT JOIN bpm_process_run run on RES.PROC_INST_ID_ = run.process_inst_id  
+                   LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_ and rutask.is_active_ = 1   and rutask.is_scope_ = 1
+                   left join act_ru_task ruart on rutask.id_ = ruart.execution_id_
+                   LEFT JOIN auth_user checkUser on ruart.assignee_ = checkUser.account 
+                            
+	               left join ACT_HI_VARINST a on RES.PROC_INST_ID_=a.proc_inst_id_ and   a.name_= 'orgName'
+	               left join ACT_HI_VARINST c on RES.PROC_INST_ID_=c.proc_inst_id_ and   c.name_= 'empId'
+	               left join ACT_HI_VARINST d on RES.PROC_INST_ID_=d.proc_inst_id_ and   d.name_='userName'
+	               left join ACT_HI_VARINST e on RES.PROC_INST_ID_=e.proc_inst_id_ and   e.name_='job'
+	               left join ACT_HI_VARINST f on RES.PROC_INST_ID_=f.proc_inst_id_ and   f.name_='entryTime'
+	               left join ACT_HI_VARINST g on RES.PROC_INST_ID_=g.proc_inst_id_ and   g.name_='education'
+	               left join ACT_HI_VARINST h on RES.PROC_INST_ID_=h.proc_inst_id_ and   h.name_='recruitagentsSignDate'
+		          <where>
+		          and substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Account-Handle' 
+				  <if test="startCreateTime != null and startCreateTime !=''">
+					<![CDATA[
+						AND run.start_time >= #{startCreateTime}
+					]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+					<![CDATA[
+						AND run.start_time <= #{endCreateTime}
+					]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+					<![CDATA[
+						AND run.end_time >= #{startFinishTime}
+					]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+					<![CDATA[
+						AND run.end_time <= #{endFinishTime}
+					]]>
+				  </if>
+				  <if test="processStatus != null and processStatus !=''">
+						AND run.status = #{processStatus}
+				  </if>
+				  <if test="account !=null and account !=''">
+				  	<![CDATA[
+				  		AND dbms_lob.substr(c.TEXT_,4000) = #{account}
+				  	]]>
+				  </if>
+			  	  <if test="proInstId != null and proInstId !=''">
+					<![CDATA[
+						AND  run.process_inst_id = #{proInstId}
+					]]>
+				 </if>
+				  <if test="depa != null and depa !=''">
+					<![CDATA[
+					   AND dbms_lob.substr(a.TEXT_,4000) like '%'|| #{depa} ||'%' 
+					]]>
+			     </if>
+			     <if test="empId != null and empId !=''">
+					<![CDATA[
+					AND    dbms_lob.substr(c.TEXT_,4000)= #{empId}
+					]]>
+			     </if>
+			      <if test="userName != null and userName !=''">
+					<![CDATA[
+					   AND dbms_lob.substr(d.TEXT_,4000) like '%'|| #{userName} ||'%' 
+					]]>
+			     </if>
+				</where>)prc
+  	)
+  	
+  </select>
+  <!-- 查询劳动合同续签信息 -->
+  <select id="getLaborContractRenewals" parameterType="map" resultMap="LaborContractRenewalEntityResult">
+  select SUB.* from(
+  	SELECT RES.*, row_number () OVER (ORDER BY RES.STARTTIME DESC) rnk
+			FROM (select DISTINCT 
+				  run.process_inst_id as PROCESS_INSTANCE_ID,
+                  dbms_lob.substr(b.text_, 4000) as PRINCIPAL_ORGNAME,
+                  dbms_lob.substr(c.text_, 4000) as PRINCIPAL_ORGID,
+                  dbms_lob.substr(d.text_, 4000) as PRINCIPAL_ACCOUNT,
+                  dbms_lob.substr(e.text_, 4000) as PRINCIPAL_NAME,
+                  dbms_lob.substr(g.text_, 4000) as PRINCIPAL_JOB,
+                  dbms_lob.substr(h.text_, 4000) as PRINCIPAL_ENTRYTIME,
+                  dbms_lob.substr(i.text_, 4000) as PRINCIPAL_CONTRACTTYPE,
+                  dbms_lob.substr(j.text_, 4000) as PRINCIPAL_CONTRACTSTARTTIME,
+                  dbms_lob.substr(k.text_, 4000) as PRINCIPAL_CONTRACTENDTIME,
+                  dbms_lob.substr(l.text_, 4000) as PRINCIPAL_EMPID,
+                  dbms_lob.substr(m.text_, 4000) as PRINCIPAL_CONTRACTEXPIRE,
+                  run.status as APPROVAL_OPINION,
+                  run.status as STATUS,
+                  apruser.name as APPROVAL_USERNAME,
+                  run.start_time as STARTTIME,
+                  run.end_time as ENDTIME,
+                  checkuser.name as   checkusername,
+				  ruart.id_ as changeid,
+				  ruart.name_ as act_name_
+                  from bpm_process_run run
+                  inner join act_re_procdef def on run.process_def_key = def.id_
+                  left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                  left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                  left join auth_user checkuser on ruart.assignee_ = checkuser.account
+				  left join act_hi_varinst b on run.process_inst_id = b.proc_inst_id_ and b.name_ = 'principalOrgName' 
+                  left join act_hi_varinst c on run.process_inst_id = c.proc_inst_id_ and c.name_ = 'principalOrgId'
+                  left join act_hi_varinst d on run.process_inst_id = d.proc_inst_id_ and d.name_ = 'principalAccount'
+                  left join act_hi_varinst e on run.process_inst_id = e.proc_inst_id_ and e.name_ = 'principalName'
+                  left join act_hi_varinst g on run.process_inst_id = g.proc_inst_id_ and g.name_ = 'principalJob'
+                  left join act_hi_varinst h on run.process_inst_id = h.proc_inst_id_ and h.name_ = 'principalEntryTime'
+                  left join act_hi_varinst i on run.process_inst_id = i.proc_inst_id_ and i.name_ = 'principalContractType'
+                  left join act_hi_varinst j on run.process_inst_id = j.proc_inst_id_ and j.name_ = 'principalContractStartTime'
+                  left join act_hi_varinst k on run.process_inst_id = k.proc_inst_id_ and k.name_ = 'principalContractEndTime'
+                  left join act_hi_varinst l on run.process_inst_id = l.proc_inst_id_ and l.name_ = 'principalEmpId'
+                  left join act_hi_varinst m on run.process_inst_id = m.proc_inst_id_ and m.name_ = 'principalContractExpire'
+                  left join act_ru_execution runtask on run.process_inst_id = runtask.proc_inst_id_  and  runtask.is_active_=1 and runtask.is_scope_=1
+                  left join act_hi_taskinst histask  on run.process_inst_id = histask.proc_inst_id_  and  histask.task_def_key_ =runtask.act_id_   
+                  left join auth_user apruser  on histask.assignee_ = apruser.account 
+                  <where>  
+                  and substr(run.process_def_key, 0,instr(run.process_def_key, ':') - 1) = 'L-Labor-Contract-Renewal-Flow'
+                  <if test="principalOrgName != null and principalOrgName !=''">
+               				AND dbms_lob.substr(b.text_, 4000) like '%'|| #{principalOrgName} ||'%'
+                  </if>
+                   <if test="principalEmpId != null and principalEmpId !=''">
+                   			and dbms_lob.substr(l.text_, 4000) =  #{principalEmpId}
+                   </if>
+                  <if test="principalName != null and principalName !=''">
+                   			and dbms_lob.substr(e.text_, 4000) like '%'|| #{principalName} ||'%'
+                   </if>
+				  <if test="startCreateTime != null and startCreateTime !=''">
+						<![CDATA[
+							AND run.start_time >= #{startCreateTime}
+						]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+						<![CDATA[
+							AND run.start_time <= #{endCreateTime}
+						]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+						<![CDATA[
+							AND run.end_time >= #{startFinishTime}
+						]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+						<![CDATA[
+							AND run.end_time <= #{endFinishTime}
+						]]>
+				  </if>
+		  		  <if test="approvalOpinion == 1">
+							AND run.status = 2
+				  </if>
+				  <if test="approvalOpinion == 0">
+							AND run.status = 6
+				  </if>
+				  <if test="status != null and status !=''">
+				        	AND run.status = #{status}
+				  </if>
+				  <if test="principalContractType != null and principalContractType !=''">
+				        	AND dbms_lob.substr(i.text_, 4000) = #{principalContractType}
+				  </if>
+				  <if test="processInstanceId != null">
+							AND run.process_inst_id = #{processInstanceId}
+				  </if>
+				  <if test="processInstanceIds != null">
+							AND run.process_inst_id in 
+							    <foreach collection="processInstanceIds" item="processInstanceId" index="index"  open="(" close=")" separator=",">
+							       #{processInstanceId}
+							    </foreach>
+				  </if>
+			  	 </where>
+		    ) RES
+		) SUB
+		<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+    ]]>
+  </select>
+  
+  <select id="getLaborContractRenewalsCount" parameterType="map" resultType="java.lang.Integer">
+	select count(pro.PROCESS_INSTANCE_ID) from (
+	 	select DISTINCT 
+	 			 run.process_inst_id as PROCESS_INSTANCE_ID,
+                 dbms_lob.substr(b.text_, 4000) as PRINCIPAL_ORGNAME,
+                 dbms_lob.substr(c.text_, 4000) as PRINCIPAL_ORGID,
+                 dbms_lob.substr(d.text_, 4000) as PRINCIPAL_ACCOUNT,
+                 dbms_lob.substr(e.text_, 4000) as PRINCIPAL_NAME,
+                 dbms_lob.substr(g.text_, 4000) as PRINCIPAL_JOB,
+                 dbms_lob.substr(h.text_, 4000) as PRINCIPAL_ENTRYTIME,
+                 dbms_lob.substr(i.text_, 4000) as PRINCIPAL_CONTRACTTYPE,
+                 dbms_lob.substr(j.text_, 4000) as PRINCIPAL_CONTRACTSTARTTIME,
+                 dbms_lob.substr(k.text_, 4000) as PRINCIPAL_CONTRACTENDTIME,
+                 dbms_lob.substr(l.text_, 4000) as PRINCIPAL_EMPID,
+                 dbms_lob.substr(m.text_, 4000) as PRINCIPAL_CONTRACTEXPIRE,
+                 run.status as APPROVAL_OPINION,
+                 run.status as STATUS,
+                 apruser.name as APPROVAL_USERNAME,
+                 run.start_time as STARTTIME,
+                 run.end_time as ENDTIME,
+                 checkuser.name as   checkusername,
+				 ruart.id_ as changeid,
+				 ruart.name_ as act_name_
+                 from bpm_process_run run
+                 inner join act_re_procdef def on run.process_def_key = def.id_
+                 left join act_ru_execution rutask  on run.process_inst_id = rutask.proc_inst_id_ and rutask.is_active_ = 1 and rutask.is_scope_ = 1
+                 left join act_ru_task ruart on rutask.id_ = ruart.execution_id_ 
+                 left join auth_user checkuser on ruart.assignee_ = checkuser.account
+			 	 left join act_hi_varinst b on run.process_inst_id = b.proc_inst_id_ and b.name_ = 'principalOrgName' 
+                 left join act_hi_varinst c on run.process_inst_id = c.proc_inst_id_ and c.name_ = 'principalOrgId'
+                 left join act_hi_varinst d on run.process_inst_id = d.proc_inst_id_ and d.name_ = 'principalAccount'
+                 left join act_hi_varinst e on run.process_inst_id = e.proc_inst_id_ and e.name_ = 'principalName'
+                 left join act_hi_varinst g on run.process_inst_id = g.proc_inst_id_ and g.name_ = 'principalJob'
+                 left join act_hi_varinst h on run.process_inst_id = h.proc_inst_id_ and h.name_ = 'principalEntryTime'
+                 left join act_hi_varinst i on run.process_inst_id = i.proc_inst_id_ and i.name_ = 'principalContractType'
+                 left join act_hi_varinst j on run.process_inst_id = j.proc_inst_id_ and j.name_ = 'principalContractStartTime'
+                 left join act_hi_varinst k on run.process_inst_id = k.proc_inst_id_ and k.name_ = 'principalContractEndTime'
+                 left join act_hi_varinst l on run.process_inst_id = l.proc_inst_id_ and l.name_ = 'principalEmpId'
+                 left join act_hi_varinst m on run.process_inst_id = m.proc_inst_id_ and m.name_ = 'principalContractExpire'
+                 left join act_ru_execution runtask on run.process_inst_id = runtask.proc_inst_id_  and  runtask.is_active_=1 and runtask.is_scope_=1
+                 left join act_hi_taskinst histask  on run.process_inst_id = histask.proc_inst_id_  and  histask.task_def_key_ =runtask.act_id_   
+                 left join auth_user apruser  on histask.assignee_ = apruser.account 
+               <where> 
+               	  and substr(run.process_def_key, 0,instr(run.process_def_key, ':') - 1) = 'L-Labor-Contract-Renewal-Flow' 
+                  <if test="principalOrgName != null and principalOrgName !=''">
+               				AND dbms_lob.substr(b.text_, 4000) like '%'|| #{principalOrgName} ||'%'
+                  </if>
+                  <if test="principalEmpId != null and principalEmpId !=''">
+                			AND dbms_lob.substr(l.text_, 4000) =  #{principalEmpId}
+                  </if>
+	              <if test="principalName != null and principalName !=''">
+	               			AND dbms_lob.substr(e.text_, 4000) like '%'|| #{principalName} ||'%'
+	              </if>
+				  <if test="processInstanceId != null">
+						    AND run.process_inst_id = #{processInstanceId}
+				  </if>
+				  <if test="startCreateTime != null and startCreateTime !=''">
+						<![CDATA[
+							AND run.start_time >= #{startCreateTime}
+						]]>
+				  </if>
+				  <if test="endCreateTime != null and endCreateTime !=''">
+						<![CDATA[
+							AND run.start_time <= #{endCreateTime}
+						]]>
+				  </if>
+				  <if test="startFinishTime != null and startFinishTime !=''">
+						<![CDATA[
+							AND run.end_time >= #{startFinishTime}
+						]]>
+				  </if>
+				  <if test="endFinishTime != null and endFinishTime !=''">
+						<![CDATA[
+							AND run.end_time <= #{endFinishTime}
+						]]>
+				  </if>
+				  <if test="approvalOpinion == 1">
+							AND run.status = 2
+				  </if>
+				  <if test="approvalOpinion == 0">
+							AND run.status = 6
+				  </if>
+				  <if test="status != null and status !=''">
+				       		AND run.status = #{status}
+				  </if>
+  	 </where>
+   ) pro
+ </select>
+</mapper>

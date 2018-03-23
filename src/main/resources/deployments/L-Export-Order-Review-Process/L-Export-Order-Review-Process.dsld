@@ -1,0 +1,54 @@
+ process(id:"L-Export-Order-Review-Process"){
+	step(id:"startevent1"){
+		field(name:"clientName",validType:"required",label:"客户名称")
+		
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"country",validType:"required",label:"国家")
+		
+		field(name:"projectName",validType:"required",label:"项目名称")
+		
+		field(name:"orderQuantity",validType:"required min(0)",label:"订货数量")
+		
+		field(name:"color",validType:"required",label:"颜色")
+		
+		field(name:"orderQuantityTotal",validType:"required min(0)",label:"累计订货数量")
+		
+		field(name:"orderDate",validType:"required future",label:"订货日期")
+		
+		field(name:"deliveryDate",validType:"required future",label:"交货日期")
+		
+		field(name:"paymentMethod",validType:"required",label:"付款方式")
+		
+		field(name:"operatorAssignerAccount",validType:"required",label:"计调评审负责人")
+		
+		field(name:"businessAssignerAccount",validType:"required",label:"商务评审负责人")
+		
+		field(name:"fictionBy",validType:"required",label:"拟制")
+		
+		field(name:"applyUserAccount",validType:"required",label:"发起人")
+		
+		field(name:"fictionDate",validType:"required",label:"拟制日期")
+	}
+	
+	step(id:"mb_operatorReviewTask"){
+		field(name:"materialsMeetSexualReview",validType:"required",label:"物料齐套满足性评审")
+		
+		field(name:"productionCapacitySatisfactionReview",validType:"required",label:"生产能力满足性评审")
+	}
+	
+	step(id:"mb_businessReviewTask"){
+		field(name:"customerCreditReview",validType:"required",label:"客户资信评审")
+		
+		field(name:"depositPrepaidReview",validType:"required",label:"定金预付评审")
+	}
+	
+	step(id:"mb_productCenterReviewTask"){
+		field(name:"productCenterReviewAdvice",validType:"required",label:"评审结论")
+	}
+	
+	step(id:"mb_chairmanAudiTaskForm"){
+		field(name:"chairmanAudi",validType:"required",label:"处理意见")
+		
+	}
+}

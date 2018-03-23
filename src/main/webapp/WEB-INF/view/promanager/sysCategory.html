@@ -1,0 +1,51 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+  <td class="formtable_td_key" >系统名称</td>
+<!--   <td><input id="newSystemName${rand}" class="easyui-combobox" type="text" style="width:180px;" name="fp_newSystemName" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'销售系统',value:'01'},
+										{text:'研发系统',value:'02'},
+										{text:'总经办系统',value:'03'},
+										{text:'人资企管系统',value:'04'},
+										{text:'刘总直管系统',value:'05'},
+										{text:'财务信息系统',value:'06'},
+										{text:'IMC系统',value:'07'},
+										{text:'生产系统（金铭）',value:'08'},
+										{text:'售后系统',value:'09'},
+										{text:'生产系统（金卓）',value:'10'}] "/><td> -->
+			<td><input id="newSystemName${rand}" class="easyui-combobox" name="fp_newSystemName"
+		     data-options="valueField:'id',textField:'text',required:true,editable:false,multiple:false,
+				url:'bpmCommCode/loadSysLike.json?catagory=sys'"/></td>
+						<td class="formtable_td_key" >配置部门</td>
+						<td><input id="orgName2${rand}"  name="fp_orgName"/>
+						    <input id="orgNameId${rand}"  name="fp_orgName" type="hidden"/>
+						</td>
+						<td><a id="btn"  class="easyui-linkbutton" data-options="iconCls:'icon-add'">增加</a></td>
+<script type="text/javascript">
+
+ $(function(){
+	 $('#orgName2${rand}').combotree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+		    onClick:function(node){
+		    	$('#orgNameId${rand}').val(node.id);
+			}  
+		});  
+	 
+	 $('#btn').bind('click', function(){
+		  $.post('sysCategory/add.json',
+		    {pid : $('#newSystemName${rand}').combobox('getValue'),
+			id:$('#orgNameId${rand}').val()},
+		    function(data){
+				$.messager.alert('提示', data);
+		  },'json');
+		
+	  }); 
+ })
+
+</script>
+<#include "/common/foot.ftl">

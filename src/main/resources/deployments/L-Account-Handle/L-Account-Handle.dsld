@@ -1,0 +1,26 @@
+ process(id:"L-Account-Handle"){
+	step(id:"startevent1"){
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserId",validType:"required",label:"员工账号")
+		
+		field(name:"empId",validType:"required",label:"员工编号")
+		
+		field(name:"userName",validType:"required",label:"员工姓名")
+		
+		field(name:"orgName",validType:"required",label:"部门")
+		
+		field(name:"job",validType:"required",label:"岗位")
+		
+		field(name:"entryTime",validType:"required",label:"入职日期")
+		
+		field(name:"isManager",validType:"required",label:"是否为经理")
+		
+		field(name:"education",validType:"required",label:"学历")
+		
+		field(name:"hmoduleName",validType:"required",label:"办理类型")
+		
+		field(name:"applicationrensons",validType:"required",label:"申请原因")
+		
+	}
+}

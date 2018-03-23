@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="12">
+  <process id="L-Consult-Hand-Process" name="供应商/服务商业务需求处理流程" isExecutable="true">
+    <startEvent id="startevent1" name="供应链专员发起流程"></startEvent>
+    <userTask id="supplierChainLeader_recordTask" name="供应链负责人审核" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;供应链负责人审核&quot;,execution)}"></userTask>
+    <userTask id="businessDepartment_recordMultiInstTask" name="业务部门负责人审核" activiti:assignee="${businessPrincipal}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(businessPrincipal)}" activiti:elementVariable="businessPrincipal"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <userTask id="supplierChainOfficer_recordTask" name="供应链专员确认" activiti:assignee="${supplierChainOfficer}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="supplierChainLeader_recordTask"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="supplierChainLeader_recordTask" targetRef="businessDepartment_recordMultiInstTask"></sequenceFlow>
+    <sequenceFlow id="flow3" sourceRef="businessDepartment_recordMultiInstTask" targetRef="supplierChainOfficer_recordTask"></sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow4" sourceRef="supplierChainOfficer_recordTask" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Consult-Hand-Process">
+    <bpmndi:BPMNPlane bpmnElement="L-Consult-Hand-Process" id="BPMNPlane_L-Consult-Hand-Process">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="supplierChainLeader_recordTask" id="BPMNShape_supplierChainLeader_recordTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="260.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="businessDepartment_recordMultiInstTask" id="BPMNShape_businessDepartment_recordMultiInstTask">
+        <omgdc:Bounds height="55.0" width="141.0" x="440.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="supplierChainOfficer_recordTask" id="BPMNShape_supplierChainOfficer_recordTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="670.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="830.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="175.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="260.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="365.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="440.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="581.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="775.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="830.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

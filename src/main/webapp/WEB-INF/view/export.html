@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+	<base href="${base}"></base>
+	<meta charset="utf-8"/>
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	</head>
+	<body>
+	<script type="text/javascript">
+    	$(function(){
+		init();    		
+    	//监听处理方法
+        function OnMessage(e) {
+    		var data = e.data;
+    		switch(data.operate){
+          		case 'export': exportExcel${rand}(data);break;
+          	}
+          }
+        //初始化iframe中的监听器
+        function init() {
+            if (window.addEventListener) {  // all browsers except IE before version 9
+                window.addEventListener("message", OnMessage, false);
+            } else {
+                if (window.attachEvent) {   // IE before version 9
+                window.attachEvent("onmessage", OnMessage);
+                }
+            }
+          };
+        //发起表单提交
+        function exportExcel${rand}(data){
+        	var params  = data.params;
+        	var url = data.url;
+        	var form = $("<form method='post'>");
+           	form.attr('style', 'display:none');
+        	for(var name in params){
+        		form.append($("<input type=hidden name='"+name+"' value='"+params[name]+"'>"));
+        	}
+           	form.appendTo($(document.body));
+           	form.form('submit',{url:url, success:function(data){   
+           	 			window.parent.postMessage({success:false,msg:data},"*");  
+         		   }   
+			});
+            form.remove();
+        }
+    	})
+	</script>
+	</body>
+</html>

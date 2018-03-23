@@ -1,0 +1,723 @@
+<#include "/common/head.html">
+<!-- 展示表单 -->
+<#if processSteps??>
+    <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+				  	
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">晋升人选：</td>
+				  	  		<td class="formtable_td_value" colspan="3">${(steps.vars["name"])!""}</td>
+				  	  		<td class="formtable_td_key">部门：</td>
+				  	  		<td class="formtable_td_value"colspan="2">${(steps.vars["orgName"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  	    <td class="formtable_td_key">原职位：</td>
+				  	  		<td class="formtable_td_value" colspan="3">${(steps.vars["job"])!""}</td>
+				  	  		<td class="formtable_td_key">晋升职位：</td>
+				  	  		<td class="formtable_td_value" colspan="2">${(steps.vars["promotionJob"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key" rowspan="2">基本资料：</td>
+				  	  		<td class="formtable_td_key">学历：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["education"])!""}</td>
+				  	  		<td class="formtable_td_key">年龄：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["age"])!""}</td>
+				  	  		<td class="formtable_td_key">性别：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["gender"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">毕业院校：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["graduateSchool"])!""}</td>
+				  	  		<td class="formtable_td_key">专业：</td>
+				  	  		<td class="formtable_td_value" colspan="4">${(steps.vars["professional"])!""}</td>
+				  	  	</tr>
+				  	  	<tr style="height: 25px;">
+				  	  		<td class="formtable_td_key" rowspan="6">工作经历(油近及远)：</td>
+				  	  		<td class="formtable_td_key" colspan="2" align="center">起止年月</td>
+		  	  				<td class="formtable_td_key" colspan="4" align="center">公司、部门及职位</td>
+				  	  	</tr>
+				  	  	<tr style="height: 25px;">
+				  	  		<td class="formtable_td_value"  >${(steps.vars["yearMoth1"])!""}</td>
+				  	  		<td class="formtable_td_value"  >${(steps.vars["yearMoth1end"])!""}</td>
+							<td class="formtable_td_value"  colspan="4">${(steps.vars["companyOrgJob1"])!""}</td>
+						</tr>
+						<tr style="height: 25px;">
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth2"])!""}</td>
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth2end"])!""}</td>
+							<td class="formtable_td_value"  colspan="4">${(steps.vars["companyOrgJob2"])!""}</td>
+						</tr>
+						<tr style="height: 25px;">
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth3"])!""}</td>
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth3end"])!""}</td>
+							<td class="formtable_td_value"  colspan="4">${(steps.vars["companyOrgJob3"])!""}</td>
+						</tr>
+						<tr style="height: 25px;">
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth4"])!""}</td>
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth4end"])!""}</td>
+							<td class="formtable_td_value"  colspan="4">${(steps.vars["companyOrgJob4"])!""}</td>
+						</tr>
+						<tr style="height: 25px;">
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth5"])!""}</td>
+							<td class="formtable_td_value"  >${(steps.vars["yearMoth5end"])!""}</td>
+							<td class="formtable_td_value"  colspan="4">${(steps.vars["companyOrgJob5"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+			  	  			<td class="formtable_td_key">自我评价：</td>
+			  	  			<td class="formtable_td_value" colspan="6" >
+			  	  			${(steps.vars["jobByself"])!""}
+			  	  			</td>
+		  	  			</tr>
+				  	  	<tr >
+				  	  		<td class="formtable_td_key">填表日期：</td>
+				  	  		<td class="formtable_td_value" >${(steps.vars["fillTableDate"])!""}</td>
+				  	  		<td class="formtable_td_key">本人签字：</td>
+		  	  				<td class="formtable_td_value" colspan="4">${(steps.vars["signBySelf"])!""}</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="6">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	 
+	   </#if>
+	    <!--直属领导审批详细-->	   
+	   <#if steps.key == 'mb_directlyLeaderAudiTask'>
+			  	
+			  	  	<tr>
+			  	  		<td colspan="7" class="formtable_td_key" align="center">直属领导评价</td>
+			  	  	</tr>
+			  	  	 	<tr>
+		  	  		<td  class="formtable_td_key">直属领导评语：</td>
+		  			<td class="formtable_td_value" colspan="6">
+		  	 				${(steps.vars["directlyLeaderAudiAdvice"])!""}
+		  	 		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >
+		  	 				${(steps.vars["directlyLeaderAudiTasName"])!""}
+		  	 		</td>
+		  	 		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["directlyLeaderAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["directlyLeaderAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	 		<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value" colspan="2">
+		  	 				${(steps.vars["directlyLeaderAudiTime"])!""}
+		  	 		</td>
+		  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="6">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+ <!--人力资源中心审核-->	   
+	   <#if steps.key == 'mb_humanResourceAudiTask'>
+		  	  	<tr>
+			  	  	<td colspan="7" class="formtable_td_key" align="center">人力资源管理中心审核</td>
+			  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key" rowspan="3">人力资源管理中心</td>
+					<td class="formtable_td_key" >编制及管理幅度审核</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			${(steps.vars["managementAdvice"])!""}
+					</td>
+		  	  		
+		  	  	</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">绩效成绩</td>
+		  	  		<td class="formtable_td_value" colspan="6">
+		  	  			${(steps.vars["jxScore"])!""}
+					</td>
+		  	  		
+		  	  	</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">360测评结果</td>
+		  	  		<td class="formtable_td_value" colspan="6">
+		  	  			${(steps.vars["testResult"])!""}
+					</td>
+		  	  		
+		  	  	</tr>
+		  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >
+		  	 				${(steps.vars["humanResourceAudiTasKName"])!""}
+		  	 		</td>
+		  	 		<td class="formtable_td_key">审批结果：</td>
+		  	 		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["humanResourceAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["humanResourceAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	 		<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value" colspan="2">
+		  	 				${(steps.vars["humanResourceAudiTime"])!""}
+		  	 		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value"  colspan="7">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   <!--主管副总评价-->	   
+	   <#if steps.key == 'mb_directorGeneralAudiTask'>
+		  	  <tr>
+			  	  		<td colspan="7" class="formtable_td_key" align="center">主管副总评价</td>
+			  	  	</tr>
+			  	  	 	<tr>
+		  	  		<td  class="formtable_td_key">主管副总评语：</td>
+		  			<td class="formtable_td_value" colspan="6">
+		  	 				${(steps.vars["directorGeneralAudiadvice"])!""}
+		  	 		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >
+		  	 				${(steps.vars["directorGeneralAudiTaskName"])!""}
+		  	 		</td>
+		  	 		<td class="formtable_td_key">审批结果：</td>
+		  	 		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["directorGeneralAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["directorGeneralAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	 		<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value" colspan="2">
+		  	 				${(steps.vars["directorGeneralAudiTime"])!""}
+		  	 		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="6">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	
+
+	   
+	   
+
+	
+	         <!--集团总裁审批详细-->	   
+	   <#if steps.key == 'mb_presidentAuidTask'>
+		  	  	<tr>
+			  	  	<td colspan="7" class="formtable_td_key" align="center">总裁审批详情</td>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">总裁签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["presidentAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批时间：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["presidentAudiTime"])!""}
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<#if steps.vars["presidentAuid"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["presidentAuid"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="6">${(steps.vars["presidentAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="6">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+<!-- 晋升专员 -->
+<#if steps.key == 'mb_hrPromotionAudiTask'>
+				<tr>
+			  	  	<td colspan="7" class="formtable_td_key" align="center">晋升专员处理</td>
+			  	</tr>
+	<tr>
+		<td class="formtable_td_key">专员签名：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["hrPromotionAudiName"])!""}
+		</td>
+		<td class="formtable_td_key">处理时间：</td>
+		<td class="formtable_td_value" colspan="4">
+			${(steps.vars["hrPromotionAudiTime"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="6">
+			${(steps.vars["hrPromotionAudiAdvice"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="6">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>   
+	</#list>
+	</table>	
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">晋升人选：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input id="account${rand}" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	  			<input class='easyui-validatebox textbox' type='text' style="width: 240px" readonly="readonly" name='fp_name' value="${appuser.name}"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >部门：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input id="orgName${rand}"  value="${appuser.orgName}" />
+		  	  			<input id="orgNameText${rand}" type="hidden" name="fp_orgName" value="${appuser.orgName}" /> 
+		  	  			<input id="orgId4pro${rand}" type="hidden"  name="fp_orgId4pro" value="${appuser.orgId?c}" /> 
+		  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原职位：</td>
+						  	<td class="formtable_td_value" colspan="3">
+						  		<input id="job${rand}" class="easyui-validatebox textbox" style="width: 240px"  readonly="readonly" name="fp_job" type="text" />
+						  	</td>
+					<td class="formtable_td_key">晋升职位：</td>
+						  	<td class="formtable_td_value" colspan="2">
+						  		<input id="combo_inJobName${rand}" type="text" />
+								<input id="hidden_inJobName${rand}" type="hidden" name="fp_promotionJob"  />
+						  		
+						  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" rowspan="2">基本资料：</td>
+		  	  		<td class="formtable_td_key">学历：</td>
+		  	  		<td class="formtable_td_value"  >
+		  	  			<input class="easyui-validatebox textbox" readonly="readonly" id="education${rand}" data-options="required:true" type="text"name="fp_education"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">年龄：</td>
+		  	  		<td class="formtable_td_value"  >
+		  	  			<input class="easyui-validatebox textbox" readonly="readonly" id="age${rand}" style="width:30px" data-options="required:true" type="text"name="fp_age"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">性别：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input class="easyui-validatebox textbox" style="width:30px" readonly="readonly" id="sex${rand}" data-options="required:true" type="text"name="fp_gender"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">毕业院校：</td>
+		  	  		<td class="formtable_td_value"  colspan="2">
+		  	  			<input id="school${rand}" readonly="readonly" class="easyui-validatebox textbox"  data-options="required:true" type="text"name="fp_graduateSchool"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">专业：</td>
+		  	  		<td class="formtable_td_value" colspan="2" >
+		  	  			<input class="easyui-validatebox textbox" id="major${rand}" readonly="readonly" data-options="required:true" type="text"name="fp_professional"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" rowspan="6"">工作经历(由远及近)</td>
+		  	  		<td class="formtable_td_key"  colspan="2" align="center">起止年月</td>
+		  	  		<td class="formtable_td_key" colspan="4" align="center">公司、部门及职位</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_value"  >
+		  	  	<input id="startTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth1"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:true,maxDate:'#F{$dp.$D(\'endTime-${rand}\')}'"/>
+				</td>
+				<td class="formtable_td_value"  >
+				<input id="endTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth1end"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:true,minDate:'#F{$dp.$D(\'startTime-${rand}\')}'"/>
+		  
+				</td>
+		  	  	<td class="formtable_td_value"  colspan="4">
+		  	  	<input class="easyui-validatebox textbox" style="width:500px" required="required" type="text" name="fp_companyOrgJob1" />
+				</td>		
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_value"  >
+		  	  	<input id="startTime2-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth2"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,maxDate:'#F{$dp.$D(\'endTime2-${rand}\')}'"/>
+				</td>
+				<td class="formtable_td_value"  >
+				<input id="endTime2-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth2end"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,minDate:'#F{$dp.$D(\'startTime2-${rand}\')}'"/>
+				</td>
+		  	  	<td class="formtable_td_value"  colspan="4">
+		  	  	<input class="easyui-validatebox textbox"  style="width:500px" type="text" name="fp_companyOrgJob2" />
+				</td>		
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_value"  >
+		  	  	<input id="startTime3-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth3"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,maxDate:'#F{$dp.$D(\'endTime3-${rand}\')}'"/>
+				</td>
+				<td class="formtable_td_value"  >
+				<input id="endTime3-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth3end"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,minDate:'#F{$dp.$D(\'startTime3-${rand}\')}'"/>
+				</td>
+		  	  	<td class="formtable_td_value"  colspan="4">
+		  	  	<input class="easyui-validatebox textbox"  style="width:500px" type="text" name="fp_companyOrgJob3" />
+				</td>		
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_value"  >
+		  	  	<input id="startTime4-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth4"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,maxDate:'#F{$dp.$D(\'endTime4-${rand}\')}'"/>
+				</td>
+				<td class="formtable_td_value"  >
+				<input id="endTime4-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth4end"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,minDate:'#F{$dp.$D(\'startTime4-${rand}\')}'"/>
+				</td>
+		  	  	<td class="formtable_td_value"  colspan="4">
+		  	  	<input class="easyui-validatebox textbox"  style="width:500px" type="text" name="fp_companyOrgJob4" />
+				</td>		
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_value"  >
+		  	  	<input id="startTime5-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth5"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,maxDate:'#F{$dp.$D(\'endTime5-${rand}\')}'"/>
+				</td>
+				<td class="formtable_td_value"  >
+				<input id="endTime5-${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_yearMoth5end"
+    			data-options="dateFmt:'yyyy-MM',width:120,required:false,minDate:'#F{$dp.$D(\'startTime5-${rand}\')}'"/>
+				</td>
+		  	  	<td class="formtable_td_value"  colspan="4">
+		  	  	<input class="easyui-validatebox textbox"  style="width:500px" type="text" name="fp_companyOrgJob5" />
+				</td>		
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">自我评价：</td>
+		  	  		<td class="formtable_td_value" colspan="6" >
+		  	  			<textarea  data-options="required:true" name="fp_jobByself" style="font-size:  width: 900px; height: 180px;" class="formtable_remark"></textarea></td>
+		  	  		
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">填表日期：</td>
+		  	  		<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_fillTableDate"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	<td class="formtable_td_key">本人签字：</td>
+		  	  		<td class="formtable_td_value" colspan="4" >
+		  	  			<input class="easyui-validatebox textbox" data-options="required:true" name="fp_signBySelf" type="text" value="${appuser.name}"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	<script type="text/javascript">
+			$(function(){
+			var combo_inJobName = $('#combo_inJobName${rand}');
+			var hidden_inJobName = $('#hidden_inJobName${rand}');
+			
+			//界面通过接口加载个人信息
+			$.post("hrFlow/getHrUserInfo.json",
+				{
+					account:$("#account${rand}").val()
+				},
+				function(data){
+					if (data.success) {
+						$("#job${rand}").val(data.obj.job);
+						$("#education${rand}").val(data.obj.education);
+						$("#major${rand}").val(data.obj.major);
+						$("#sex${rand}").val(data.obj.sex);
+						$("#age${rand}").val(data.obj.age);
+						$("#school${rand}").val(data.obj.school);
+						var startForm = $('#startForm');
+			          startForm.form('enableValidation').form('validate');
+					}
+				});
+				//初始化职位树
+				$.get('hrFlow/jonInfoFromDept.json',{deptId:$("#orgId4pro${rand}").val()},function(data){
+							combo_inJobName.combobox("clear").combobox('loadData',data);
+						},'json');
+				//init comboTree
+				$('#orgName${rand}').combotree({
+				    url: 'hrFlow/auth/orgs.json',
+				    method:'get',
+				    //required:true,
+				    lines:true,
+					panelWidth:300,
+					panelHeight:280,
+					onClick:function(node){
+					$('#orgNameText${rand}').val(node.text);
+					$('#orgId4pro${rand}').val(node.id);
+					//初始化职位树
+					$.get('hrFlow/jonInfoFromDept.json',{deptId:$("#orgId4pro${rand}").val()},function(data){
+							combo_inJobName.combobox("clear").combobox('loadData',data);
+						},'json');
+					}
+				});		
+				
+				//选择赋值		
+				combo_inJobName.combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+                		hidden_inJobName.val(record.text);
+            		}
+				});
+			});
+	</script>
+	</#if>
+</#if>
+<!--直属领导评价 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_directlyLeaderAudiTask'>
+		<div id="mb_directlyLeaderAudiTask">
+		  <form id="mb_directlyLeaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_directlyLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key" colspan="6" align="center">直属领导评价</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">直属领导评语</td>
+		  			<td class="formtable_td_value" colspan="5">
+		  	 <textarea  data-options="required:true" mobile="直属领导评语" name="fp_directlyLeaderAudiAdvice" style="font-size:  width: 600px; height: 200px;" class="formtable_remark"></textarea><br>
+		  	 		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >${appuser.name}
+		  				<input  type="hidden" mobile="签名" class="easyui-validatebox textbox" name="fp_directlyLeaderAudiTasName"  value="${appuser.name}" >
+		  	 		</td>
+		  	 	<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_directlyLeaderAudi" mobile="审批结果_同意" checked="checked" value="0" />同意
+					<input type="radio" name="fp_directlyLeaderAudi" mobile="审批结果_不同意" value="1" />不同意
+			  		</td>	
+		  	 	<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" mobile="日期" name="fp_directlyLeaderAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+
+	</#if>
+</#if>
+
+<!--人力资源管理中心审核-->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_humanResourceAudiTask'>
+		<div id="mb_humanResourceAudiTask">
+			<form id="mb_humanResourceAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_humanResourceAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力资源管理中心审核</td>
+		  	  	</tr>
+		  	  	<tr>
+		  		  	<td class="formtable_td_key" rowspan="3">人力资源管理中心</td>
+		  		  	<td class="formtable_td_key" >编制及管理幅度审核</td>
+		  		  	<td class="formtable_td_value" colspan="4"><textarea name="fp_managementAdvice" mobile="编制及管理幅度审核" class="formtable_remark" style="height: 40px"></textarea></td>
+		  		  </tr>
+		  		 <tr>
+		  		 	<td class="formtable_td_key" >绩效成绩</td>
+		  		  	<td class="formtable_td_value" colspan="5"><textarea name="fp_jxScore" mobile="绩效成绩" class="formtable_remark" style="height: 40px"></textarea></td>
+		  		 </tr> 
+		  		  <tr>
+		  		 	<td class="formtable_td_key" >360测评结果</td>
+		  		  	<td class="formtable_td_value" colspan="5"><textarea name="fp_testResult" mobile="360测评结果" class="formtable_remark" style="height: 40px"></textarea></td>
+		  		 </tr>
+		  		  	<tr>
+		  	  	<td  class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >${appuser.name}
+		  				<input  type="hidden" class="easyui-validatebox textbox"  mobile="签名" name="fp_humanResourceAudiTasKName"  value="${appuser.name}" >
+		  	 		</td>
+		  	 	<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_humanResourceAudi" mobile="审批结果_同意" checked="checked" value="0" />同意
+					<input type="radio" name="fp_humanResourceAudi" mobile="审批结果_不同意" value="1" />不同意
+			  		</td>		
+		  	 	<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_humanResourceAudiTime" mobile="日期"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr> 		
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+  
+<!--主管副总评价-->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_directorGeneralAudiTask'>
+		<div id="mb_directorGeneralAudiTask">
+			<form id="mb_directorGeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_directorGeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key" colspan="6" align="center">主管副总评价</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">主管副总评语</td>
+		  			<td class="formtable_td_value" colspan="5">
+		  	 <textarea  data-options="required:true" name="fp_directorGeneralAudiadvice" mobile="主管副总评语" style="font-size:  width: 600px; height: 200px;" class="formtable_remark"></textarea><br>
+		  	 		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key">签名：</td>
+		  			<td class="formtable_td_value" >${appuser.name}
+		  				<input  type="hidden" class="easyui-validatebox textbox" mobile="签名" name="fp_directorGeneralAudiTaskName"  value="${appuser.name}" >
+		  	 		</td>
+		  	 	<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_directorGeneralAudi" mobile="审批结果_同意" checked="checked" value="0" />同意
+					<input type="radio" name="fp_directorGeneralAudi" mobile="审批结果_不同意" value="1" />不同意
+			  		</td>		
+		  	 	<td  class="formtable_td_key">日期：</td>
+		  			<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_directorGeneralAudiTime" mobile="日期"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+			
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+
+
+
+
+<!--集团总裁审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_presidentAuidTask'>
+		<div id="mb_presidentAuidTask">
+			<form id="mb_presidentAuidTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_presidentAuidTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">集团总裁审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_presidentAudiName" mobile="签名" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_presidentAuid" mobile="审批结果_同意" checked="checked" value="0" />同意
+					<input type="radio" name="fp_presidentAuid" mobile="审批结果_不同意" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_presidentAudiTime" mobile="审批日期"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_presidentAudiAdvice" mobile="日期" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 晋升专员处理 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_hrPromotionAudiTask'>
+			<div id="mb_hrPromotionAudiTask">
+			<form id="mb_hrPromotionAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_hrPromotionAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">晋升专员处理</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="hidden"  name="fp_hrPromotionAudiAccount" value="${appuser.account}" />
+							<input type="hidden"  mobile="晋升专员处理" name="fp_hrPromotionAudiName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input type="hidden" name="fp_hrPromotionAudiTime" mobile="处理时间"
+									value="${.now?string('yyyy-MM-dd ')}" />
+							${.now?string('yyyy-MM-dd ')}
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 730px; height: 100px" mobile="处理意见"
+								name="fp_hrPromotionAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">
+
+
+  
+

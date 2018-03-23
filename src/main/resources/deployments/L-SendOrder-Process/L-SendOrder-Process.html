@@ -1,0 +1,790 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<!-- 展示表单 -->
+<#if processSteps??>
+	 <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	
+	   <#if steps.key == 'startevent1'>
+					  	<tr>
+				  	  		<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">员工编码：</td>
+							<td class="formtable_td_value">${steps.vars["applyUserAccount"]}</td>
+				  	        <td class="formtable_td_key">姓名：</td>
+				  	        <td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+						  	<td class="formtable_td_key">部门：</td>
+						  	<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	        <td class="formtable_td_key">地址：</td>
+						  	<td class="formtable_td_value">${(steps.vars["addressName"])!""}</td>
+						  	<td class="formtable_td_key">工程师：</td>
+						  	<td class="formtable_td_value">${(steps.vars["engineerName"])!""}</td>
+				  	  		<td class="formtable_td_key">工程师电话：</td>
+						  	<td class="formtable_td_value">${(steps.vars["engineerTel"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+						  
+				  	  		<td class="formtable_td_key">状态：</td>
+				  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["flag"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">异常名称：</td>
+				  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["taskName"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">异常描述：</td>
+				  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["taskDesc"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+						    <td class="formtable_td_key">申请人签字：</td>
+							<td class="formtable_td_value" colspan="2">${steps.vars["signSelf"]}</td>
+							<td class="formtable_td_key">申请日期：</td>
+							<td class="formtable_td_value" colspan="2" >${steps.vars["applicationDate"]}</td>
+						</tr>
+						
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+				</#list>
+				</td>
+			</tr>
+			</#if>
+	   </#if>
+	   
+	   <!-- 工程师处理 -->
+		<#if steps.key == 'nmb_recordTask'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">工程师处理</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">问题分类：</td>
+				<td class="formtable_td_value" colspan="2">${(steps.vars["typeNameValue"])!''}</td>
+				<td class="formtable_td_key">问题名称：</td>
+				<td class="formtable_td_value" colspan="2">${(steps.vars["nameValue"])!''}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">问题现象及原因：</td>
+				<td class="formtable_td_value" colspan="5">${(steps.vars["reason"])!''}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">解决方法：</td>
+				<td class="formtable_td_value" colspan="5">${(steps.vars["solution"])!''}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">实际完成时间：</td>
+				<td class="formtable_td_value" >${steps.vars["actualCompletionTime"]!""}</td>
+				<td class="formtable_td_key">工程师：</td>
+				<td class="formtable_td_value" >${(steps.vars["engineerNameValue"])!''}</td>
+				<td class="formtable_td_key">处理时间：</td>
+				<td class="formtable_td_value" >${(steps.vars["finishTime"])!""}</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+					<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+					</#list>
+					</td>
+				</tr>
+			</#if>
+			
+		</#if> 
+		<!-- 满意度 -->
+		<#if steps.key == 'replyTask'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">申请人满意度</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">满意度：</td>
+				<td class="formtable_td_value"  colspan="5">
+					 	<#if steps.vars["satisfaction"]=='0'>(0分)非常不满意</#if>
+			  	  		<#if steps.vars["satisfaction"]=='1'>(1分)非常不满意</#if>
+		                <#if steps.vars["satisfaction"]=='2'>(2分)非常不满意</#if>
+		                <#if steps.vars["satisfaction"]=='3'>(3分)非常不满意</#if>
+		                <#if steps.vars["satisfaction"]=='4'>(4分)不满意</#if>
+		               	<#if steps.vars["satisfaction"]=='5'>(5分)不满意</#if>
+		                <#if steps.vars["satisfaction"]=='6'>(6分)满意</#if>
+		                <#if steps.vars["satisfaction"]=='7'>(7分)基本满意</#if>
+		                <#if steps.vars["satisfaction"]=='8'>(8分)基本满意</#if>
+		                <#if steps.vars["satisfaction"]=='9'>(9分)非常满意</#if>
+		                <#if steps.vars["satisfaction"]=='10'>(10分)非常满意</#if>
+				</td>
+			</tr>
+			<#if steps.vars["satisfaction"] == '0' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+			<#if steps.vars["satisfaction"] == '1' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+			<#if steps.vars["satisfaction"] == '2' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+			<#if steps.vars["satisfaction"] == '3' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+				<#if steps.vars["satisfaction"] == '4' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+				<#if steps.vars["satisfaction"] == '5' >
+				<tr>
+					<td class="formtable_td_key">原因及改进意见：</td>
+					<td class="formtable_td_value"  colspan="5">
+						${(steps.vars["replyReason"])!''}
+					</td>
+				</tr>
+			</#if>
+			<tr>
+				<td class="formtable_td_key">处理人：</td>
+				<td class="formtable_td_value"  colspan="2">
+					${(steps.vars["name"])!''}
+				</td>
+				<td class="formtable_td_key">处理时间：</td>
+				<td class="formtable_td_value"  colspan="2">
+					${(steps.vars["applyTime"])!""}
+				</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+					<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+					</#list>
+					</td>
+				</tr>
+			</#if>
+		</#if> 
+		
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">员工编号：</td>
+					<td class="formtable_td_value" colspan='5'>
+							<input id="account${rand}"  type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+							<input id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox" readonly="readonly" type="text" required="required"/>
+							<a id="openSelectPersonBtn" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">姓名：</td>							
+					<td  class="formtable_td_value">
+						<input id="userName${rand}" class="easyui-validatebox" readonly="readonly" required="required" type="text" name="fp_userName"/>
+					</td>
+				  	<td class="formtable_td_key">部门：</td>
+					<td  class="formtable_td_value">
+						<input  id="orgName${rand}" class="easyui-validatebox" readonly="readonly"  type="text" name="fp_orgName"  required="required"/> 
+					</td>
+		  	        <td class="formtable_td_key">办公地址：</td>
+				  	<td class="formtable_td_value">
+				  		<input class="easyui-combobox" id="address${rand}" name="fp_address" data-options="editable:false, required: true" />
+				  		<input id="addressName" type="hidden" name="fp_addressName"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">工程师：</td>
+				  	<td class="formtable_td_value">
+				  		<input class="easyui-combobox" id="engineerName${rand}" name="fp_engineerName" data-options="editable:false,required: true" /> 
+				  	  	<input type="hidden" id="engineerId${rand}" name="fp_engineerId" />
+				  	  	<input type="hidden" id="engineerLoginNo${rand}" name="fp_engineerLoginNo"/>
+				  	  	<label style="cursor:pointer; color:blue ;border-bottom:#000000 solid 1px; width:100px;" id="engineerQuery${rand}" >查看任务</label>
+				  	</td>
+				  		<td class="formtable_td_key">工程师电话：</td>
+				  	<td class="formtable_td_value">
+				  		<input id="engineerTel${rand}" name="fp_engineerTel"/>
+				  	</td>
+		  	  		<td class="formtable_td_key">状态：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="flag${rand}" class="easyui-validatebox"  name="fp_flag"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">异常名称：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  			<input id="taskName${rand}" class="easyui-validatebox"  data-options="required:true" onblur="loadProcessName()"  name="fp_taskName" style="width: 730px"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">异常描述：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_taskDesc" class="easyui-validatebox"  data-options="required:true"  style="width: 730px; height: 100px"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key" >申请人签字：</td>
+					<td class="formtable_td_value"  >
+							<input  id="signSelf${rand}" readonly="readonly"  type="text" name="fp_signSelf"  />
+					</td>
+					<td class="formtable_td_key" >申请日期：</td>
+					<td  class="formtable_td_value" colspan="3">
+							<input id="applyDate${rand}"  type="hidden" name="fp_applicationDate"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>	
+		  	  </table>
+			</form>
+			<div id="engineerDetail${rand}" class="easyui-dialog" data-options="closed:true">
+					<div id="engineerTask${rand}" style="padding:10px 10px;"></div>
+			</div>
+		</div>
+		<!-- 选取员工 -->
+		<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+		style="width: 700px; height: 500px; padding: 5px"
+		data-options="modal:true, closed:true,iconCls:'icon-process',
+					buttons: [{
+	                    text:'完成',
+	                    iconCls:'icon-ok',
+	                    handler: selectUserEnd
+	                },{
+	                    text:'关闭',
+	                    iconCls:'icon-cancel',
+	                    handler: closeSelectUserWin
+	                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 0px 0px 0px 0px;">
+			
+			<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+				员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+			</div>
+			<table id="users${rand}"></table>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+		function loadProcessName(){
+			$('#processName${rand}').val("用户编号：["+$("#account${rand}").val()+"],姓名：["+$("#userName${rand}").val()+"],异常名称：["+$("#taskName${rand}").val()+"]");
+		}
+		var orgWin = $('#orgWin-${rand}');
+		//弹出窗口
+		$('#openSelectPersonBtn').bind('click', function(){
+		    orgWin.dialog('open');	
+		    $.ajax({  
+		                type:'post',      
+		    	        url:'bpmRole/findById.json',  
+		    	        data:{'account':'${appuser.account}'},  
+		    	        dataType:'json',  
+		    	        success:function(data){
+		    	        	 $('#users${rand}').datagrid({
+								  fit:true,
+								  fitColumns:false,
+								  url:'bpmRole/users.json',
+								  queryParams:{
+										id:data
+									},
+								  columns:[[
+									{field:'id',checkbox:true},
+									{field:'account',title:'帐号',width:90},
+									{field:'name',title:'姓名',width:90},
+									{field:'orgName',title:'部门',width:120}
+								  ]],
+								  border:false,
+								  nowrap: true,
+								  pagination:false,
+								  pageNumber:1,
+								  pageSize:20,
+								  fit : true,
+								  singleSelect:true,
+								  rownumbers:true,
+							});
+		    	        }  
+		    	     });  
+		});
+		
+		$(function(){
+				var orgs = $('#orgs${rand}');
+				var users = $('#users${rand}');
+				var currentOrgId = 0;
+				//初始化组织架构树
+				orgs.tree({
+				    url: 'hrFlow/auth/orgs.json',
+				    method:'get',
+				    required:true,
+				    lines:true,
+					panelWidth:300,
+					panelHeight:280,
+			        onClick:function(node){
+		                currentOrgId = node.id;		
+						$('#users${rand}').datagrid('reload',{id:currentOrgId});
+					}
+				});
+	        
+			    //查询用户
+				$('#userGridSearchBtn${rand}').bind('click', function(){
+					var userAccount = $('#userAccount${rand}').val();
+					var userName = $('#searchName${rand}').val();
+					if(!userAccount && !userName){
+						$.messager.alert('提示','请输入信息','warning');
+						return;
+					}
+					$('#users${rand}').datagrid('reload',
+						{
+							userAccount:userAccount,
+							userName:userName
+						});
+			         $("#users${rand}").datagrid({ singleSelect: false });
+				});
+			    //初始化人员 
+			     $('#users${rand}').datagrid({
+						  fit:true,
+						  fitColumns:false,
+						  url:'bpmRole/users.json',
+						  queryParams:{
+								id:currentOrgId
+							},
+						  columns:[[
+							{field:'id',checkbox:true},
+							{field:'account',title:'帐号',width:90},
+							{field:'name',title:'姓名',width:90},
+							{field:'orgName',title:'部门',width:120}
+						  ]],
+						  border:false,
+						  nowrap: true,
+						  pagination:false,
+						  pageNumber:1,
+						  pageSize:20,
+						  fit : true,
+						  singleSelect:true,
+						  rownumbers:true,
+					});
+			});
+		 //选择用户完成事件
+	    function selectUserEnd(){
+		   var row = $('#users${rand}').datagrid('getSelected');
+			if (row) {
+				$("#account${rand}").val(row.account);
+			    
+			    orgWin.dialog('close');	
+			    
+			} else {
+				$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+			}
+			//界面通过接口加载个人信息
+			$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#account${rand}").val()
+					},
+					function(data){
+						if (data.success) {
+							$('#curUserId${rand}').val(('00000000'+data.obj.empId).substring(('00000000'+data.obj.empId).length-8,('00000000'+data.obj.empId).length));
+							$("#userName${rand}").val(data.obj.name);//姓名
+							$("#orgName${rand}").val(data.obj.orgName);//部门
+							$("#signSelf${rand}").val(data.obj.name);
+							if($("#curUserId${rand}").val()!=null&&$("#curUserId${rand}").val()!=''){
+								$("#curUserId${rand}").validatebox({required:false});
+							}
+							if($("#userName${rand}").val()!=null&&$("#userName${rand}").val()!=''){
+								$("#userName${rand}").validatebox({required:false});
+							}
+							if($("#orgName${rand}").val()!=null&&$("#orgName${rand}").val()!=''){
+								$("#orgName${rand}").validatebox({required:false});
+							}
+						}
+					});
+	  	 }
+	   //关闭组织架构窗口
+	   function  closeSelectUserWin(){
+
+	   	 	orgWin.dialog('close');	
+	  	 }
+		 $(function(){
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#account${rand}").val()
+					},
+					function(data){
+						if (data.success) {
+							$('#curUserId${rand}').val(('00000000'+data.obj.empId).substring(('00000000'+data.obj.empId).length-8,('00000000'+data.obj.empId).length));
+							$("#userName${rand}").val(data.obj.name);//姓名
+							$("#orgName${rand}").val(data.obj.orgName);//部门
+							$("#signSelf${rand}").val(data.obj.name);
+							if($("#curUserId${rand}").val()!=null&&$("#curUserId${rand}").val()!=''){
+								$("#curUserId${rand}").validatebox({required:false});
+							}
+							if($("#userName${rand}").val()!=null&&$("#userName${rand}").val()!=''){
+								$("#userName${rand}").validatebox({required:false});
+							}
+							if($("#orgName${rand}").val()!=null&&$("#orgName${rand}").val()!=''){
+								$("#orgName${rand}").validatebox({required:false});
+							}
+						}
+					});
+			});
+			/*function loadUserInfo(){
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfoById.json",	{
+					account:$("#curUserId${rand}").val()	
+				},function(data){
+						if (data.success) {
+							$("#userName${rand}").val(data.obj[0].name);
+							$("#orgName${rand}").val(data.obj[0].orgName);
+							//$("#signSelf${rand}").val(data.obj[0].name);
+					}
+				});
+			}*/
+			$(function(){
+				//界面通过接口加载个人信息
+				/*$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#account${rand}").val()
+					},
+					function(data){
+						if (data.success) {
+							$("#userName${rand}").val(data.obj.name);//姓名
+							$("#orgName${rand}").val(data.obj.orgName);//部门
+						}
+					});*/
+				$("#address${rand}").combobox({
+					url: 'engineer/getAddress.json', 
+					valueField:'id', 
+					textField:'text',
+					onSelect:function(data) {
+						$("#engineerTel${rand}").val("");
+						$("#engineerId${rand}").val("");
+						$("#addressName").val($("#address${rand}").combobox("getText"));
+						var address = $("#address${rand}").combobox("getValue");
+						var engineerCount=address.split(',').length;
+						/*$.post("engineer/getCountByAddress.json",{
+							address:address
+						},
+						function(data){
+							engineerCount=parseInt(data);
+						});*/
+						var engArry=new Array();
+						$("#engineerName${rand}").combobox({
+							url: 'engineer/getEngineers.json?address=' + address,
+							valueField:'name', 
+							textField:'name',
+							onSelect:function(data){
+								$("#engineerTel${rand}").val(data.tel);
+								$("#engineerId${rand}").val(data.userId);
+								//通过界面接口加载工程师是否在岗
+								$.post("engineer/getOnWork.json", 
+										{
+											account:$("#engineerId${rand}").val()
+										},
+										function(data){
+											//alert(data);
+											if (data == true) {
+												$("#flag${rand}").val("在岗");//工程师在岗状态
+											}
+											if(data==false){
+												$("#flag${rand}").val("请假");//工程师在岗状态
+												var flag=true;
+												if(engArry.length >0){
+													for(var i=0;i<engArry.length;i++){
+														if($("#engineerId${rand}").val() == engArry[i]){
+															flag=false;
+														}
+													}
+												}
+												if(flag){
+													engArry[engArry.length]=$("#engineerId${rand}").val();
+												}
+												//$("#flag${rand}").val("请假");//工程师在岗状态
+												if(engArry.length >= engineerCount){
+													$.messager.alert('信息提示:','此楼层没有在岗工程师，请选择其它楼层工程师!');
+												}else{
+													$.messager.alert('信息提示:','该工程师暂时不在岗，请选择此楼层其他工程师!');
+												}
+											}
+										});
+								$.post("engineer/getLoginNo.json",{
+									engineerId:$("#engineerId${rand}").val()
+								},
+								function(data){
+									$("#engineerLoginNo${rand}").val(data);
+								});
+								
+							}
+						});
+					}
+				});
+				$('#engineerQuery${rand}').click(function(){
+					var assignee = $('#engineerLoginNo${rand}').val();
+					if(assignee != null && assignee != ''){
+						$('#engineerDetail${rand}').dialog({
+							title: '工程师任务',
+							collapsible:false,
+							width: 950,
+							height: 500,
+							maximizable:true,
+							resizable:true,
+							closed: false,
+							cache: false,
+							modal: true
+						});
+				
+						
+						$('#engineerTask${rand}').datagrid({
+							  fitColumns:true,
+							  queryParams:{assignee: assignee},
+							  url:'workspace/engineerTask.json',
+							  columns:[[
+							    {field:'id',title:'任务编号',width:160,align:'center'},
+							  	{field:'processInstanceId',title:'流程实例编号',width:160,align:'center'},
+							  	{field:'processInstanceName',title:'实例名称',width:150,align:'center'},
+							  	{field:'processDefName',title:'流程名称',width:170,align:'center'},
+								{field:'processDefinitionId',title:'流程定义',hidden:true,width:150},
+								{field:'proStartUserId',title:'流程发起人工号',hidden:true,width:150},
+								{field:'proStartUserName',title:'流程发起人',width:100,align:'center'},
+								{field:'categoryName',title:'流程所属部门',width:120,align:'center'},
+								{field:'name',title:'任务名称',width:120,align:'center'},
+								{field:'suspensionState',title:'状态',width:80,align:'center',
+									formatter: function(value,row,index){
+										if (value == 1){
+											return '<span style="color:#EE0000">待办理</span>';
+										} else if(value == 2){
+											return '<span style="color:#B03060">已暂停</span>';
+										}
+									}
+								},
+								{field:'assignee',title:'处理人',hidden:true,width:100},
+								{field:'taskDefinitionKey',title:'TaskKey',hidden:true,width:100},
+								{field:'createTime',title:'创建时间',width:170,align:'center'},
+								{field:'dueDate',title:'计划完成时间',width:170,align:'center'}
+							  ]],
+							  nowrap: true,       
+							  fit : true,
+							  border : true,
+							  pagination:true,
+							  pageNumber : 1,
+							  pageSize : 20,
+							  rownumbers:true
+						});
+					}else{
+						$.messager.alert('Title', '请先选择工程师');
+					}
+				});
+				
+			});
+			
+			$(function(){
+				
+			});
+	</script>
+	</#if>
+</#if>
+<!-- 工程师处理  -->
+<#if currentStep?exists && currentStep == 'nmb_recordTask'> 
+		<div id="nmb_recordTask">
+			<form id="nmb_recordTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="nmb_recordTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">工程师处理</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">问题分类：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="hidden" name="fp_engineerName" value="${appuser.name}" />
+							<!-- <input id="typeNameId-${rand}"  type="hidden" name="fp_typeNameId"/>-->
+							<input id="typeNameText-${rand}" type="hidden" class="easyui-textbox" name="fp_typeNameValue"  /> 
+							<input id="typeName-${rand}" name="fp_typeName"  class="easyui-combogrid" style="width:200px" mobile="问题分类"   selectUserUrl="hardware/query.json" onblur="loadInfo()" data-options="
+								panelWidth: 200,
+								idField: 'id',
+								textField: 'typeName',
+								editable:false,
+								required:true,
+								onSelect:function(index){
+								var g = $('#typeName-${rand}').combogrid('grid');
+								var r = g.datagrid('getSelected');
+								$('#name-${rand}').combogrid({url: 'type/query.json?typeName='+r.typeName});
+								},
+								url: 'hardware/query.json',
+								method: 'get',
+								columns: [[
+									{field:'id',title:'问题ID',width:60,align:'center',hidden:true},
+									{field:'typeName',title:'问题分类',width:100}
+								]],
+								fitColumns: true
+							" />
+						</td>
+						<td class="formtable_td_key">问题名称：</td>
+						<td class="formtable_td_value" colspan="2">
+							<!-- <input id="nameId-${rand}"  type="hidden" name="fp_typeNameId"/>-->
+							<input id="nameText-${rand}" type="hidden" class="easyui-textbox" name="fp_nameValue" /> 
+							<input id="name-${rand}" name="fp_name"  class="easyui-combogrid" style="width:200px"mobile="问题名称" selectUserUrl="type/query.json"  onblur="loadInfo()" data-options="
+								panelWidth: 200,
+								idField: 'id',
+								textField: 'name',
+								editable:false,
+								required:true,
+								url: 'type/query.json',
+								method: 'get',
+								columns: [[
+									{field:'id',title:'问题ID',width:60,align:'center',hidden:true},
+									{field:'typeName',title:'问题分类',width:100,hidden:true},
+									{field:'name',title:'问题名称',width:200}
+								]],
+								fitColumns: true
+							" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">问题现象及原因：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"class="easyui-validatebox"  data-options="required:true" mobile="问题现象及原因" name="fp_reason" onblur="loadInfo()" class="formtable_remark"  ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">解决方法：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px" class="easyui-validatebox"  data-options="required:true" mobile="解决方法" name="fp_solution" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >实际完成时间：</td> 
+						<td class="formtable_td_value"  >
+							<input id="actualCompletionTime${rand}" class="easyui-datebox" type="text"  value="${.now?string('yyyy-MM-dd ')}" mobile="实际完成时间" name="fp_actualCompletionTime" data-options="required:true" /> 
+						</td>
+						<td class="formtable_td_key" >工程师签名：</td>
+						<td class="formtable_td_value" >
+							<input   type="hidden" name="fp_engineerNameValue" data-options="required:true" mobile="工程师签名"value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_finishTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="处理时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+function loadInfo(){
+	var typeName =  $('#typeName-${rand}').combogrid('getText');
+	var name =  $('#name-${rand}').combogrid('getText');
+	var typeNameValue=$('#typeNameText-${rand}').val(typeName);
+	var nameValue = $('#nameText-${rand}').val(name);
+}
+
+</script> 
+</#if>
+<!-- 申请人满意度 -->
+<#if currentStep?exists && currentStep == 'replyTask'> 
+		<div id="replyTask">
+			<form id="replyTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="replyTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">申请人确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">满意度：</td>
+						<td class="formtable_td_value"  colspan="5"><!--data-options="min:0,max:10,precision:2,required:true"  -->
+							<input id="satisfaction10${rand}" type="radio" name="fp_satisfaction" value="10"mobile="满意度_10" checked="checked" />10
+							<input id="satisfaction9${rand}" type="radio" name="fp_satisfaction" value="9" mobile="满意度_9"/>9
+							<input id="satisfaction8${rand}" type="radio" name="fp_satisfaction" value="8" mobile="满意度_8"/>8
+							<input id="satisfaction7${rand}" type="radio" name="fp_satisfaction" value="7" mobile="满意度_7"/>7
+							<input id="satisfaction6${rand}" type="radio" name="fp_satisfaction" value="6" mobile="满意度_6"/>6
+							<input id="satisfaction5${rand}" type="radio" name="fp_satisfaction" value="5" mobile="满意度_5"/>5
+							<input id="satisfaction4${rand}" type="radio" name="fp_satisfaction" value="4" mobile="满意度_4"/>4
+							<input id="satisfaction3${rand}" type="radio" name="fp_satisfaction" value="3" mobile="满意度_3"/>3
+							<input id="satisfaction2${rand}" type="radio" name="fp_satisfaction" value="2" mobile="满意度_2"/>2
+							<input id="satisfaction1${rand}" type="radio" name="fp_satisfaction" value="1" mobile="满意度_1"/>1
+							<input id="satisfaction0${rand}" type="radio" name="fp_satisfaction" value="0" mobile="满意度_0"/>0
+							<span style="color:red">(非常满意(10-9分) 基本满意(8-7分) 满意(6分) 不满意(5-4分) 非常不满意(3-0分))</span>
+						</td>
+					</tr>
+					<tr  id="theReason${rand}">
+						<td class="formtable_td_key">原因及改进意见：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<textarea id="replyReason${rand}" class="easyui-validatebox" data-options="required:true" mobile="不满意原因"  relateFieldName="fp_satisfaction"   relateShowFieldValue="0,5"   relateHideFieldValue="6,10" name="fp_replyReason" style="width: 730px;"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >处理人签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input   type="hidden" name="fp_name" data-options="required:true" mobile="处理人签字" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input type="hidden" name="fp_applyTime" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"  timeEditor="1" mobile="处理时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#replyReason${rand}").validatebox({required:false});
+			$("#theReason${rand}").hide();
+			var success = function(){
+				$("#theReason${rand}").hide();
+				$("#replyReason${rand}").validatebox({required:false});//将不满意原因设置为非必填项
+			}
+			var failure=function(){
+				$("#theReason${rand}").show();
+				$("#replyReason${rand}").validatebox({required:true});
+			};
+			$("#satisfaction10${rand}").bind("click",success);
+			$("#satisfaction9${rand}").bind("click",success);
+			$("#satisfaction8${rand}").bind("click",success);
+			$("#satisfaction7${rand}").bind("click",success);
+			$("#satisfaction6${rand}").bind("click",success);		
+			$("#satisfaction5${rand}").bind("click",failure);
+			$("#satisfaction4${rand}").bind("click",failure);
+			$("#satisfaction3${rand}").bind("click",failure);
+			$("#satisfaction2${rand}").bind("click",failure);
+			$("#satisfaction1${rand}").bind("click",failure);
+			$("#satisfaction0${rand}").bind("click",failure);
+		</script>			
+					
+</#if>
+
+<#include "/common/foot.html">
+
+
+
+

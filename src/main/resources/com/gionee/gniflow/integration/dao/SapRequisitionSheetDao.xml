@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.SapRequisitionSheetDao">
+  
+  <sql id="columns">
+    preq_no, preq_item, doc_type, pur_group, created_by, preq_name, preq_date, 
+    short_text, material, plant, store_loc, trackingno, mat_grp, quantity, unit, 
+    deliv_date, rel_date, gr_pr_time, c_amt_bapi, price_unit, item_cat, acctasscat, 
+    proc_inst_id, proc_def_id, status,delflag,approval_flag,approval_strategy,frgc1,frgc2,frgc3,change_date
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.SapRequisitionSheet" id="result">
+	<result property="preqNo" column="preq_no"/>
+	<result property="preqItem" column="preq_item"/>
+	<result property="docType" column="doc_type"/>
+	<result property="purGroup" column="pur_group"/>
+	<result property="createdBy" column="created_by"/>
+	<result property="preqName" column="preq_name"/>
+	<result property="preqDate" column="preq_date"/>
+	<result property="shortText" column="short_text"/>
+	<result property="material" column="material"/>
+	<result property="plant" column="plant"/>
+	<result property="storeLoc" column="store_loc"/>
+	<result property="trackingno" column="trackingno"/>
+	<result property="matGrp" column="mat_grp"/>
+	<result property="quantity" column="quantity"/>
+	<result property="unit" column="unit"/>
+	<result property="delivDate" column="deliv_date"/>
+	<result property="relDate" column="rel_date"/>
+	<result property="grPrTime" column="gr_pr_time"/>
+	<result property="cAmtBapi" column="c_amt_bapi"/>
+	<result property="priceUnit" column="price_unit"/>
+	<result property="itemCat" column="item_cat"/>
+	<result property="acctasscat" column="acctasscat"/>
+	<result property="procInstId" column="proc_inst_id"/>
+	<result property="procDefId" column="proc_def_id"/>
+	<result property="status" column="status"/>
+	<result property="delflag" column="delflag"/>
+	<result property="approvalFlag" column="approval_flag"/>
+	<result property="approvalStrategy" column="approval_strategy"/>
+	<result property="frgc1" column="frgc1"/>
+	<result property="frgc2" column="frgc2"/>
+	<result property="frgc3" column="frgc3"/>
+	<result property="changeDate" column="change_date"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.dto.SapRequisitionTaskDto" id="taskResult">
+	<result property="preqNo" column="preq_no"/>
+	<result property="preqItem" column="preq_item"/>
+	<result property="docType" column="doc_type"/>
+	<result property="purGroup" column="pur_group"/>
+	<result property="createdBy" column="created_by"/>
+	<result property="preqName" column="preq_name"/>
+	<result property="preqDate" column="preq_date"/>
+	<result property="shortText" column="short_text"/>
+	<result property="material" column="material"/>
+	<result property="plant" column="plant"/>
+	<result property="storeLoc" column="store_loc"/>
+	<result property="trackingno" column="trackingno"/>
+	<result property="matGrp" column="mat_grp"/>
+	<result property="quantity" column="quantity"/>
+	<result property="unit" column="unit"/>
+	<result property="delivDate" column="deliv_date"/>
+	<result property="relDate" column="rel_date"/>
+	<result property="grPrTime" column="gr_pr_time"/>
+	<result property="cAmtBapi" column="c_amt_bapi"/>
+	<result property="priceUnit" column="price_unit"/>
+	<result property="itemCat" column="item_cat"/>
+	<result property="acctasscat" column="acctasscat"/>
+	<result property="procInstId" column="proc_inst_id"/>
+	<result property="procDefId" column="proc_def_id"/>
+	<result property="status" column="status"/>
+	<result property="delflag" column="delflag"/>
+	<result property="approvalFlag" column="approval_flag"/>
+	<result property="approvalStrategy" column="approval_strategy"/>
+	<result property="frgc1" column="frgc1"/>
+	<result property="frgc2" column="frgc2"/>
+	<result property="frgc3" column="frgc3"/>
+	<result property="changeDate" column="change_date"/>
+	<result property="id" column="ID_"/>
+	<result property="taskDefinitionKey" column="TASK_DEF_KEY_"/>
+	<result property="name" column="NAME_"/>
+	<result property="processInstanceId" column="PROC_INST_ID_"/>
+	<result property="processDefinitionId" column="PROC_DEF_ID_"/>
+	<result property="priority" column="PRIORITY_"/>
+	<result property="createTime" column="CREATE_TIME_"/>
+	<result property="dueDate" column="DUE_DATE_"/>
+	<result property="description" column="DESCRIPTION_"/>
+	<result property="owner" column="OWNER_"/>
+	<result property="suspensionState" column="SUSPENSION_STATE_"/>
+	<result property="assignee" column="ASSIGNEE_"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.SapRequisitionSheet">
+    insert into sap_requisition_sheet (<include refid="columns"/>) values (
+    #{preqNo},
+    #{preqItem},
+    #{docType},
+    #{purGroup},
+    #{createdBy},
+    #{preqName},
+    #{preqDate},
+    #{shortText},
+    #{material},
+    #{plant},
+    #{storeLoc},
+    #{trackingno},
+    #{matGrp},
+    #{quantity},
+    #{unit},
+    #{delivDate},
+    #{relDate},
+    #{grPrTime},
+    #{cAmtBapi},
+    #{priceUnit},
+    #{itemCat},
+    #{acctasscat},
+    #{procInstId},
+    #{procDefId},
+    #{status},
+    #{delflag},
+    #{approvalFlag},
+    #{approvalStrategy},
+    #{frgc1},
+    #{frgc2},
+    #{frgc3},
+    #{changeDate}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.SapRequisitionSheet">
+    update sap_requisition_sheet
+    <set>
+      <if test="docType != null and docType !=''">
+        doc_type = #{docType},
+      </if>
+      <if test="purGroup != null and purGroup !=''">
+        pur_group = #{purGroup},
+      </if>
+      <if test="createdBy != null and createdBy !=''">
+        created_by = #{createdBy},
+      </if>
+      <if test="preqName != null and preqName !=''">
+        preq_name = #{preqName},
+      </if>
+      <if test="preqDate != null and preqDate !=''">
+        preq_date = #{preqDate},
+      </if>
+      <if test="shortText != null and shortText !=''">
+        short_text = #{shortText},
+      </if>
+      <if test="material != null and material !=''">
+        material = #{material},
+      </if>
+      <if test="plant != null and plant !=''">
+        plant = #{plant},
+      </if>
+      <if test="storeLoc != null and storeLoc !=''">
+        store_loc = #{storeLoc},
+      </if>
+      <if test="trackingno != null and trackingno !=''">
+        trackingno = #{trackingno},
+      </if>
+      <if test="matGrp != null and matGrp !=''">
+        mat_grp = #{matGrp},
+      </if>
+      <if test="quantity != null and quantity !=''">
+        quantity = #{quantity},
+      </if>
+      <if test="unit != null and unit !=''">
+        unit = #{unit},
+      </if>
+      <if test="delivDate != null and delivDate !=''">
+        deliv_date = #{delivDate},
+      </if>
+      <if test="relDate != null and relDate !=''">
+        rel_date = #{relDate},
+      </if>
+      <if test="grPrTime != null and grPrTime !=''">
+        gr_pr_time = #{grPrTime},
+      </if>
+      <if test="cAmtBapi != null and cAmtBapi !=''">
+        c_amt_bapi = #{cAmtBapi},
+      </if>
+      <if test="priceUnit != null and priceUnit !=''">
+        price_unit = #{priceUnit},
+      </if>
+      <if test="itemCat != null and itemCat !=''">
+        item_cat = #{itemCat},
+      </if>
+      <if test="acctasscat != null and acctasscat !=''">
+        acctasscat = #{acctasscat},
+      </if>
+      <if test="procInstId != null and procInstId !=''">
+        proc_inst_id = #{procInstId},
+      </if>
+      <if test="procDefId != null and procDefId !=''">
+        proc_def_id = #{procDefId},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="delflag != null and delflag!=''">
+        delflag = #{delflag},
+      </if>
+      <if test="approvalFlag != null and approvalFlag !=''">
+        approval_flag = #{approvalFlag},
+      </if>
+      <if test="approvalStrategy != null and approvalStrategy !=''">
+        approval_strategy = #{approvalStrategy},
+      </if>
+      <if test="frgc1 != null and frgc1 !=''">
+        frgc1 = #{frgc1},
+      </if>
+      <if test="frgc2 != null and frgc2 !=''">
+        frgc2 = #{frgc2},
+      </if>
+      <if test="frgc3 != null and frgc3 !=''">
+        frgc3 = #{frgc3},
+      </if>
+    </set>
+    where preq_no = #{preqNo} and  preq_item = #{preqItem}
+  </update>
+
+  <update id="logicDelete" parameterType="Integer">
+	update sap_requisition_sheet set delflag = #{delflag} where preq_no = #{preqNo} and  preq_item = #{preqItem}
+  </update>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from sap_requisition_sheet
+	<where>
+	  <if test="preqNo != null and preqNo !=''">
+        and preq_no = #{preqNo}
+      </if>
+      <if test="preqItem != null and preqItem !=''">
+        and preq_item = #{preqItem}
+      </if>
+	  <if test="docType != null and docType !=''">
+        and doc_type = #{docType}
+      </if>
+      <if test="purGroup != null and purGroup !=''">
+        and pur_group = #{purGroup}
+      </if>
+      <if test="createdBy != null and createdBy !=''">
+        and created_by = #{createdBy}
+      </if>
+      <if test="preqName != null and preqName !=''">
+        and preq_name = #{preqName}
+      </if>
+      <if test="preqDate != null and preqDate !=''">
+        and preq_date = #{preqDate}
+      </if>
+      <if test="shortText != null and shortText !=''">
+        and short_text = #{shortText}
+      </if>
+      <if test="material != null and material !=''">
+        and material = #{material}
+      </if>
+      <if test="plant != null and plant !=''">
+        and plant = #{plant}
+      </if>
+      <if test="storeLoc != null and storeLoc !=''">
+        and store_loc = #{storeLoc}
+      </if>
+      <if test="trackingno != null and trackingno !=''">
+        and trackingno = #{trackingno}
+      </if>
+      <if test="matGrp != null and matGrp !=''">
+        and mat_grp = #{matGrp}
+      </if>
+      <if test="quantity != null and quantity !=''">
+        and quantity = #{quantity}
+      </if>
+      <if test="unit != null and unit !=''">
+        and unit = #{unit}
+      </if>
+      <if test="delivDate != null and delivDate !=''">
+        and deliv_date = #{delivDate}
+      </if>
+      <if test="relDate != null and relDate !=''">
+        and rel_date = #{relDate}
+      </if>
+      <if test="grPrTime != null and grPrTime !=''">
+        and gr_pr_time = #{grPrTime}
+      </if>
+      <if test="cAmtBapi != null and cAmtBapi !=''">
+        and c_amt_bapi = #{cAmtBapi}
+      </if>
+      <if test="priceUnit != null and priceUnit !=''">
+        and price_unit = #{priceUnit}
+      </if>
+      <if test="itemCat != null and itemCat !=''">
+        and item_cat = #{itemCat}
+      </if>
+      <if test="acctasscat != null and acctasscat !=''">
+        and acctasscat = #{acctasscat}
+      </if>
+      <if test="procInstId != null and procInstId !=''">
+        and proc_inst_id = #{procInstId}
+      </if>
+      <if test="procDefId != null and procDefId !=''">
+        and proc_def_id = #{procDefId}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="delflag != null and delflag!=''">
+        and delflag = #{delflag}
+      </if>
+      <if test="approvalFlag != null and approvalFlag !=''">
+        and approval_flag = #{approvalFlag}
+      </if>
+      <if test="approvalStrategy != null and approvalStrategy !=''">
+       and approval_strategy = #{approvalStrategy}
+      </if>
+      <if test="frgc1 != null and frgc1 !=''">
+        and frgc1 = #{frgc1}
+      </if>
+      <if test="frgc2 != null and frgc2 !=''">
+        and frgc2 = #{frgc2}
+      </if>
+      <if test="frgc3 != null and frgc3 !=''">
+        and frgc3 = #{frgc3}
+      </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY CURRENT_TIMESTAMP) rnk FROM (
+      select <include refid="columns"/> from sap_requisition_sheet
+      <where>
+      	  <if test="preqNo != null and preqNo !=''">
+	        and preq_no = #{preqNo}
+	      </if>
+	      <if test="preqItem != null and preqItem !=''">
+	        and preq_item = #{preqItem}
+	      </if>
+          <if test="docType != null and docType !=''">
+	        and doc_type = #{docType}
+	      </if>
+	      <if test="purGroup != null and purGroup !=''">
+	        and pur_group = #{purGroup}
+	      </if>
+	      <if test="createdBy != null and createdBy !=''">
+	        and created_by = #{createdBy}
+	      </if>
+	      <if test="preqName != null and preqName !=''">
+	        and preq_name = #{preqName}
+	      </if>
+	      <if test="preqDate != null and preqDate !=''">
+	        and preq_date = #{preqDate}
+	      </if>
+	      <if test="shortText != null and shortText !=''">
+	        and short_text = #{shortText}
+	      </if>
+	      <if test="material != null and material !=''">
+	        and material = #{material}
+	      </if>
+	      <if test="plant != null and plant !=''">
+	        and plant = #{plant}
+	      </if>
+	      <if test="storeLoc != null and storeLoc !=''">
+	        and store_loc = #{storeLoc}
+	      </if>
+	      <if test="trackingno != null and trackingno !=''">
+	        and trackingno = #{trackingno}
+	      </if>
+	      <if test="matGrp != null and matGrp !=''">
+	        and mat_grp = #{matGrp}
+	      </if>
+	      <if test="quantity != null and quantity !=''">
+	        and quantity = #{quantity}
+	      </if>
+	      <if test="unit != null and unit !=''">
+	        and unit = #{unit}
+	      </if>
+	      <if test="delivDate != null and delivDate !=''">
+	        and deliv_date = #{delivDate}
+	      </if>
+	      <if test="relDate != null and relDate !=''">
+	        and rel_date = #{relDate}
+	      </if>
+	      <if test="grPrTime != null and grPrTime !=''">
+	        and gr_pr_time = #{grPrTime}
+	      </if>
+	      <if test="cAmtBapi != null and cAmtBapi !=''">
+	        and c_amt_bapi = #{cAmtBapi}
+	      </if>
+	      <if test="priceUnit != null and priceUnit !=''">
+	        and price_unit = #{priceUnit}
+	      </if>
+	      <if test="itemCat != null and itemCat !=''">
+	        and item_cat = #{itemCat}
+	      </if>
+	      <if test="acctasscat != null and acctasscat !=''">
+	        and acctasscat = #{acctasscat}
+	      </if>
+	      <if test="procInstId != null and procInstId !=''">
+	        and proc_inst_id = #{procInstId}
+	      </if>
+	      <if test="procDefId != null and procDefId !=''">
+	        and proc_def_id = #{procDefId}
+	      </if>
+	      <if test="status != null">
+	        and status = #{status}
+	      </if>
+	      <if test="delflag != null and delflag!=''">
+	        and delflag = #{delflag}
+	      </if>
+	      <if test="approvalFlag != null and approvalFlag !=''">
+	        and approval_flag = #{approvalFlag}
+	      </if>
+	      <if test="approvalStrategy != null and approvalStrategy !=''">
+	       and approval_strategy = #{approvalStrategy}
+	      </if>
+	      <if test="frgc1 != null and frgc1 !=''">
+	        and frgc1 = #{frgc1}
+	      </if>
+	      <if test="frgc2 != null and frgc2 !=''">
+	        and frgc2 = #{frgc2}
+	      </if>
+	      <if test="frgc3 != null and frgc3 !=''">
+	        and frgc3 = #{frgc3}
+	      </if>
+      </where>
+      <![CDATA[
+      	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+      ]]>
+  </select>
+  
+  <select id="getPageCount" parameterType="map" resultType="java.lang.Integer">
+    select count(*) from sap_requisition_sheet
+    <where>
+       <if test="preqNo != null and preqNo !=''">
+	       and preq_no = #{preqNo}
+	   </if>
+	   <if test="preqItem != null and preqItem !=''">
+	       and preq_item = #{preqItem}
+	   </if>
+       <if test="docType != null and docType !=''">
+        and doc_type = #{docType}
+      </if>
+      <if test="purGroup != null and purGroup !=''">
+        and pur_group = #{purGroup}
+      </if>
+      <if test="createdBy != null and createdBy !=''">
+        and created_by = #{createdBy}
+      </if>
+      <if test="preqName != null and preqName !=''">
+        and preq_name = #{preqName}
+      </if>
+      <if test="preqDate != null and preqDate !=''">
+        and preq_date = #{preqDate}
+      </if>
+      <if test="shortText != null and shortText !=''">
+        and short_text = #{shortText}
+      </if>
+      <if test="material != null and material !=''">
+        and material = #{material}
+      </if>
+      <if test="plant != null and plant !=''">
+        and plant = #{plant}
+      </if>
+      <if test="storeLoc != null and storeLoc !=''">
+        and store_loc = #{storeLoc}
+      </if>
+      <if test="trackingno != null and trackingno !=''">
+        and trackingno = #{trackingno}
+      </if>
+      <if test="matGrp != null and matGrp !=''">
+        and mat_grp = #{matGrp}
+      </if>
+      <if test="quantity != null and quantity !=''">
+        and quantity = #{quantity}
+      </if>
+      <if test="unit != null and unit !=''">
+        and unit = #{unit}
+      </if>
+      <if test="delivDate != null and delivDate !=''">
+        and deliv_date = #{delivDate}
+      </if>
+      <if test="relDate != null and relDate !=''">
+        and rel_date = #{relDate}
+      </if>
+      <if test="grPrTime != null and grPrTime !=''">
+        and gr_pr_time = #{grPrTime}
+      </if>
+      <if test="cAmtBapi != null and cAmtBapi !=''">
+        and c_amt_bapi = #{cAmtBapi}
+      </if>
+      <if test="priceUnit != null and priceUnit !=''">
+        and price_unit = #{priceUnit}
+      </if>
+      <if test="itemCat != null and itemCat !=''">
+        and item_cat = #{itemCat}
+      </if>
+      <if test="acctasscat != null and acctasscat !=''">
+        and acctasscat = #{acctasscat}
+      </if>
+      <if test="procInstId != null and procInstId !=''">
+        and proc_inst_id = #{procInstId}
+      </if>
+      <if test="procDefId != null and procDefId !=''">
+        and proc_def_id = #{procDefId}
+      </if>
+      <if test="status != null">
+        and status = #{status}
+      </if>
+      <if test="delflag != null and delflag!=''">
+        and delflag = #{delflag}
+      </if>
+      <if test="approvalFlag != null and approvalFlag !=''">
+        and approval_flag = #{approvalFlag}
+      </if>
+      <if test="approvalStrategy != null and approvalStrategy !=''">
+       and approval_strategy = #{approvalStrategy}
+      </if>
+      <if test="frgc1 != null and frgc1 !=''">
+        and frgc1 = #{frgc1}
+      </if>
+      <if test="frgc2 != null and frgc2 !=''">
+        and frgc2 = #{frgc2}
+      </if>
+      <if test="frgc3 != null and frgc3 !=''">
+        and frgc3 = #{frgc3}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" resultMap="result">
+	select <include refid="columns"/> from sap_requisition_sheet
+	where preq_no = #{preqNo} and  preq_item = #{preqItem}
+  </select>
+  
+  <select id="queryByProcInstId" resultMap="result">
+	select <include refid="columns"/> from sap_requisition_sheet
+	where proc_inst_id = #{procInstId}
+  </select>
+  
+  <select id="queryPageSapReqSheet4HisProcess" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY RES.START_TIME_ DESC) rnk FROM (
+      SELECT 
+			RES.*,req.*
+				FROM
+					ACT_HI_PROCINST RES
+					INNER JOIN sap_requisition_sheet req on RES.PROC_INST_ID_ = req.proc_inst_id
+				WHERE 1=1
+				<if test="curUserAccount != null and curUserAccount != ''">
+					AND RES.START_USER_ID_ = #{curUserAccount} 
+				</if>
+				<if test="procDefId != null and procDefId != ''">
+					AND RES.PROC_DEF_ID_ like #{procDefId} || '%'
+				</if>	
+				<if test="status == null or status == ''">
+					AND REQ.STATUS != 0
+				</if>	
+				<if test="status != 0 and status != null">
+					AND REQ.STATUS = #{status}
+				</if>
+				 <if test="preqNo != null and preqNo !=''">
+			       	and preq_no = #{preqNo}
+		  		 </if>
+		  		 <if test="preqItem != null and preqItem !=''">
+		      		 and preq_item = #{preqItem}
+		  		 </if>
+		  		 <if test="delflag != null and delflag!=''">
+		        	and delflag = #{delflag}
+		         </if>
+      <![CDATA[
+      	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+      ]]>
+  </select>
+  <select id="countSapReqSheet4HisProcess" parameterType="map" resultType="java.lang.Integer">
+	SELECT
+		count(*)
+	FROM
+	ACT_HI_PROCINST RES
+	INNER JOIN sap_requisition_sheet req on RES.PROC_INST_ID_ = req.proc_inst_id
+	WHERE 1=1
+	<if test="curUserAccount != null and curUserAccount != ''">
+		AND RES.START_USER_ID_ = #{curUserAccount}
+	</if>
+	<if test="procDefId != null and procDefId != ''">
+		AND RES.PROC_DEF_ID_ like #{procDefId} || '%'
+	</if>	
+	<if test="status == 0 and status != null">
+		AND REQ.STATUS != 0
+	</if>	
+	<if test="status != 0 and status != null">
+		AND REQ.STATUS = #{status}
+	</if>
+	<if test="preqNo != null and preqNo !=''">
+		AND PREQ_NO = #{preqNo}
+	</if>
+	<if test="preqItem != null and preqItem !=''">
+		AND PREQ_ITEM = #{preqItem}
+	</if>
+	<if test="delflag != null and delflag!=''">
+        and delflag = #{delflag}
+    </if>
+  </select>
+  
+  <select id="queryPageSapRequisitionSheet4UserTask" parameterType="map" resultMap="taskResult">
+    SELECT SUB.* FROM( SELECT RES.*, row_number () OVER ( ORDER BY RES.CREATE_TIME_ DESC ) rnk FROM(
+      SELECT 
+			RES.*,req.*
+				FROM
+					ACT_RU_TASK RES
+				INNER JOIN ACT_RE_PROCDEF D ON RES.PROC_DEF_ID_ = D.ID_
+				INNER JOIN sap_requisition_sheet REQ on RES.PROC_INST_ID_ = REQ.proc_inst_id
+				WHERE 1=1 AND RES.SUSPENSION_STATE_ = 1
+				<if test="assignee != null and assignee != ''">
+					AND RES.ASSIGNEE_ = #{assignee}
+				</if>	
+				<if test="procDefId != null and procDefId != ''">
+					AND D.KEY_ LIKE #{procDefId}
+				</if>
+				<if test="status != 0 and status != null">
+					AND REQ.STATUS = #{status}
+				</if>
+				<if test="preqNo != null and preqNo !=''">
+					AND REQ.PREQ_NO = #{preqNo}
+				</if>
+				<if test="preqItem != null and preqItem !=''">
+					AND REQ.PREQ_ITEM = #{preqItem}
+				</if>
+				<if test="delflag != null and delflag!=''">
+				    AND REQ.delflag = #{delflag}
+				 </if>
+      <![CDATA[
+      	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+      ]]>
+  </select>
+  
+   <select id="countSapRequisitionSheet4UserTask" parameterType="map" resultType="java.lang.Integer">
+	SELECT
+	count(*)
+	FROM
+	ACT_RU_TASK RES
+	INNER JOIN ACT_RE_PROCDEF D ON RES.PROC_DEF_ID_ = D.ID_
+	INNER JOIN sap_requisition_sheet REQ on RES.PROC_INST_ID_ = REQ.proc_inst_id
+	WHERE 1=1 AND RES.SUSPENSION_STATE_ = 1
+	<if test="assignee != null and assignee != ''">
+		AND RES.ASSIGNEE_ = #{assignee}
+	</if>
+	<if test="procDefId != null and procDefId != ''">
+		AND D.KEY_ LIKE #{procDefId}
+	</if>
+	<if test="status != 0 and status != null">
+		AND REQ.STATUS = #{status}
+	</if>
+	<if test="preqNo != null and preqNo !=''">
+		AND REQ.PREQ_NO = #{preqNo}
+	</if>
+	<if test="preqItem != null and preqItem !=''">
+		AND REQ.PREQ_ITEM = #{preqItem}
+	</if>
+	<if test="delflag != null and delflag!=''">
+		AND REQ.delflag = #{delflag}
+	</if>
+  </select>
+  
+  <!-- 采购人员查询 -->
+   <select id="querySapReqSheet4ProcurementInquiry" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY RES.preq_no ASC) rnk FROM (
+	     SELECT
+			t.*
+				FROM
+					sap_requisition_sheet t, 
+					(SELECT
+							s.preq_no
+						FROM
+							sap_requisition_sheet s
+						WHERE
+							s.proc_inst_id IS NOT NULL and s.proc_inst_id != '' group by s.preq_no) t_preq_no
+				WHERE t.preq_no = t_preq_no.preq_no
+				<if test="status == 0 and status != null">
+					AND t.STATUS != 0
+				</if>	
+				<if test="status != 0 and status != null">
+					AND t.STATUS = #{status}
+				</if>
+				 <if test="preqNo != null and preqNo !=''">
+			       	and t.preq_no = #{preqNo}
+		  		 </if>
+		  		 <if test="preqItem != null and preqItem !=''">
+		      		 and t.preq_item = #{preqItem}
+		  		 </if>
+		  		 <if test="delflag != null and delflag!=''">
+		        	and t.delflag = #{delflag}
+		         </if>
+      <![CDATA[
+      	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+      ]]>
+  </select>
+  
+  <select id="countSapReqSheet4ProcurementInquiry" parameterType="map" resultType="java.lang.Integer">
+	SELECT
+		count(*)
+	FROM
+		sap_requisition_sheet t, 
+		(SELECT
+				s.preq_no
+			FROM
+				sap_requisition_sheet s
+			WHERE
+				s.proc_inst_id IS NOT NULL and s.proc_inst_id != '' group by s.preq_no) t_preq_no
+	WHERE t.preq_no = t_preq_no.preq_no
+	<if test="status == 0 and status != null">
+		AND t.STATUS != 0
+	</if>	
+	<if test="status != 0 and status != null">
+		AND t.STATUS = #{status}
+	</if>
+	<if test="preqNo != null and preqNo !=''">
+		AND t.PREQ_NO = #{preqNo}
+	</if>
+	<if test="preqItem != null and preqItem !=''">
+		AND t.PREQ_ITEM = #{preqItem}
+	</if>
+	<if test="delflag != null and delflag!=''">
+        and t.delflag = #{delflag}
+    </if>
+  </select>
+</mapper>

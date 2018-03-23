@@ -1,0 +1,49 @@
+ process(id:"L-ToNational-Project-Approval-Application"){
+	step(id:"startevent1"){
+		field(name:"processName",validType:"required",label:"流程实例名")
+		
+		field(name:"startAccount",validType:"required",label:"发起人账号")
+		
+		field(name:"clientManager",validType:"required",label:"客户经理")
+		
+		field(name:"applicationDate",validType:"required",label:"请假日期")
+		
+		field(name:"sourceProjecModel",validType:"required",label:"源生项目型号")
+		
+		field(name:"sourceProjectConductModel",validType:"required",label:"源生项目宣传型号")
+		
+		field(name:"sourceProjectState",validType:"required",label:"源生项目状态")
+		
+		field(name:"derivedProjecModel",validType:"required",label:"派生项目型号")
+		
+		field(name:"salesArea",validType:"required",label:"销售区域/国家")
+		
+		field(name:"forecastSales",validType:"required",label:"预估销量")
+		
+		field(name:"firstShipmentSales",validType:"required",label:"首单出货量")
+		
+		field(name:"firstShipmentTime",validType:"required",label:"首单出货时间")
+		
+		field(name:"pricePosition",validType:"required",label:"价格定位")
+		
+		field(name:"deliveryMode",validType:"required",label:"出货方式")
+		
+		field(name:"productLifeCycle",validType:"required",label:"产品生命周期")
+		
+		field(name:"sellingPoints",validType:"required",label:"主要功能/卖点")
+		
+	}
+	
+	step(id:"mb_LPDTReviewTask"){
+		field(name:"LPDTAdvice",validType:"required",label:"LPDT 意见")
+	}
+	
+	step(id:"mb_SLPDTReviewTask"){
+		field(name:"SLPDTAdvice",validType:"required",label:"SLPDT 意见")
+	}
+	
+	step(id:"mb_productCenterReviewTask"){
+		field(name:"productCenterAdvice",validType:"required",label:"海外产品中心总监意见")
+		
+	}
+}

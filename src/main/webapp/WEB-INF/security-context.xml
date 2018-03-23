@@ -1,0 +1,95 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+  <context:property-placeholder location="classpath:app.properties"/>
+  
+  <http security="none" pattern="/flowService/receiveProjectReuslt.json"></http>
+  <http security="none" pattern="/myflow/subSystem/startProcess.json"></http>
+  <http security="none" pattern="/myflow/uploadCallback.json"></http>
+  <http security="none" pattern="/uploadCallback/back.html"></http>
+  <http security="none" pattern="/uploadCallback/sapback.html"></http>
+  <http security="none" pattern="/sapspace/uploadCallback.json"></http>
+  <http security="none" pattern="/workspace/eoaMyTask.json"></http>
+  <http security="none" pattern="/eoaMenus.json"></http>
+  <http security="none" pattern="/taskmonitor/getIprobationEation.josn"></http>
+  <http security="none" pattern="/image/*"></http>
+  <http security="none" pattern="/css/*"></http>
+  <http security="none" pattern="/js/*"></http>
+  <http pattern="/**" entry-point-ref="casEntryPoint">
+    <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>
+    <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
+    <custom-filter ref="casFilter" position="CAS_FILTER" />
+    <custom-filter ref="gnifFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
+    <logout logout-success-url="/cas-logout.jsp"/>
+  </http>
+
+  <beans:bean id="singleLogoutFilter" class="com.gionee.gnif.web.GnifSingleSignOutFilter"/>
+
+  <beans:bean id="requestSingleLogoutFilter"
+		class="org.springframework.security.web.authentication.logout.LogoutFilter">
+	<beans:constructor-arg value="${cas.logout.url}"/>
+	<beans:constructor-arg>
+      <beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+	</beans:constructor-arg>
+	<beans:property name="filterProcessesUrl" value="/j_spring_cas_security_logout"/>
+  </beans:bean>
+  
+  <beans:bean id="gnifFilterSecurityInterceptor" class="com.gionee.auth.security.FilterSecurityInterceptorImpl">
+	<beans:property name="securityMetadataSource">
+	  <beans:bean class="com.gionee.auth.security.InvocationSecurityMetadataSourceImpl" />
+	</beans:property>
+	<beans:property name="authenticationManager" ref="authenticationManager"/>
+	<beans:property name="accessDecisionManager">
+	  <beans:bean class="com.gionee.auth.security.AccessDecisionManagerImpl"/>
+	</beans:property>
+  </beans:bean>
+
+  <authentication-manager alias="authenticationManager">
+	<authentication-provider ref="casAuthenticationProvider" />
+  </authentication-manager>
+
+  <beans:bean id="userDetailService" class="com.gionee.auth.security.cas.CasUserDetailsServiceImpl" />
+
+  <beans:bean id="casAuthenticationProvider"
+		class="org.springframework.security.cas.authentication.CasAuthenticationProvider">
+	<beans:property name="authenticationUserDetailsService">
+      <beans:bean class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+		<beans:constructor-arg ref="userDetailService" />
+      </beans:bean>
+	</beans:property>
+	<beans:property name="serviceProperties" ref="serviceProperties" />
+	<beans:property name="ticketValidator">
+      <beans:bean class="org.jasig.cas.client.validation.Cas20ServiceTicketValidator">
+		<beans:constructor-arg index="0" value="${cas.auth.url}" />
+      </beans:bean>
+	</beans:property>
+	<beans:property name="key" value="an_id_for_this_auth_provider_only"/>
+  </beans:bean>
+
+  <beans:bean id="serviceProperties"
+		class="org.springframework.security.cas.ServiceProperties">
+	<beans:property name="service"
+			  value="${base.path}j_spring_cas_security_check"/>
+	<beans:property name="sendRenew" value="false"/>
+  </beans:bean>
+
+  <beans:bean id="casFilter"
+		class="org.springframework.security.cas.web.CasAuthenticationFilter">
+	<beans:property name="authenticationManager" ref="authenticationManager"/>
+  </beans:bean>
+
+  <beans:bean id="casEntryPoint"
+		class="org.springframework.security.cas.web.CasAuthenticationEntryPoint">
+	<beans:property name="loginUrl" value="${cas.login.url}"/>
+	<beans:property name="serviceProperties" ref="serviceProperties"/>
+  </beans:bean>
+
+</beans:beans>

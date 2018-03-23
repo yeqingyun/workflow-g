@@ -1,0 +1,2367 @@
+<#include "/common/head.html">
+<#assign trainContentScore=""/>
+<#assign studyAttitudeScore=""/>
+<#assign studyInitiativeScore=""/>
+<#assign teamWorkScoreByDept=""/>
+<#assign performanceTargetsScoreByDept=""/>
+<#assign studyContentScore=""/>
+<#assign trainAttitudeScore=""/>
+<#assign trainMethodsScore=""/>
+<#assign trainAttitudeInWorkScore=""/>
+<#assign traineePerformanceTargetsScore=""/>
+<#assign studentNo=""/>
+<#assign teacherNo=""/>
+<#assign curLoginNo=appuser.account/>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<!-- 表单开始 -->
+	<#if steps.key =='startevent1'>
+		<#assign studentNo=steps.vars["applyUserAccount"]/>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">新员工培养档案表</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="9">基本性素质</td>
+			<td class="formtable_td_key">姓名</td>
+			<td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+			<td class="formtable_td_key">性别</td>
+			<td class="formtable_td_value">${(steps.vars["gender"])!""}</td>
+			<td class="formtable_td_key">出生年月日</td>
+			<td class="formtable_td_value" >${(steps.vars["birthday"])!""}</td>
+			<td class="formtable_td_key">婚否</td>
+			<td class="formtable_td_value" >${(steps.vars["married"])!""}</td>
+		</tr>
+		<tr>
+			
+			<td class="formtable_td_key">部门</td>
+			<td class="formtable_td_value" >${(steps.vars["orgName"])!""}</td>
+			<td class="formtable_td_key">职位</td>
+			<td class="formtable_td_value" >${(steps.vars["job"])!""}</td>
+			<td class="formtable_td_key">入职日期</td>
+			<td class="formtable_td_value" >${(steps.vars["entryTime"])!""}</td>
+			<td class="formtable_td_key">联系电话</td>
+			<td class="formtable_td_value" >${(steps.vars["telephone"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">最高学历</td>
+			<td class="formtable_td_value" >${(steps.vars["education"])!""}</td>
+			<td class="formtable_td_key">毕业院校</td>
+			<td class="formtable_td_value" >${(steps.vars["graduateSchool"])!""}</td>
+			<td class="formtable_td_key">专业</td>
+			<td class="formtable_td_value" >${(steps.vars["professional"])!""}</td>
+			<td class="formtable_td_key">在校时间</td>
+			<td class="formtable_td_value" >${(steps.vars["graduationTime"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >兴趣、爱好</td>
+			<td class="formtable_td_value" colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["interest"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >特长、优势</td>
+			<td class="formtable_td_value" colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["specialty"])!""}</textarea>
+			</td>
+		</tr>
+		<tr >
+			<td class="formtable_td_key" rowspan="4" >工作经历</td>
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["workExperience1"])!""}</textarea>
+			</td>
+		</tr>
+		<tr >
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["workExperience2"])!""}</textarea>
+			</td>
+		</tr>
+		<tr >
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["workExperience3"])!""}</textarea>
+			</td>
+		</tr>
+		<tr >
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["workExperience4"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2">职业规划</td>
+			<td class="formtable_td_key" >1-3年目标</td>
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["careerPlan1"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >3-5年目标</td>
+			<td class="formtable_td_value"  colspan="7">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["careerPlan2"])!""}</textarea>
+			</td>
+		</tr>
+		<tr >
+		  	<td class="formtable_td_key" colspan="2">填表日期：</td>
+			<td class="formtable_td_value" colspan="7">${(steps.vars["applyDate"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				  	<td class="formtable_td_value" colspan="8">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	 </td>
+			</tr>
+		</#if>
+	</#if>
+
+<!-- 确认导师及导师期 -->
+	<#if steps.key == 'nmb_deptManagerAudiTask'>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">确认导师及培训需求</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2">导师信息</td>
+			<td class="formtable_td_key">学员导师：</td>
+			<td class="formtable_td_value" colspan="7">${(steps.vars["teacherName"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">职位：</td>
+			<td class="formtable_td_value">${(steps.vars["teacherJob"])!""}</td>
+			<td class="formtable_td_key">邮箱：</td>
+			<td class="formtable_td_value">${(steps.vars["teacherEmail"])!""}</td>
+			<td class="formtable_td_key">电话：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["teacherTel"])!""}</td>
+		</tr>
+		<tr >
+					<td class="formtable_td_key" rowspan="4" >培训需求</td>
+					<td class="formtable_td_key" >态度(<span style="color: red;">A</span>ttitude)</td>
+		  	  		<td class="formtable_td_value"  colspan="7">
+		  	  		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["attitude"])!""}</textarea>
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >技能(<span style="color: red;">S</span>kill)</td>
+		  	  		<td class="formtable_td_value" colspan="7" >
+		  	  		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["skill"])!""}</textarea>
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >知识(<span style="color: red;">K</span>nowledge)</td>
+		  	  		<td class="formtable_td_value" colspan="7" >
+		  	  		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["knowledge"])!""}</textarea>
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >实践(<span style="color: red;">E</span>xperience)</td>
+		  	  		<td class="formtable_td_value" colspan="7" >
+		  	  		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 815px; height: 20px;" readonly="readonly" disabled="disabled">${(steps.vars["experience"])!""}</textarea>
+		  	  		</td>
+				</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["deptManagerAudiAdvice"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门负责人签名：</td>
+			<td class="formtable_td_value">${steps.vars["deptManagerAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["deptManagerAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+
+<!--学员确认导师信息 -->
+<#if steps.key == 'nmb_traineeAudiTask'>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">学员确认导师信息</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["traineeAudiAdvice"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">学员签名：</td>
+			<td class="formtable_td_value">${steps.vars["traineeAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["traineeAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+<!-- 培训导师制定培养计划 -->
+<#if steps.key == 'nmb_deptTeacherAudiTask'>
+	<#assign teacherNo=steps.vars["teacherAcccount"]/>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">培训导师制定培养计划</td>
+		</tr>
+	  	<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["deptTeacherAudiAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">导师签名：</td>
+			<td class="formtable_td_value">${steps.vars["deptTeacherName"]!""}</td>
+			<td class="formtable_td_key">签名时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["deptTeacherTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 学员确认培养计划 -->
+<#if steps.key == 'studentConfirmPlanTask'>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">学员确认培养计划</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">意见：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["studentConfirmAudiAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["studentConfirmAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["studentConfirmAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!--导师月度反馈培养培养计划 -->
+<#if steps.key == 'teachTrainPlanResultTask'>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">导师月度反馈</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["teachTrainPlanResultAudiAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["teachTrainPlanResultAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["teachTrainPlanResultAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+<!-- 学员确认培养计划 -->
+<#if steps.key == 'teacherConfirmResultAudiTask'>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">导师确认考核结果</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">意见：</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["teacherConfirmResultAudiAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["teacherConfirmResultAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["teacherConfirmResultAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 导师对学员评价 -->
+<#if steps.key == 'studentScoreByTeacherTask'>
+	<#if curLoginNo==studentNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">导师对学员评价</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">计划执行</td>
+			<td class="formtable_td_key">接受导师的工作指导，严格按照辅导计划安排学习</td>
+			<td class="formtable_td_key" align="center">20</td>
+			<td class="formtable_td_key" align="center">20-18</td>
+			<td class="formtable_td_key" align="center">17-15</td>
+			<td class="formtable_td_key" align="center">14-12</td>
+			<td class="formtable_td_key" align="center">11-9</td>
+			<td class="formtable_td_key" align="center">8-1</td>
+			<td class="formtable_td_value" >${steps.vars["trainContentScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">学习能力</td>
+			<td class="formtable_td_key">接受能力快，迅速掌握培训内容，并能提出改善提案或合理化建议</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["studyAttitudeScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">工作态度</td>
+			<td class="formtable_td_key">与公司同事关系融洽，表现积极主动，认同公司文化，遵守公司规章制度</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["studyInitiativeScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >导师对新员工的评价(优点&改进点)</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["studentScoreByTeacherAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["traineeScoreByTeacherAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["traineeScoreByTeacherAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+  </#if>
+</#if>
+
+<!-- 部门经理对学员评价 -->
+<#if steps.key == 'studentScoreByDeptManagerTask'>
+	<#if curLoginNo==studentNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">部门经理对学员评价</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">文化融入度</td>
+			<td class="formtable_td_key">适应并践行金立文化，积极融入团队，与团队成员友好协作</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["teamWorkScoreByDept"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">岗位胜任力</td>
+			<td class="formtable_td_key">通过导师辅导，新员工的行为、技能、专业知识得到加强提高，已达到岗位要求</td>
+			<td class="formtable_td_key" align="center">25</td>
+			<td class="formtable_td_key" align="center">25-23</td>
+			<td class="formtable_td_key" align="center">22-20</td>
+			<td class="formtable_td_key" align="center">19-17</td>
+			<td class="formtable_td_key" align="center">16-14</td>
+			<td class="formtable_td_key" align="center">13-1</td>
+			<td class="formtable_td_value" >${steps.vars["performanceTargetsScoreByDept"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >部门负责人对新员工的评价(优点&改进点)</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["studentScoreByManagerAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["traineeScoreByManagerAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["traineeScoreByManagerAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</#if>
+
+
+<!-- 人力资源管理中心对学员评价 -->
+<#if steps.key == 'studentScoreByHrTask'>
+	<#if curLoginNo==studentNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">人力资源管理中心对学员评价</td>
+		</tr>
+		  			
+		<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">其他</td>
+			<td class="formtable_td_key">试用期心得体会/文化故事完成情况</td>
+			<td class="formtable_td_key" align="center">10</td>
+			<td class="formtable_td_key" align="center">10-9</td>
+			<td class="formtable_td_key" align="center">8-7</td>
+			<td class="formtable_td_key" align="center">6-5</td>
+			<td class="formtable_td_key" align="center">4-3</td>
+			<td class="formtable_td_key" align="center">2-1</td>
+			<td class="formtable_td_value" >${(steps.vars["monthSummaryScore"])!""}</td>
+		</tr>
+		
+		<tr>
+			<td class="formtable_td_key" >最终考核结果</td>
+			<td class="formtable_td_value" colspan="8">${steps.vars["extraPointsReason"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["traineeScoreByHrAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["traineeScoreByHrAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</#if>
+
+
+
+<!-- 人力资源管理中心对导师工作评价 -->
+<#if steps.key == 'teacherScoreByHrTask'>
+	<#if curLoginNo==teacherNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">人力资源管理中心对导师工作评价</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">其他</td>
+			<td class="formtable_td_key">《新员工培养计划表》制定及《新员工月度培养反馈表》提交情况</td>
+			<td class="formtable_td_key" align="center">10</td>
+			<td class="formtable_td_key" align="center">10-9</td>
+			<td class="formtable_td_key" align="center">8-7</td>
+			<td class="formtable_td_key" align="center">6-5</td>
+			<td class="formtable_td_key" align="center">4-3</td>
+			<td class="formtable_td_key" align="center">2-1</td>
+			<td class="formtable_td_value" >${(steps.vars["monthSummaryScoreForTeacher"])!""}</td>
+		</tr>
+		
+		<tr>
+			<td class="formtable_td_key" >最终考核结果</td>
+			<td class="formtable_td_value" colspan="8">
+			${(steps.vars["extraPointsReasonForTeacher"])!""}
+			<!--<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["extraPointsReasonForTeacher"])!""}</textarea>--></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["teacherScoreByHrAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["teacherScoreByHrAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</#if>
+
+<!-- 学员对导师评价 -->
+<#if steps.key == 'teacherScoreByStudentTask'>
+	<#if curLoginNo==teacherNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">学员对导师进行评价</td>
+		</tr>
+			<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">培养计划制定</td>
+			<td class="formtable_td_key">及时制定培养计划、内容完善、可操作性强，针对新员工特点安排其工作与学习</td>
+			<td class="formtable_td_key" align="center">20</td>
+			<td class="formtable_td_key" align="center">20-18</td>
+			<td class="formtable_td_key" align="center">17-15</td>
+			<td class="formtable_td_key" align="center">14-12</td>
+			<td class="formtable_td_key" align="center">11-9</td>
+			<td class="formtable_td_key" align="center">8-1</td>
+			<td class="formtable_td_value" >${steps.vars["studyContentScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">培养计划执行/实施</td>
+			<td class="formtable_td_key">从员工角度出发，切实辅导员工进行知识、技能、行为改善</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["trainAttitudeScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">积极性</td>
+			<td class="formtable_td_key">积极主动与新员工进行多形式的交流，深入了解员工心声，认真解答其遇到的问题</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["trainMethodsScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >新员工对导师的评价(优点&改进点)</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["teacherScoreByStudentAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["teacherScoreByTraineeAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["teacherScoreByTraineeAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+   </#if>
+</#if>
+
+<!-- 部门经理对导师进行评价 -->
+<#if steps.key == 'teacherScoreByDeptManagerTask'>
+	<#if curLoginNo==teacherNo>
+	<#else>
+		<tr>
+			<td colspan="9" class="formtable_td_key" align="center">部门经理对导师进行评价</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+			<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+			<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+			<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+			<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">优秀</td>
+			<td class="formtable_td_key" align="center">良好</td>
+			<td class="formtable_td_key" align="center">中等</td>
+			<td class="formtable_td_key" align="center">稍差</td>
+			<td class="formtable_td_key" align="center">很差</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key"  align="center">辅导态度</td>
+			<td class="formtable_td_key">及时认真地对学员的总结进行辅导和反馈，指出其工作中的优点和不足，帮助其进步。</td>
+			<td class="formtable_td_key" align="center">15</td>
+			<td class="formtable_td_key" align="center">15-13</td>
+			<td class="formtable_td_key" align="center">12-10</td>
+			<td class="formtable_td_key" align="center">9-7</td>
+			<td class="formtable_td_key" align="center">6-4</td>
+			<td class="formtable_td_key" align="center">4-1</td>
+			<td class="formtable_td_value" >${steps.vars["trainAttitudeInWorkScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" align="center">业绩目标</td>
+			<td class="formtable_td_key">通过导师辅导，新员工的行为、技能、专业知识得到加强提高，已达到岗位要求</td>
+			<td class="formtable_td_key" align="center">25</td>
+			<td class="formtable_td_key" align="center">25-23</td>
+			<td class="formtable_td_key" align="center">22-20</td>
+			<td class="formtable_td_key" align="center">19-17</td>
+			<td class="formtable_td_key" align="center">16-14</td>
+			<td class="formtable_td_key" align="center">13-1</td>
+			<td class="formtable_td_value" >${steps.vars["traineePerformanceTargetsScore"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >部门负责人对导师的评价(优点&改进点)</td>
+			<td class="formtable_td_value" colspan="8">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 850px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["teacherScoreByDeptManagerAdvice"])!""}</textarea></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value">${steps.vars["teacherScoreByManagerAudiName"]!""}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="6">${steps.vars["teacherScoreByManagerAudiTime"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="8">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</#if>
+
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+ 		  	  	<tr>
+					<td colspan="9" class="formtable_td_key" align="center">新员工培养需求</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" rowspan="5">基本性素质</td>
+						<td class="formtable_td_key">姓名</td>							
+						<td  class="formtable_td_value">
+							<input id="userName${rand}" class="easyui-validatebox"  readonly="readonly" required="required" type="text" name="fp_userName"   />
+							<input id="account${rand}" type="hidden" name="fp_applyUserAccount"  value="${appuser.account}"/>
+							<input id="empId${rand}" type="hidden" name="fp_empId"/>
+						</td><!-- value="${appuser.name}" -->
+						<td class="formtable_td_key">性别</td>
+						<td  class="formtable_td_value" >
+				  			<input  id="gender${rand}"  class="easyui-validatebox"   type="text"  name="fp_gender"/>
+				  		</td>
+				  		<td class="formtable_td_key">出生年月日</td>
+						<td  class="formtable_td_value">
+							<input  id="birthday${rand}" class="easyui-validatebox"  readonly="readonly"  required="required" type="text" name="fp_birthday"  /> 
+						</td>
+				  		<td class="formtable_td_key">婚否</td>
+						<td  class="formtable_td_value">
+							<input  id="married${rand}" class="easyui-validatebox"  required="required" type="text" name="fp_married"  /> 
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key">部门</td>
+						<td  class="formtable_td_value">
+							<input  id="orgName${rand}" class="easyui-validatebox"    required="required" type="text" name="fp_orgName"  /> 
+						</td>
+						<td class="formtable_td_key">职位</td>
+						<td  class="formtable_td_value">
+				  			<input  id="job${rand}"  class="easyui-validatebox"   type="text" required="required" name="fp_job"/>
+				  		</td>
+						<td class="formtable_td_key" >入职日期</td>
+						<td  class="formtable_td_value">
+				  			<input id="entryTime${rand}" class="easyui-validatebox"  readonly="readonly"  required="required"  type="text" name="fp_entryTime"/>
+				  			<input id="leaveTime${rand}" type="hidden" name="fp_leaveTime"/>
+				  		</td>
+						<td class="formtable_td_key">联系电话</td>
+						<td  class="formtable_td_value" >
+				  			<input id="telephone${rand}" class="easyui-validatebox"     type="text" name="fp_telephone"/>
+				  		</td>
+				</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">最高学历</td>
+						<td class="formtable_td_value"  >
+		  	  			<input id="education${rand}" class="easyui-validatebox "     type="text"name="fp_education"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">毕业院校</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="school${rand}"   class="easyui-validatebox "   type="text"name="fp_graduateSchool"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">所学专业</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input class="easyui-validatebox " id="major${rand}"   type="text"name="fp_professional"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">在校时间</td>
+		  	  		<td class="formtable_td_value"  >
+		  	  			<input id="graduationTime${rand}" class="easyui-validatebox "     type="text"name="fp_graduationTime"/>
+		  	  		</td>
+		  	  	</tr>
+		  	 
+				<tr>
+					<td class="formtable_td_key">兴趣、爱好</td>
+		  	  		<td class="formtable_td_value" colspan="7" >
+		  	  			<textarea style="width: 600px; height: 30px" id="interest${rand}" name="fp_interest" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="interest${rand}" class="easyui-validatebox "  type="text" name="fp_interest"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">特长、优势</td>
+		  	  		<td class="formtable_td_value" colspan="7" >
+		  	  			<textarea style="width: 600px; height: 30px" id="specialty${rand}" name="fp_specialty" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="specialty${rand}" class="easyui-validatebox "  type="text" name="fp_specialty"/>-->
+		  	  		</td>
+				</tr>
+				<tr >
+					<td class="formtable_td_key" rowspan="4" colspan="2">培训/工作经历</td>
+		  	  		<td class="formtable_td_value"  colspan="8">
+		  	  			<textarea style="width: 600px; height: 30px" id="workExperience1${rand}" name="fp_workExperience1" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="workExperience1${rand}" class="easyui-validatebox "  type="text" name="fp_workExperience1"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="workExperience2${rand}" name="fp_workExperience2" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="workExperience2${rand}" class="easyui-validatebox "  type="text" name="fp_workExperience2"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="workExperience3${rand}" name="fp_workExperience3" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="workExperience3${rand}" class="easyui-validatebox "   type="text" name="fp_workExperience3"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="workExperience4${rand}" name="fp_workExperience4" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="workExperience4${rand}" class="easyui-validatebox "   type="text" name="fp_workExperience4"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" rowspan="2">职业规划</td>
+					<td class="formtable_td_key">1-3年目标</td>
+		  	  		<td class="formtable_td_value"  colspan="7">
+		  	  			<textarea style="width: 600px; height: 30px" id="graduationTime${rand}" name="fp_careerPlan1" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="graduationTime${rand}" class="easyui-validatebox "     type="text"name="fp_careerPlan1"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">3-5年目标</td>
+		  	  		<td class="formtable_td_value"  colspan="7">
+		  	  			<textarea style="width: 600px; height: 30px" id="graduationTime${rand}" name="fp_careerPlan2" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="graduationTime${rand}" class="easyui-validatebox "  data-options="width:220"   type="text"name="fp_careerPlan2"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_key" colspan="2">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="7">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			 $(function(){
+				 $('#processName${rand}').val(
+							"[" + "${appuser.account}" + ","
+									+ "${appuser.name}" + "]金立导师");//流程实例名称
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#account${rand}").val()
+					},
+					function(data){
+						if (data.success) {
+							$("#userName${rand}").val(data.obj.name);//姓名
+							$("#job${rand}").val(data.obj.job);//职位
+							$("#education${rand}").val(data.obj.education);//学历
+							$("#major${rand}").val(data.obj.major);//专业
+							$("#gender${rand}").val(data.obj.sex);//性别
+							$("#birthday${rand}").val(data.obj.birthdayDate);//出生日期
+							$("#age${rand}").val(data.obj.age);//年龄
+							$("#married${rand}").val(data.obj.maritalStatus);//婚姻状况
+							$("#school${rand}").val(data.obj.school);//毕业学校
+							$("#email${rand}").val(data.obj.email);//邮箱
+							$("#entryTime${rand}").val(data.obj.entryDate);//入职日期
+							$("#orgName${rand}").val(data.obj.orgName);//部门
+							$("#telephone${rand}").val(data.obj.tel);//电话
+							$("#leaveTime${rand}").val(data.obj.departureDate);//离职日期
+							var empId='00000000'+data.obj.empId;
+							$("#empId${rand}").val(empId.substring(empId.length-8,empId.length));//职员编号
+							
+							$.post("hrFlow/getUserWorkInfo.json",{
+								account:$("#account${rand}").val()
+							},function(data){
+								$("#interest${rand}").text(data.attributes.interest);
+								$("#specialty${rand}").text(data.attributes.strong);
+								if(data.attributes.empRecs!=null&&data.attributes.empRecs.length>0){
+									for(var i=0;i<data.attributes.empRecs.length;i++){
+										$("#workExperience1${rand}").text(data.attributes.empRecs[i].staDate+'至'+data.attributes.empRecs[i].oveDate+'期间,在'+data.attributes.empRecs[i].comNm+'担任'+data.attributes.empRecs[i].posiNm+'一职');
+									}
+								}
+								if(data.attributes.empSchos!=null&&data.attributes.empSchos.length>0){
+									for(var i=0;i<data.attributes.empSchos.length;i++){
+										$("#graduationTime${rand}").val(data.attributes.empSchos[i].staDate+'至'+data.attributes.empSchos[i].oveDate);
+										//$("#workExperience2${rand}").text(data.attributes.empSchos[i].staDate+'到'+data.attributes.empSchos[i].oveDate+'期间,就读于'+data.attributes.empSchos[i].schoNm+',学历:'+data.attributes.empSchos[i].jiaoyuNm+',专业：'+data.attributes.empSchos[i].major);
+									}
+								}
+								/*if(data.attributes.empTrains!=null&&data.attributes.empTrains.length>0){
+									for(var i=0;i<data.attributes.empTrains.length;i++){
+										$("#workExperience3${rand}").text(data.attributes.empTrains[i].trainStaDate+'到'+data.attributes.empTrains[i].trainEndDate+'期间,于'+data.attributes.empTrains[i].scoNm+','+data.attributes.empTrains[i].address+',培训'+data.attributes.empTrains[i].trainNm+',导师：'+data.attributes.empTrains[i].teacher+',部门：'+data.attributes.empTrains[i].bigDeptNm+'-'+data.attributes.empTrains[i].orgNm);
+									}
+								}*/
+							});
+						}
+					});
+				
+			}); 
+			function check(){
+				var da = new Date();
+				var str = da.getFullYear()+"-"+(da.getMonth()+1);
+				
+				var arr = str.split("-");
+			    var starttime = new Date(arr[0], arr[1]);
+			    var starttimes = starttime.getTime();
+				var d=$('#endTime-${rand}').val();
+			    var arrs = d.split("-");
+			    var lktime = new Date(arrs[0], arrs[1]);
+			    var lktimes = lktime.getTime();
+				if(lktimes>starttimes){
+					$('#endTime-${rand}').val('');
+					$.messager.alert('提示','日期不能超过'+str);   
+
+				}
+				var d2=$('#endTime2-${rand}').val();
+				if(d2){
+					    var arrs2 = d2.split("-");
+					    var lktime2 = new Date(arrs2[0], arrs2[1]);
+					    var lktimes2 = lktime2.getTime();
+					    if(lktimes2>starttimes){
+					    	$('#endTime2-${rand}').val('');
+					    	$.messager.alert('提示','日期不能超过'+str);  
+					    }
+				}
+				var d3=$('#endTime3-${rand}').val();
+				if(d3){
+					    var arrs3 = d3.split("-");
+					    var lktime3 = new Date(arrs3[0], arrs3[1]);
+					    var lktimes3 = lktime3.getTime();
+					    if(lktimes3>starttimes){
+					    	$('#endTime3-${rand}').val('');
+					    	$.messager.alert('提示','日期不能超过'+str);  
+					    }
+				}
+				var d4=$('#endTime4-${rand}').val();
+				if(d4){
+				    var arrs4 = d4.split("-");
+				    var lktime4 = new Date(arrs4[0], arrs4[1]);
+				    var lktimes4 = lktime4.getTime();
+				    if(lktimes4>starttimes){
+				    	$('#endTime4-${rand}').val('');
+				    	$.messager.alert('提示','日期不能超过'+str);  
+				    }
+			   }
+				var d5=$('#endTime5-${rand}').val();
+				if(d5){
+				    var arrs5 = d5.split("-");
+				    var lktime5 = new Date(arrs5[0], arrs5[1]);
+				    var lktimes5 = lktime5.getTime();
+				    if(lktimes5>starttimes){
+				    	$('#endTime5-${rand}').val('');
+				    	$.messager.alert('提示','日期不能超过'+str);  
+				    }
+			   }
+			}
+			/* function loadUserInfo(){
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfoById.json",	{
+					account:$("#curUserId${rand}").val()	
+				},function(data){
+						if (data.success) {
+							$("#userName${rand}").val(data.obj[0].name);//姓名
+							$("#job${rand}").val(data.obj[0].job);//职位
+							$("#education${rand}").val(data.obj[0].education);//学历
+							$("#major${rand}").val(data.obj[0].major);//专业
+							$("#gender${rand}").val(data.obj[0].sex);//性别
+							$("#age${rand}").val(data.obj[0].age);//年龄
+							$("#school${rand}").val(data.obj[0].school);//毕业学校
+							$("#email${rand}").val(data.obj[0].email);//邮箱
+							$("#entryTime${rand}").val(data.obj[0].entryDate);//入职日期
+							$("#orgName${rand}").val(data.obj[0].orgName);//部门
+							$("#telephone${rand}").val(data.obj[0].tel);//电话
+							$('#processName${rand}').val("["+$("#curUserId${rand}").val()+","+data.obj[0].name+"]培养记录");//流程实例名称
+					}
+				});
+			} */
+		</script>
+	</#if>
+</#if>
+
+<!--确认导师及导师期 -->
+<#if currentStep?exists>
+	<#if currentStep == 'nmb_deptManagerAudiTask'>
+		<div id="nmb_deptManagerAudiTask">
+		  <form id="nmb_deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="7" class="formtable_td_key" align="center">确认导师及培训需求</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" rowspan="2">部门导师信息</td>
+					<td class="formtable_td_key">学员导师：</td>
+						<td class="formtable_td_value"  colspan="5">
+		  	  			<input id="teacherAccount${rand}" type="hidden" name="fp_teacherAccount" />
+		  	  			<input id="teacherNo${rand}" type="hidden" name="fp_teacherNo"/>
+		  	  			<input  data-options="required:true" id="teacherName${rand}" name="fp_teacherName" readonly="readonly" class="easyui-validatebox"/>
+						<a id="openSelectPersonBtn" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+		  	  		</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key">职位：</td>
+						<td  class="formtable_td_value"  >
+				  			<input  id="teacherJob${rand}"  class="easyui-validatebox"   type="text"  name="fp_teacherJob"/>
+				  		</td>
+						<td class="formtable_td_key">邮箱：</td>
+						<td  class="formtable_td_value" >
+				  			<input  id="teacherEmail${rand}"  class="easyui-validatebox"   type="text"  name="fp_teacherEmail"/>
+				  		</td>
+				  		<td class="formtable_td_key">电话：</td>
+						<td  class="formtable_td_value" >
+				  			<input id="teacherTel${rand}" class="easyui-validatebox"     type="text" name="fp_teacherTel"/>
+				  		</td>
+				</tr>
+				
+				<tr >
+					<td class="formtable_td_key" rowspan="4" >培训需求</td>
+					<td class="formtable_td_key" >态度(<span style="color: red;">A</span>ttitude)</td>
+		  	  		<td class="formtable_td_value"  colspan="8">
+		  	  			<textarea style="width: 600px; height: 30px" id="attitude${rand}" name="fp_attitude" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="attitude${rand}" class="easyui-validatebox "     type="text"name="fp_attitude"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >技能(<span style="color: red;">S</span>kill)</td>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="skill${rand}" name="fp_skill" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="skill${rand}" class="easyui-validatebox "     type="text"name="fp_skill"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >知识(<span style="color: red;">K</span>nowledge)</td>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="knowledge${rand}" name="fp_knowledge" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="knowledge${rand}" class="easyui-validatebox "     type="text"name="fp_knowledge"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" >实践(<span style="color: red;">E</span>xperience)</td>
+		  	  		<td class="formtable_td_value" colspan="8" >
+		  	  			<textarea style="width: 600px; height: 30px" id="wexperience${rand}" name="fp_experience" class="easyui-textbox"></textarea>
+		  	  			<!--<input id="wexperience${rand}" class="easyui-validatebox "     type="text"name="fp_experience"/>-->
+		  	  		</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="6">
+							<textarea style="width: 700px; height: 60px" name="fp_deptManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">部门负责人签名：</td>
+					<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_deptManagerAudiName"  value="${appuser.name}" />
+							${appuser.name}
+							<input id="departManagerLoginNo${rand}" type="hidden" name="fp_departManagerLoginNo" value="${appuser.account}"/>
+							<input id="departManagerAccount${rand}" type="hidden" name="fp_departManagerAccount"/>
+							<input id="proceIntanse${rand}" type="hidden" value="${processInstanceId}"/>
+							<input id="applyAccount${rand}" type="hidden"/>
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="3">
+							<input   type="hidden" name="fp_deptManagerAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+
+		</div>
+<!-- 部门经理为学员挑选部门导师 -->
+		
+	<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+		style="width: 700px; height: 500px; padding: 5px"
+		data-options="modal:true, closed:true,iconCls:'icon-process',
+					buttons: [{
+	                    text:'完成',
+	                    iconCls:'icon-ok',
+	                    handler: selectUserEnd
+	                },{
+	                    text:'关闭',
+	                    iconCls:'icon-cancel',
+	                    handler: closeSelectUserWin
+	                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 0px 0px 0px 0px;">
+			
+			<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+				员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+			</div>
+			<table id="users${rand}"></table>
+		</div>
+
+	</div>
+</div>
+		
+	<script type="text/javascript">
+					var orgWin = $('#orgWin-${rand}');
+					//弹出窗口
+					$('#openSelectPersonBtn').bind('click', function(){
+					    orgWin.dialog('open');	
+					    $.ajax({  
+					                type:'post',      
+					    	        url:'bpmRole/findById.json',  
+					    	        data:{'account':$("#applyAccount${rand}").val()},  
+					    	        dataType:'json',  
+					    	        success:function(data){
+					    	        	 $('#users${rand}').datagrid({
+											  fit:true,
+											  fitColumns:false,
+											  url:'bpmRole/users.json',
+											  queryParams:{
+													id:data
+												},
+											  columns:[[
+												{field:'id',checkbox:true},
+												{field:'account',title:'帐号',width:100},
+												{field:'name',title:'姓名',width:100},
+												{field:'orgName',title:'部门',width:100}
+											  ]],
+											  border:false,
+											  nowrap: true,
+											  pagination:false,
+											  pageNumber:1,
+											  pageSize:20,
+											  fit : true,
+											  singleSelect:true,
+											  rownumbers:true,
+										});
+					    	        }  
+					    	     });  
+					});
+					
+					$(function(){
+						//获取申请人的账号
+						$.post("workspace/getApplyAccountByPro.json",{
+							proceId:$("#proceIntanse${rand}").val()
+						},function(data){
+							$("#applyAccount${rand}").val(data);
+						});
+						
+						$.post("hrFlow/getHrUserInfo.json",{
+							account:$("#departManagerLoginNo${rand}").val()
+						},function(data){
+							var managerNo='00000000'+data.obj.empId;
+							$("#departManagerAccount${rand}").val(managerNo.substring(managerNo.length-8,managerNo.length));
+						});
+							var orgs = $('#orgs${rand}');
+							var users = $('#users${rand}');
+							var currentOrgId = 0;
+							//初始化组织架构树
+							orgs.tree({
+							    url: 'hrFlow/auth/orgs.json',
+							    method:'get',
+							    required:true,
+							    lines:true,
+								panelWidth:300,
+								panelHeight:280,
+						        onClick:function(node){
+					                currentOrgId = node.id;		
+									$('#users${rand}').datagrid('reload',{id:currentOrgId});
+								}
+							});
+				        
+						    //查询用户
+							$('#userGridSearchBtn${rand}').bind('click', function(){
+								var userAccount = $('#userAccount${rand}').val();
+								var userName = $('#searchName${rand}').val();
+								if(!userAccount && !userName){
+									$.messager.alert('提示','请输入信息','warning');
+									return;
+								}
+								$('#users${rand}').datagrid('reload',
+									{
+										userAccount:userAccount,
+										userName:userName
+									});
+						         $("#users${rand}").datagrid({ singleSelect: false });
+							});
+						    //初始化人员 
+						     $('#users${rand}').datagrid({
+									  fit:true,
+									  fitColumns:false,
+									  url:'bpmRole/users.json',
+									  queryParams:{
+											id:currentOrgId
+										},
+									  columns:[[
+										{field:'id',checkbox:true},
+										{field:'account',title:'帐号',width:100},
+										{field:'name',title:'姓名',width:100},
+										{field:'orgName',title:'部门',width:100}
+									  ]],
+									  border:false,
+									  nowrap: true,
+									  pagination:false,
+									  pageNumber:1,
+									  pageSize:20,
+									  fit : true,
+									  singleSelect:true,
+									  rownumbers:true,
+								});
+						});
+					 //选择用户完成事件
+				    function selectUserEnd(){
+					   var row = $('#users${rand}').datagrid('getSelected');
+						if (row) {
+						    $('#teacherAccount${rand}').val(row.account);
+						    $('#teacherName${rand}').val(row.name);
+						    //$("#userName${rand}").val('');//姓名
+							$("#teacherJob${rand}").val('');//职位
+							$("#teacherEmail${rand}").val('');//邮箱
+							$("#teacherTel${rand}").val('');//电话
+						    
+						    $('#teacherName${rand}').validatebox('validate');
+						    
+						    orgWin.dialog('close');	
+						    
+						} else {
+							$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+						}
+						//界面通过接口加载个人信息
+						$.post("hrFlow/getHrUserInfo.json",
+							{
+								account:$("#teacherAccount${rand}").val()
+							},
+							function(data){
+								if (data.success) {
+									//$("#userName${rand}").val(data.obj.name);//姓名
+									$("#teacherJob${rand}").val(data.obj.job);//职位
+									$("#teacherEmail${rand}").val(data.obj.email);//邮箱
+									$("#teacherTel${rand}").val(data.obj.tel);//电话
+									var teacherNo='00000000'+data.obj.empId;
+									$("#teacherNo${rand}").val(teacherNo.substring(teacherNo.length-8,teacherNo.length));
+								}
+						});
+				  	 }
+				   //关闭组织架构窗口
+				   function  closeSelectUserWin(){
+
+				   	 	orgWin.dialog('close');	
+				  	 }
+	</script>
+	</#if>
+</#if>
+
+<!-- 学员确认导师信息 -->
+<#if currentStep?exists>
+	<#if currentStep == 'nmb_traineeAudiTask'>
+		<div id="nmb_traineeAudiTask">
+		  <form id="nmb_traineeAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_traineeAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="7" class="formtable_td_key" align="center">学员确认导师信息</td>
+					</tr>
+		  			<tr>
+		  				<td class="formtable_td_key">说明：</td>
+						<td class="formtable_td_value" colspan="5">
+							<a id="downLoadTeacherAgreement-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载并填写《导师辅导协议》</a>
+							<span style="font-size: 13pt;font-family:黑体;color: red">下载完成，签名确认后，点击左上角上传附件！</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 60px" mobile="备注" name="fp_traineeAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">学员签名：</td>
+					<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" mobile="学员签名" name="fp_traineeAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="3">
+							<input   type="hidden" name="fp_traineeAudiTime" mobile="签名时间" timeEditor="1" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			
+			//下载导入部门团队活动人员名单模板
+	  	 	$('#downLoadTeacherAgreement-${rand}').bind('click', function(){
+	  	 		submitForm("download.teacherAgreement.name");
+	  	 	});
+		 	
+	  	 	function submitForm(value){
+	  	 		var form = $("<form>");
+			   	form.attr('style', 'display:none');
+			   	form.attr('method', 'post');
+			    form.attr('action', '${base}sysprocess/task/wordDownload.html');
+			
+			    var key = $('<input>');
+			   	key.attr('type', 'hidden');
+			   	key.attr('name', 'key');
+			    key.attr('value', value);
+			
+			   	$('body').append(form);
+			    form.append(key);
+			        
+			    form.submit();
+			    form.remove();
+	  	 	}
+			
+		</script>
+	</#if>
+</#if>
+
+<!-- 培训导师制定培养计划 -->
+<#if currentStep?exists>
+	<#if currentStep == 'nmb_deptTeacherAudiTask'>
+		<div id="nmb_deptTeacherAudiTask">
+		  <form id="nmb_deptTeacherAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_deptTeacherAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="7" class="formtable_td_key" align="center">培训导师制定培养计划</td>
+					</tr>
+				<!-- 	<tr>
+		  				<td class="formtable_td_key" >通过表格上传培训计划</td>
+						<td class="formtable_td_value" colspan="6">
+							<input id="trueUpload${rand}" type="radio" name="fp_uploadListAudi"  value="0" />是
+							<input id="falseUpload${rand}" type="radio" name="fp_uploadListAudi" checked="checked" value="1" />否
+						</td>
+					</tr> -->
+					<tr id="uploadPlanList${rand}">
+						<td class="formtable_td_key" >培训计划：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="partAccount" type="hidden" name="fp_partList" /> 
+							<input id="participantList_val" type="hidden"   name="fp_participantList" /> 
+							<input id="participantList4Hidden" type="hidden" name="fp_participantList4Hidden" /> 
+							<a id="downloadTrainPlanExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载《新员工培养计划表》</a>
+							<span style="font-size: 13pt;font-family:黑体;color: red">下载完成，填写培训计划签名确认后，点击左上角上传附件！</span>
+							<!-- <a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">上传培训文档</a> -->
+							<!-- <span style="font-size: 13pt;font-family:黑体;color: red">您也可以选择，下载模板，上传培训计划</span> -->
+							<div id="participantList" style="font-size: 12px; "></div>
+						</td>
+					</tr>
+				
+					<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 60px" name="fp_deptTeacherAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+						<td class="formtable_td_key">导师签名：</td>
+						<td class="formtable_td_value" colspan="2">
+								<input  class="easyui-validatebox" type="hidden" name="fp_deptTeacherName"  value="${appuser.name}" />
+								${appuser.name}
+								<input type="hidden" name="fp_teacherAcccount" value="${appuser.account}"/>
+						</td>
+						<td class="formtable_td_key">签名时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+								<input   type="hidden" name="fp_deptTeacherTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+								${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+		  	  </table>
+			</form>
+		</div>
+		<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'上传培训文档',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+			<div  style="padding:10px 10px;">
+					<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td width="120" align="center">上传文件:</td>
+								<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+								<td>
+									<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+			</div>
+		</div>
+		<script type="text/javascript">
+			//$("#uploadPlanList${rand}").hide();
+			$("#trueUpload${rand}").bind("click",function(){
+				$("#uploadPlanList${rand}").show();
+				$("#trainPlanTitle${rand}").hide();
+				$("#trainPlanContent1${rand}").hide();
+				$("#trainPlanContent2${rand}").hide();
+				$("#trainPlanContent3${rand}").hide();
+				$("#trainPlanContent4${rand}").hide();
+				$("#trainPlanContent5${rand}").hide();
+				$("#trainPlanContent6${rand}").hide();
+				$("#trainPlanContent7${rand}").hide();
+				$("#trainTimeByTeacher1${rand}").validatebox({required:false});//将培训时间设置为非必填项
+	  	 		$("#trainContentByTeacher1${rand}").validatebox({required:false});//将培训内容设置为非必填项
+	  	 		$("#trainTotalByTeacher1${rand}").validatebox({required:false});//将培训时间设置为非必填项
+	  	 		$("#trainRemarkByTeacher1${rand}").validatebox({required:false});//将备注设置为非必填项
+			});
+			var f=function(){
+				$("#uploadPlanList${rand}").hide();
+				$("#trainPlanTitle${rand}").show();
+				$("#trainPlanContent1${rand}").show();
+				$("#trainPlanContent2${rand}").show();
+				$("#trainPlanContent3${rand}").show();
+				$("#trainPlanContent4${rand}").show();
+				$("#trainPlanContent5${rand}").show();
+				$("#trainPlanContent6${rand}").show();
+				$("#trainPlanContent7${rand}").show();
+				$("#basisUploadProductSystemName${rand}").validatebox({required:true});
+				$("#trainTimeByTeacher1${rand}").validatebox({required:true});
+	  	 		$("#trainContentByTeacher1${rand}").validatebox({required:true});
+	  	 		$("#trainTotalByTeacher1${rand}").validatebox({required:true});
+	  	 		$("#trainRemarkByTeacher1${rand}").validatebox({required:true});
+			};
+			$("#falseUpload${rand}").bind("click",f);
+		
+			/* //添加行
+			function addRow(){
+				var i = document.getElementById('deptTeacherAudiTaskFormTable').rows.length;
+				var currRow = document.getElementById('deptTeacherAudiTaskFormTable').insertRow(i-3);
+				currRow.style.backgroundColor="#ffffff";//设置背景颜色为白色
+				currRow.style.textAlign="center";
+				var j=document.getElementById('deptTeacherAudiTaskFormTable').rows.length-5;
+				var cell0=currRow.insertCell(0).innerHTML=j;
+				var cell1=currRow.insertCell(1).innerHTML='<input  id="trainTimeByTeacher['+j+']${rand}" class="easyui-validatebox textbox"  type="text"  name="fp_trainTimeByTeacher['+j+']" />';
+				var cell2=currRow.insertCell(2).innerHTML='<input  id="trainContentByTeacher['+j+']${rand}" class="easyui-validatebox textbox"  type="text"  name="fp_trainContentByTeacher['+j+']" />';
+				var cell3=currRow.insertCell(3).innerHTML='<input  id="trainTotalByTeacher['+j+']${rand}" class="easyui-validatebox textbox"  type="text"  name="fp_trainTotalByTeacher['+j+']" />';
+				var cell4=currRow.insertCell(4).innerHTML='<input  id="trainRemarkByTeacher['+j+']${rand}" class="easyui-validatebox textbox"  type="text"  name="fp_trainRemarkByTeacher['+j+']" />';
+				var cell5=currRow.insertCell(5).innerHTML='<a  href="javascript:void(0);" onclick="delRow(this)">删除</a>';
+				
+			}
+			//得到行对象
+			function getRowObj(obj)
+			{
+				var i = 0;
+				while(obj.tagName.toLowerCase() != "tr"){
+					obj = obj.parentNode;
+					if(obj.tagName.toLowerCase() == "table")return null;
+				}
+				return obj;
+			} 
+			function delRow(obj){
+				var tr = this.getRowObj(obj);
+				if(tr != null){
+					tr.parentNode.removeChild(tr);
+				}else{
+					throw new Error("对不起，您的操作有误，请重试！");
+				}
+			} */
+			
+			//下载导入部门团队活动人员名单模板
+	  	 	$('#downloadTrainPlanExcel${rand}').bind('click', function(){
+	  	 		submitForm("download.trainPlanTable.name");
+	  	 	});
+		 	
+	  	 	function submitForm(value){
+	  	 		var form = $("<form>");
+			   	form.attr('style', 'display:none');
+			   	form.attr('method', 'post');
+			    form.attr('action', '${base}sysprocess/task/download.html');
+			
+			    var key = $('<input>');
+			   	key.attr('type', 'hidden');
+			   	key.attr('name', 'key');
+			    key.attr('value', value);
+			
+			   	$('body').append(form);
+			    form.append(key);
+			        
+			    form.submit();
+			    form.remove();
+	  	 	}
+			
+	  	//上传培训文档
+	  		 $("#openImportPersonBtn-${rand}").bind('click',function(){
+	  			 $("#importWin-${rand}").dialog('open');
+	  		 });
+	  		function clearInputFile${rand}(){
+	  				//清空文件框
+	  				$("#upload_file-${rand}").remove(); //移除原来的
+	  			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+	  			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+	  			    $.parser.parse('#td_input_${rand}');
+	  			}
+	  		 $("#upfile-${rand}").bind('click',function(){
+	  			 $.messager.progress();
+	  			 $("#upform-${rand}").form('submit',{
+	  					url:'teamActivities/importTrainPlan.html',
+	  					onSubmit:function(){
+	  						var validateResult = $(this).form('validate');
+	  				    	if (!validateResult) {
+	  				    		$.messager.progress('close');
+	  							return false;
+	  				    	} else {
+	  				    		return true;
+	  				    	}
+	  				    },
+	  					success:function(data){
+	  						if(typeof(data).toLowerCase()=='string'){
+	  							data=eval("("+data+")");
+	  						}
+	  						if(data.success){
+	  							countIsOffice = 0;
+	  							countNotOffice = 0;
+	  							var str = "";
+	  							var str4Hidden = "";
+	  							if(data.obj.length>0){
+	  								$('#participantList').val("");
+	  								str = "<table border=1 cellspace=1 width=100%>";
+	  								str +="<tr align=center><td width=10%>序号</td><td width=10%>培训内容</td><td width=10%>培训时间</td><td width=10%>培训目的</td><td width=20%>备注</td></tr>";
+	  								for(var i = 0;i < data.obj.length;i++){
+	  								  str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].content+"</td><td>"+data.obj[i].date+"</td><td>"+data.obj[i].type+"</td><td>"+data.obj[i].result+"</td></tr>"
+	  								  str4Hidden +="["+data.obj[i].number+","+data.obj[i].content+","+data.obj[i].date+","+data.obj[i].type+","+data.obj[i].result+"]:"
+	  								}
+	  								str+="</table>"
+	  								document.getElementById("participantList").innerHTML=str;
+	  								$('#participantList4Hidden').val(str4Hidden);
+	  							}
+	  							document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+	  						} 
+	  						$("#importWin-${rand}").dialog('close');
+	  						$.messager.progress('close');
+	  						$.messager.alert("提示信息",data.msg)
+	  					}
+	  				});
+	  		 });
+		</script>
+	</#if>
+</#if>
+
+<!-- 学员确认培养计划 -->
+<#if currentStep?exists>
+	<#if currentStep == 'studentConfirmPlanTask'>
+		<div id="studentConfirmPlanTask">
+		  <form id="studentConfirmPlanTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="studentConfirmPlanTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="7" class="formtable_td_key" align="center">学员确认培养计划</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 60px" mobile="意见" name="fp_studentConfirmAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" mobile="签名" name="fp_studentConfirmAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="3">
+							<input   type="hidden" name="fp_studentConfirmAudiTime" timeEditor="1" mobile="签名时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 导师月度培养计划反馈-->
+<#if currentStep?exists>
+	<#if currentStep == 'teachTrainPlanResultTask'>
+		<#if processSteps??> 
+			<#list processSteps as steps> 
+				<#if steps.key =='startevent1'>
+		<div id="teachTrainPlanResultTask">
+		  <form id="teachTrainPlanResultTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="teachTrainPlanResultTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="6" class="formtable_td_key" align="center">导师月度反馈</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">下载：</td>
+						<td class="formtable_td_value" colspan="5">
+							<a id="downLoadTeacherPlanResult-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载并填写《新员工月度培养反馈表》</a>
+							<span style="font-size: 13pt;font-family:黑体;color: red">下载完成，填写完成并签名确认后，点击左上角上传附件！</span>
+						</td>
+					</tr>
+					<!--<tr>
+						<td class="formtable_td_key">学员信息：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="account${rand}" type="hidden" name="fp_applyUserAccount"  value="${(steps.vars["applyUserAccount"])!""}"/>
+					  		<input  id="studentStatus${rand}"  class="easyui-validatebox"   name="fp_studentStatus"/>
+					  		<input  id="empGroup${rand}"  class="easyui-validatebox"    name="fp_empGroup"/>
+					  		<input id="entryTime${rand}" class="easyui-validatebox" value="${(steps.vars["entryTime"])!""}"  name="fp_entryTime"/>
+					  		<input id="trainTime${rand}" class="easyui-numberbox"    name="fp_trainTime" />
+						</td>
+					</tr>-->
+					<tr>
+						<td class="formtable_td_key" >导师意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 60px"  mobile="审核意见" name="fp_teachTrainPlanResultAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">导师签名：</td>
+					<td class="formtable_td_value">
+							<input  class="easyui-validatebox" type="hidden" mobile="签名" name="fp_teachTrainPlanResultAudiName"  value="${appuser.name}" />
+							${appuser.name}
+							<input id="account${rand}" type="hidden" name="fp_applyUserAccount"  value="${(steps.vars["applyUserAccount"])!""}"/>
+					  		<input  id="studentStatus${rand}" type="hidden"  class="easyui-validatebox"   name="fp_studentStatus"  data-options="required:true" missingMessage="请等待数据加载"/>
+					  		<input  id="empGroup${rand}" type="hidden"  class="easyui-validatebox"    name="fp_empGroup"  data-options="required:true" missingMessage="请等待数据加载"/>
+					  		<input id="entryTime${rand}" type="hidden" class="easyui-validatebox" value="${(steps.vars["entryTime"])!""}"  name="fp_entryTime"  data-options="required:true" missingMessage="请等待数据加载"/>
+					  		<input id="trainTime${rand}" type="hidden" class="easyui-numberbox"    name="fp_trainTime"  data-options="required:true" missingMessage="请等待数据加载"/>
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="3">
+							<input   type="hidden" name="fp_teachTrainPlanResultAudiTime" timeEditor="1" mobile="签名时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+   </#list>
+			<script type="text/javascript">
+			
+			//下载导入部门团队活动人员名单模板
+	  	 	$('#downLoadTeacherPlanResult-${rand}').bind('click', function(){
+	  	 		submitForm("download.teacherMonthTrainPlan.name");
+	  	 	});
+		 	
+	  	 	function submitForm(value){
+	  	 		var form = $("<form>");
+			   	form.attr('style', 'display:none');
+			   	form.attr('method', 'post');
+			    form.attr('action', '${base}sysprocess/task/wordDownload.html');
+			
+			    var key = $('<input>');
+			   	key.attr('type', 'hidden');
+			   	key.attr('name', 'key');
+			    key.attr('value', value);
+			
+			   	$('body').append(form);
+			    form.append(key);
+			        
+			    form.submit();
+			    form.remove();
+	  	 	}
+			
+	  	 	$(function(){
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#account${rand}").val()
+					},
+					function(data){
+						
+						if (data.success) {
+							$("#studentStatus${rand}").val(data.obj.status);//在职状态
+							//$("#studentStatus${rand}").val('离职');
+							$("#empGroup${rand}").val(data.obj.empGroup);//员工组
+							//$("#empGroup${rand}").val('A');
+							var  today = new Date();
+							var entryTime=$("#entryTime${rand}").val();
+							//var entryTime='2016-6-15';
+							var entrydate=entryTime.split("-");
+							var date1 =  parseInt(entrydate[0])*12+parseInt(entrydate[1]);
+							var date2 = parseInt(today.getFullYear())*12+parseInt(today.getMonth()+1);
+							var month = Math.abs(date1 - date2);
+							$("#trainTime${rand}").numberbox('setValue',month);
+						}
+					});
+			}); 
+		</script>
+	</#if>
+  </#if>
+</#if>
+
+<!-- 导师对学员评分 -->
+<#if currentStep?exists>
+	<#if currentStep == 'studentScoreByTeacherTask'>
+		<div id="studentScoreByTeacherTask">
+		  <form id="studentScoreByTeacherTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="studentScoreByTeacherTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="9" class="formtable_td_key" align="center">导师对学员评价</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">计划执行</td>
+						<td class="formtable_td_key" >接受导师的工作指导，严格按照辅导计划安排学习</td>
+						<td class="formtable_td_key" align="center">20</td>
+						<td class="formtable_td_key" align="center">20-18</td>
+						<td class="formtable_td_key" align="center">17-15</td>
+						<td class="formtable_td_key" align="center">14-12</td>
+						<td class="formtable_td_key" align="center">11-9</td>
+						<td class="formtable_td_key" align="center">8-1</td>
+						<td class="formtable_td_value" >
+							<input id="trainContentScore${rand}" name="fp_trainContentScore" class="easyui-numberbox" data-options="required:true,max:20,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">学习能力</td>
+						<td class="formtable_td_key" >接受能力快，迅速掌握培训内容，并能提出改善提案或合理化建议</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="studyAttitudeScore${rand}" name="fp_studyAttitudeScore" class="easyui-numberbox"  data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">工作态度</td>
+						<td class="formtable_td_key" >与公司同事关系融洽，表现积极主动，认同公司文化，遵守公司规章制度</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="studyInitiativeScore${rand}" name="fp_studyInitiativeScore" class="easyui-numberbox" data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >导师对新员工的评价(优点&改进点)</td>
+						<td class="formtable_td_value" colspan="9">
+							<textarea style="width: 700px; height: 60px" id="studentScoreByTeacherAdvice${rand}" name="fp_studentScoreByTeacherAdvice" class="easyui-textbox"></textarea>
+						</td>
+						
+					</tr>
+		  	  		<tr>
+						<td class="formtable_td_key" >签名：</td>
+						<td class="formtable_td_value" colspan="3">
+								<input  class="easyui-validatebox" type="hidden" name="fp_traineeScoreByTeacherAudiName"  value="${appuser.name}" />
+								${appuser.name}
+						</td>
+						<td class="formtable_td_key" >签名时间：</td>
+						<td class="formtable_td_value"  colspan="4">
+								<input   type="hidden" name="fp_traineeScoreByTeacherAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+								${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						<!-- <td class="formtable_td_key" >评分合计：</td>
+						<td class="formtable_td_value" >
+							<input id="teacherTotalScore${rand}" name="fp_traineeGet2"  readonly="readonly"/>
+						</td> -->
+					</tr>
+		  	  </table>
+			</form>
+		</div>
+	<script type="text/javascript">
+		var text1 = document.getElementById("trainContentScore${rand}");
+		var text2 = document.getElementById("studyAttitudeScore${rand}");
+		var text3 = document.getElementById("studyInitiativeScore${rand}");
+		 text1.onkeyup = function(){
+			 if(text1.value.toString().indexOf('.')>0){
+				 var index=text1.value.toString().indexOf('.');
+				 text1.value=parseInt(text1.value.toString().substr(0,index));
+			 }
+		 }
+		 text2.onkeyup = function(){
+			 if(text2.value.toString().indexOf('.')>0){
+				 var index=text2.value.toString().indexOf('.');
+				 text2.value=parseInt(text2.value.toString().substr(0,index));
+			 }
+		 }
+		 text3.onkeyup = function(){
+			 if(text3.value.toString().indexOf('.')>0){
+				 var index=text3.value.toString().indexOf('.');
+				 text3.value=parseInt(text3.value.toString().substr(0,index));
+			 }
+		 }
+		/*var getTotalScore;
+		$(function(){
+			getTotalScore = function(){
+				var score1 = parseFloat($("#trainContentScore${rand}").numberbox("getValue"));
+				var score2 =parseFloat($("#studyAttitudeScore${rand}").numberbox("getValue"));
+				var score3 = parseFloat($("#studyInitiativeScore${rand}").numberbox("getValue"));
+				var sum=0;
+				if(score1){
+					sum  = score1 + parseFloat(sum);
+				}
+				if(score2){
+					sum  = score2 + parseFloat(sum);
+				}
+				if(score3){
+					sum  = score3 + parseFloat(sum);
+				} 
+				$('#teacherTotalScore${rand}').val(sum);
+			}
+		})*/
+				
+		</script>
+ </#if>
+</#if>
+
+<!-- 部门经理对学员评价 -->
+<#if currentStep?exists>
+	<#if currentStep == 'studentScoreByDeptManagerTask'>
+		<div id="studentScoreByDeptManagerTask">
+		  <form id="studentScoreByDeptManagerTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="studentScoreByDeptManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="9" class="formtable_td_key" align="center">部门经理对学员评价</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key"  align="center">文化融入度</td>
+						<td class="formtable_td_key" >适应并践行金立文化，积极融入团队，与团队成员友好协作</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="teamWorkScore${rand}" name="fp_teamWorkScoreByDept" class="easyui-numberbox"  data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">岗位胜任力</td>
+						<td class="formtable_td_key" >通过导师辅导，新员工的行为、技能、专业知识得到加强提高，已达到岗位要求</td>
+						<td class="formtable_td_key" align="center">25</td>
+						<td class="formtable_td_key" align="center">25-23</td>
+						<td class="formtable_td_key" align="center">22-20</td>
+						<td class="formtable_td_key" align="center">19-17</td>
+						<td class="formtable_td_key" align="center">16-14</td>
+						<td class="formtable_td_key" align="center">13-1</td>
+						<td class="formtable_td_value" >
+							<input id="performanceTargetsScore${rand}" name="fp_performanceTargetsScoreByDept" class="easyui-numberbox" data-options="required:true,max:25,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >部门负责人对新员工的评价(优点&改进点)</td>
+						<td class="formtable_td_value" colspan="9">
+							<textarea style="width: 700px; height: 60px" id="studentScoreByTeacherAdvice${rand}" name="fp_studentScoreByManagerAdvice" class="easyui-textbox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">签名：</td>
+						<td class="formtable_td_value" colspan="3">
+								<input  class="easyui-validatebox" type="hidden" name="fp_traineeScoreByManagerAudiName"  value="${appuser.name}" />
+								${appuser.name}
+						</td>
+						<td class="formtable_td_key">签名时间：</td>
+						<td class="formtable_td_value"  colspan="4">
+								<input   type="hidden" name="fp_traineeScoreByManagerAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+								${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+		  	  </table>
+			</form>
+		</div>
+	<script type="text/javascript">
+		var text1 = document.getElementById("teamWorkScore${rand}");
+		var text2 = document.getElementById("performanceTargetsScore${rand}");
+		 text1.onkeyup = function(){
+			 if(text1.value.toString().indexOf('.')>0){
+				 var index=text1.value.toString().indexOf('.');
+				 text1.value=parseInt(text1.value.toString().substr(0,index));
+			 }
+		 }
+		 text2.onkeyup = function(){
+			 if(text2.value.toString().indexOf('.')>0){
+				 var index=text2.value.toString().indexOf('.');
+				 text2.value=parseInt(text2.value.toString().substr(0,index));
+			 }
+		 }
+	</script>
+	</#if>
+</#if>
+
+
+<!--人力资源管理中心对学员评价 -->
+<#if currentStep?exists>
+   <#if currentStep == 'studentScoreByHrTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'studentScoreByTeacherTask'>
+      	<#assign trainContentScore=steps.vars["trainContentScore"]/>
+      	<#assign studyAttitudeScore=steps.vars["studyAttitudeScore"]/>
+      	<#assign studyInitiativeScore=steps.vars["studyInitiativeScore"]/>
+		<div id="studentScoreByHrTask">
+		  <form id="studentScoreByHrTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="studentScoreByHrTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="10" class="formtable_td_key" align="center">人力资源管理中心对学员评价</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">考核项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key"  align="center">其他</td>
+						<td class="formtable_td_key" >试用期心得体会/文化故事完成情况</td>
+						<td class="formtable_td_key" align="center">10</td>
+						<td class="formtable_td_key" align="center">10-9</td>
+						<td class="formtable_td_key" align="center">8-7</td>
+						<td class="formtable_td_key" align="center">6-5</td>
+						<td class="formtable_td_key" align="center">4-3</td>
+						<td class="formtable_td_key" align="center">2-1</td>
+						<td class="formtable_td_value" >
+							<input id="monthSummaryScore${rand}" name="fp_monthSummaryScore" class="easyui-numberbox"  data-options="required:true,max:10,precision:2" onblur="showTotal();"/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="formtable_td_key" >最终考核结果</td>
+						<td class="formtable_td_value" colspan="9">
+							<input type="text" id="extraPointsReason${rand}" name="fp_extraPointsReason" class="easyui-numberbox" readonly="true"/>
+							<!--<textarea style="width: 700px; height: 60px" id="extraPointsReason${rand}" name="fp_extraPointsReason" class="easyui-textbox"></textarea>-->
+						</td>
+					</tr>
+		  	  		<tr>
+						<td class="formtable_td_key">签名：</td>
+						<td class="formtable_td_value" colspan="3">
+								<input  class="easyui-validatebox" type="hidden" name="fp_traineeScoreByHrAudiName"  value="${appuser.name}" />
+								${appuser.name}
+						</td>
+						<td class="formtable_td_key">签名时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+								<input   type="hidden" name="fp_traineeScoreByHrAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+								${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+				 </tr>
+		  	  </table>
+			</form>
+		</div>
+		</#if>
+		<#if steps.key == 'studentScoreByDeptManagerTask'>
+			<#assign teamWorkScoreByDept=steps.vars["teamWorkScoreByDept"]/>
+			<#assign performanceTargetsScoreByDept=steps.vars["performanceTargetsScoreByDept"]/>
+		</#if>
+	  </#list>
+	 <script type="text/javascript">
+			 var text = document.getElementById("monthSummaryScore${rand}");
+			 text.onkeyup = function(){
+			 //this.value=this.value.replace(/\D/g,'');
+			 if(text.value>10){
+			   text.value = 10;
+			 }else if(text.value.toString().indexOf('.')>0){
+				 var index=text.value.toString().indexOf('.');
+				 text.value=parseInt(text.value.toString().substr(0,index));
+			 }
+			 }
+			function showTotal(){
+				var s1='${trainContentScore}';
+				var s2='${studyAttitudeScore}';
+				var s3='${studyInitiativeScore}';
+				var s4='${teamWorkScoreByDept}';
+				var s5='${performanceTargetsScoreByDept}';
+				var s6=$("#monthSummaryScore${rand}").val();
+				$("#extraPointsReason${rand}").numberbox('setValue',Number(s1)+Number(s2)+Number(s3)+Number(s4)+Number(s5)+Number(s6));
+			}
+	 </script>
+	</#if>
+  </#if>
+</#if>
+
+<!-- 人力资源管理中心对导师评价 -->
+<#if currentStep?exists>
+   <#if currentStep == 'teacherScoreByHrTask'>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'teacherScoreByStudentTask'>
+      	<#assign studyContentScore=steps.vars["studyContentScore"]/>
+      	<#assign trainAttitudeScore=steps.vars["trainAttitudeScore"]/>
+      	<#assign trainMethodsScore=steps.vars["trainMethodsScore"]/>
+		<div id="teacherScoreByHrTask">
+		  <form id="teacherScoreByHrTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="teacherScoreByHrTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="10" class="formtable_td_key" align="center">人力资源管理中心对导师评价</td>
+					</tr>
+		  			<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key"  align="center">其他</td>
+						<td class="formtable_td_key" >《新员工培养计划表》制定及《新员工月度培养反馈表》提交情况</td>
+						<td class="formtable_td_key" align="center">10</td>
+						<td class="formtable_td_key" align="center">10-9</td>
+						<td class="formtable_td_key" align="center">8-7</td>
+						<td class="formtable_td_key" align="center">6-5</td>
+						<td class="formtable_td_key" align="center">4-3</td>
+						<td class="formtable_td_key" align="center">2-1</td>
+						<td class="formtable_td_value" >
+							<input id="monthSummaryScoreForTeacher${rand}" name="fp_monthSummaryScoreForTeacher" class="easyui-numberbox"  data-options="required:true,max:10,precision:2" onblur="showTotal();"/>
+						</td>
+					</tr>
+					<!-- <tr>
+						<td class="formtable_td_key" rowspan="2" align="center">KPI外特殊加减分项</td>
+						<td class="formtable_td_key" >事项</td>
+						<td class="formtable_td_value" >
+							<input id="extraPoints${rand}" name="fp_extraPoints" class="easyui-textbox"/>
+						</td>
+						<td class="formtable_td_key" rowspan="2" align="center">10</td>
+						<td class="formtable_td_key" rowspan="2" align="center">10-9</td>
+						<td class="formtable_td_key" rowspan="2" align="center">8-7</td>
+						<td class="formtable_td_key" rowspan="2" align="center">6-5</td>
+						<td class="formtable_td_key" rowspan="2" align="center">4-3</td>
+						<td class="formtable_td_key" rowspan="2" align="center">2-1</td>
+						<td class="formtable_td_value" rowspan="2">
+							<input id="extraPointsScoreForTeacher${rand}" name="fp_extraPointsScoreForTeacher" class="easyui-numberbox" data-options="required:true,max:10,precision:2" />
+						</td>
+					</tr> -->
+					<tr>
+						<td class="formtable_td_key" >最终考核结果</td>
+						<td class="formtable_td_value" colspan="9">
+							<input type="text" id="extraPointsReasonForTeacher${rand}" name="fp_extraPointsReasonForTeacher" class="easyui-numberbox" readonly="true"/>
+							<!--<textarea style="width: 700px; height: 60px" id="extraPointsReasonForTeacher${rand}" name="fp_extraPointsReasonForTeacher" class="easyui-textbox"></textarea>-->
+						</td>
+						</td>
+					</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" colspan="3">
+							<input  class="easyui-validatebox" type="hidden" name="fp_teacherScoreByHrAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="5">
+							<input   type="hidden" name="fp_teacherScoreByHrAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+		</#if>
+		<#if steps.key == 'teacherScoreByDeptManagerTask'>
+	      	<#assign trainAttitudeInWorkScore=steps.vars["trainAttitudeInWorkScore"]/>
+	      	<#assign traineePerformanceTargetsScore=steps.vars["traineePerformanceTargetsScore"]/>
+	    </#if>
+	  </#list>
+	  <script type="text/javascript">
+		  var text = document.getElementById("monthSummaryScoreForTeacher${rand}");
+			 text.onkeyup = function(){
+			 //this.value=this.value.replace(/\D/g,'');
+			 if(text.value>10){
+			   text.value = 10;
+			 }else if(text.value.toString().indexOf('.')>0){
+				 var index=text.value.toString().indexOf('.');
+				 text.value=parseInt(text.value.toString().substr(0,index));
+			 }
+			 }
+		  function showTotal(){
+				var s1='${studyContentScore}';
+				var s2='${trainAttitudeScore}';
+				var s3='${trainMethodsScore}';
+				var s4='${trainAttitudeInWorkScore}';
+				var s5='${traineePerformanceTargetsScore}';
+				var s6=$("#monthSummaryScoreForTeacher${rand}").val();
+				$("#extraPointsReasonForTeacher${rand}").numberbox('setValue',Number(s1)+Number(s2)+Number(s3)+Number(s4)+Number(s5)+Number(s6));
+			}
+	  </script>
+	</#if>
+  </#if>
+</#if>
+
+
+<!-- 培训学员对导师进行评价 -->
+<#if currentStep?exists>
+	<#if currentStep == 'teacherScoreByStudentTask'>
+		<div id="teacherScoreByStudentTask">
+		  <form id="teacherScoreByStudentTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="teacherScoreByStudentTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="10" class="formtable_td_key" align="center">学员对导师评价</td>
+					</tr>
+		  			<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">培养计划制定</td>
+						<td class="formtable_td_key" >及时制定培养计划、内容完善、可操作性强，针对新员工特点安排其工作与学习</td>
+						<td class="formtable_td_key" align="center">20</td>
+						<td class="formtable_td_key" align="center">20-18</td>
+						<td class="formtable_td_key" align="center">17-15</td>
+						<td class="formtable_td_key" align="center">14-12</td>
+						<td class="formtable_td_key" align="center">11-9</td>
+						<td class="formtable_td_key" align="center">8-1</td>
+						<td class="formtable_td_value" >
+							<input id="studyContentScore${rand}" name="fp_studyContentScore" class="easyui-numberbox" data-options="required:true,max:20,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">培养计划执行/实施</td>
+						<td class="formtable_td_key" >从员工角度出发，切实辅导员工进行知识、技能、行为改善</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="trainAttitudeScore${rand}" name="fp_trainAttitudeScore" class="easyui-numberbox"  data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key"  align="center">积极性</td>
+						<td class="formtable_td_key" >积极主动与新员工进行多形式的交流，深入了解员工心声，认真解答其遇到的问题</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="trainMethodsScore${rand}" name="fp_trainMethodsScore" class="easyui-numberbox" data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					
+		  	  		<tr>
+		  	  		<tr>
+						<td class="formtable_td_key" >新员工对导师的评价(优点&改进点)</td>
+						<td class="formtable_td_value" colspan="9">
+							<textarea style="width: 700px; height: 60px" id="eteacherScoreByStudentAdvice${rand}" name="fp_teacherScoreByStudentAdvice" class="easyui-textbox"></textarea>
+						</td>
+					</tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" colspan="3">
+							<input  class="easyui-validatebox" type="hidden" name="fp_teacherScoreByTraineeAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="5">
+							<input   type="hidden" name="fp_teacherScoreByTraineeAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	<script type="text/javascript">
+		var text1 = document.getElementById("studyContentScore${rand}");
+		var text2 = document.getElementById("trainAttitudeScore${rand}");
+		var text3 = document.getElementById("trainMethodsScore${rand}");
+		 text1.onkeyup = function(){
+			 if(text1.value.toString().indexOf('.')>0){
+				 var index=text1.value.toString().indexOf('.');
+				 text1.value=parseInt(text1.value.toString().substr(0,index));
+			 }
+		 }
+		 text2.onkeyup = function(){
+			 if(text2.value.toString().indexOf('.')>0){
+				 var index=text2.value.toString().indexOf('.');
+				 text2.value=parseInt(text2.value.toString().substr(0,index));
+			 }
+		 }
+		 text3.onkeyup = function(){
+			 if(text3.value.toString().indexOf('.')>0){
+				 var index=text3.value.toString().indexOf('.');
+				 text3.value=parseInt(text3.value.toString().substr(0,index));
+			 }
+		 }
+	</script>
+	</#if>
+</#if>
+
+
+<!--部门经理对导师进行评价 -->
+<#if currentStep?exists>
+	<#if currentStep == 'teacherScoreByDeptManagerTask'>
+		<div id="teacherScoreByDeptManagerTask">
+		  <form id="teacherScoreByDeptManagerTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="teacherScoreByDeptManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  			<tr>
+						<td colspan="10" class="formtable_td_key" align="center">部门经理对导师进行评价</td>
+					</tr>
+		  			<tr>
+						<td class="formtable_td_key" rowspan="2" align="center">评估项目</td>
+						<td class="formtable_td_key" rowspan="2" align="center">内容</td>
+						<td class="formtable_td_key" rowspan="2" align="center">满分</td>
+						<td class="formtable_td_key" colspan="5" align="center">评估等级</td>
+						<td class="formtable_td_key" rowspan="2" align="center">评分</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">优秀</td>
+						<td class="formtable_td_key" align="center">良好</td>
+						<td class="formtable_td_key" align="center">中等</td>
+						<td class="formtable_td_key" align="center">稍差</td>
+						<td class="formtable_td_key" align="center">很差</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key"  align="center">辅导态度</td>
+						<td class="formtable_td_key" >及时认真地对员工的总结进行改善策略的制定，指出其工作中的优点和不足，帮助其进步</td>
+						<td class="formtable_td_key" align="center">15</td>
+						<td class="formtable_td_key" align="center">15-13</td>
+						<td class="formtable_td_key" align="center">12-10</td>
+						<td class="formtable_td_key" align="center">9-7</td>
+						<td class="formtable_td_key" align="center">6-4</td>
+						<td class="formtable_td_key" align="center">4-1</td>
+						<td class="formtable_td_value" >
+							<input id="trainAttitudeInWorkScore${rand}" name="fp_trainAttitudeInWorkScore" class="easyui-numberbox"  data-options="required:true,max:15,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" align="center">目标达成</td>
+						<td class="formtable_td_key" >通过导师辅导，新员工的行为、技能、专业知识得到加强提高，已达到岗位要求</td>
+						<td class="formtable_td_key" align="center">25</td>
+						<td class="formtable_td_key" align="center">25-23</td>
+						<td class="formtable_td_key" align="center">22-20</td>
+						<td class="formtable_td_key" align="center">19-17</td>
+						<td class="formtable_td_key" align="center">16-14</td>
+						<td class="formtable_td_key" align="center">13-1</td>
+						<td class="formtable_td_value" >
+							<input id="traineePerformanceTargetsScore${rand}" name="fp_traineePerformanceTargetsScore" class="easyui-numberbox" data-options="required:true,max:25,precision:2" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >部门负责人对导师的评价(优点&改进点)</td>
+						<td class="formtable_td_value" colspan="9">
+							<textarea style="width: 700px; height: 60px" id="teacherScoreByDeptManagerAdvice${rand}" name="fp_teacherScoreByDeptManagerAdvice" class="easyui-textbox"></textarea>
+						</td>
+						
+					</tr>
+		  	  		<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" colspan="3">
+							<input  class="easyui-validatebox" type="hidden" name="fp_teacherScoreByManagerAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="5">
+							<input   type="hidden" name="fp_teacherScoreByManagerAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	<script type="text/javascript">
+		var text1 = document.getElementById("trainAttitudeInWorkScore${rand}");
+		var text2 = document.getElementById("traineePerformanceTargetsScore${rand}");
+		 text1.onkeyup = function(){
+			 if(text1.value.toString().indexOf('.')>0){
+				 var index=text1.value.toString().indexOf('.');
+				 text1.value=parseInt(text1.value.toString().substr(0,index));
+			 }
+		 }
+		 text2.onkeyup = function(){
+			 if(text2.value.toString().indexOf('.')>0){
+				 var index=text2.value.toString().indexOf('.');
+				 text2.value=parseInt(text2.value.toString().substr(0,index));
+			 }
+		 }
+	</script>
+	</#if>
+</#if>
+
+<#include "/common/foot.html">

@@ -1,0 +1,838 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<!--供应商/服务商业务需求处理单处理流程  -->
+ <style type="text/css">
+	.griddiv{
+		width:935px;
+		margin-top:2px;
+		border:solid 1px #95B8E7;
+		overflow: auto;
+	}
+	.gridchilddiv{
+		height:auto;
+		overflow-y:auto;
+		border-top:solid 1px #666666;
+	}
+	table.gridtable {
+		font-family: verdana,arial,sans-serif;
+		font-size:11px;
+		color:#333333;
+		border-width: 1px;
+		border-color: #666666;
+		border-collapse: collapse;
+		word-break:break-all; 
+		word-wrap:break-all;
+		width: 100%;
+	}
+	table.gridtable thead td {
+		padding: 4px;
+		border-top:solid 1px #666666;
+		border-right:solid 1px #666666;
+		border-left:solid 1px #666666;
+	}
+	table.gridtable tbody td {
+		padding: 4px;
+		border-width: 1px;
+		border-style: solid;
+		border-color: #666666;
+	}
+</style>
+<!-- 展示表单 -->
+<#if processSteps??>
+   	<table class="formtable" cellspacing="1" cellpadding="0">
+			  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">供应商/服务商业务需求处理单</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	  	<td colspan="6" class="formtable_td_value">
+		  	  	   			<ul style="padding-left: 0px;list-style: none;margin-top: 0px;">
+							   <li style="color: red">流程说明：</li>
+							   <li>
+							     <ul>
+							       <li>供应链专员：流程发起人，接收记录供应商/服务商咨询内容，并跟进业务部门给出处理意见回复给供应商/服务商</li>
+							        <li>供应链负责人：界定供应商或服务商咨询内容所属业务部门，指定业务部门负责人</li>
+							         <li>业务部门负责人：根据公司业务情况，给出业务部门处理意见，是否有合作需求</li>
+							     </ul>
+							   </li>
+							</ul>
+		  	  	  	</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key" >流程发起人：</td>
+					<td class="formtable_td_value" colspan="2">${processSteps[0].vars["starterName"]}
+					</td>
+				  	<td class="formtable_td_key">发起人部门：</td>
+			  		<td class="formtable_td_value" colspan="2">${processSteps[0].vars["starterOrgName"]}
+			  		</td>
+		  	  	</tr>
+				<tr class="formtable_td_value">
+					<td class="formtable_td_value" colspan="6">
+		  	  			<div class="griddiv">
+								<table class="gridtable" id="consultInfoTable${rand}">
+									<thead>
+										<tr class="formtable_td_key">
+											<#list processSteps as steps>
+											<#if steps.key == 'startevent1'>
+											<td width="150" align="center" >供应商/服务商名称</td>
+											<td width="150" align="center" >供应商/服务商地址</td>
+											<td width="150" align="center" >咨询人</td>
+											<td width="150" align="center" >联系电话</td>
+											<td width="300" align="center" >咨询业务内容摘要</td>
+											</#if>
+											<#if steps.key == 'supplierChainLeader_recordTask'>
+											<td width="150" align="center" >业务归属部门</td>
+											<td width="150" align="center" >业务负责人</td>
+											</#if>
+											
+											<#if steps.key == 'businessDepartment_recordMultiInstTask'>
+											<td width="300" align="center" >业务部门意见</td>
+											<td width="150" align="center" >业务负责人签字</td>
+											<td width="150" align="center" >签字时间</td>
+											</#if>
+											</#list>
+										</tr>
+									</thead>
+									<tbody>
+										<#if proHisVar.vars["consultJsonStr"]??>
+					   						<#assign text=proHisVar.vars["consultJsonStr"] />
+											<#assign json=text?eval />
+											<#list json.accessoryData as item>
+												<tr> 
+												<#list processSteps as steps >
+													<#if steps.key == 'startevent1'>
+														<td width="113" align="center" title="${item.supplierName!''}">
+																${item.supplierName!""}   
+														</td>
+														<td width="155" align="center" title="${item.supplierAddress!''}">
+																${item.supplierAddress!""}   
+														</td>
+														<td width="100" align="center" title="${item.consultantName!''}">
+																${item.consultantName!""}   
+															</td>
+												  		<td width="100" align="center" title="${item.consultantPhone!''}">
+												  				${item.consultantPhone!""}
+										  				</td>
+														<td width="200" align="center" title="${item.consultSsynopsis!''}">
+																${item.consultSsynopsis!""}   
+														</td>
+													</#if>
+					   								<!-- 供应链负责人审核 -->
+					   								<#if steps.key == 'supplierChainLeader_recordTask'>
+															<td width="150" align="center" title="${item.businessDepartmentName!''}">
+																	${item.businessDepartmentName!""}   
+															</td>
+															<td width="150" align="center" title="${item.businessPrincipalName!''}">
+																	${item.businessPrincipalName!""}   
+															</td>
+					   								</#if>
+					   								<!--业务负责人审核 -->
+					   								<#if steps.key == 'businessDepartment_recordMultiInstTask'>
+					   								<#if steps.multiInstances??>
+						 								<#list steps.multiInstances as muliSteps> 
+								 								<#if muliSteps.assignee == item.businessPrincipal>
+																	<#if muliSteps.vars["consultJsonStr"+muliSteps.assignee]??>
+												   						<#assign text3=muliSteps.vars["consultJsonStr"+muliSteps.assignee] />
+																		<#assign json3=text3?eval />
+																		<#assign item3=json3.accessoryData[item_index]/>
+																				<td width="150" align="center" title="${item3.bdOpinion!''}">
+																						${item3.bdOpinion!""}   
+																				</td>
+																				<td width="150" align="center" title="${muliSteps.vars['bdlSignature'+muliSteps.assignee]!''}" >
+																						${muliSteps.vars["bdlSignature"+muliSteps.assignee]!""}  
+																				</td>
+																				<td width="150" align="center" title="${muliSteps.vars['bdlSignatureTime'+muliSteps.assignee]!''}">
+																						${muliSteps.vars["bdlSignatureTime"+muliSteps.assignee]!""}  
+																				</td>
+								    								</#if>
+							    								</#if>
+														</#list>
+													</#if>
+													</#if>
+												</#list>
+												</tr>
+											</#list>
+		   								</#if>
+									</tbody>
+								</table>
+								<script type="text/javascript">
+									$("#consultInfoTable${rand}").find("tr").each(function(){
+										var $this = $(this);
+										var total = $("#consultInfoTable${rand}").find("thead tr td").length;
+										var surplus = total - $this.find("td").length;
+										for(var i=0;i<surplus;i++){
+											$this.append($("<td></td>"));
+										}
+									})
+								</script>
+						</div>
+					</td>
+				</tr>
+				<#list processSteps as steps>
+					<!-- 开始表单附件 -->
+					<#if steps.key == 'startevent1'>
+					  		<#if steps.attachments??>
+								<tr>
+									<td colspan="6" class="formtable_td_key" align="center">开始表单</td>
+								</tr>
+								<tr>
+									<td class="formtable_td_key">附件：</td>
+									<td class="formtable_td_value" colspan="5">
+									<#list steps.attachments as attachs> 
+									<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+									</#list>
+									</td>
+								</tr>
+							</#if>
+					</#if>
+					<!-- 供应链负责人附件签字 -->
+					<#if steps.key == 'supplierChainLeader_recordTask'>
+						<tr>
+							<td colspan="6" class="formtable_td_key" align="center">供应链负责人确认</td>
+						</tr>
+						<tr>
+							<td class="formtable_td_key" >供应链负责人签字：</td>
+							<td class="formtable_td_value" colspan="2">
+							${steps.vars["sclSignature"]!""}
+							</td>
+						  	<td class="formtable_td_key">签字时间：</td>
+						  	<td class="formtable_td_value" colspan="2">
+						  	${steps.vars["sclSignatureTime"]!""}
+					  		</td>
+						</tr>
+						<#if steps.attachments??>
+							<tr>
+								<td class="formtable_td_key">附件：</td>
+								<td class="formtable_td_value" colspan="5">
+								<#list steps.attachments as attachs> 
+								<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+								</#list>
+								</td>
+							</tr>
+						</#if>
+					</#if>
+					<!-- 业务负责人附件 -->
+					<#if steps.key == 'businessDepartment_recordMultiInstTask'>
+						<#if steps.multiInstances??>
+							<#list steps.multiInstances as muliSteps> 
+								<#if muliSteps.attachments??>
+									<tr>
+										<td colspan="6" class="formtable_td_key" align="center">开始表单</td>
+									</tr>
+									<tr>
+										<td class="formtable_td_key">附件：</td>
+										<td class="formtable_td_value" colspan="5">
+										<#list muliSteps.attachments as attachs> 
+										<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+										</#list>
+										</td>
+									</tr>
+								</#if>
+							</#list>
+						</#if>
+					</#if>
+					<!-- 供应链专员 -->
+					<#if steps.key == 'supplierChainOfficer_recordTask'>
+							<tr>
+								<td colspan="6" class="formtable_td_key" align="center">供应链专员确认</td>
+							</tr>
+							<tr>
+					  	  		<td class="formtable_td_key">备注：</td>
+					  	  		<td class="formtable_td_value" colspan="5">
+					  	  		${steps.vars["remark"]!""}
+					  	  		</td>
+					  	  	</tr>
+					  	  	<tr>
+								<td class="formtable_td_key" >供应链专员签字：</td>
+								<td class="formtable_td_value" colspan="2">
+								${steps.vars["scoSignature"]!""}
+								</td>
+								<td class="formtable_td_key">签字时间：</td>
+							  	<td class="formtable_td_value" colspan="2">
+								${steps.vars["scoSignatureTime"]!""}
+							  	</td>
+							</tr>
+						<#if steps.attachments??>
+							<tr>
+								<td class="formtable_td_key">附件：</td>
+								<td class="formtable_td_value" colspan="5">
+								<#list steps.attachments as attachs> 
+								<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+								</#list>
+								</td>
+							</tr>
+						</#if>
+					</#if>
+				</#list>
+   </table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input type="hidden" name="fp_supplierChainOfficer" id="supplierChainOfficer${rand}" value="${appuser.account}"/>
+			<input   id="consultJsonStr${rand}" name="fp_consultJsonStr"  class="easyui-validatebox" missingMessage="表格不能为空" data-options="required:true" readonly="readonly" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" />
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">供应商/服务商业务需求处理单</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	  	<td colspan="6" class="formtable_td_value">
+		  	  	   			<ul style="padding-left: 0px;list-style: none;margin-top: 0px;">
+							   <li style="color: red">流程说明：</li>
+							   <li>
+							     <ul>
+							       <li>供应链专员：流程发起人，接收记录供应商/服务商咨询内容，并跟进业务部门给出处理意见回复给供应商/服务商</li>
+							        <li>供应链负责人：界定供应商或服务商咨询内容所属业务部门，指定业务部门负责人</li>
+							         <li>业务部门负责人：根据公司业务情况，给出业务部门处理意见，是否有合作需求</li>
+							     </ul>
+							   </li>
+							</ul>
+		  	  	  	</td>
+		  	  	</tr>
+				<tr>
+					<td class="formtable_td_key" >流程发起人：</td>
+					<td class="formtable_td_value" colspan="2">${appuser.name}
+						<input  name="fp_starterName" type="hidden"  value="${appuser.name}"/>
+					</td>
+				  	<td class="formtable_td_key">发起人部门：</td>
+			  		<td class="formtable_td_value" colspan="2">${appuser.orgName}
+			  		<input type="hidden"  name="fp_starterOrgName"  value="${appuser.orgName}"/>
+			  		</td>
+				</tr>
+		  	  	<tr>
+  	  				<td class="formtable_td_value" colspan="6">
+		  	  			<div>
+		  	  				<a class="easyui-linkbutton l-btn" id="addConsult${rand}">
+   								<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+   							</a>
+   							<a class="easyui-linkbutton l-btn" id="removeConsult${rand}">
+   								<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+   							</a>
+		  	  			</div>
+		  	  			<div class="griddiv">
+							<table id="consultInfoTb${rand}" class="gridtable">
+								<thead>
+									<tr>
+										<td width="1" align="center" ><input type="checkbox" class="thchk" disabled="disabled"/></td>
+										<td width="150" align="center" >供应商/服务商名称</td>
+										<td width="150" align="center" >供应商/服务商地址</td>
+										<td width="150" align="center" >咨询人</td>
+										<td width="150" align="center" >联系电话</td>
+										<td width="150" align="center" >咨询业务内容摘要</td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+	  	  			</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	    <div id="consultAdd-dlg${rand}"   class="easyui-dialog"  style="padding:10px;">
+		  <form id="consultAdd-fm${rand}" method="post">
+		    	<table class="formtable" cellspacing="1" cellpadding="0">
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">供应商/服务商名称：</td>							
+						<td  class="formtable_td_value" colspan='3'>
+							<input id="supplierName${rand}" name="supplierName" class="easyui-validatebox"  required="required" type="text" style="width: 600px;"/>
+						</td>
+					</tr>
+					<tr>
+					  	<td class="formtable_td_key">供应商/服务商地址：</td>
+						<td  class="formtable_td_value" colspan='3'>
+							<input  id="supplierAddress${rand}"  name="supplierAddress" class="easyui-validatebox"  type="text" style="width: 600px;"/> 
+						</td>
+					</tr>
+					<tr>
+			  	        <td class="formtable_td_key">咨询人：</td>
+					  	<td class="formtable_td_value">
+					  		<input  id="consultantName${rand}" name="consultantName" class="easyui-validatebox"  required="required" type="text"/>
+					  	</td>
+					  	<td class="formtable_td_key">联系电话：</td>
+					  	<td class="formtable_td_value">
+					  		<input  id="consultantPhone${rand}" name="consultantPhone" class="easyui-validatebox" required="required" type="text" validType="mobile"/>
+					  	</td>
+			  	  	</tr>
+				  	<tr>
+			  	  		<td class="formtable_td_key">咨询业务内容摘要：</td>
+			  	  		<td class="formtable_td_value" colspan='3'>
+			  	  			<textarea  id="consultSsynopsis${rand}" name="consultSsynopsis"  class="easyui-validatebox" required="required"  style="width: 600px; height: 100px"></textarea>
+			  	  		</td>
+			  	  	</tr>
+		  	  	</table>
+		  </form>
+		</div>
+		<script type="text/javascript">
+		 $(function(){
+			$('.thchk').each(function(){ 
+				$(this).click(function(){ 
+					if($(this).prop('checked')){
+						$('.tdchk').prop("checked", true);
+					} else {
+						$('.tdchk').prop("checked", false);
+					} 	
+				});
+			});
+			var AccessoriesJson = { accessoryData:[] };
+
+			//流程实例名
+		 	$("#supplierName${rand}").change(function(){
+				 $('#processName${rand}').val($(this).val()+"业务需求咨询");
+			 });
+		 	//新增
+			$("#addConsult${rand}").on("click",function(){
+			    $("#consultAdd-fm${rand}").form("clear");
+			    $('#consultAdd-dlg${rand}').dialog("open");
+			    $.parser.parse("#consultAdd-dlg${rand}");
+			});
+			//删除
+			$("#removeConsult${rand}").on("click",function(){
+		    	var rows = $('#consultInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+                if (rows.length == 0) {
+	        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+	        		return false;
+                }
+	            $.each(rows, function () {  
+	            	 var index =$('#consultInfoTb${rand} tbody tr input[type="checkbox"]').index($(this));
+	            	 var AccessoriesJson = JSON.parse($("#consultJsonStr${rand}").val());
+	            	 AccessoriesJson.accessoryData.splice(index,1);
+	            	 $("#consultJsonStr${rand}").val(JSON.stringify(AccessoriesJson));
+	                $(this).parent("td").parent("tr").remove();
+	            });
+	            var existsRows = $('#consultInfoTb${rand} tbody tr');
+				if(existsRows.length == 0) {		
+					$('#consultJsonStr${rand}').val('');
+				}
+			});
+			$("#consultAdd-dlg${rand}").dialog({
+			   closed:true,
+			   modal:true,
+			   title:'供应商/服务商需求咨询',
+			   width:850,
+			   height:330,
+			   buttons: [{text:'保存', handler: handlerAdd${rand}}]
+			})
+			 //处理保存事件
+			 function handlerAdd${rand}(){
+				   if(!$("#consultAdd-fm${rand}").form("validate")){
+					   return false;
+				   };
+				   $("#consultAdd-dlg${rand}").dialog("close");
+				    var formData = {};
+				    var formSerialize = $('#consultAdd-fm${rand}').serializeArray();
+				    $.each(formSerialize, function() {
+				    	formData[this.name] = this.value;
+				    });
+				    AccessoriesJson.accessoryData.push(formData);
+				    $('#consultJsonStr${rand}').val(JSON.stringify(AccessoriesJson));
+				    
+					var tabstr = '<tr>';
+					tabstr += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+					tabstr += '<td width="150" align="center" title="'+formData.supplierName+'">' + formData.supplierName.substring(0,15) + '</td>';
+					tabstr += '<td width="150" align="center" title="'+formData.supplierAddress+'">'+ formData.supplierAddress.substring(0,15)+'</td>';
+					tabstr += '<td width="150" align="center" title="'+formData.consultantName+'">'+ formData.consultantName.substring(0,15)+'</td>';
+			  		tabstr += '<td width="150" align="center" title="'+formData.consultantPhone+'">'+ formData.consultantPhone+'</td>';
+					tabstr += '<td width="150" align="center" title="'+formData.consultSsynopsis+'">'+ formData.consultSsynopsis.substring(0,15)+'</td>'; 
+					tabstr += '</tr>';
+			    	$('#consultInfoTb${rand} tbody').append(tabstr); 
+			 }
+		 });
+		</script>
+	</#if>
+</#if>
+<#if currentStep?exists>
+	<#if currentStep?exists && currentStep == 'supplierChainLeader_recordTask'>
+		<div id="supplierChainLeader_recordTask">
+			<form id="supplierChainLeader_recordTaskForm" method="post" enctype='multipart/form-data'>
+				<input type="hidden" id="consultJsonStr${rand}" name="fp_consultJsonStr" value='${proHisVar.vars["consultJsonStr"]}' />
+				<input type="hidden" id="businessPrincipal${rand}" name="fp_businessPrincipal" />
+				<table id="supplierChainLeader_recordTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">供应链负责人审核</td>
+					</tr>
+					<tr>
+	  	  				<td class="formtable_td_value" colspan="6">
+			  	  			<div class="griddiv">
+								<table class="gridtable" >
+									<thead>
+										<tr class="formtable_td_key">
+											<td width="100" align="center" >供应商/服务商名称</td>
+											<td width="300" align="center" >咨询业务内容摘要</td>
+											<td width="100" align="center" >业务归属部门</td>
+											<td width="300" align="center" >业务负责人</td>
+										</tr>
+									</thead>
+									<tbody>
+									<#if processSteps??>
+											<#list processSteps as steps>
+											   <#if steps.key == 'startevent1'>
+					   								<#if steps.vars["consultJsonStr"]??>
+								   						<#assign text>
+															${(steps.vars["consultJsonStr"])!""}
+														</#assign>
+														<#assign json=text?eval />
+														<#list json.accessoryData as item>
+																<tr>
+																	<td width="113" align="center" title="${item.consultSsynopsis}">
+																		<#if item.supplierName?length gt 15> 
+																			${(item.supplierName)?substring(0,15)}
+																		<#else>
+																			${item.supplierName!}   
+																		</#if>
+																	</td> 
+																	<td width="113" align="center" title="${item.consultSsynopsis}">
+																		<#if item.consultSsynopsis?length gt 25> 
+																			${(item.consultSsynopsis)?substring(0,25)}
+																		<#else>
+																			${item.consultSsynopsis!}   
+																		</#if>
+																	</td>
+																	<td  width="113" align="center">
+																		<input   name="businessDepartment"  class="easyui-combotree" required="required"/>
+																	</td>
+																	<td  width="113" align="center">
+																		<input  type="hidden" name="businessPrincipal" required="required"/>
+																		<input  name="businessPrincipalName"  type="text" readonly="readonly" required="required" class="easyui-validatebox"/>
+																		<a name="openSelectPrincipalBtn" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">选择</a>
+																	</td>
+																</tr>
+														</#list>
+													</#if>
+											   </#if>
+										    </#list>
+									    </#if>
+									</tbody>
+								</table>
+							</div>
+	  	  				</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >供应链负责人签字：</td>
+						<td class="formtable_td_value">${appuser.name}
+							<input id="sclSignature${rand}" name="fp_sclSignature" type="hidden"  value="${appuser.name}"/>
+						</td>
+					  	<td class="formtable_td_key">签字时间：</td>
+				  		<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				  		<input type="hidden" id="sclSignatureTime${rand}" name="fp_sclSignatureTime"  value="${.now?string('yyyy-MM-dd')}"/>
+				  		</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+ 		<div id="principalWin-${rand}" class="easyui-dialog" title="组织结构包含的用户" style="width: 450px; height: 500px; padding: 5px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 26px 0px 0px 0px;">
+					<div id="principalGridToolBar${rand}" style="padding:2px 5px;margin-top:-26px">
+						员工账号: <input id="principalAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="principalName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="principalGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="principal${rand}"></table>
+				</div>
+			</div>
+		</div>
+	<script>
+	$(function(){
+		 	var principalWin = $('#principalWin-${rand}');
+		 	$.parser.parse(principalWin);
+		 	extendsArray();
+		 	loadBusinessDepartmentTree();
+		 	initBindEvent();
+		 	initSelectPrincipalDialog();
+
+		 	//加载组织树
+		   function loadBusinessDepartmentTree(){
+				//获取所有机构及其部门
+			     $('input[name="businessDepartment"]').combotree({
+					    url: 'hrFlow/auth/orgs.json',
+					    method:'get',
+					    lines:true,
+					    valueField:'id',
+					    textField:'text',
+						panelWidth:300,
+						panelHeight:280,
+						onChange:function(node){
+							var t = $(this).combotree('tree'); // 得到树对象  
+						    var n = t.tree('getSelected'); // 得到选择的节点  
+						    $(this).val(n.text);
+						    var orgId = n.id;
+						    loadPrincipal(orgId);
+						    pushOrgIntoJson(n,this);
+						}
+					});
+		   }
+		 	//初始化选择人员对话框
+		 	function initSelectPrincipalDialog(){
+		 		principalWin.dialog({
+		 			modal:true, 
+		 			closed:true,
+		 			iconCls:'icon-process',
+					buttons: [{
+	                    text:'完成',
+	                    iconCls:'icon-ok',
+	                    handler: selectPrincipalEnd
+	                },{
+	                    text:'关闭',
+	                    iconCls:'icon-cancel',
+	                    handler: closeSelectPrincipalWin
+	                }]
+		 		})
+		 	}
+		 	//选择负责人完成事件
+		 	 function selectPrincipalEnd(){
+	 		   var row = $('#principal${rand}').datagrid('getSelected');
+	 			if (row) {
+	 				 //为表格赋值展示
+	 				 currentTr.find("input[name='businessPrincipal']").val(row.account);
+	 				 currentTr.find("input[name='businessPrincipalName']").val(row.name);
+	 				 //计算出index
+			 		 var tBodyTr = currentTr.parent().find("tr");
+			 		 var index = tBodyTr.index(currentTr);
+			 		 //为json赋值
+	            	 assignJsonData(index,"businessPrincipal",row.account);
+	            	 assignJsonData(index,"businessPrincipalName",row.name);
+	            	 //关闭对话框
+	 			     principalWin.dialog('close');
+	            	 //计算出下一次的候选用户
+	 			     if(currentTr){
+					   var principalInputs =  currentTr.parent().find("input[name='businessPrincipal']");
+					   var principalsStr="";
+					   $.each(principalInputs,function(){
+						   if($(this).val() != ""){
+							   principalsStr+=$(this).val()+","
+						   }
+					   })
+					   $("#businessPrincipal${rand}").val(principalsStr.substring(0,principalsStr.length-1).split(",").unique().join(","));
+	 			    }
+	 			} else {
+	 				$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+	 			}
+	 	  	 }
+		 	 //关闭选择负责人窗口
+		     function  closeSelectPrincipalWin(){
+	 		  principalWin.dialog('close');	
+		  	 }
+		 	 //绑定事件
+		 	 function initBindEvent(){
+		 		 //输入完成后推入数据集合中
+		 		 $("input[name='businessType']").on("blur",function(){
+		 			 var obj = this,thisVal = $(obj).val(),thisName = $(obj).attr("name"),index = acquireIndexByThis(obj);
+		 			 assignJsonData(index,thisName,thisVal);
+		 		 });
+		 		 //搜索
+			 	$('#principalGridSearchBtn${rand}').on('click', function(){
+				 		var principalAccount = $('#principalAccount${rand}').val();
+				 		var principalName = $('#principalName${rand}').val();
+				 		var queryParams = $('#principal${rand}').datagrid("options").queryParams;
+				 		queryParams.userAccount = principalAccount;
+				 		queryParams.userName = principalName;
+				 		$('#principal${rand}').datagrid('reload',queryParams);
+				 		  $("#principal${rand}").datagrid("clearSelections");
+				 	});
+				 //选择人员按钮事件绑定
+		 		 $("a[name='openSelectPrincipalBtn']").on("click",function(){
+			 		 var tTr = $(this).parent().parent();
+			 		 currentTr = tTr;
+			 		 var orgId = tTr.find(".combo-value").val();
+			 		 if(orgId == ""){
+			 			$.messager.alert('提示','请选择业务所属部门','warning');
+			 			return false;
+			 		 }
+			 		 principalWin.dialog('open');
+			 		 $("#principalAccount${rand}").val("");
+			 		 $("#principalName${rand}").val("");
+			 		 loadPrincipal(orgId);
+		 		 })
+		 	 }
+		 	 var currentTr;
+		 	//根据部门加载部门下的人员
+		 	function loadPrincipal(orgId){
+ 	        	 $('#principal${rand}').datagrid({
+					  fit:true,
+					  fitColumns:false,
+					  url:'bpmRole/users.json',
+					  queryParams:{orgId:orgId},
+					  columns:[[
+						{field:'id',checkbox:true},
+						{field:'account',title:'帐号',width:90},
+						{field:'name',title:'姓名',width:90},
+						{field:'orgName',title:'部门',width:120}
+					  ]],
+					  border:false,
+					  nowrap: true,
+					  pagination:false,
+					  pageNumber:1,
+					  pageSize:20,
+					  singleSelect:true,
+					  rownumbers:true
+				});
+		 	}
+		 	//将组织数据推入JSON中
+		 	function pushOrgIntoJson(node,obj){
+			    var orgName = node.text,orgId = node.id;
+			    var index = acquireIndexByThis(obj);
+			    assignJsonData(index,"businessDepartment",orgId);
+			    assignJsonData(index,"businessDepartmentName",orgName);
+		 	}
+		 	//通过this关键字获取其所在源的序号
+		 	function acquireIndexByThis(obj){
+		 		var tTr = $(obj).parent().parent();
+		 		var tBodyTr = tTr.parent().find("tr");
+		 		var index = tBodyTr.index(tTr);
+		 		return index;
+		 	}
+		 	//赋值给JSON值
+		 	function assignJsonData(index,name,val){
+		 		console.log($("#consultJsonStr${rand}").val());
+		 		 var AccessoriesJson = JSON.parse($("#consultJsonStr${rand}").val()),dataArr = AccessoriesJson.accessoryData;
+		 		 console.log(AccessoriesJson)
+		 		 dataArr[index][name] = val;
+            	 $("#consultJsonStr${rand}").val(JSON.stringify(AccessoriesJson));
+		 	}
+		 	//拓展Array
+		 	function extendsArray(){
+			 	Array.prototype.unique = function(){
+			 		 var res = [];
+			 		 var json = {};
+			 		 for(var i = 0; i < this.length; i++){
+			 		  if(!json[this[i]]){
+			 		   res.push(this[i]);
+			 		   json[this[i]] = 1;
+			 		  }
+			 		 }
+			 		 return res;
+			 		}
+		 	}
+	})
+		</script>
+	</#if>
+</#if>
+<#if currentStep?exists>
+	<#if currentStep?exists && currentStep == 'businessDepartment_recordMultiInstTask'>
+		<div id="businessDepartment_recordMultiInstTask">
+				<form id="businessDepartment_recordMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+				<input type="hidden" id="consultJsonStr${appuser.account}${rand}" name="fp_consultJsonStr${appuser.account}" value='${proHisVar.vars['consultJsonStr']}'/>
+				<table id="businessDepartment_recordMultiInstTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">业务负责人审核</td>
+					</tr>
+					<tr>
+	  	  				<td class="formtable_td_value" colspan="6">
+			  	  			<div class="griddiv">
+								<table  class="gridtable" >
+									<thead>
+										<tr>
+											<td width="20%" align="center" >供应商/服务商名称</td>
+											<td width="20%" align="center" >咨询业务内容摘要</td>
+											<td width="60%" align="center" >业务部门意见</td>
+										</tr>
+									</thead>
+									<tbody>
+										<#if processSteps??>
+											<#list processSteps as steps>
+											   <#if steps.key == 'supplierChainLeader_recordTask'>
+					   								<#if steps.vars["consultJsonStr"]??>
+								   						<#assign text>
+															${(steps.vars["consultJsonStr"])!""}
+														</#assign>
+														<#assign json=text?eval />
+														<#list json.accessoryData as item>
+															 <#if item.businessPrincipal == appuser.account>
+																<tr> 
+																	<td width="113" align="center" title="${item.supplierName}">
+																		<#if item.supplierName?length gt 15> 
+																			${(item.supplierName)?substring(0,15)}
+																		<#else>
+																			${item.supplierName!}   
+																		</#if>
+																	</td>
+																	<td width="113" align="center" title="${item.consultSsynopsis}">
+																		<#if item.consultSsynopsis?length gt 100> 
+																			${(item.consultSsynopsis)?substring(0,100)}
+																		<#else>
+																			${item.consultSsynopsis!}   
+																		</#if>
+																	</td>
+																	<td width="113" align="center">
+																		<input type="hidden" name="bdIndex" value="${item_index}" />
+																		<textarea name="bdOpinion" required="required" class="easyui-validatebox" style="width: 530px; height: 100px" ></textarea>
+																	</td>
+																</tr>
+															</#if>
+														</#list>
+													</#if>
+											   </#if>
+										    </#list>
+									    </#if>
+									</tbody>
+								</table>
+							</div>
+	  	  				</td>
+					</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >业务负责人签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden" id="bdlSignature${rand}" name="fp_bdlSignature${appuser.account}"  value="${appuser.name}"/>
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+					  	<td class="formtable_td_value"  colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden" id="bdlSignatureTime${rand}" name="fp_bdlSignatureTime${appuser.account}" value="${.now?string('yyyy-MM-dd')}"/>
+					  	</td>
+					</tr>
+				</table>
+				</form>
+				<script type="text/javascript">
+				$(function(){
+					initDomEvent();
+					//初始化dom事件
+					function initDomEvent(){
+				 		 $("textarea[name='bdOpinion']").on("blur",function(){
+				 			 var obj = this,thisVal = $(obj).val(),thisName = $(obj).attr("name"),bdIndex = $(obj).prev().val();
+				 			 assignJsonData(bdIndex,thisName,thisVal);
+				 		 });
+					}
+				 	//赋值给JSON值
+				 	function assignJsonData(index,name,val){
+				 		 var AccessoriesJson = JSON.parse($("#consultJsonStr${appuser.account}${rand}").val()),dataArr = AccessoriesJson.accessoryData;
+				 		 dataArr[index][name] = val;
+		            	 $("#consultJsonStr${appuser.account}${rand}").val(JSON.stringify(AccessoriesJson));
+				 	}
+				})
+				</script>
+		</div>
+	</#if>
+</#if>
+<#if currentStep?exists>
+	<#if currentStep?exists && currentStep == 'supplierChainOfficer_recordTask'>
+		<div id="supplierChainOfficer_recordTask">
+			<form id="supplierChainOfficer_recordTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="supplierChainOfficer_recordTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">供应链专员确认</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key">备注：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox" id="remark${rand}" name="fp_remark"  style="width: 730px; height: 100px"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >供应链专员签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden" id="scoSignature${rand}" name="fp_scoSignature"  value="${appuser.name}"/>
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden" id="scoSignatureTime${rand}" name="fp_scoSignatureTime" value="${.now?string('yyyy-MM-dd')}"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">

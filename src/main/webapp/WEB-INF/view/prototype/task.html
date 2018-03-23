@@ -1,0 +1,71 @@
+<#assign title="我的任务">
+<#include "head.ftl">
+
+<table id="tasks">
+  <tr>
+	<th>流程管理号</th>
+	<th>流程名称</th>
+	<th>流程节点</th>
+	<th>操作</th>
+  </tr>
+  <tr>
+	<td>123</td>
+	<td>请假流程</td>
+	<td>部门经理审批</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>125</td>
+	<td>立项流程</td>
+	<td>添加基础资料</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>123</td>
+	<td>请假流程</td>
+	<td>部门经理审批</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>125</td>
+	<td>立项流程</td>
+	<td>添加基础资料</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>123</td>
+	<td>请假流程</td>
+	<td>部门经理审批</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>125</td>
+	<td>立项流程</td>
+	<td>添加基础资料</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  <tr>
+	<td>123</td>
+	<td>请假流程</td>
+	<td>部门经理审批</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+  <tr>
+	<td>125</td>
+	<td>立项流程</td>
+	<td>添加基础资料</td>
+	<td><a class="detail" href="javascript:void(0)">处理</a> <a class="inst" href="javascript:void(0)">流程详情</a></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+$(function() {
+  $('#tasks .detail').click(function() {
+	opentab('处理任务', 'detail.html');
+  });
+  $('#tasks .inst').click(function() {
+	opentab('流程详情', 'inst.html');
+  });
+});
+</script>
+
+<#include "foot.ftl">

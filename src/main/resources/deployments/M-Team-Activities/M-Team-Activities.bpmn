@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="10">
+  <process id="M-Team-Activities" name="部门团队活动申请流程" isExecutable="true">
+    <documentation>部门团队活动费用申请流程&lt;br/&gt;
+1、部门文员填报旅游申请材料 &lt;br/&gt;
+2、部门经理、总监审批&lt;br/&gt; 
+3、人力资源管理员查核人员名单 &lt;br/&gt;
+4、人力资源总监审批 &lt;br/&gt;
+5、部门文员核对活动后名单 &lt;br/&gt;
+6、人力资源管理员核对活动后名单 &lt;br/&gt;
+7、活动后纸质报销费用（与系统流程无关）</documentation>
+    <startEvent id="startevent1" name="部门团队活动申请" activiti:initiator="applyUserId"></startEvent>
+    <userTask id="deptManagerAudiTask" name="部门经理审批" default="flow3" activiti:assignee="${processHelpService.findOrgLeaderForSpec(applyUserId,1)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="deptManagerAudiTask"></sequenceFlow>
+    <userTask id="updateTeamActivitiesAudiTask" name="修改活动申请" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow2" name="不同意" sourceRef="deptManagerAudiTask" targetRef="updateTeamActivitiesAudiTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.MSendEmailToApplyUserListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${deptManagerAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="hrAdminAudiTask" name="人资管理员审批" default="flow5" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人资管理员审批&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow3" name="同意" sourceRef="deptManagerAudiTask" targetRef="hrAdminAudiTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${deptManagerAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="updateTeamActivitiesAudiTask" targetRef="deptManagerAudiTask"></sequenceFlow>
+    <userTask id="hrMajorAudiTask" name="人资总监审批" default="flow7" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人资总监审批&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow5" name="同意" sourceRef="hrAdminAudiTask" targetRef="hrMajorAudiTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hrAdminAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" name="不同意" sourceRef="hrAdminAudiTask" targetRef="updateTeamActivitiesAudiTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.MSendEmailToApplyUserListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hrAdminAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="deptClerkAudiTask" name="活动组织人确认" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow7" name="同意" sourceRef="hrMajorAudiTask" targetRef="deptClerkAudiTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hrMajorAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow8" name="不同意" sourceRef="hrMajorAudiTask" targetRef="updateTeamActivitiesAudiTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.MSendEmailToApplyUserListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${hrMajorAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="hrAdminConfirmAudiTask" name="人资管理员确认" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人资管理员确认&quot;,execution)}"></userTask>
+    <endEvent id="endevent1" name="活动申请流程结束"></endEvent>
+    <sequenceFlow id="flow9" sourceRef="deptClerkAudiTask" targetRef="hrAdminConfirmAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="hrAdminConfirmAudiTask" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_M-Team-Activities">
+    <bpmndi:BPMNPlane bpmnElement="M-Team-Activities" id="BPMNPlane_M-Team-Activities">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="20.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deptManagerAudiTask" id="BPMNShape_deptManagerAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="updateTeamActivitiesAudiTask" id="BPMNShape_updateTeamActivitiesAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="100.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hrAdminAudiTask" id="BPMNShape_hrAdminAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="250.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hrMajorAudiTask" id="BPMNShape_hrMajorAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="400.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deptClerkAudiTask" id="BPMNShape_deptClerkAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="40.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hrAdminConfirmAudiTask" id="BPMNShape_hrAdminConfirmAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="550.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="585.0" y="230.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="55.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="152.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="152.0" y="160.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="160.0" y="119.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="205.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="250.0" y="67.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="215.0" y="67.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="100.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="77.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="77.0" y="66.0"></omgdi:waypoint>
+        <omgdi:waypoint x="100.0" y="67.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="355.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="400.0" y="67.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="365.0" y="67.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="302.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="302.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="187.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="310.0" y="119.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="505.0" y="67.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="67.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="515.0" y="67.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="452.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="452.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="205.0" y="187.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="450.0" y="119.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="602.0" y="95.0"></omgdi:waypoint>
+        <omgdi:waypoint x="602.0" y="133.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="602.0" y="188.0"></omgdi:waypoint>
+        <omgdi:waypoint x="602.0" y="230.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

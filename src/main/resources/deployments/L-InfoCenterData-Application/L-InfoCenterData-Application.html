@@ -1,0 +1,396 @@
+<#include "/common/head.html">
+<!-- 展示表单  -->
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+			<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">信息中心数据申请</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请内容：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${(steps.vars["infoDataContents"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+			<tr>
+				<td class="formtable_td_key">申请人：</td>
+				<td class="formtable_td_value" >${steps.vars["applyUserName"]}</td>
+				<td class="formtable_td_key">申请时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]}</td>
+			</tr>		 
+					 
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3" style="width:180">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>
+   <!-- 部门经理审批 -->
+	   <#if steps.key == 'deptManagerAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">部门经理审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["deptManagerAudi"] == '0'>同意</#if>
+					<#if steps.vars["deptManagerAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批意见：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["deptManagerAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">审批人：</td>
+				<td class="formtable_td_value" >${steps.vars["deptManagerAudiName"]}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["deptManagerAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!--开发部经理审批-->
+	   <#if steps.key == 'developManagerAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">开发部经理审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["developManagerAudi"] == '0'>同意</#if>
+					<#if steps.vars["developManagerAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批意见：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["developManagerAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">审批人：</td>
+				<td class="formtable_td_value" >${steps.vars["developManagerAudiName"]}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["developManagerAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 信息中心总监审批 -->
+	   <#if steps.key == 'infoCenterDirectorAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">信息中心总监审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["infoCenterDirectorAudi"] == '0'>同意</#if>
+					<#if steps.vars["infoCenterDirectorAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批意见：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["infoCenterDirectorAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">审批人：</td>
+				<td class="formtable_td_value" >${steps.vars["infoCenterDirectorAudiName"]}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["infoCenterDirectorAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 财务总监审批-->
+	   <#if steps.key == 'CFOAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">财务总监审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["CFOAudi"] == '0'>同意</#if>
+					<#if steps.vars["CFOAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审批意见：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["CFOAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">审批人：</td>
+				<td class="formtable_td_value" >${steps.vars["CFOAudiName"]}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["CFOAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	     	
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+ 		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">信息中心数据申请
+		  	  		<input type="hidden" name="fp_curUserId"  value="${appuser.account}"/>
+		  	  		<input type="hidden" name="fp_projectName" id="projectName" value=""/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请内容：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_infoDataContents" mobile="申请内容" style="width: 700px; height: 100px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyUserName" mobile="申请人" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate" mobile="申请时间"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 业务部门经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'deptManagerAudiTask'>
+		<div id="deptManagerAudiTask">
+		  <form id="deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">业务部门经理审批</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+						
+					<input type="radio" name="fp_deptManagerAudi" mobile="审批结果_同意"  checked="checked" value="0" />同意 &nbsp;&nbsp;
+					<input type="radio" name="fp_deptManagerAudi" mobile="审批结果_不同意" value="1" />不同意</td>
+					
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px"mobile="审批意见"  name="fp_deptManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">审批人：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="text" mobile="审批人" name="fp_deptManagerAudiName"  value="${appuser.name}"  readonly="readonly" data-options="required:true" />
+					</td>
+					<td class="formtable_td_key">审批时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="text" name="fp_deptManagerAudiTime" timeEditor="1" mobile="审批时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+
+<!-- 开发部经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'developManagerAudiTask'>
+		<div id="developManagerAudiTask">
+		  <form id="developManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="developManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">信息中心-开发部经理审批</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input  type="radio" name="fp_developManagerAudi" mobile="审批结果_同意" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input  type="radio" name="fp_developManagerAudi" mobile="审批结果_不同意" value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" mobile="审批意见" name="fp_developManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				
+				<tr>
+					<td class="formtable_td_key">审批人：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="text" mobile="审批人" name="fp_developManagerAudiName"  value="${appuser.name}"  readonly="readonly" data-options="required:true"/>
+					</td>
+					<td class="formtable_td_key">审批时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="text" name="fp_developManagerAudiTime" timeEditor="1" mobile="审批时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+
+	</#if>
+</#if>
+
+
+<!-- 信息中心总监审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'infoCenterDirectorAudiTask'>
+		<div id="infoCenterDirectorAudiTask">
+		  <form id="infoCenterDirectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="infoCenterDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">信息中心总监审批</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input  type="radio" name="fp_infoCenterDirectorAudi" mobile="审批结果_同意" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input  type="radio" name="fp_infoCenterDirectorAudi" mobile="审批结果_不同意" value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px"mobile="审批意见" name="fp_infoCenterDirectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				
+				<tr>
+					<td class="formtable_td_key">审批人：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="text" mobile="审批人" name="fp_infoCenterDirectorAudiName"  value="${appuser.name}"  data-options="required:true"  readonly="readonly" />
+					</td>
+					<td class="formtable_td_key">审批时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="text" name="fp_infoCenterDirectorAudiTime" timeEditor="1" mobile="审批时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+
+	</#if>
+</#if>
+
+
+<!-- 财务总监审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'CFOAudiTask'>
+		<div id="CFOAudiTask">
+		  <form id="CFOAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="CFOAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">财务总监审批</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input  type="radio" name="fp_CFOAudi" mobile="审批结果_同意" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input  type="radio" name="fp_CFOAudi"mobile="审批结果_不同意" value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px"mobile="审批意见" name="fp_CFOAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				
+				<tr>
+					<td class="formtable_td_key">审批人：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="text" mobile="审批人" name="fp_CFOAudiName"  value="${appuser.name}" readonly="readonly" data-options="required:true"/>
+					</td>
+					<td class="formtable_td_key">审批时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="text" name="fp_CFOAudiTime" timeEditor="1" mobile="审批时间" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+
+	</#if>
+</#if>
+
+
+
+<#include "/common/foot.html">

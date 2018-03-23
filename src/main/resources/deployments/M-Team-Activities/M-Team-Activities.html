@@ -1,0 +1,1918 @@
+<#include "/common/head.html">
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		<tr>
+			<td colspan="6" class="formtable_td_key"  align="center">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">申请人公司：</td>
+			<td class="formtable_td_value">${steps.vars["companyName"]}</td>
+			<td class="formtable_td_key">申请人部门：</td>
+			<td class="formtable_td_value">${steps.vars["orgName"]}</td>
+			<td class="formtable_td_key">活动方式：</td>
+			<td class="formtable_td_value">${steps.vars["activitiesMode"]}</td>
+		</tr>
+		<tr>
+			
+			<td class="formtable_td_key">活动地点：</td>
+			<td class="formtable_td_value">${steps.vars["activitiesLocation"]}</td>
+			<td class="formtable_td_key">活动季度：</td>
+			<td  class="formtable_td_value" colspan="3">
+				<#if steps.vars["activityQuarter"] == '1'>第一季度3-5月</#if>
+				<#if steps.vars["activityQuarter"] == '2'>第二季度6-8月</#if>
+				<#if steps.vars["activityQuarter"] == '3'>第三季度9-11月</#if>
+				<#if steps.vars["activityQuarter"] == '4'>第四季度12-2月</#if>						
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">参加人员名单：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["joinPersons"]}</td>	
+		</tr>
+		<tr>
+			<td class="formtable_td_key">活动总人数：</td>
+			<td class="formtable_td_value">${steps.vars["numberOfPeople"]}&nbsp;人</td>
+			<td class="formtable_td_key" >经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["costSheet"]}&nbsp;元</td>
+			<td class="formtable_td_key">人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["perCost"]}&nbsp;元/人</td>			
+		</tr>
+		<tr>
+			<td class="formtable_td_key">金铭活动总人数：</td>
+			<td class="formtable_td_value">${steps.vars["jinMinNumOfPeople"]}&nbsp;人</td>
+			<td class="formtable_td_key" >金铭经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinCostSheet"]}&nbsp;元</td>
+			<td class="formtable_td_key">金铭人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinPerCost"]}&nbsp;元/人</td>			
+		</tr>
+		<tr>
+			<td class="formtable_td_key">金卓活动总人数：</td>
+			<td class="formtable_td_value">${steps.vars["jinZhuoNumOfPeople"]}&nbsp;人</td>
+			<td class="formtable_td_key" >金卓经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoCostSheet"]}&nbsp;元</td>
+			<td class="formtable_td_key">金卓人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoPerCost"]}&nbsp;元/人</td>			
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2">备注：</td>
+			<td class="formtable_td_value" colspan="5">离职人员名单&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_value" colspan="5">${steps.vars["addLeavePersons"]!""}</td>	
+		</tr>
+		<tr>
+			 <td class="formtable_td_key">活动经费合计：</td>
+			<td class="formtable_td_value"  >${steps.vars["costLeavePersonsSheet"]!""}&nbsp;元</td>
+			<td class="formtable_td_key">金铭经费合计：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinCostLeavePersonsSheet"]!""}&nbsp;元</td>	
+			<td class="formtable_td_key">金卓经费合计：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoCostLeavePersonsSheet"]!""}&nbsp;元</td>	
+		</tr>
+		<tr>
+		    <td class="formtable_td_key">申请人签字：</td>
+			<td class="formtable_td_value" >${steps.vars["signSelf"]}</td>
+			<td class="formtable_td_key">申请日期：</td>
+			<td class="formtable_td_value" colspan="3" >${steps.vars["applicationDate"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+ <!-- 表单修改结果  -->
+ <#if steps.key == 'updateTeamActivitiesAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">申请人公司：</td>
+			<td class="formtable_td_value">${steps.vars["companyName"]}</td>
+			<td class="formtable_td_key">申请人部门：</td>
+			<td class="formtable_td_value">${steps.vars["orgName"]}</td>
+			<td class="formtable_td_key">活动方式：</td>
+			<td class="formtable_td_value">${steps.vars["activitiesMode"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">活动地点：</td>
+			<td class="formtable_td_value">${steps.vars["activitiesLocation"]}</td>
+			<td class="formtable_td_key">活动季度：</td>
+			<td  class="formtable_td_value" colspan="3">
+				<#if steps.vars["activityQuarter"] == '1'>第一季度3-5月</#if>
+				<#if steps.vars["activityQuarter"] == '2'>第二季度6-8月</#if>
+				<#if steps.vars["activityQuarter"] == '3'>第三季度9-11月</#if>
+				<#if steps.vars["activityQuarter"] == '4'>第四季度12-2月</#if>						
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">参加人员名单：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["joinPersons"]}</td>	
+		</tr>
+		<tr>
+			<td class="formtable_td_key">活动人数：</td>
+			<td class="formtable_td_value">${steps.vars["numberOfPeople"]}&nbsp;&nbsp;人</td>
+			<td class="formtable_td_key" >经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["costSheet"]}&nbsp;&nbsp;元</td>
+			<td class="formtable_td_key">人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["perCost"]}&nbsp;&nbsp;元/人</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">金铭活动总人数：</td>
+			<td class="formtable_td_value">${steps.vars["jinMinNumOfPeople"]}&nbsp;人</td>
+			<td class="formtable_td_key" >金铭经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinCostSheet"]}&nbsp;元</td>
+			<td class="formtable_td_key">金铭人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinPerCost"]}&nbsp;元/人</td>			
+		</tr>
+		<tr>
+			<td class="formtable_td_key">金卓活动总人数：</td>
+			<td class="formtable_td_value">${steps.vars["jinZhuoNumOfPeople"]}&nbsp;人</td>
+			<td class="formtable_td_key" >金卓经费预算：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoCostSheet"]}&nbsp;元</td>
+			<td class="formtable_td_key">金卓人均经费：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoPerCost"]}&nbsp;元/人</td>			
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2">备注：</td>
+			<td class="formtable_td_value" colspan="5">离职人员名单&nbsp;&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_value" colspan="5">${steps.vars["addLeavePersons"]!""}</td>	
+		</tr>
+		<tr>
+			 <td class="formtable_td_key">活动经费合计：</td>
+			<td class="formtable_td_value" >${steps.vars["costLeavePersonsSheet"]!""}元</td>	
+			<td class="formtable_td_key">金铭经费合计：</td>
+			<td class="formtable_td_value" >${steps.vars["jinMinCostLeavePersonsSheet"]!""}元</td>	
+			<td class="formtable_td_key">金卓经费合计：</td>
+			<td class="formtable_td_value" >${steps.vars["jinZhuoCostLeavePersonsSheet"]!""}元</td>	
+		</tr>
+		<tr>
+		    <td class="formtable_td_key">申请人签字：</td>
+			<td class="formtable_td_value">${steps.vars["signSelf"]}</td>
+			<td class="formtable_td_key">申请日期：</td>
+			<td class="formtable_td_value" colspan="3" >${steps.vars["applicationDate"]}</td>
+		</tr>
+		
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>	
+
+<!-- 部门经理审批结果 -->
+<#if steps.key == 'deptManagerAudiTask'>
+	<tr>
+		<td colspan="6" class="formtable_td_key" align="center">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >部门经理审批意见：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["deptManagerAudiAdvice"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >审批结果：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["deptManagerAudi"] == '0'>同意</#if>
+			<#if steps.vars["deptManagerAudi"] == '1'>不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">部门经理签字：</td>
+		<td class="formtable_td_value" >${steps.vars["deptManagerAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="3">${steps.vars["deptManagerAudiTime"]}</td>
+	</tr>
+	
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 人力资源部管理员审批结果 -->
+<#if steps.key == 'hrAdminAudiTask'>
+	<tr>
+		<td colspan="6" class="formtable_td_key" align="center">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >人力资源部管理员审批意见：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["hrAdminAudiAdvice"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >审批结果：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["hrAdminAudi"] == '0'>同意</#if>
+			<#if steps.vars["hrAdminAudi"] == '1'>不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">人力资源部管理员签字：</td>
+		<td class="formtable_td_value" >${steps.vars["hrAdminAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="3">${steps.vars["hrAdminAudiTime"]}</td>
+	</tr>
+	
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 人力资源部总监审批结果-->
+<#if steps.key == 'hrMajorAudiTask'>
+	<tr>
+		<td colspan="6" class="formtable_td_key" align="center">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >人力资源部总监审批意见：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["hrMajorAudiAdvice"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >审批结果：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["hrMajorAudi"] == '0'>同意</#if>
+			<#if steps.vars["hrMajorAudi"] == '1'>不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">人力资源部总监签字：</td>
+		<td class="formtable_td_value" >${steps.vars["hrMajorAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="3">${steps.vars["hrMajorAudiTime"]}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 活动组织人确认实际参与人数与总费用结果 -->
+<#if steps.key == 'deptClerkAudiTask'>
+	<tr>
+		<td colspan="7" class="formtable_td_key" align="center">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" colspan="7">费用报销结果：</td>
+	</tr>
+		<td class="formtable_td_key" >实际参加人数：</td>
+		<td class="formtable_td_value" >${steps.vars["trueNumOfPeople"]}&nbsp;&nbsp;人</td>
+		<td class="formtable_td_key" >实际总费用：</td>
+		<td class="formtable_td_value" >${steps.vars["sumOfCost"]}&nbsp;&nbsp;元</td>
+		<td class="formtable_td_key" >实际人均经费：</td>
+		<td class="formtable_td_value" >${steps.vars["truePerCost"]}&nbsp;&nbsp;元/人</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >金铭实际参加人数：</td>
+		<td class="formtable_td_value" >${steps.vars["jinMinTrueNumOfPeople"]}&nbsp;&nbsp;人</td>
+		<td class="formtable_td_key" >金铭实际总费用：</td>
+		<td class="formtable_td_value" >${steps.vars["jinMinSumOfCost"]}&nbsp;&nbsp;元</td>
+		<td class="formtable_td_key" >金铭人均经费：</td>
+		<td class="formtable_td_value" >${steps.vars["jinMinTruePerCost"]}&nbsp;&nbsp;元/人</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >金卓实际参加人数：</td>
+		<td class="formtable_td_value" >${steps.vars["jinZhuoTrueNumOfPeople"]}&nbsp;&nbsp;人</td>
+		<td class="formtable_td_key" >金卓实际总费用：</td>
+		<td class="formtable_td_value" >${steps.vars["jinZhuoNumOfCost"]}&nbsp;&nbsp;元</td>
+		<td class="formtable_td_key" >金卓人均经费：</td>
+		<td class="formtable_td_value" >${steps.vars["jinZhuoTruePerCost"]}&nbsp;&nbsp;元/人</td>
+	</tr>
+	<tr>		
+		<td class="formtable_td_key">确认人签字：</td>
+		<td class="formtable_td_value" colspan="2">${steps.vars["deptClerkAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="4">${steps.vars["deptClerkAudiTime"]}</td>		
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+
+<!-- 人力资源管理员确认结果 -->
+<#if steps.key == 'hrAdminConfirmAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >人力资源管理员确认意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["hrAdminConfirmAudiAdvice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["hrAdminConfirmAudiName"]}</td>
+			<td class="formtable_td_key">确认日期：</td>
+			<td class="formtable_td_value" colspan="3">${steps.vars["hrAdminConfirmAudiTime"]}</td>
+		</tr>
+</#if>
+
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+				<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">申请人公司：</td>
+						<td id="td_companyName${rand}" class="formtable_td_value">
+							<input id="curUserId${rand}" name="fp_applyUserId" type="hidden" value="${appuser.account}" />
+							<input id="companyName${rand}" type="hidden" value="" name="fp_companyName"/>
+						</td>
+						<td class="formtable_td_key">申请人部门：</td>							
+						<td id="td_orgName${rand}" class="formtable_td_value">
+							<input id="orgName${rand}" type="hidden" value="" name="fp_orgName"/>
+							<input id="entryDate${rand}" type="hidden" value="" name="fp_entryDate"/>
+						</td>
+						<td class="formtable_td_key">活动方式：</td>
+						<td  class="formtable_td_value">
+							<input  type="text" class="easyui-validatebox" name="fp_activitiesMode" data-options="required:true" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"/> 
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">活动地点：</td>
+						<td id="td_entryTime${rand}" class="formtable_td_value" >
+				  			<input  type="text" class="easyui-validatebox" name="fp_activitiesLocation" data-options="required:true" onkeyup="this.value=this.value.replace(/^ +| +$/g,'')"/>
+				  		</td>
+				  		<td class="formtable_td_key">活动季度：</td>
+						<td  class="formtable_td_value" colspan="3">
+							<input id="activityQuarter${rand}" class="easyui-combobox" type="text"  name="fp_activityQuarter" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'第一季度3-5月',value:'1'},
+										{text:'第二季度6-8月',value:'2'},
+										{text:'第三季度9-11月',value:'3'},
+										{text:'第四季度12-2月',value:'4'}] " />
+						</td>
+						
+				  		<!-- <td class="formtable_td_key">活动时间：</td>
+						<td  class="formtable_td_value" colspan="3">
+				  			<input id="startDate${rand}" type="text" class="easyui-my97" name="fp_beginTime" readonly="readonly" data-options="required:true,disabled:false,
+								minDate:'%y-%M-{%d}',maxDate:'#F{$dp.$D(\'endDate\')}'"/>&nbsp;&nbsp;至&nbsp;&nbsp;
+							<input id="endDate${rand}" type="text" class="easyui-my97" name="fp_endTime" readonly="readonly" data-options="required:true,disabled:false,
+								minDate:'#F{$dp.$D(\'startDate\')}'"/>
+				  		</td> -->
+					</tr>
+					
+					<tr>
+						<td class="formtable_td_key">参加人员名单：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="listAccount${rand}" type="hidden" name="fp_listAccount" /> 
+							<input id="JoinPersons_val${rand}" type="hidden" name="fp_joinPersons" />
+							<a id="openImportPersonBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-upload'">导入活动人员名单</a>
+							<a id="downLoad${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+							<div id="JoinPersons${rand}" style="font-size: 12px; "></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">活动总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="numberOfPeople${rand}" class="easyui-validatebox" validType = "posinInteger" name="fp_numberOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>	
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="costSheet${rand}" class="easyui-validatebox" name="fp_costSheet" readonly="readonly" data-options="required:true,validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value">		
+							<input type="text" id="perCost${rand}" class="easyui-validatebox" name="fp_perCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 	/人				
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">金铭公司总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="jinMinNumOfPeople${rand}" class="easyui-validatebox" validType = "posinInteger" name="fp_jinMinNumOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="jinMinCostSheet${rand}" class="easyui-validatebox" name="fp_jinMinCostSheet" readonly="readonly" data-options="required:true,validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value">		
+							<input type="text" id="jinMinPerCost${rand}" class="easyui-validatebox" name="fp_jinMinPerCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 	/人				
+						</td>	
+					</tr>
+					<tr>
+						<td class="formtable_td_key">金卓公司总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="jinZhuoNumOfPeople${rand}" class="easyui-validatebox" validType = "posinInteger" name="fp_jinZhuoNumOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>	
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="jinZhuoCostSheet${rand}" class="easyui-validatebox" name="fp_jinZhuoCostSheet" readonly="readonly" data-options="required:true,validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value">		
+							<input type="text" id="jinZhuoPerCost${rand}" class="easyui-validatebox" name="fp_jinZhuoPerCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 	/人				
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2">备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<span style="font-size: 13pt">若存在已离职人员，请下载模板，并导入离职人员信息&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value" colspan="5">
+							<input id="listLeaveAccount-${rand}" type="hidden" name="fp_listLeaveAccount" /> 
+							<input id="addLeavePersons_val-${rand}" type="hidden" name="fp_addLeavePersons" />
+							<a id="importLeavePerson-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-upload'">导入离职人员名单</a>
+							<a id="downLoadLeavePerson-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+							<div id="addLeavePersons-${rand}" style="font-size: 12px; "></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >活动经费合计：</td>
+						<td class="formtable_td_value" >
+							<input id="allCost${rand}" type="text"   name="fp_costLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;元 					
+						</td>
+						<td class="formtable_td_key" >金铭经费合计：</td>
+						<td class="formtable_td_value"  >
+							<input id="jinMinAllCost${rand}" type="text"   name="fp_jinMinCostLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;元 					
+						</td>
+						<td class="formtable_td_key" >金卓经费合计：</td>
+						<td class="formtable_td_value" >
+							<input id="jinZhuoAllCost${rand}" type="text"   name="fp_jinZhuoCostLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;元 					
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >申请人签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input class="easyui-validatebox"  type="hidden" name="fp_signSelf" data-options="required:true" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td  class="formtable_td_value" colspan="2" >
+							<input id="applyDate${rand}" type="hidden" name="fp_applicationDate"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					
+				</table>
+			</form>
+			<!-- <div style="display: none;margin:0 auto;">
+				<form id="upform${rand}" method="post" enctype="Multipart/form-data">
+				</form>
+			</div> -->
+		</div>	
+		<!-- 解决浏览器不兼容问题 -->
+		<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入活动人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+				<div  style="padding:10px 10px;">
+					<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td width="120" align="center">上传文件:</td>
+								<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+								<td>
+									<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+		</div>
+		<div id="importWin1-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入活动人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+				<div  style="padding:10px 10px;">
+					<form id="upform1-${rand}" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td width="120" align="center">上传文件:</td>
+								<td id="td_input1_${rand}"><input id="upload_file1-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+								<td>
+									<a id="upfile1-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+		</div>
+<script type="text/javascript">
+//---校验只能在每个季度的最后一个月的20(含)号之后到下一个季度最后一个月20号之间提交部门本季度团队活动申请
+	$('#activityQuarter${rand}').combobox({
+		onSelect:function(value){
+			var date = new Date();
+			var month = date.getMonth()+1;
+			var day = date.getDate();
+			if(value.value == "1"){
+				if( month < 5 || (month == 8 && day >20) || month > 8  || ( month == 5 && day <20)){
+					$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+					$("#start").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+				}
+			}else if(value.value == "2"){
+				if( month < 8 || (month == 11 && day >20) || month > 11 || ( month == 8 && day <20)){
+					$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+					$("#start").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+				}
+			}else if(value.value == "3"){
+				if(month < 11 && month >2 || (month == 2 && day >20) || ( month == 11 && day <20)){
+					$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+					$("#start").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+				}
+			}else if(value.value == "4"){
+				if( month < 2 || (month == 5 && day >20) || month > 5 || ( month == 2 && day <20)){
+					$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+					$("#start").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+				}
+			}
+		}
+	});
+	
+	var orgWin = $('#orgWin-${rand}');
+	
+	 var addUserList = new Array();
+     var addNameList = new Array();
+
+     var countNum = 0 ;//统计活动总人数
+     var countMon = 0;//统计在当前季度中入职的人数
+     var jinMinCountNum = 0;//统计金铭活动总人数
+     var jinMinCountMon = 0;//统计当前季度中金铭公司入职的人数
+     var jinZhuoCountNum = 0;//统计金卓活动人数
+	 var jinZhuoCountMon = 0;//统计当前季度中金卓公司入职的人数
+     var allCost = 0;//已离职人员费用
+	 var sum = 0;//已离职人员活动费用总计
+	 var jinMinSum = 0;//金铭已离职人员费用总计
+	 var jinZhuoSum = 0;//金卓已离职人员费用总计
+     $(function(){
+    	
+		var orgs = $('#orgs${rand}');
+		var users = $('#users${rand}');
+		var currentOrgId = 0;
+		
+		//界面通过接口加载个人信息
+		$.post("hrFlow/getHrUserInfo.json",	{
+			account:$("#curUserId${rand}").val()	
+		},function(data){
+				if (data.success) {
+					$("#orgName${rand}").val(data.obj.orgName);
+					$("#companyName${rand}").val(data.obj.companyName);
+					//设置TD
+					$("#td_orgName${rand}").append(data.obj.orgName);
+					$("#td_companyName${rand}").append(data.obj.companyName);
+			}
+		});
+		
+	});
+    
+  		 //下载导入部门团队活动人员名单模板
+	  	 	$('#downLoad${rand}').bind('click', function(){
+	  	 		submitForm("download.teamList.name");
+	  	 	});
+  	 	
+	  	 	function submitForm(value){
+	  	 		var form = $("<form>");
+			   	form.attr('style', 'display:none');
+			   	form.attr('method', 'post');
+			    form.attr('action', '${base}sysprocess/task/download.html');
+			
+			    var key = $('<input>');
+			   	key.attr('type', 'hidden');
+			   	key.attr('name', 'key');
+			    key.attr('value', value);
+			
+			   	$('body').append(form);
+			    form.append(key);
+			        
+			    form.submit();
+			    form.remove();
+	  	 	}
+	  	 	
+  		//下载导入部门团队活动已离职人员名单模板
+	  	 	$('#downLoadLeavePerson-${rand}').bind('click', function(){
+	  	 		submitForm1("download.leavePersons.name");
+	  	 	});
+	  	 	
+  	 	function submitForm1(value){
+  	 		var form = $("<form>");
+		   	form.attr('style', 'display:none');
+		   	form.attr('method', 'post');
+		    form.attr('action', '${base}sysprocess/task/download.html');
+		
+		    var key = $('<input>');
+		   	key.attr('type', 'hidden');
+		   	key.attr('name', 'key');
+		    key.attr('value', value);
+		
+		   	$('body').append(form);
+		    form.append(key);
+		        
+		    form.submit();
+		    form.remove();
+  	 	}
+  	 	//$('#site${rand}').combobox('getValue');
+  	 var applyQuarter =	$('#activityQuarter${rand}').combobox('getValue');//获取申请活动季度
+	//导入人员名单
+	 $("#openImportPersonBtn${rand}").bind('click',function(){
+		 var activityQuarter = $('#activityQuarter${rand}').combobox('getValue');
+		 if(null==activityQuarter||''==activityQuarter){
+			 $.messager.alert('信息提示','您好，请先选择活动季度!','warning');
+			//$("#start").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+		 }else{
+			 $("#importWin-${rand}").dialog('open');
+		 }
+	 });
+	function clearInputFile${rand}(){
+			//清空文件框
+			$("#upload_file-${rand}").remove(); //移除原来的
+		    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+		   	$('#td_input_${rand}').html(newFileInput); //添加新的
+		    $.parser.parse('#td_input_${rand}');
+		}
+	 $("#upfile-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform-${rand}").form('submit',{
+				url:'teamActivities/imporTeamList.html',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+	/* $("#openImportPersonBtn${rand}").click(function(){
+		countNum = 0;//初始化导入人数
+		var f=$("<input type=file name=files>");
+		f.change(function(){
+			$("#upform").form('submit',{
+				url:'teamActivities/imporTeamList.json',
+				onSubmit:function(){
+					return $("#upform").find("input[type=file]").val()!=null; 
+			    }, */
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						$("#upform-${rand}").empty();
+						var str = "";
+						if(data.obj.length>0){
+							$('#JoinPersons${rand}').val("");
+							str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=10%>序号</td><td width=10%>公司</td><td width=10%>部门</td><td width=10%>员工编码</td><td width=10%>姓名</td><td width=10%>入职日期</td></tr>";
+							//String [] fileds = new String[]{"number","company","department","account","name","entryDate","leaveDate"};
+							for(var i = 0;i < data.obj.length;i++){
+								str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].company+"</td><td>"+data.obj[i].department+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].entryDate+"</td></tr>"
+								//判断入职日期的月份
+								$.ajax({  
+							         type : "post",  
+							         url : "hrFlow/getHrUserInfo.json",  
+							         data : {
+										account: data.obj[i].account
+									 },  
+							         async : false,  
+							         dataType: "json",
+							         success : function(data1){  
+							            if (data1.success) {//根据入职月份判断活动经费
+							            	var d = new Date(data.obj[i].entryDate);//系统导入日期
+							            	var t = new Date();//获取今天的日期
+							            	var yy = d.getFullYear();//获取导入日期的年份
+							            	var dd = d.getMonth()+1;//获取导入日期的月份
+							            	var y = t.getFullYear();
+							            	var applyQuarter = $('#activityQuarter${rand}').combobox('getValue');//获取当前的活动季度
+							            	if(yy == y){
+							            		if(applyQuarter==1){
+							            			switch(dd){
+										                case 4:countMon = countMon + 1;break;
+										                case 5:countMon = countMon + 2;break;
+							            			}
+							            		}
+							            		if(applyQuarter==2){
+							            			switch(dd){
+							            			 case 7:countMon = countMon + 1;break;
+							            			 case 8:countMon = countMon + 2;break;
+						            				}
+							            		}
+							            		if(applyQuarter==3){
+							            			switch(dd){
+										                case 10:countMon = countMon + 1;break;
+										                case 11:countMon = countMon + 2;break;
+						            				} 
+							            		}
+							            		if(applyQuarter==4){
+							            			switch(dd){
+										             	case 1:countMon = countMon + 1;break;
+										             	case 2:countMon = countMon + 2;break;
+					            					} 									
+							            		}
+								            }
+							            	if( (yy == y) && ((data.obj[i].company)=="金铭")){
+							            		if(applyQuarter==1){
+							            			switch(dd){
+							            			 	case 4:jinMinCountMon = jinMinCountMon + 1;break;
+										                case 5:jinMinCountMon = jinMinCountMon + 2;break;
+							            			}
+							            		}
+							            		if(applyQuarter==2){
+							            			switch(dd){
+								            			case 7:jinMinCountMon = jinMinCountMon + 1;break;
+										                case 8:jinMinCountMon = jinMinCountMon + 2;break;
+						            				}
+							            		}
+							            		if(applyQuarter==3){
+							            			switch(dd){
+								            			case 10:jinMinCountMon = jinMinCountMon + 1;break;
+										                case 11:jinMinCountMon = jinMinCountMon + 2;break;
+						            				} 
+							            		}
+							            		if(applyQuarter==4){
+							            			switch(dd){
+								            			case 1:jinMinCountMon = jinMinCountMon + 1;break;
+										                case 2:jinMinCountMon = jinMinCountMon + 2;break;
+					            					} 									
+							            		}
+							            	}
+							            	if((data.obj[i].company)=="金卓" && (yy == y)){
+							            			if(applyQuarter==1){
+								            			switch(dd){
+									            			case 4:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+											                case 5:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+								            			}
+								            		}
+								            		if(applyQuarter==2){
+								            			switch(dd){
+								            			 	case 7:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+											                case 8:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+							            				}
+								            		}
+								            		if(applyQuarter==3){
+								            			switch(dd){
+									            			case 10:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+											                case 11:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+							            				} 
+								            		}
+								            		if(applyQuarter==4){
+								            			switch(dd){
+									            			case 1:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+											                case 2:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+						            					} 									
+								            		}
+							            		}
+											}
+							            }
+							     }); 	
+								$('#JoinPersons${rand}').addTag(str);
+								countNum += 1;
+								if((data.obj[i].company)=="金铭"){
+									jinMinCountNum += 1;
+								}else if((data.obj[i].company)=="金卓"){
+									jinZhuoCountNum += 1;
+								}
+							}
+							str+="</table>"
+							document.getElementById("JoinPersons${rand}").innerHTML=str;
+							$('#numberOfPeople${rand}').val(countNum);
+							$('#costSheet${rand}').val(countNum * 210-countMon*70);
+							if(countNum){
+								$('#perCost${rand}').val(countNum * 210 / countNum);
+							}else{
+								$('#perCost${rand}').val('0.00');
+							}
+							$('#jinMinNumOfPeople${rand}').val(jinMinCountNum);
+							$('#jinMinCostSheet${rand}').val(jinMinCountNum * 210-jinMinCountMon*70);
+							if(jinMinCountNum){
+								$('#jinMinPerCost${rand}').val(jinMinCountNum * 210 / jinMinCountNum);
+							}else{
+								$('#jinMinPerCost${rand}').val('0.00');
+							}
+							$('#jinZhuoNumOfPeople${rand}').val(jinZhuoCountNum);
+							$('#jinZhuoCostSheet${rand}').val(jinZhuoCountNum * 210-jinZhuoCountMon*70);
+							if(jinZhuoCountNum){
+								$('#jinZhuoPerCost${rand}').val(jinZhuoCountNum * 210 / jinZhuoCountNum);
+							}else{
+								$('#jinZhuoPerCost${rand}').val('0.00');
+							}
+						}
+						document.getElementById('JoinPersons_val${rand}').value=document.getElementById("JoinPersons${rand}").innerHTML;
+						countNum = 0;
+						countMon = 0;
+						jinMinCountNum = 0;
+						jinMinCountMon = 0;
+						jinZhuoCountNum = 0;
+						jinZhuoCountMon = 0;
+					} 
+					$("#importWin-${rand}").dialog('close');
+					$.messager.progress('close');
+					$.messager.alert("提示信息",data.msg);
+					
+					if($("#numberOfPeople${rand}").val() != null && $("#numberOfPeople${rand}").val() != ''){
+						$("#numberOfPeople${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#numberOfPeople${rand}").addClass('validatebox-invalid');
+					}
+					if($("#costSheet${rand}").val() != null && $("#costSheet${rand}").val() != ''){
+						$("#costSheet${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#costSheet${rand}").addClass('validatebox-invalid');
+					}
+					if($("#perCost${rand}").val() != null && $("#perCost${rand}").val() != ''){
+						$("#perCost${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#perCost${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinMinNumOfPeople${rand}").val() != null && $("#jinMinNumOfPeople${rand}").val() != ''){
+						$("#jinMinNumOfPeople${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinMinNumOfPeople${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinMinCostSheet${rand}").val() != null && $("#jinMinCostSheet${rand}").val() != ''){
+						$("#jinMinCostSheet${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinMinCostSheet${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinMinPerCost${rand}").val() != null && $("#jinMinPerCost${rand}").val() != ''){
+						$("#jinMinPerCost${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinMinPerCost${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinZhuoNumOfPeople${rand}").val() != null && $("#jinZhuoNumOfPeople${rand}").val() != ''){
+						$("#jinZhuoNumOfPeople${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinZhuoNumOfPeople${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinZhuoCostSheet${rand}").val() != null && $("#jinZhuoCostSheet${rand}").val() != ''){
+						$("#jinZhuoCostSheet${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinZhuoCostSheet${rand}").addClass('validatebox-invalid');
+					}
+					if($("#jinZhuoPerCost${rand}").val() != null && $("#jinZhuoPerCost${rand}").val() != ''){
+						$("#jinZhuoPerCost${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#jinZhuoPerCost${rand}").addClass('validatebox-invalid');
+					}
+				}
+			});
+		});
+		/* $("#upform-${rand}").append(f);
+		f.click();
+	}); */
+	
+		//导入已离职人员名单
+		
+		 $("#importLeavePerson-${rand}").bind('click',function(){
+			 $("#importWin1-${rand}").dialog('open');
+		 });
+		function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file1-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file1-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input1_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input1_${rand}');
+			}
+		 $("#upfile1-${rand}").bind('click',function(){
+			 $.messager.progress();
+			 $("#upform1-${rand}").form('submit',{
+					url:'teamActivities/imporleavePersons.html',
+					onSubmit:function(){
+						var validateResult = $(this).form('validate');
+				    	if (!validateResult) {
+				    		$.messager.progress('close');
+							return false;
+				    	} else {
+				    		return true;
+				    	}
+				    },
+					success:function(data){
+						if(typeof(data).toLowerCase()=='string'){
+							data=eval("("+data+")");
+						}
+						if(data.success){
+							$("#upform1-${rand}").empty();
+							var str = "";
+							if(data.obj.length>0){
+								$('#addLeavePersons-${rand}').val("");
+								str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=10%>序号</td><td width=10%>员工编码</td><td width=10%>姓名</td><td width=10%>公司</td><td width=10%>岗位</td><td width=10%>入职日期</td><td width=10%>离职日期</td><td width=10%>费用</td></tr>";
+								//String [] fileds = new String[]{"number","account","name","job","entryDate","leaveDate","cost"};
+								for(var i = 0;i < data.obj.length;i++){
+									str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].company+"</td><td>"+data.obj[i].job+"</td><td>"+data.obj[i].entryDate+"</td><td>"+data.obj[i].leaveDate+"</td><td>"+data.obj[i].cost+"</td></tr>"
+									allCost = data.obj[i].cost;
+									$('#addLeavePersons-${rand}').addTag(str);
+									sum += allCost;
+									if((data.obj[i].company) == "金铭"){
+										jinMinSum += allCost;
+									}else if((data.obj[i].company) == "金卓"){
+										jinZhuoSum += allCost;
+									}
+								}
+								str+="</table>"
+								document.getElementById("addLeavePersons-${rand}").innerHTML=str;
+								$('#allCost${rand}').val(sum);
+								$('#jinMinAllCost${rand}').val(jinMinSum);
+								$('#jinZhuoAllCost${rand}').val(jinZhuoSum);
+							}
+							document.getElementById('addLeavePersons_val-${rand}').value=document.getElementById("addLeavePersons-${rand}").innerHTML;
+							sum = 0;
+							jinMinSum = 0;
+							jinZhuoSum = 0;
+						} 
+						$("#importWin1-${rand}").dialog('close');
+						$.messager.progress('close');
+						$.messager.alert("提示信息",data.msg)
+					}
+				});
+			});
+	</script>	
+	</#if> 
+</#if>
+
+<!--修改申请-->
+<#if currentStep?exists> 
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+	<#if currentStep == 'updateTeamActivitiesAudiTask'>
+		<div id="updateTeamActivitiesAudiTask">
+			<form id="updateTeamActivitiesAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="updateTeamActivitiesAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" align="center">修改部门团队活动申请</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">申请人公司：</td>
+						<td id="td_companyName${rand}" class="formtable_td_value">
+							<input id="curUserId${rand}" name="fp_applyUserId" type="hidden" value="${appuser.account}" />
+							<input id="companyName${rand}" type="hidden"  name="fp_companyName" />
+						<td class="formtable_td_key">申请人部门：</td>							
+						<td id="td_orgName${rand}"class="formtable_td_value">
+							<input id="orgName${rand}" type="hidden"  name="fp_orgName"/>
+						</td>
+						<td class="formtable_td_key">活动方式：</td>
+						<td  class="formtable_td_value">
+							<input  type="text" class="easyui-validatebox" name="fp_activitiesMode" value="${steps.vars["activitiesMode"]}" data-options="required:true"  /> 
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">活动地点：</td>
+						<td id="td_entryTime" class="formtable_td_value">
+				  			<input  type="text" class="easyui-validatebox" name="fp_activitiesLocation" value="${steps.vars["activitiesLocation"]}" data-options="required:true" />
+				  		</td>
+				  		<td class="formtable_td_key">活动季度：</td>
+						<td  class="formtable_td_value" colspan="3">
+							<input id="activityQuarter${rand}" class="easyui-combobox" type="text" name="fp_activityQuarter" value="${steps.vars["activityQuarter"]}" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'第一季度3-5月',value:'1'},
+										{text:'第二季度6-8月',value:'2'},
+										{text:'第三季度9-11月',value:'3'},
+										{text:'第四季度12-2月',value:'4'}] " />
+						</td>
+						
+				  		<!-- <td class="formtable_td_key">活动时间：</td>
+						<td  class="formtable_td_value" colspan="3">
+				  			<input id="startDate${rand}" type="text" class="easyui-my97" name="fp_beginTime" readonly="readonly" data-options="required:true,disabled:false,
+								minDate:'%y-%M-{%d}',maxDate:'#F{$dp.$D(\'endDate\')}'"/>&nbsp;&nbsp;至&nbsp;&nbsp;
+							<input id="endDate${rand}" type="text" class="easyui-my97" name="fp_endTime" readonly="readonly" data-options="required:true,disabled:false,
+								minDate:'#F{$dp.$D(\'startDate\')}'"/>
+				  		</td> -->
+										
+					</tr>
+					
+					<tr>
+						<td class="formtable_td_key">参加人员名单：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="listAccount${rand}" type="hidden" name="fp_listAccount" /> 
+							<input id="JoinPersons_val${rand}" type="hidden" name="fp_joinPersons" />
+							<a id="openImportPersonBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-upload'">导入活动人员名单</a>
+							<a id="downLoad${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+							<div id="JoinPersons${rand}" style="font-size: 12px; "  ></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">活动总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="numberOfPeople${rand}" class="easyui-validatebox"  validType = "posinInteger" name="fp_numberOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>	
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="costSheet${rand}" class="easyui-validatebox"  name="fp_costSheet" readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="perCost${rand}" class="easyui-validatebox"  name="fp_perCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 /人					
+						</td>	
+					</tr>
+					<tr>
+						<td class="formtable_td_key">金铭公司总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="jinMinNumOfPeople${rand}" class="easyui-validatebox" validType = "posinInteger" name="fp_jinMinNumOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="jinMinCostSheet${rand}" class="easyui-validatebox" name="fp_jinMinCostSheet" readonly="readonly" data-options="required:true,validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+							<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value">		
+							<input type="text" id="jinMinPerCost${rand}" class="easyui-validatebox" name="fp_jinMinPerCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 	/人				
+						</td>	
+					</tr>
+					<tr>
+						<td class="formtable_td_key">金卓公司总人数：</td>
+						<td class="formtable_td_value">
+							<input type="text" id="jinZhuoNumOfPeople${rand}" class="easyui-validatebox" validType = "posinInteger" name="fp_jinZhuoNumOfPeople"  readonly="readonly" data-options="required:true,validType:'number'"/>&nbsp;&nbsp;人
+						</td>	
+						<td class="formtable_td_key">经费预算：</td>
+						<td class="formtable_td_value" >		
+							<input type="text" id="jinZhuoCostSheet${rand}" class="easyui-validatebox" name="fp_jinZhuoCostSheet" readonly="readonly" data-options="required:true,validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key">人均经费：</td>
+						<td class="formtable_td_value">		
+							<input type="text" id="jinZhuoPerCost${rand}" class="easyui-validatebox" name="fp_jinZhuoPerCost" readonly="readonly" data-options="required:true,validType:'intOrFloat'"/>&nbsp;&nbsp;元 	/人				
+						</td>	
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2">备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<span style="font-size: 13pt">若存在已离职人员，请下载模板，并导入离职人员信息&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value" colspan="5">
+							<input id="listLeaveAccount-${rand}" type="hidden" name="fp_listLeaveAccount" /> 
+							<input id="addLeavePersons_val-${rand}" type="hidden" name="fp_addLeavePersons" />
+							<a id="importLeavePerson-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-upload'">导入离职人员名单</a>
+							<a id="downLoadLeavePerson-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+							<div id="addLeavePersons-${rand}" style="font-size: 12px; "></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >活动经费合计：</td>
+						<td class="formtable_td_value" >
+							<input id="allCost${rand}" type="text"  name="fp_costLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;&nbsp;元 					
+						</td>
+						<td class="formtable_td_key" >金铭经费合计：</td>
+						<td class="formtable_td_value"  >
+							<input id="jinMinAllCost${rand}" type="text"   name="fp_jinMinCostLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;元 					
+						</td>
+						<td class="formtable_td_key" >金卓经费合计：</td>
+						<td class="formtable_td_value" >
+							<input id="jinZhuoAllCost${rand}" type="text"   name="fp_jinZhuoCostLeavePersonsSheet" readonly="readonly" data-options="validType:'number'" />&nbsp;元 					
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >申请人签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input class="easyui-validatebox"  type="hidden" name="fp_signSelf" data-options="required:true" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td  class="formtable_td_value" colspan="2" ><!-- id="applyDate${rand}" -->
+							<input id="applyDate${rand}"  type="hidden" name="fp_applicationDate" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>	
+				</table>
+			</form>
+			<!-- <div style="display: none;margin:0 auto;">
+				<form id="upform${rand}" method="post" enctype="Multipart/form-data">
+				</form>
+			</div> -->
+		</div>	
+		
+		<!-- 解决浏览器不兼容问题 -->
+		<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入活动人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+				<div  style="padding:10px 10px;">
+					<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td width="120" align="center">上传文件:</td>
+								<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+								<td>
+									<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+		</div>
+		<div id="importWin1-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入活动人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+				<div  style="padding:10px 10px;">
+					<form id="upform1-${rand}" method="post" enctype="multipart/form-data">
+						<table>
+							<tr>
+								<td width="120" align="center">上传文件:</td>
+								<td id="td_input1_${rand}"><input id="upload_file1-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+								<td>
+									<a id="upfile1-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+		</div>
+<script type="text/javascript">
+
+//---校验只能在每个季度的最后一个月的20(含)号之后到下一个季度最后一个月20号之间提交部门本季度团队活动申请
+$('#activityQuarter${rand}').combobox({
+	onSelect:function(value){
+		var date = new Date();
+		var month = date.getMonth()+1;
+		var day = date.getDate();
+		if(value.value == "1"){
+			if( month < 5 || (month == 8 && day >20) || month > 8  || ( month == 5 && day <20)){
+				$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+				$("#updateTeamActivitiesAudiTaskForm").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+			}
+		}else if(value.value == "2"){
+			if( month < 8 || (month == 11 && day >20) || month > 11 || ( month == 8 && day <20)){
+				$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+				$("#updateTeamActivitiesAudiTaskForm").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+			}
+		}else if(value.value == "3"){
+			if(month < 11 || (month == 2 && day >20) || month > 2 || ( month == 11 && day <20)){
+				$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+				$("#updateTeamActivitiesAudiTaskForm").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+			}
+		}else if(value.value == "4"){
+			if( month < 2 || (month == 5 && day >20) || month > 5 || ( month == 2 && day <20)){
+				$.messager.alert('信息提示','您好，在本月内您不能进行团队活动经费申请，请于本季度最后一个月20(含)号后再提出申请!','warning');
+				$("#updateTeamActivitiesAudiTaskForm").closest(".easyui-dialog").dialog("close");//关闭当前窗口
+			}
+		}
+	}
+});
+
+var orgWin = $('#orgWin-${rand}');
+
+ var addUserList = new Array();
+ var addNameList = new Array();
+
+ var countNum = 0 ;//统计人数
+ var countMon = 0;//统计当前季度中的人数
+ var jinMinCountNum = 0;//统计金铭活动总人数
+ var jinMinCountMon = 0;//统计当前季度中金铭公司入职的人数
+ var jinZhuoCountNum = 0;//统计金卓活动人数
+ var jinZhuoCountMon = 0;//统计当前季度中金卓公司入职的人数
+ var allCost = 0;//已离职人员费用
+ var sum = 0;//已离职人员活动费用总计
+ var jinMinSum = 0;//金铭已离职人员费用总计
+ var jinZhuoSum = 0;//金卓已离职人员费用总计
+ $(function(){
+	
+	var orgs = $('#orgs${rand}');
+	var users = $('#users${rand}');
+	var currentOrgId = 0;
+	
+	//界面通过接口加载个人信息
+	$.post("hrFlow/getHrUserInfo.json",	{
+		account:$("#curUserId${rand}").val()	
+	},function(data){
+			if (data.success) {
+				$("#orgName${rand}").val(data.obj.orgName);
+				$("#companyName${rand}").val(data.obj.companyName);
+				//设置TD
+				$("#td_orgName${rand}").append(data.obj.orgName);
+				$("#td_companyName${rand}").append(data.obj.companyName);
+		}
+	});
+	
+});
+
+		 //下载导入部门团队活动人员名单模板
+  	 	$('#downLoad${rand}').bind('click', function(){
+  	 		submitForm("download.teamList.name");
+  	 	});
+	 	
+		//下载导入部门团队活动已离职人员名单模板
+  	 	$('#downLoadLeavePerson-${rand}').bind('click', function(){
+  	 		submitForm("download.leavePersons.name");
+  	 	});
+  	 	
+	 	function submitForm(value){
+	 		var form = $("<form>");
+	   	form.attr('style', 'display:none');
+	   	form.attr('method', 'post');
+	    form.attr('action', '${base}sysprocess/task/download.html');
+	
+	    var key = $('<input>');
+	   	key.attr('type', 'hidden');
+	   	key.attr('name', 'key');
+	    key.attr('value', value);
+	
+	   	$('body').append(form);
+	    form.append(key);
+	        
+	    form.submit();
+	    form.remove();
+	 	}
+
+//导入人员名单
+ $("#openImportPersonBtn${rand}").bind('click',function(){
+	 $("#importWin-${rand}").dialog('open');
+ });
+function clearInputFile${rand}(){
+		//清空文件框
+		$("#upload_file-${rand}").remove(); //移除原来的
+	    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+	   	$('#td_input_${rand}').html(newFileInput); //添加新的
+	    $.parser.parse('#td_input_${rand}');
+	}
+ $("#upfile-${rand}").bind('click',function(){
+	 $.messager.progress();
+	 $("#upform-${rand}").form('submit',{
+			url:'teamActivities/imporTeamList.html',
+			onSubmit:function(){
+				var validateResult = $(this).form('validate');
+		    	if (!validateResult) {
+		    		$.messager.progress('close');
+					return false;
+		    	} else {
+		    		return true;
+		    	}
+		    },
+			success:function(data){
+				if(typeof(data).toLowerCase()=='string'){
+					data=eval("("+data+")");
+				}
+				if(data.success){
+					$("#upform-${rand}").empty();
+					var str = "";
+					if(data.obj.length>0){
+						$('#JoinPersons${rand}').val("");
+						str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=10%>序号</td><td width=10%>公司</td><td width=10%>部门</td><td width=10%>员工编码</td><td width=10%>姓名</td><td width=10%>入职日期</td></tr>";
+						//String [] fileds = new String[]{"number","company","department","account","name","entryDate","leaveDate"};
+						for(var i = 0;i < data.obj.length;i++){
+							str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].company+"</td><td>"+data.obj[i].department+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].entryDate+"</td></tr>"
+							//判断入职日期的月份
+							$.ajax({  
+						         type : "post",  
+						         url : "hrFlow/getHrUserInfo.json",  
+						         data : {
+									account: data.obj[i].account
+								 },  
+						         async : false,  
+						         dataType: "json",
+						         success : function(data1){  
+						            if (data1.success) {//根据入职月份判断当月入职人数
+						            	var d = new Date(data.obj[i].entryDate);
+						            	var t = new Date();
+						            	var yy = d.getFullYear();
+						            	var dd = d.getMonth()+1;
+						            	var y = t.getFullYear();
+						            	var d = t.getMonth()+1;
+						            	var applyQuarter = $('#activityQuarter${rand}').combobox('getValue');//获取当前的活动季度
+						            	if(yy == y){
+						            		if(applyQuarter==1){
+						            			switch(dd){
+									                case 4:countMon = countMon + 1;break;
+									                case 5:countMon = countMon + 2;break;
+						            			}
+						            		}
+						            		if(applyQuarter==2){
+						            			switch(dd){
+						            			 case 7:countMon = countMon + 1;break;
+						            			 case 8:countMon = countMon + 2;break;
+					            				}
+						            		}
+						            		if(applyQuarter==3){
+						            			switch(dd){
+									                case 10:countMon = countMon + 1;break;
+									                case 11:countMon = countMon + 2;break;
+					            				} 
+						            		}
+						            		if(applyQuarter==4){
+						            			switch(dd){
+									             	case 1:countMon = countMon + 1;break;
+									             	case 2:countMon = countMon + 2;break;
+				            					} 									
+						            		}
+							            }
+						            	if( (yy == y) && ((data.obj[i].company)=="金铭")){
+						            		if(applyQuarter==1){
+						            			switch(dd){
+						            			 	case 4:jinMinCountMon = jinMinCountMon + 1;break;
+									                case 5:jinMinCountMon = jinMinCountMon + 2;break;
+						            			}
+						            		}
+						            		if(applyQuarter==2){
+						            			switch(dd){
+							            			case 7:jinMinCountMon = jinMinCountMon + 1;break;
+									                case 8:jinMinCountMon = jinMinCountMon + 2;break;
+					            				}
+						            		}
+						            		if(applyQuarter==3){
+						            			switch(dd){
+							            			case 10:jinMinCountMon = jinMinCountMon + 1;break;
+									                case 11:jinMinCountMon = jinMinCountMon + 2;break;
+					            				} 
+						            		}
+						            		if(applyQuarter==4){
+						            			switch(dd){
+							            			case 1:jinMinCountMon = jinMinCountMon + 1;break;
+									                case 2:jinMinCountMon = jinMinCountMon + 2;break;
+				            					} 									
+						            		}
+						            	}
+						            	if((data.obj[i].company)=="金卓" && (yy == y)){
+						            			if(applyQuarter==1){
+							            			switch(dd){
+								            			case 4:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+										                case 5:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+							            			}
+							            		}
+							            		if(applyQuarter==2){
+							            			switch(dd){
+							            			 	case 7:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+										                case 8:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+						            				}
+							            		}
+							            		if(applyQuarter==3){
+							            			switch(dd){
+								            			case 10:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+										                case 11:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+						            				} 
+							            		}
+							            		if(applyQuarter==4){
+							            			switch(dd){
+								            			case 1:jinZhuoCountMon = jinZhuoCountMon + 1;break;
+										                case 2:jinZhuoCountMon = jinZhuoCountMon + 2;break;
+					            					} 									
+							            		}
+						            		}
+										}
+						            }
+						     }); 	
+							$('#JoinPersons${rand}').addTag(str);
+							countNum += 1;
+							if((data.obj[i].company)=="金铭"){
+								jinMinCountNum += 1;
+							}else if((data.obj[i].company)=="金卓"){
+								jinZhuoCountNum += 1;
+							}
+						}
+						str+="</table>"
+						document.getElementById("JoinPersons${rand}").innerHTML=str;
+						$('#numberOfPeople${rand}').val(countNum);
+						$('#costSheet${rand}').val(countNum * 210-countMon*70);
+						$('#perCost${rand}').val(countNum * 210 / countNum); 
+						$('#jinMinNumOfPeople${rand}').val(jinMinCountNum);
+						$('#jinMinCostSheet${rand}').val(jinMinCountNum * 210-jinMinCountMon*70);
+						$('#jinMinPerCost${rand}').val(jinMinCountNum * 210 / jinMinCountNum); 
+						$('#jinZhuoNumOfPeople${rand}').val(jinZhuoCountNum);
+						$('#jinZhuoCostSheet${rand}').val(jinZhuoCountNum * 210-jinZhuoCountMon*70);
+						$('#jinZhuoPerCost${rand}').val(jinZhuoCountNum * 210 / jinZhuoCountNum); 
+					}
+					document.getElementById('JoinPersons_val${rand}').value=document.getElementById("JoinPersons${rand}").innerHTML;
+					countNum = 0;
+					countMon = 0;
+					jinMinCountNum = 0;
+					jinMinCountMon = 0;
+					jinZhuoCountNum = 0;
+					jinZhuoCountMon = 0;
+				} 
+				$("#importWin-${rand}").dialog('close');
+				$.messager.progress('close');
+				$.messager.alert("提示信息",data.msg)
+			}
+		});
+	});
+	/* $("#upform-${rand}").append(f);
+	f.click();
+}); */
+
+	//导入已离职人员名单
+	
+	 $("#importLeavePerson-${rand}").bind('click',function(){
+		 $("#importWin1-${rand}").dialog('open');
+	 });
+	function clearInputFile${rand}(){
+			//清空文件框
+			$("#upload_file1-${rand}").remove(); //移除原来的
+		    var newFileInput = '<input id="upload_file1-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+		   	$('#td_input1_${rand}').html(newFileInput); //添加新的
+		    $.parser.parse('#td_input1_${rand}');
+		}
+	 $("#upfile1-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform1-${rand}").form('submit',{
+				url:'teamActivities/imporleavePersons.html',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						$("#upform1-${rand}").empty();
+						var str = "";
+						if(data.obj.length>0){
+							$('#addLeavePersons-${rand}').val("");
+							str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=10%>序号</td><td width=10%>员工编码</td><td width=10%>姓名</td><td width=10%>公司</td><td width=10%>岗位</td><td width=10%>入职日期</td><td width=10%>离职日期</td><td width=10%>费用</td></tr>";
+							//String [] fileds = new String[]{"number","account","name","job","entryDate","leaveDate","cost"};
+							for(var i = 0;i < data.obj.length;i++){
+								str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].company+"</td><td>"+data.obj[i].job+"</td><td>"+data.obj[i].entryDate+"</td><td>"+data.obj[i].leaveDate+"</td><td>"+data.obj[i].cost+"</td></tr>"
+								allCost = data.obj[i].cost;
+								$('#addLeavePersons-${rand}').addTag(str);
+								sum += allCost;
+								if((data.obj[i].company) == "金铭"){
+									jinMinSum += allCost;
+								}else if((data.obj[i].company) == "金卓"){
+									jinZhuoSum += allCost;
+								}
+							}
+							str+="</table>"
+							document.getElementById("addLeavePersons-${rand}").innerHTML=str;
+							$('#allCost${rand}').val(sum);
+							$('#jinMinAllCost${rand}').val(jinMinSum);
+							$('#jinZhuoAllCost${rand}').val(jinZhuoSum);
+						}
+						document.getElementById('addLeavePersons_val-${rand}').value=document.getElementById("addLeavePersons-${rand}").innerHTML;
+						sum = 0;
+						jinMinSum = 0;
+						jinZhuoSum = 0;
+					} 
+					$("#importWin1-${rand}").dialog('close');
+					$.messager.progress('close');
+					$.messager.alert("提示信息",data.msg)
+				}
+			});
+		});
+</script>	
+
+	</#if>
+	</#if> 
+	</#list>
+	</#if>  
+</#if>
+
+<!-- 部门经理审批 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'deptManagerAudiTask'>
+		<div id="deptManagerAudiTask">
+			<form id="deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">部门经理审批</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >部门经理审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="deptManagerAudiAdvice${rand}" style="width: 550px; height: 60px" name="fp_deptManagerAudiAdvice" class="formtable_remark" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="deptManagerAudiAgree${rand}" type="radio" name="fp_deptManagerAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input id="deptManagerAudiDisagree${rand}" type="radio" name="fp_deptManagerAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理签字：</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox"  name="fp_deptManagerAudiName" type="hidden" data-options="required:true" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2" >
+							<input  name="fp_deptManagerAudiTime" type="hidden"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#deptManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#deptManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#deptManagerAudiAdvice${rand}").val('');
+				$("#deptManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#deptManagerAudiAgree${rand}").bind("click",success);
+			$("#deptManagerAudiDisagree${rand}").bind("click",failure);
+			
+			//用于限制文本框输入全空格
+			function checkInput1(){
+				if($("input[name='fp_deptManagerAudi']:checked").val() == '0'){
+					return;
+				}
+				var result=$("#deptManagerAudiAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#deptManagerAudiAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+	</script>
+	</#if> 
+</#if>
+
+<!-- 人力资源部管理员审批意见 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'hrAdminAudiTask'>
+		<div id="hrAdminAudiTask">
+			<form id="hrAdminAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="hrAdminAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">人力资源部管理员审批</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >人力资源部管理员审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="hrAdminAudiAdvice${rand}" style="width: 550px; height: 60px" name="fp_hrAdminAudiAdvice" class="formtable_remark" onblur="checkInput2()"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="hrAdminAudiAgree${rand}" type="radio" name="fp_hrAdminAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input id="hrAdminAudiDisagree${rand}" type="radio" name="fp_hrAdminAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部管理员签字：</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_hrAdminAudiName"  value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  type="hidden" name="fp_hrAdminAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}	
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#hrAdminAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#hrAdminAudiAdvice${rand}").validatebox({required:false});//人力资源部管理员意见为非必填项
+			}
+			var failure=function(){
+				$("#hrAdminAudiAdvice${rand}").val('');
+				$("#hrAdminAudiAdvice${rand}").validatebox({required:true});//人力资源部管理员意见为必填项
+			};
+			$("#hrAdminAudiAgree${rand}").bind("click",success);
+			$("#hrAdminAudiDisagree${rand}").bind("click",failure);
+			
+			//用于限制文本框输入全空格
+			function checkInput2(){
+				if($("input[name='fp_hrAdminAudi']:checked").val() == '0'){
+					return;
+				}
+				var result=$("#hrAdminAudiAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#hrAdminAudiAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+	</script>
+	</#if>
+</#if>
+
+<!-- 人力资源部总监审批意见-->
+<#if currentStep?exists> 
+	<#if currentStep == 'hrMajorAudiTask'>
+		<div id="hrMajorAudiTask">
+			<form id="hrMajorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="hrMajorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">人力资源部总监审批</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >人力资源部总监审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="hrMajorAudiAdvice${rand}" style="width: 550px; height: 60px" name="fp_hrMajorAudiAdvice" class="formtable_remark" onblur="checkInput3();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="hrMajorAudiAgree${rand}" type="radio" name="fp_hrMajorAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input id="hrMajorAudiDisagree${rand}" type="radio" name="fp_hrMajorAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部总监签字：</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_hrMajorAudiName"  value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_hrMajorAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#hrMajorAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#hrMajorAudiAdvice${rand}").validatebox({required:false});//人力资源部管理员意见为非必填项
+			}
+			var failure=function(){
+				$("#hrMajorAudiAdvice${rand}").val('');
+				$("#hrMajorAudiAdvice${rand}").validatebox({required:true});//人力资源部管理员意见为必填项
+			};
+			$("#hrMajorAudiAgree${rand}").bind("click",success);
+			$("#hrMajorAudiDisagree${rand}").bind("click",failure);
+			
+			//用于限制文本框输入全空格
+			function checkInput3(){
+				if($("input[name='fp_hrMajorAudi']:checked").val() == '0'){
+					return;
+				}
+				var result=$("#hrMajorAudiAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#hrMajorAudiAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+	</script>
+	</#if>
+</#if>
+
+<!-- 活动组织人确认-->
+<#if currentStep?exists> 
+	<#if currentStep == 'deptClerkAudiTask'>
+		<#if processSteps??> <#list processSteps as steps> 
+			<#if steps.key == 'updateTeamActivitiesAudiTask'> 
+				<input  type='hidden'  id="unumberOfPeople${rand}"   value='${(steps.vars["numberOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="ucostSheet${rand}"   value='${(steps.vars["costSheet"])!""}'/>
+		    	<input  type='hidden'  id="ujinMinNumOfPeople${rand}"   value='${(steps.vars["jinMinNumOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="ujinMinCostSheet${rand}"   value='${(steps.vars["jinMinCostSheet"])!""}'/>
+		    	<input  type='hidden'  id="ujinZhuoNumOfPeople${rand}"   value='${(steps.vars["jinZhuoNumOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="ujinZhuoCostSheet${rand}"   value='${(steps.vars["jinZhuoCostSheet"])!""}'/>
+	 		</#if>
+			<#if steps.key == 'startevent1'> 
+			 	<input  type='hidden'  id="numberOfPeople${rand}"   value='${(steps.vars["numberOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="costSheet${rand}"   value='${(steps.vars["costSheet"])!""}'/>
+		    	<input  type='hidden'  id="jinMinNumOfPeople${rand}"   value='${(steps.vars["jinMinNumOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="jinMinCostSheet${rand}"   value='${(steps.vars["jinMinCostSheet"])!""}'/>
+		    	<input  type='hidden'  id="jinZhuoNumOfPeople${rand}"   value='${(steps.vars["jinZhuoNumOfPeople"])!""}'/>
+		    	<input  type='hidden'  id="jinZhuoCostSheet${rand}"   value='${(steps.vars["jinZhuoCostSheet"])!""}'/>
+		 </#if> 
+	 	</#list>
+		<div id="deptClerkAudiTask">
+			<form id="deptClerkAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="deptClerkAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="7" class="formtable_td_key">活动组织人确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" colspan="7">费用报销结果确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">实际参加总人数：</td>
+						<td class="formtable_td_value" >
+							<input id="num${rand}" class="easyui-numberbox" type="text" onblur="getPerCost()" name="fp_trueNumOfPeople"  data-options="required:true,validType:['positiveInteger','actNumComp']"/>&nbsp;&nbsp;人				
+						</td>
+						<td class="formtable_td_key">实际总费用：</td>
+						<td class="formtable_td_value" >
+							<input  id="cost${rand}" class="easyui-numberbox" type="text"  name="fp_sumOfCost" onblur="getPerCost()" data-options="required:true,validType:['intOrFloat','totalCost']"/>&nbsp;&nbsp;元
+						</td>
+						<td class="formtable_td_key">实际人均经费：</td>
+						<td class="formtable_td_value" >
+							<input id="per${rand}"  type="text" class="easyui-validatebox" name="fp_truePerCost"  required="required" readonly="readonly" />&nbsp;&nbsp;元/人
+						</td>
+					</tr>
+						<tr>
+						<td class="formtable_td_key">金铭实际总人数：</td>
+						<td class="formtable_td_value" >
+							<input id="jinMinNum${rand}" class="easyui-numberbox" type="text" onblur="getJinMinPerCost()" name="fp_jinMinTrueNumOfPeople"  data-options="required:true,validType:['positiveInteger','actJinMinNumComp']"/>&nbsp;&nbsp;人				
+						</td>
+						<td class="formtable_td_key">金铭实际总费用：</td>
+						<td class="formtable_td_value">
+							<input  id="jinMinCost${rand}" class="easyui-numberbox" type="text"  name="fp_jinMinSumOfCost" onblur="getJinMinPerCost()" data-options="required:true,validType:['intOrFloat','totalJinMinCost']"/>&nbsp;&nbsp;元
+						</td>
+						<td class="formtable_td_key">金铭人均经费：</td>
+						<td class="formtable_td_value" >
+							<input id="jinMinPer${rand}"  class="easyui-validatebox" type="text" name="fp_jinMinTruePerCost"  required="required" readonly="readonly" />&nbsp;&nbsp;元/人
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">金卓实际参加总人数：</td>
+						<td class="formtable_td_value" >
+							<input id="jinZhuoNum${rand}" class="easyui-numberbox" type="text" onblur="getjinZhuoPerCost()" name="fp_jinZhuoTrueNumOfPeople"  data-options="required:true,validType:['positiveInteger','actJinZhuoNumComp']"/>&nbsp;&nbsp;人				
+						</td>
+						<td class="formtable_td_key">金卓实际总费用：</td>
+						<td class="formtable_td_value" >
+							<input  id="jinZhuoCost${rand}" class="easyui-numberbox" type="text"  name="fp_jinZhuoNumOfCost" onblur="getJinZhuoPerCost()" data-options="required:true,validType:['intOrFloat','totalJinZhuoCost']"/>&nbsp;&nbsp;元
+						</td>
+						<td class="formtable_td_key">金卓人均经费：</td>
+						<td class="formtable_td_value" >
+							<input id="jinZhuoPer${rand}"  class="easyui-validatebox" type="text" name="fp_jinZhuoTruePerCost"  required="required" readonly="readonly" />&nbsp;&nbsp;元/人
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认人签字：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_deptClerkAudiName" data-options="required:true" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="4">
+							<input  type="hidden" name="fp_deptClerkAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				
+				 	var actP = parseInt($("#numberOfPeople${rand}").val());
+					var totalP = parseFloat($("#costSheet${rand}").val());
+					var jinMinActP = parseInt($("#jinMinNumOfPeople${rand}").val());
+					var jinMinTotalP = parseFloat($("#jinMinCostSheet${rand}").val());
+					var jinZhuoActP = parseInt($("#jinZhuoNumOfPeople${rand}").val());
+					var jinZhuoTotalP = parseFloat($("#jinZhuoCostSheet${rand}").val());
+					
+					var uactP = parseInt($("#unumberOfPeople${rand}").val());
+					var utotalP = parseFloat($("#ucostSheet${rand}").val());
+					var ujinMinActP = parseInt($("#ujinMinNumOfPeople${rand}").val());
+					var ujinMinTotalP = parseFloat($("#ujinMinCostSheet${rand}").val());
+					var ujinZhuoActP = parseInt($("#ujinZhuoNumOfPeople${rand}").val());
+					var ujinZhuoTotalP = parseFloat($("#ujinZhuoCostSheet${rand}").val());
+			
+				$.extend($.fn.validatebox.defaults.rules, {	
+				 	positiveInteger: {// 验证正整数 
+			       		validator: function (value) {
+			       			var reg=/^[0-9]*$/;
+			          		return reg.test(value);
+			       		},	
+			       		message: '请输入整数 '
+			   		},
+				     intOrFloat: {// 验证整数或小数
+			             validator: function (value) {
+			                 return /^\d+(\.\d+)?$/i.test(value);
+			             },
+			             message: '请输入数字'
+			         }, 
+			   		actNumComp:{ //实际人数小于申请人数
+						 validator: function (value) {
+							 if(!isNaN(uactP)){
+								 return value<=uactP;
+							 }else {
+			                 	return value<=actP;
+							 }
+			             },
+			             message: '实际人数不能大于申请人数'
+					 },
+			      	totalCost:{ //总费用小于预算费用
+						 validator: function (value) {
+							 if(!isNaN(utotalP)){
+								 return value<=utotalP;
+							 }else{
+								 return value<=totalP;
+							 }
+			             },
+			             message: '总费用不大于预算费用'
+					 },
+					 actJinMinNumComp:{
+						 validator:function(value){
+							 if(!isNaN(ujinMinActP)){
+								 return value <= ujinMinActP;
+							 }else{
+								 return value <= jinMinActP;
+							 }
+						 },
+						 message:'实际人数不能大于申请人数'
+					 },
+					 totalJinMinCost:{
+						validator:function(value){
+							if(!isNaN(ujinMinTotalP)){
+								return value <= ujinMinTotalP;
+							}else{
+								return value <= jinMinTotalP;
+							}
+						},
+						message:'总费用不大于预算费用'
+					 },
+					 actJinZhuoNumComp:{
+						 validator:function(value){
+							 if(!isNaN(ujinZhuoActP)){
+								 return value <= ujinZhuoActP;
+							 }else{
+								 return value <= jinZhuoActP;
+							 }
+						 },
+						 message:'实际人数不能大于申请人数'
+					 },
+					 totalJinZhuoCost:{
+						validator:function(value){
+							if(!isNaN(ujinZhuoTotalP)){
+								return value <= ujinZhuoTotalP;
+							}
+							else{
+								return value <= jinZhuoTotalP;
+							}
+						},
+						message:'总费用不大于预算费用'
+					 }
+				});
+			});
+			
+			function getPerCost(){
+				var num = $("#num${rand}").val();//计算总的平均经费
+				var cost = $("#cost${rand}").val();
+				$("#per${rand}").val((cost/num).toFixed(2));
+			}
+			
+			function getJinMinPerCost(){
+				var jinMinNum = $("#jinMinNum${rand}").val();//计算金铭人员的平均经费
+				var jinMinCost = $("#jinMinCost${rand}").val();
+				$("#jinMinPer${rand}").val((jinMinCost/jinMinNum).toFixed(2));
+			}
+			
+			function getJinZhuoPerCost(){
+				var jinZhuoNum = $("#jinZhuoNum${rand}").val();//计算金卓人员的平均经费
+				var jinZhuoCost = $("#jinZhuoCost${rand}").val();
+				$("#jinZhuoPer${rand}").val((jinZhuoCost/jinZhuoNum).toFixed(2));
+			}
+		</script>
+		</#if> 
+	</#if> 
+</#if>
+
+
+<!-- 人力资源部管理员确认 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'hrAdminConfirmAudiTask'>
+		<div id="hrAdminConfirmAudiTask">
+			<form id="hrAdminConfirmAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="hrAdminConfirmAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">人力资源部管理员确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >人力资源部管理员确认意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 550px; height: 60px" name="fp_hrAdminConfirmAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源管理员签字：</td>
+						<td class="formtable_td_value" >
+							<input class="easyui-validatebox"  type="hidden" name="fp_hrAdminConfirmAudiName"  value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" name="fp_hrAdminConfirmAudiTime"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<#include "/common/foot.html">

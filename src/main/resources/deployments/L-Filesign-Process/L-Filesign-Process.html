@@ -1,0 +1,1996 @@
+<#include "/common/head.html">
+<style type="text/css">
+		.formtable_td_key {
+			text-align: center;
+			height:20px;
+			padding: 7px;
+			width:100px;
+			font-weight: bold;
+			color:#1D1D1D;
+			font-size:12x;
+		    background-color: #F1F6FF;
+		}
+		</style>
+<!-- 展示表单 -->
+<#if processSteps??>
+ <table class="formtable" cellspacing="1" cellpadding="0">
+ <#list processSteps as steps>
+  <#if steps.key =='startevent1'>
+<tr>
+	<td class="formtable_td_key" colspan="7" align="center">文档会签录入</td>
+</tr>
+	<tr><td class="formtable_td_key">文件名称</td>
+		<td class="formtable_td_value">${(steps.vars["filename"])!""}</td>
+		<td class="formtable_td_key">文件类型</td>
+		<td class="formtable_td_value">${(steps.vars["filetype"])!""}</td>
+		<td class="formtable_td_key" >文件状态</td>
+		<td class="formtable_td_value" colspan="2"> 
+		<#if steps.vars["filestate"]== '0' >新增</#if>
+		<#if steps.vars["filestate"] == '1' >修订</#if></td> 
+
+
+
+	</tr>
+	<tr>
+		
+
+		<td class="formtable_td_key">文件编号</td>
+		<td class="formtable_td_value">${(steps.vars["filenumber"])!""}</td>
+		<td class="formtable_td_key">版本号</td>
+		<td class="formtable_td_value" >${(steps.vars["version"])!""}
+		</td>
+		<td class="formtable_td_key">版本状态</td>
+		<td class="formtable_td_value" colspan="2">${(steps.vars["versionstate"])!""}</td>
+
+	</tr>
+	<#if steps.vars["filestate"] == '1' >
+	<tr>
+	
+		<td class="formtable_td_key">原版本号</td>
+		<td class="formtable_td_value" >${(steps.vars["beforeversion"])!""}</td>
+		<td class="formtable_td_key">原版本状态</td>
+		<td class="formtable_td_value" colspan="4">${(steps.vars["beforeversionstate"])!""}</td>
+
+	</tr>
+	</#if>
+	<tr>
+		<td class="formtable_td_key">拟制部门</td>
+		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+		
+		<td class="formtable_td_key">拟制人</td>
+		<td class="formtable_td_value" >${(steps.vars["createman"])!""}</td>
+		
+		<td class="formtable_td_key">提交日期</td>
+		<td class="formtable_td_value" colspan="2">${(steps.vars["signdemandTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">所属公司</td> 
+		<td class="formtable_td_value">
+			<#if steps.vars["belongcompany"] == '56877' >金立</#if>
+			<#if steps.vars["belongcompany"] == '59513' >金铭</#if>
+			</td> 
+		<td class="formtable_td_key">分管副总裁</td>
+		<td class="formtable_td_value" colspan="4">${(steps.vars["fgfzc"])!""}</td>
+		
+	</tr>
+	<tr>
+		<td class="formtable_td_key">会签部门</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["signOrgname"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">会签人</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["assigneePersons"])!""}</td>
+	</tr>
+	
+	
+
+
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+
+<!-- 表单修改情况  -->
+<#if steps.key == 'modifyFileSignTask'>
+<tr>
+	<td class="formtable_td_key" colspan="7" align="center">文档会签修改</td>
+</tr>
+	<tr>
+		<td class="formtable_td_key">文件名称</td>
+		<td class="formtable_td_value">${(steps.vars["filename"])!""}</td>
+		<td class="formtable_td_key">文件类型</td>
+		<td class="formtable_td_value">${(steps.vars["filetype"])!""}</td>
+		<td class="formtable_td_key" >文件状态</td>
+		<td class="formtable_td_value" colspan="2">
+		 <#if steps.vars["filestate"]== '0' >新增</#if>
+		 <#if steps.vars["filestate"] == '1' >修订</#if>
+		</td>  
+
+
+
+	</tr>
+	<tr>
+		
+
+		<td class="formtable_td_key">文件编号</td>
+		<td class="formtable_td_value">${(steps.vars["filenumber"])!""}</td>
+		<td class="formtable_td_key">版本号</td>
+		<td class="formtable_td_value" >${(steps.vars["version"])!""}
+		</td>
+		<td class="formtable_td_key">版本状态</td>
+		<td class="formtable_td_value" colspan="2">${(steps.vars["versionstate"])!""}</td>
+
+	</tr>
+	<#if steps.vars["filestate"] == '1' >
+	<tr>
+	
+		<td class="formtable_td_key">原版本号</td>
+		<td class="formtable_td_value" >${(steps.vars["beforeversion"])!""}</td>
+		<td class="formtable_td_key">原版本状态</td>
+		<td class="formtable_td_value" colspan="4">${(steps.vars["beforeversionstate"])!""}</td>
+
+	</tr>
+	</#if>
+	<tr>
+		<td class="formtable_td_key">拟制部门</td>
+		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+		
+		<td class="formtable_td_key">拟制人</td>
+		<td class="formtable_td_value" >${(steps.vars["createman"])!""}</td>
+		
+		<td class="formtable_td_key">提交日期</td>
+		<td class="formtable_td_value" colspan="2">${(steps.vars["signdemandTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">所属公司</td> 
+		<td class="formtable_td_value">
+			<#if steps.vars["belongcompany"] == '56877' >金立</#if>
+			<#if steps.vars["belongcompany"] == '59513' >金铭</#if>
+			</td> 
+		<td class="formtable_td_key">分管副总裁</td>
+		<td class="formtable_td_value" colspan="4">${(steps.vars["fgfzc"])!""}</td>
+		
+	</tr>
+	<tr>
+		<td class="formtable_td_key">会签部门</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["signOrgname"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">会签人</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["assigneePersons"])!""}</td>
+	</tr>
+
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+
+<!-- 部门负责人意见 -->
+<#if steps.key == 'departmentLeaderAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">部门负责人意见</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["departmentLeaderAudiTaskName"])!""}
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["departmentLeaderAudi"] == '0' > 
+		通过 
+		</#if>
+		<#if steps.vars["departmentLeaderAudi"] == '1' >
+		不通过
+		</#if>
+		</td> 
+		<td class="formtable_td_key" >日期</td>
+		<td class="formtable_td_value" >${(steps.vars["departmentLeaderAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["departmentLeaderAudiAdvice"])!""}</td>
+		
+
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 体系部审核人 -->
+<#if steps.key == 'SystemdepartmentAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">体系部</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["SystemdepartmentAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["SystemdepartmentAudi"] == '0' > 
+		通过 
+		</#if> 
+		<#if steps.vars["SystemdepartmentAudi"] == '1' >
+		不通过
+		</#if>
+		</td> 
+		<td class="formtable_td_key">期日</td>
+		<td class="formtable_td_value" >${(steps.vars["SystemdepartmentAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["SystemdepartmentAudiAdvice"])!""}</td>
+		
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 企管部 -->
+<#if steps.key == 'managementAudiTask'>
+	<tr>
+		<td class="formtable_td_key" colspan="7" align="center">会签栏</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">流程管理部</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["managementAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["managementAudi"] == '0' > 
+		通过
+		</#if> <#if steps.vars["managementAudi"] == '1' >
+		不通过
+		</#if>
+		</td>
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value" >${(steps.vars["managementAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["managementAudiAdvice"])!""}</td>
+		
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 相关部门会签 -->
+<#if steps.key == 'relevantdepartmentsMultiInstTask'> 
+<#if steps.multiInstances??>
+ <#list steps.multiInstances as muliSteps>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">${(muliSteps.vars["${muliSteps.assignee}SignAudiOrgName"])!""}</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(muliSteps.vars["${muliSteps.assignee}redepSignAudiMan"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"] =='0' > 
+			通过
+		</#if> 
+		<#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"] =='1' >
+			不通过
+		</#if>
+		</td> 
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value">${(muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudiTime"])!""}
+		
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+	</tr>
+	<#if muliSteps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			muliSteps.attachments as muliAttachs> <a href="${muliAttachs.url}">
+				${muliAttachs.name}_${muliAttachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+	</#list> 
+</#if> 
+</#if>
+
+<!-- 企管部总监 -->
+<#if steps.key == 'managementLeaderAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">流程管理部总监</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["managementLeaderAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["managementLeaderAudi"] == '0' > 
+		通过
+		 </#if> 
+		 <#if steps.vars["managementLeaderAudi"] == '1' >
+		不通过
+		</#if>
+		</td> 
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value" >${(steps.vars["managementLeaderAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["managementLeaderAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 分管副总裁审批详情 -->
+<#if steps.key == 'vicePresidentAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">分管副总裁</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["vicePresidentAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["vicePresidentAudi"] == '0' > 
+		同意
+		 </#if> 
+		 <#if steps.vars["vicePresidentAudi"] == '1' >
+		不同意
+		</#if>
+		</td> 
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value" >${(steps.vars["vicePresidentAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["vicePresidentAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 金铭总经理 -->
+<#if steps.key == 'jmGeneralManagerAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">金铭总经理</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["jmGeneralManagerAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["jmGeneralManagerAudi"] == '0' > 
+		同意
+		 </#if> 
+		 <#if steps.vars["jmGeneralManagerAudi"] == '1' >
+		不同意
+		</#if>
+		</td> 
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value" >${(steps.vars["jmGeneralManagerAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["jmGeneralManagerAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 金立董事长 -->
+<#if steps.key == 'gioneechairmanAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">金立总裁</td>
+		<td class="formtable_td_key">签名</td>
+		<td class="formtable_td_value">${(steps.vars["gioneechairmanAudiTaskName"])!""}
+
+		</td>
+		<td class="formtable_td_key">结果</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["gioneechairmanAudi"] == '0' > 
+		同意
+		 </#if> 
+		 <#if steps.vars["gioneechairmanAudi"] == '1' >
+		不同意
+		</#if>
+		</td> 
+		<td class="formtable_td_key">日期</td>
+		<td class="formtable_td_value" >${(steps.vars["gioneechairmanAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">意见</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["gioneechairmanAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!- 体系部审核是否发布 -->
+<#if steps.key == 'isPublishTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">体系部受控发行</td>
+		<td class="formtable_td_key" >签名</td>
+		<td class="formtable_td_value" colspan="4"> ${(steps.vars["isPublishAudiTaskName"])!""}
+		</td>
+		<td class="formtable_td_value" >
+		<#if steps.vars["isPublishAudi"] == '0' > 
+		发布 
+		</#if> 
+		<#if steps.vars["isPublishAudi"] == '1' >
+		不发布
+		</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发邮件通知部门</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["email4OrgNames"])!""}
+
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="6"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">
+				${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+</#list> 
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists> 
+<#if currentStep == 'startevent1'>
+<div id="start">
+	<form id="startForm" method="post" enctype='multipart/form-data'>
+		<table id="startFormTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" >文件名称</td>
+				<td class="formtable_td_value"><input
+					class="easyui-validatebox" id="filename" required="required"
+					type="text" name="fp_filename" /></td>
+				
+				<td class="formtable_td_key" >文件类型</td>
+				<td class="formtable_td_value"><select id="filetype"
+					name="fp_filetype" style="width: 80%" class="easyui-combobox">
+						<option value="A">A</option>
+						<option value="B">B</option>
+						<option value="C">C</option>
+						<option value="D">D</option>
+						<option value="E">E</option>
+						<option value="R">R</option>
+						<option value="其他">其他</option>
+				</select></td>
+				<td class="formtable_td_key">文件状态</td>
+				<td class="formtable_td_value"><select name="fp_filestate"
+					id="fileOperate" class="easyui-combobox">
+						<option value="0">新增</option>
+						<option value="1">修订</option>
+
+				</select></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">文件编号</td>
+				<td class="formtable_td_value"><input id="filenumber"
+					class="easyui-validatebox" type="text" readonly="readonly"
+					name="fp_filenumber" required="required" /></td>
+				<td class="formtable_td_key">版本号</td>
+				<td class="formtable_td_value" ><input
+					class="easyui-validatebox" id="version" class="easyui-textbox"
+					readonly="readonly" name="fp_version" data-options="required:true" />
+				</td>
+				<td class="formtable_td_key">版本状态</td>
+				<td class="formtable_td_value"><input
+					class="easyui-validatebox" id="versionstate" class="easyui-textbox"
+					readonly="readonly" name="fp_versionstate"
+					data-options="required:true" /></td>	
+				
+			</tr>
+			<tr id="beforeversionRow" style="display: none;">
+				<td class="formtable_td_key">原版本号</td>
+				<td class="formtable_td_value" ><input
+					class="easyui-validatebox" id="beforeversion" type="text"
+					name="fp_beforeversion" /></td>
+				<td class="formtable_td_key">原版本状态</td>
+				<td class="formtable_td_value" colspan="3"><input
+					class="easyui-validatebox" id="beforeversionstate" type="text"
+					name="fp_beforeversionstate" /></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">拟制部门</td>
+				<td id="userOrgTd" class="formtable_td_value">
+				<input type="hidden" name="fp_curUserId" value="${appuser.userId?c}" />
+				<input id="orgName" type="hidden" name="fp_orgName" />
+				<input id="orgId" type="hidden" name="fp_orgId" />
+				<input type="hidden" id="orgCodeAbbreviation" name="fp_orgCodeAbbreviation" />
+				<input id="createNo${rand}" type="hidden" name="fp_applyUserId" value='${appuser.account}' />
+				<input id="createName${rand}" type="hidden" name="fp_createName"value="${appuser.name}" />
+				
+				<input id="userOrg" class="easyui-combotree" style="width: 150px;">
+				</td>
+				<td id="orgnameTd" style="display: none" class="formtable_td_value">
+
+					<input id="orgnameview" readonly="readonly">
+				</td>
+				
+				<td class="formtable_td_key">拟制人</td>
+				<td class="formtable_td_value"><input
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_createman" value="${appuser.name}"
+					data-options="required:true" /></td>
+			
+				<td class="formtable_td_key">提交日期</td>
+				<td class="formtable_td_value" ><input required="required"
+					id="signdemandTime" class="easyui-datetimebox" name="fp_signdemandTime"
+					data-options="validType:'greaterEq[\'${.now?string('yyyy-MM-dd')}\']'" />
+				</td>
+			
+			</tr>
+			<tr>
+			<td class="formtable_td_key">所属公司</td>
+				<td class="formtable_td_value"><select id="selectbelongcompany" name="fp_belongcompany" data-options="panelHeight:'50'"  class="easyui-combobox">
+						<option value=""></option>
+						<option value="56877">金立</option>
+						<option value="59513">金铭</option>
+				</select></td>
+			<td class="formtable_td_key">分管副总裁</td>	
+			<td class="formtable_td_value" colspan="3">
+			<input class="easyui-validatebox" id="fgpreisdent" readonly="readonly" required="required"
+					 name="fp_fgfzc" />
+			<input type="hidden" name="fp_fgaccount" id="fgaccount">		 
+					</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">会签部门</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						id="signOrgname" name="fp_signOrgname" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 80px;"></textarea>
+						<a id="openSelectPersonBtn" href="javascript:void(0);"
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'">添加会签部门/人员</a>
+						</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">会签人</td>
+				<td class="formtable_td_value" colspan="5"><input
+					id="assigneeAccount" type="hidden" name="fp_assigneeList" /> <textarea
+						id="assigneePersons" name="fp_assigneePersons" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 80px;"></textarea>
+					
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="users${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:100"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tags${rand}" value="" />
+		</div>
+	</div>
+</div>
+<div id="filesWin-${rand}" class="easyui-dialog" title="修订文档列表"
+	style="width: 900px; height: 400px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				toolbar: '#dlg-toolbar${rand}',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectfilesEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectfilesWin
+                }]">
+	<table id="files${rand}"></table>
+</div>
+<div id="dlg-toolbar${rand}" style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc;">
+			<table border="0" >
+			 	<tr>
+			   		<td align="right" style="white-space:nowrap">文件编号：</td>
+			    	<td width="200"> 
+			    		<input id="fileNo-${rand}" style="width:200px;" class="easyui-textbox" type="text" name="fileNo" data-options=""/>
+			   		</td>
+			    	<td align="right" style="white-space:nowrap; padding-left:12px;">文件名称：</td>
+			   		<td width="200">
+			   			<input id="fileName-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="preqItem"/>
+			   		</td>
+			   		<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+			   			<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			   			<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+			   		</td>
+			 	</tr>
+			</table>
+		</div>
+<script type="text/javascript">
+	var orgWin = $('#orgWin-${rand}');
+	
+	 var addUserList = new Array();
+     var addNameList = new Array();
+     var addOrgNameList = new Array();
+	
+	$(function(){
+		var orgs = $('#orgs${rand}');
+		var users = $('#users${rand}');
+		var currentOrgId = 0;
+		
+		//init comboTree
+		$('#userOrg').combotree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    //required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+			   //查询部门缩写
+			   var orgCodeAbbreviation="";
+			    $.post("signFile/getOrgCode.json",
+                       {orgId:node.id},
+                       function(data){
+                         if(data.success){
+                         //alert(data.obj.orgCode);
+                       	orgCodeAbbreviation=data.obj.orgCode;
+                       	$("#orgCodeAbbreviation").val(orgCodeAbbreviation);	//部门缩写赋值
+                       		            }else{
+                       		            $.messager.alert('信息提示',data.msg,'warning');
+                       		            	$('#version').val("");
+											$('#versionstate').val("");
+											$('#filename').val("");
+											$('#filenumber').val("");
+                       		            return;
+                       		            } 
+                var filetype = $('#filetype').combobox('getValue'); //文件类型
+				var number=(Math.random()*1000).toFixed(0);
+				if(100<=number&&number<1000){
+				  number=number;
+				}
+				if(10<=number&&number<100){
+				 number="0"+number;
+				}
+				if(number<10){
+				 number="00"+number;
+				}
+				//alert(orgCodeAbbreviation);
+				$('#filenumber').val(orgCodeAbbreviation + "-" + filetype+"-"+number);
+				$('#orgId').val(node.id);
+		  		$('#orgName').val(node.text);
+		  		$('#version').val("A");
+				$('#versionstate').val("00");
+				var startForm = $('#startForm');
+			    startForm.form('enableValidation').form('validate');	            
+                                      },
+					"json");
+			}
+		});
+		//init tree
+		orgs.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+				currentOrgId = node.id;		
+				//用户
+				users.datagrid({
+				  fitColumns:true,
+				  url:'hrFlow/auth/users.json?id=' + currentOrgId,
+				  columns:[[
+					{field:'id',checkbox:true},
+				  	{field:'account',title:'帐号',width:150},
+				  	{field:'name',title:'姓名',width:150}
+				  ]],
+				  nowrap: true,       
+				  fit : true,
+				  border : false,
+				  pagination:true,
+				  pageNumber : 1,
+				  pageSize : 20,
+				  rownumbers:true,
+				  singleSelect:false,
+				  toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var node = orgs.tree('getSelected');
+							var orgName = node.text;
+							var row = users.datagrid('getSelections');
+							if (row.length > 0) {
+								for (var i=0;i<row.length;i++) {
+									addUser(row[i].account, row[i].name, orgName);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						}
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							users.datagrid("clearSelections");
+						}
+					}]
+				});
+			}
+		});
+		//init Tags 
+		$('#tags${rand}').tagsInput({
+               width: 'auto',
+               height: '100px',
+               onRemoveTag: function (tag) {
+                   var i = addNameList.indexOf(tag);
+                   if (i != -1) {
+                   	var id = addUserList[i];
+                   	var name = addNameList[i];
+                   	var orgName = addOrgNameList[i];
+                   	removeUser(id, name, orgName);
+                   }
+               },
+               interactive: false
+        });
+        
+        function addUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) == -1) {
+                addUserList.push(id);
+                addNameList.push(name + "[" + orgName + "]");
+                addOrgNameList.push(orgName);
+                $('#tags${rand}').addTag(name + "[" + orgName + "]");
+            }
+        }
+        
+        function removeUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) != -1) {
+                addUserList.pop(id);
+                addNameList.pop(name);
+                addOrgNameList.pop(orgName);
+                $('#tags${rand}').removeTag(name);
+            }
+       }
+       //选择文件类型的时候初始化文件编号
+       $('#filetype').combobox({
+            panelHeight:'150',
+        	onSelect: function(){
+        	  var flieOperate=document.getElementById('fileOperate');
+        	  var selectValue= flieOperate.options[flieOperate.selectedIndex].value;
+           	  if(selectValue==1){
+         			$('#filetype').combobox.enabled=false;
+         			return;
+         		}	 
+	          var filetype = $('#filetype').combobox('getValue');
+	           var orgCodeAbbreviation=$('#orgCodeAbbreviation').val();
+	           if(null==orgCodeAbbreviation||""==orgCodeAbbreviation){
+	           return;
+	           }
+	           var number=(Math.random()*1000).toFixed(0);
+				if(100<=number&&number<1000){
+
+				  number=number;
+				}
+				if(10<=number&&number<100){
+				 number="0"+number;
+				}
+				if(number<10){
+				 number="00"+number;
+				}
+			
+	           $('#filenumber').val(orgCodeAbbreviation + "-" + filetype+"-"+number);
+			}
+		});
+		//选择所属公司的时候进行判断
+		 $('#selectbelongcompany').combobox({
+		 	onSelect: function(record){
+		 	var v = parseInt(record.value);
+		 	var s = v != 59513 ? $("#fgpreisdent").show(): $("#fgpreisdent").hide(); 
+		 		if(v==59513){
+		 		$("#fgpreisdent").validatebox({required:false});
+		 		$("#fgaccount").val("");
+                $("#fgpreisdent").val("");
+		 		}else if(v==56877){
+		 		$("#fgpreisdent").validatebox({required:true});
+		 		//查找分管副总裁
+				$.post("signFile/getFGprsident.json",
+                       {userAccount:$("#createNo${rand}").val(),type:3},
+                       function(data){
+                         if(data.success){
+                       	$("#fgaccount").val(data.obj.account);
+                       	$("#fgpreisdent").val(data.obj.name);
+                       	var startForm = $('#startForm');
+			    		startForm.form('enableValidation').form('validate');
+                       		    	 }else{
+                       		            $.messager.alert('信息提示',data.msg,'warning');
+                       		            } 
+                                      },
+					"json");
+		 		}else{
+		 		$("#fgpreisdent").validatebox({required:true});
+		 		$("#fgaccount").val("");
+                $("#fgpreisdent").val("");
+		 		}
+		 	}
+		 });
+		 //选择操作时弹出原版本号或者修订文件
+       $('#fileOperate').combobox({
+       		panelHeight:'50',	
+        	onSelect: function(record){
+        	 	//console.log(record);
+        	 	var v = parseInt(record.value);
+        	 	 var s = v != 1 ? $("#beforeversionRow").hide(): $("#beforeversionRow").show(); 
+				if(v==0){
+				    $("#orgnameTd").hide();
+				    $("#userOrgTd").show(); 
+				    $('#filetype').combobox('readonly',false); 
+					$('#version').val("A");
+					$('#versionstate').val("00");
+					$('#beforeversion').val("");
+					$('#beforeversionstate').val("");
+					$('#filename').val("");
+					$('#filenumber').val("");
+					$('#orgCodeAbbreviation').val("");
+				}
+				if(v==1){
+				    $("#orgnameTd").show();
+				    $("#userOrgTd").hide(); 
+				   $('#filetype').combobox('readonly',true); 
+					selectUpdateFile();
+				}
+			}
+		});
+		//事件绑定
+				$('#search_btn-${rand}').bind('click',function(){
+					var fileNo = $('#fileNo-${rand}').val();
+					var fileName = $('#fileName-${rand}').val();
+					fileGrid.datagrid('reload',{fileNo:fileNo,fileName:fileName});
+				});
+				
+				$('#reset_btn-${rand}').bind('click',function(){
+					$('#fileNo-${rand}').val('');
+					$('#fileName-${rand}').val('');
+				});
+       
+	});
+	//会签时间要求不能选择之前的时间
+	
+   $('#signdemandTime').datebox().datebox('calendar').calendar({
+          validator: function(date){            
+              var now = new Date();               
+              var d1 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+               return d1<=date;              
+          }
+    });
+	//弹出窗口
+	$('#openSelectPersonBtn').bind('click', function(){
+		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+		
+		var assigneePersons = $('#assigneePersons').val();
+		var signOrgName = $('#signOrgname').val();
+		if (assigneePersons == null || assigneePersons.length <= 0){
+			$('#tags${rand}').importTags('');
+			addUserList = [];
+			addNameList = [];
+			addOrgNameList = [];
+		}
+	    orgWin.dialog('open');	
+	});
+	//选择用户完成事件
+    function selectUserEnd(){
+       //设置值，并关闭窗口
+       $('#assigneePersons').val($('#tags${rand}').val());
+       
+       //处理人员Account
+       var assigneeAccounts="";
+       for(var i=0;i<addUserList.length;i++){
+       		assigneeAccounts += addUserList[i]+","
+       }
+       if (assigneeAccounts.length > 0 && assigneeAccounts != null) {
+       		assigneeAccounts = assigneeAccounts.substring(0,assigneeAccounts.length-1);
+       }
+       $('#assigneeAccount').val(assigneeAccounts);
+       //处理部门名称
+       var orgNameStr = "";
+       var orgNameArr = pureMulti(addOrgNameList);
+       for(var i=0;i<orgNameArr.length;i++){
+       		orgNameStr += orgNameArr[i]+","
+       }
+       if (orgNameStr.length > 0 && orgNameStr != null) {
+       		orgNameStr = orgNameStr.substring(0,orgNameStr.length-1);
+       }
+       $('#signOrgname').val(orgNameStr);
+       
+       orgWin.dialog('close');	
+   }
+   //去掉重复元素
+   function pureMulti(arr){  
+	 var resultArr = [];  
+   	 for(var i = 0,len = arr.length;i < len;i++){  
+        ! RegExp(arr[i],"g").test(resultArr.join(",")) && (resultArr.push(arr[i]));  
+     } 
+     return resultArr;
+   }
+   
+   function  closeSelectUserWin(){
+   	 orgWin.dialog('close');	
+   }
+   
+	
+	
+	var filesWin= $('#filesWin-${rand}');//修订弹出窗口
+	var files = $('#files${rand}');
+	//选择要修订的文档
+	function selectUpdateFile(){
+	//弹出选择修订文件窗口
+	
+      files.datagrid({
+				  fitColumns:false,
+				  url:'signFile/queryFileForOA.json?orgId=${appuser.orgId?c}',
+				  columns:[[
+						{field:'id',checkbox:true},
+					  	{field:'fileNo',title:'文件编号',width:150},
+					  	{field:'fileName',title:'文件名称',width:300},
+					  	{field:'fileType',title:'文件类型',width:150},
+					  	{field:'fileVersion',title:'版本',width:150},
+					  	{field:'fileVersionState',title:'版本状态',width:150},
+					  	{field:'orgId',title:'公司ID',width:150},
+					  	{field:'orgName',title:'部门名称',width:150},
+					  	{field:'companyId',title:'所属公司ID',width:150},
+					  	{field:'companyName',title:'所属公司',width:150},
+					  	{field:'createBy',title:'拟定人ID',width:150},
+					  	{field:'createrName',title:'拟定人',width:150}
+				  ]],
+				  nowrap: true,       
+				  fit : true,
+				  border : false,
+				  pagination:true,
+				  pageNumber : 1,
+				  pageSize : 20,
+				  rownumbers:true,
+				  singleSelect:true,
+			     onSelect:function(){//检查该文档是否可修改
+                  var row = files.datagrid('getSelected');
+                  $.post("signFile/checkSignFileProcess.json",
+                       {operateType:1,fileNo:row.fileNo},
+                       function(data){
+                       		if(!data.success){
+                       		files.datagrid("clearSelections");
+                       			$.messager.alert('信息提示',data.msg+"请选择其他文件!",'warning');
+                       		                 }                      
+                                      },
+					"json");
+			     
+			     }
+				  
+				  
+				});
+      filesWin.dialog('open');	
+	}
+	
+		function  closeSelectfilesWin(){
+   				 filesWin.dialog('close');	
+ 	    }
+     
+  	   function selectfilesEnd(){
+  
+     
+      	var row = files.datagrid('getSelections');
+		if (row.length <= 0) {
+			$.messager.alert('信息提示','请选择文件!','info');
+		} else{
+			//input value
+			$('#orgCodeAbbreviation').val(row[0].orgCode);//部门缩写
+			$('#orgnameview').val(row[0].orgName);//显示名称
+			$('#orgName').val(row[0].orgName);//提交名称
+			$('#orgId').val(row[0].orgId);
+			$('#filenumber').val(row[0].fileNo);
+			$('#filename').val(row[0].fileName);
+			$('#filetype').combobox('setValue',row[0].fileType);
+			$('#beforeversion').val(row[0].fileVersion);
+			$('#beforeversionstate').val(row[0].fileVersionState);
+		    //判断版本
+		    var beforeVersion=row[0].fileVersion;
+		    var beforeVersionState=row[0].fileVersionState;
+		    var str=beforeVersionState.substring(1);
+		    if(parseInt(str)==5){
+		       $('#versionstate').val('00');
+		       var tempversion=beforeVersion.charCodeAt(0);//把字母变成Unicode编码
+		       tempversion=parseInt(parseInt(tempversion)+1);
+		       tempversion=String.fromCharCode(tempversion);//把编码改成字母
+		       $('#version').val(tempversion);
+		    }else{		 var res=parseInt(parseInt(str)+1); //没到05,版本号不变，版本状态加1
+		   			     $('#version').val(row[0].fileVersion);
+		   				 $('#versionstate').val('0'+res);
+			    }
+			 var startForm = $('#startForm');
+			 startForm.form('enableValidation').form('validate');
+			 filesWin.dialog('close');	
+		}
+      
+	}
+
+</script>
+</#if> </#if>
+
+
+<!-- 修改文档会签 -->
+<#if currentStep?exists>
+   <#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+           <#if currentStep =='modifyFileSignTask'>
+<div id="modifyFileSignTask">
+	<form id="modifyFileSignTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="modifyFileSignTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key">文件名称：</td>
+				<td class="formtable_td_value"><input
+					class="easyui-validatebox" type="text" name="fp_filename"
+					value='${(steps.vars["filename"])!""}' vadata-options="required:true" /></td>
+				
+				<td class="formtable_td_key">文件类型：</td>
+				<td class="formtable_td_value"><#if steps.vars["filestate"] ==
+					'0'> <input class="easyui-combobox" size="8px" id="filetypeUpdate"
+					value='${(steps.vars["filetype"])!""}' name="fp_filetype"
+					data-options="
+				valueField: 'label',
+	            textField: 'value',
+	            data: [{
+		  	label: 'A',
+	 		value: 'A'
+	    	},{
+			label: 'B',
+			value: 'B'
+	    	},{
+			label: 'C',
+			value: 'C'
+	    	},{
+			label: 'D',
+			value: 'D'
+	    	},{
+			label: 'E',
+			value: 'E'
+	    	},{
+			label: 'R',
+			value: 'R'
+	    	},{
+			label: '其他',
+			value: '其他'
+	    	}]" />
+					</#if> <#if steps.vars["filestate"] == '1'> <input
+					class="easyui-combobox" size="8px" id="filetypeUpdate"
+					readonly="readonly" value='${(steps.vars["filetype"])!""}'
+					name="fp_filetype"
+					data-options="
+				valueField: 'label',
+	            textField: 'value',
+	            data: [{
+		  	label: 'A',
+	 		value: 'A'
+	    	},{
+			label: 'B',
+			value: 'B'
+	    	},{
+			label: 'C',
+			value: 'C'
+	    	},{
+			label: 'D',
+			value: 'D'
+	    	},{
+			label: 'E',
+			value: 'E'
+	    	},{
+			label: 'R',
+			value: 'R'
+	    	},{
+			label: '其他',
+			value: '其他'
+	    	}]" />
+					</#if>
+				</td>
+				<td class="formtable_td_key">文件状态：</td>
+				<td class="formtable_td_value"><input id="fileOperateUpdate"
+					class="easyui-combobox" size="5px" name="fp_filestate"
+					value='${(steps.vars["filestate"])!""}'
+					data-options="
+						valueField: 'label',
+			            textField: 'value',
+			            readonly:true,
+			            data: [{
+						  	label: '0',
+					 		value: '新增'
+			    	},{
+							label: '1',
+							value: '修订'
+			    	}]" />
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">文件编号：</td>
+				<td class="formtable_td_value"><input
+					class="easyui-validatebox" type="text" name="fp_filenumber"
+					id="filenumberUpdate" value='${(steps.vars["filenumber"])!""}'
+					data-options="required:true" /></td>
+				<td class="formtable_td_key">版本号：</td>
+				<td class="formtable_td_value" ><input
+					class="easyui-validatebox" type="text" name="fp_version"
+					id="version1" value='${(steps.vars["version"])!""}'
+					data-options="required:true" /></td>
+				<td class="formtable_td_key">版本状态：</td>
+				<td class="formtable_td_value" ><input
+					class="easyui-validatebox" type="text" name="fp_versionstate"
+					id="versionstate1" value='${(steps.vars["versionstate"])!""}'
+					data-options="required:true" /></td>
+				
+
+			</tr>
+			<tr>
+			<td class="formtable_td_key">拟制部门：</td>
+				
+				<td class="formtable_td_value">
+				<input type="hidden" name="fp_curUserId" value="${appuser.userId?c}" />
+				<input type="hidden" name="fp_applyUserId"
+					value="${appuser.account}" />
+				<input id="orgNameUpdate" type="hidden" name="fp_orgName"
+					value='${(steps.vars["orgName"])!""}' />
+				<input id="orgIdUpdate" type="hidden" name="fp_orgId"
+					value='${(steps.vars["orgId"])!""}' />
+				<input id="createNo${rand}" type="hidden" name="fp_createNo"
+					value='${appuser.account}' />
+				<input id="createName${rand}" type="hidden" name="fp_createName"
+					value="${appuser.name}" />
+				<input type="hidden" id="orgCodeAbbreviationUpdate"
+					name="fp_orgCodeAbbreviation"
+					value='${(steps.vars["orgCodeAbbreviation"])!""}' />
+				<#if steps.vars["filestate"] ==
+					'0'> <input id="userOrgUpdate" class="easyui-combotree"
+					value='${(steps.vars["orgName"])!""}' style="width: 150px;">
+					</#if> <#if steps.vars["filestate"] == '1'> <input
+					id="userOrgUpdate" class="easyui-combotree" readonly="readonly"
+					value='${(steps.vars["orgName"])!""}' style="width: 150px;">
+					</#if>
+				</td>
+				<td class="formtable_td_key">拟制人：</td>
+				<td class="formtable_td_value" ><input
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_createman" value="${appuser.name}"
+					data-options="required:true" /></td>
+				<td class="formtable_td_key">提交日期</td>
+				<td class="formtable_td_value" colspan="5"><input
+					id="signdemandTime" class="easyui-datetimebox"
+					value='${(steps.vars["signdemandTime"])!""}' name="fp_signdemandTime"
+					data-options="validType:'greaterEq[\'${.now?string('yyyy-MM-dd')}\']'" />
+				</td>
+			</tr>
+
+			<tr id="beforeversionRowUpdate" style="display: none;">
+
+				<td class="formtable_td_key">原版本号：</td>
+				<td class="formtable_td_value" colspan="2"><input
+					class="easyui-validatebox" type="text" name="fp_beforeversion"
+					id="beforeversion1" value='${(steps.vars["beforeversion"])!""}' /></td>
+				<td class="formtable_td_key">原版本状态：</td>
+				<td class="formtable_td_value" colspan="2"><input
+					class="easyui-validatebox" type="text" name="fp_beforeversionstate"
+					id="beforeversionstate1"
+					value='${(steps.vars["beforeversionstate"])!""}' /></td>
+
+			</tr>
+
+			<tr>
+				<td class="formtable_td_key">所属公司：</td>
+				<td class="formtable_td_value">
+					
+				<input id="selectbelongcompanyUpdate"  class="easyui-combobox"  name="fp_belongcompany"
+					value='${(steps.vars["belongcompany"])!""}' size="5px"
+					data-options="
+						valueField: 'label',
+			            textField: 'value',
+			            data: [{
+						  	label: '56877',
+					 		value: '金立'
+			    	},{
+							label: '59513',
+							value: '金铭'
+			    	}]" />		
+				
+				</td>
+				<td class="formtable_td_key">分管副总裁</td>
+				<td class="formtable_td_value" colspan="3">
+			<input class="easyui-validatebox" id="fgpreisdentUpdate" readonly="readonly" required="required"
+					type="text" name="fp_fgfzc" value='${(steps.vars["fgfzc"])!""}'/>
+					<input type="hidden" name="fp_fgaccount" id="fgaccount" value='${(steps.vars["fgaccount"])!""}'>	
+					</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">会签部门：</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						id="signOrgnameUpdate" name="fp_signOrgname" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 80px;">${(steps.vars["signOrgname"])!""}</textarea>
+						<a id="openSelectPersonBtnUpdate" href="javascript:void(0);"
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择人员</a>
+						</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">会签人：</td>
+				<td class="formtable_td_value" colspan="5"><input
+					id="assigneeAccountUpdate" type="hidden" name="fp_assigneeList"
+					value='${(steps.vars["assigneeList"])!""}' /> <textarea
+						id="assigneePersonsUpdate" name="fp_assigneePersons"
+						readonly="readonly" class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 80px;">${(steps.vars["assigneePersons"])!""}</textarea>
+					
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="users${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:150"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tags${rand}" value="" />
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+//判断操作类型。如果是修订类型，则文件类型和部门不能操作
+
+var orgWin = $('#orgWin-${rand}');
+	
+	 var addUserList = new Array();
+     var addNameList = new Array();
+     var addOrgNameList = new Array();
+	
+	$(function(){		
+		var orgs = $('#orgs${rand}');
+		var users = $('#users${rand}');
+		var currentOrgId = 0;
+		
+		var fileOpUpdate = $("#fileOperateUpdate");
+		
+		//init comboTree
+		$('#userOrgUpdate').combotree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+			  //查询部门缩写
+			   var orgCodeAbbreviation="";
+			    $.post("signFile/getOrgCode.json",
+                       {orgId:node.id},
+                       function(data){
+                         if(data.success){
+                         //alert(data.obj.orgCode);
+                       	orgCodeAbbreviation=data.obj.orgCode;
+                       	$("#orgCodeAbbreviationUpdate").val(orgCodeAbbreviation);	//部门缩写赋值
+                       		            }else{
+                       		            $.messager.alert('信息提示',data.msg,'warning');
+                       		            return;
+                       		            } 
+                var filetype = $('#filetypeUpdate').combobox('getValue'); //文件类型
+				var number=(Math.random()*1000).toFixed(0);
+				if(100<=number&&number<1000){
+				  number=number;
+				}
+				if(10<=number&&number<100){
+				 number="0"+number;
+				}
+				if(number<10){
+				 number="00"+number;
+				}
+				//alert(orgCodeAbbreviation);
+				$('#filenumberUpdate').val(orgCodeAbbreviation + "-" + filetype+"-"+number);
+				$('#orgIdUpdate').val(node.id);
+		  		$('#orgNameUpdate').val(node.text);
+		  		$('#versionUpdate').val("A");
+				$('#versionstateUpdate').val("00");	            
+                                      },
+					"json");
+				
+			}
+		});
+		//init tree
+		orgs.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+				currentOrgId = node.id;		
+				//用户
+				users.datagrid({
+				  fitColumns:true,
+				  url:'hrFlow/auth/users.json?id=' + currentOrgId,
+				  columns:[[
+					{field:'id',checkbox:true},
+				  	{field:'account',title:'帐号',width:150},
+				  	{field:'name',title:'姓名',width:150}
+				  ]],
+				  nowrap: true,       
+				  fit : true,
+				  border : false,
+				  pagination:true,
+				  pageNumber : 1,
+				  pageSize : 20,
+				  rownumbers:true,
+				  singleSelect:false,
+				  toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var node = orgs.tree('getSelected');
+							var orgName = node.text;
+							var row = users.datagrid('getSelections');
+							if (row.length > 0) {
+								for (var i=0;i<row.length;i++) {
+									addUser(row[i].account, row[i].name, orgName);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						}
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							users.datagrid("clearSelections");
+						}
+					}]
+				});
+			}
+		});
+		//init Tags 
+		$('#tags${rand}').tagsInput({
+               width: 'auto',
+               height: '100px',
+               onRemoveTag: function (tag) {
+                   var i = addNameList.indexOf(tag);
+                   var id = addUserList[i];
+                   var orgName = addOrgNameList[i];
+                   removeUser(id, tag, orgName);
+               },
+               interactive: false
+        });
+        
+       
+
+        function addUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) == -1) {
+                addUserList.push(id);
+                addNameList.push(name + "[" + orgName + "]");
+                addOrgNameList.push(orgName);
+                $('#tags${rand}').addTag(name + "[" + orgName + "]");
+            }
+        }
+        
+        function removeUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) != -1) {
+                addUserList.pop(id);
+                addNameList.pop(name + "[" + orgName + "]");
+                addOrgNameList.pop(orgName);
+                $('#tags${rand}').removeTag(name + "[" + orgName + "]");
+            }
+       }
+       //选择所属公司的时候进行判断
+		 $('#selectbelongcompanyUpdate').combobox({
+		 	panelHeight:'50',
+		 	onSelect: function(record){
+		 	var v = parseInt($('#selectbelongcompanyUpdate').combobox('getValue'));
+		 	var s = v != 59513 ? $("#fgpreisdentUpdate").show(): $("#fgpreisdentUpdate").hide(); 
+		 		if(v==59513){
+		 		$("#fgpreisdentUpdate").validatebox({required:false});
+		 		}else{
+		 		$("#fgpreisdentUpdate").validatebox({required:true});
+		 		}
+		 	}
+		 });
+		 //初始化表单的显示
+		 var v = parseInt($('#selectbelongcompanyUpdate').combobox('getValue'));
+		 var s = v != 59513 ? $("#fgpreisdentUpdate").show(): $("#fgpreisdentUpdate").hide(); 
+       //选择文件类型时候初始化文件编号
+       $('#filetypeUpdate').combobox({
+       		panelHeight:'150',	
+        	onSelect: function(){
+        	   var filetype = $('#filetypeUpdate').combobox('getValue');
+	           var orgCodeAbbreviation=$('#orgCodeAbbreviationUpdate').val();
+	           if(null==orgCodeAbbreviation||""==orgCodeAbbreviation){
+	           return;
+	           }
+	           var number=(Math.random()*1000).toFixed(0);
+				if(100<=number&&number<1000){
+
+				  number=number;
+				}
+				if(10<=number&&number<100){
+				 number="0"+number;
+				}
+				if(number<10){
+				 number="00"+number;
+				}
+	           $('#filenumberUpdate').val(orgCodeAbbreviation + "-" + filetype+"-"+number);
+			}
+		});
+	});
+	
+ 
+	//弹出窗口
+	$('#openSelectPersonBtnUpdate').bind('click', function(){
+		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+		
+		var assigneePersons = $('#assigneePersonsUpdate').val();
+		var signOrgName = $('#signOrgnameUpdate').val();
+		if (assigneePersons == null || assigneePersons.length <= 0){
+			$('#tags${rand}').importTags('');
+			addUserList = [];
+			addNameList = [];
+			addOrgNameList = [];
+		}
+	    orgWin.dialog('open');	
+	});
+	//选择用户完成事件
+    function selectUserEnd(){
+       //设置值，并关闭窗口
+       $('#assigneePersonsUpdate').val($('#tags${rand}').val());
+       
+       //处理人员Account
+       var assigneeAccounts="";
+       for(var i=0;i<addUserList.length;i++){
+       		assigneeAccounts += addUserList[i]+","
+       }
+       if (assigneeAccounts.length > 0 && assigneeAccounts != null) {
+       		assigneeAccounts = assigneeAccounts.substring(0,assigneeAccounts.length-1);
+       }
+       $('#assigneeAccountUpdate').val(assigneeAccounts);
+       //处理部门名称
+       var orgNameStr = "";
+       var orgNameArr = pureMulti(addOrgNameList);
+       for(var i=0;i<orgNameArr.length;i++){
+       		orgNameStr += orgNameArr[i]+","
+       }
+       if (orgNameStr.length > 0 && orgNameStr != null) {
+       		orgNameStr = orgNameStr.substring(0,orgNameStr.length-1);
+       }
+       $('#signOrgnameUpdate').val(orgNameStr);
+       
+       orgWin.dialog('close');	
+   }
+   //去掉重复元素
+   function pureMulti(arr){  
+	 var resultArr = [];  
+   	 for(var i = 0,len = arr.length;i < len;i++){  
+        ! RegExp(arr[i],"g").test(resultArr.join(",")) && (resultArr.push(arr[i]));  
+     } 
+     return resultArr;
+   }
+   
+   function  closeSelectUserWin(){
+   	 orgWin.dialog('close');	
+   }
+			
+			
+	//选择要修订的文档
+
+
+</script>
+</#if></#if> </#list> </#if> </#if>
+<!-- 部门负责人审核 -->
+<#if currentStep?exists> 
+<#if currentStep == 'departmentLeaderAudiTask'>
+<div id="departmentLeaderAudiTask">
+	<form id="departmentLeaderAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="departmentLeaderAudiTaskTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">部门负责人意见</td>
+				<td class="formtable_td_key">签名</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_departmentLeaderAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_departmentLeaderAudi" checked="checked" value="0" />通过 <input
+					type="radio" name="fp_departmentLeaderAudi" value="1" />不通过</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_departmentLeaderAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea name="fp_departmentLeaderAudiAdvice" class="formtable_remark"></textarea></td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+
+
+<!-- 体系部审核人 -->
+<#if currentStep?exists> <#if currentStep == 'SystemdepartmentAudiTask'>
+<div id="SystemdepartmentAudiTask">
+	<form id="SystemdepartmentAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="SystemdepartmentAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">体系部</td>
+				<td class="formtable_td_key">签名</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_SystemdepartmentAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_SystemdepartmentAudi" checked="checked" value="0" />通过
+					<input type="radio" name="fp_SystemdepartmentAudi" value="1" />不通过</td>
+				<td class="formtable_td_key">日期</td>	
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_SystemdepartmentAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核意见：</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_SystemdepartmentAudiAdvice" class="formtable_remark"></textarea></td>
+				
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+
+
+<!-- 流程管理部审批-->
+<#if currentStep?exists> <#if currentStep == 'managementAudiTask'>
+<div id="managementAudiTask">
+	<form id="managementAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="managementAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+			<td class="formtable_td_key" colspan="7" align="center">会签栏</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" rowspan="2">流程管理部</td>
+				<td class="formtable_td_key" >签名</td>	
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_managementAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key" >结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_managementAudi" checked="checked" value="0" />通过 <input
+					type="radio" name="fp_managementAudi" value="1" />不通过</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_managementAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea name="fp_managementAudiAdvice" class="formtable_remark"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+<!-- 相关部门会签-->
+<#if currentStep?exists> <#if currentStep ==
+'relevantdepartmentsMultiInstTask'>
+<div id="relevantdepartmentsMultiInstTask">
+	<form id="relevantdepartmentsMultiInstTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="relevantdepartmentsMultiInstTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">${appuser.orgName}</td>
+				<td class="formtable_td_key">签名</td>
+				<td class="formtable_td_value">
+				<input type="hidden" name="fp_${appuser.account}SignAudiOrgName" value="${appuser.orgName}" />
+					<input type="hidden" name="fp_${appuser.account}redepSignAudiMan" value="${appuser.name}">
+					${appuser.name}
+					</td>
+				<td class="formtable_td_key" >结果</td>	
+				<td class="formtable_td_value" >
+					<input type="radio" name="fp_${appuser.account}relevantdepartmentsSignAudi" checked="checked" value="0" />同意 
+					<input type="radio" name="fp_${appuser.account}relevantdepartmentsSignAudi" value="1" />不同意</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_${appuser.account}relevantdepartmentsSignAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_${appuser.account}relevantdepartmentsSignAudiAdvice"
+						class="formtable_remark"></textarea></td>
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+<!-- 企管部总监 -->
+<#if currentStep?exists> <#if currentStep == 'managementLeaderAudiTask'>
+<div id="managementLeaderAudiTask">
+	<form id="managementLeaderAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="managementLeaderAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">流程管理部总监</td>
+				<td class="formtable_td_key">签名</td>	
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_managementLeaderAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_managementLeaderAudi" checked="checked" value="0" />通过
+					<input type="radio" name="fp_managementLeaderAudi" value="1" />不通过</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_managementLeaderAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_managementLeaderAudiAdvice" class="formtable_remark"></textarea></td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+
+<!-- 流程管理不打印 -->
+<#if currentStep?exists> <#if currentStep == 'printFileTask'>
+<div id="printFileTask">
+	<form id="printFileTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="printFileTaskkFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">流程管理部打印文件</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_managementLeaderAudiTaskName" value="${appuser.name}" />
+					打印</td>
+				<td class="formtable_td_key">打印日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_managementLeaderAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">温馨提示</td>
+				<td class="formtable_td_value" colspan="4">
+				<span  style="font-size: 13pt;color:Red; font-family:黑体;" >打印封面请点击按钮下载封面模板，打印文件请下载申请人上传的附件后再打印</span>
+				</td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+
+<!-- 分管副总审批 -->
+<#if currentStep?exists> 
+<#if currentStep == 'vicePresidentAudiTask'>
+<div id="vicePresidentAudiTask">
+	<form id="vicePresidentAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="vicePresidentAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">分管副总裁</td>
+				<td class="formtable_td_key">签名</td>	
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_vicePresidentAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_vicePresidentAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_vicePresidentAudi" value="1" />不同意</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_vicePresidentAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_vicePresidentAudiAdvice" class="formtable_remark"></textarea></td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if>
+</#if>
+
+<!-- 金铭总经理 -->
+<#if currentStep?exists> <#if currentStep == 'jmGeneralManagerAudiTask'>
+<div id="jmGeneralManagerAudiTask">
+	<form id="jmGeneralManagerAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="jmGeneralManagerAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">金铭总经理</td>
+				<td class="formtable_td_key">签名</td>	
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_jmGeneralManagerAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_jmGeneralManagerAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_jmGeneralManagerAudi" value="1" />不同意</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_jmGeneralManagerAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_jmGeneralManagerAudiAdvice" class="formtable_remark"></textarea></td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if>
+
+<!-- 金立董事长 -->
+<#if currentStep?exists> <#if currentStep == 'gioneechairmanAudiTask'>
+<div id="gioneechairmanAudiTask">
+	<form id="gioneechairmanAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="gioneechairmanAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">金立总裁</td>
+				<td class="formtable_td_key">签名</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_gioneechairmanAudiTaskName" value="${appuser.name}" />
+					${appuser.name}</td>
+				<td class="formtable_td_key">结果</td>	
+				<td class="formtable_td_value" ><input type="radio"
+					name="fp_gioneechairmanAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_gioneechairmanAudi" value="1" />不同意</td>
+				<td class="formtable_td_key">日期</td>
+				<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+				<input type="hidden" name="fp_gioneechairmanAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" /></td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key">意见</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						name="fp_gioneechairmanAudiAdvice" class="formtable_remark"></textarea></td>
+				
+			</tr>
+		</table>
+	</form>
+</div>
+</#if> </#if> <#if currentStep?exists> 
+<#if currentStep =='isPublishTask'>
+<div id="isPublishTask">
+	<form id="isPublishTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="isPublishTaskFormTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+				<td class="formtable_td_key" rowspan="2">体系部受控发行</td>
+				<td class="formtable_td_key">签名</td>
+				<td class="formtable_td_value">
+				<input type="hidden"name="fp_isPublishAudiTaskName" value="${appuser.name}" />
+				<input type="hidden" name="fp_aduiDepet" value="${appuser.orgName}" />
+					${appuser.name}</td>
+				<td class="formtable_td_value" colspan="2"><input type="radio"
+					name="fp_isPublishAudi" checked="checked" value="0" />发布 <input
+					type="radio" name="fp_isPublishAudi" value="1" />不发布</td>
+
+			</tr>
+			<tr>
+				<td class="formtable_td_key">选择发邮件部门</td>
+				<td class="formtable_td_value">
+					<input id="proInstId" type="hidden" value="${processInstanceId}"/>
+					<input id="email4OrgNames" type="hidden" name="fp_email4OrgNames"/>
+					<input name="fp_EmailToOrgs" id="EmailOrgNames" size="65"/>
+				</td>
+				<td class="formtable_td_value" colspan="2">
+					<a id="downloadFilveCover" href="javascript:void(0);"
+						class="easyui-linkbutton" data-options="iconCls:'icon-search'">下载封面</a>
+				</td>
+
+			</tr>
+
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+//init
+$(function(){
+	var orgs = $('#EmailOrgNames');
+	var downBtn = $('#downloadFilveCover');
+	orgs.combotree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+		    multiple:true,
+			panelWidth:300,
+			panelHeight:350,
+			onHidePanel:function(){
+			  var orgIds = orgs.combotree('getValues');	
+			  var orgNames = orgs.combotree('getText');
+              $('#EmailOrgIds').val(orgIds);//将部门ID赋值
+              $('#email4OrgNames').val(orgNames)
+			}
+		});
+	
+	//bind
+	downBtn.bind('click',function(){
+		// 绑定导出按钮
+		var form = $("<form>");
+		form.attr('style', 'display:none');
+		form.attr('method', 'post');
+		form.attr('action', 'signFile/downLoadWordPage.html');
+		
+		var proInstId = $('<input>');
+		proInstId.attr('type', 'hidden');
+		proInstId.attr('name', 'processInstanceId');
+		proInstId.attr('value', $("#proInstId").val());
+			
+		$('body').append(form);
+		form.append(proInstId);
+			        
+		form.submit();
+		form.remove();
+	});
+});
+
+</script>
+</#if>
+</#if>
+<#include "/common/foot.html">
+

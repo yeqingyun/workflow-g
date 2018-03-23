@@ -1,0 +1,1067 @@
+<#include "/common/head.html">
+
+<#assign projectName=""/>
+<#assign changeContent=""/>
+<#assign description=""/>
+<#assign projectLeaderId=""/>
+<#assign comboboxId=""/>
+ 
+<!-- 展示表单  --> 
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+					  	<tr>
+				  	  		<td style="font-size:16px;height:25px;" align="center" colspan="4" class="formtable_td_key">软件需求变更申请表</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">流程实例名称：</td>
+				  	  		<td class="formtable_td_value" colspan="3">${(steps.vars["processName"])!""}</td>
+				  	  	</tr>
+				  	  	
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">项目名称：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["projectName"])!""}</td>
+				  	  		<td class="formtable_td_key">申请人：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["curUserName"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">申请部门：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				  	  		<td class="formtable_td_key">申请时间：</td>
+
+				  	  		<td class="formtable_td_value">${(steps.vars["applyDate"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">变更内容：</td>
+				  	  		<td class="formtable_td_value" colspan="3">
+								<span class="span_wordwrap">${(steps.vars["changeContent"])!""}</span>
+							</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">描述：</td>
+				  	  		<td class="formtable_td_value" colspan="3">
+								<span class="span_wordwrap">${(steps.vars["description"])!""}</span>
+							</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+	   </#if>
+	   
+	   <!-- 修改表单 -->
+	   <#if steps.key == 'nmb_updateSoftwareTask'>
+					  	<tr>
+				  	  		<td style="font-size:16px;height:25px;" align="center" colspan="4" class="formtable_td_key">修改表单</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">项目名称：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["updateProjectName"])!""}</td>
+				  	  		<td class="formtable_td_key">申请人：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["updateCurUserName"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">申请部门：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["updateOrgName"])!""}</td>
+				  	  		<td class="formtable_td_key">申请时间：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["applyDate"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">变更内容：</td>
+				  	  		<td class="formtable_td_value" colspan="3">
+								<span class="span_wordwrap">${(steps.vars["updateChangeContent"])!""}</span>
+							</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">描述：</td>
+				  	  		<td class="formtable_td_value" colspan="3">
+								<span class="span_wordwrap">${(steps.vars["updateDescription"])!""}</span>
+							</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+	   </#if>
+	   <!-- 部门经理审批 -->
+	   <#if steps.key == 'mb_deptLeaderAudiTask'>
+			  	  	<tr>
+			  	  		<td colspan="4" class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">部门经理审批：</td>
+		  	  			<td  class="formtable_td_value">${(steps.vars["deptLeaderName"])!""}</td>
+		  	  			<td  class="formtable_td_key">审批时间：</td>
+		  	  			<td  class="formtable_td_value">${(steps.vars["deptLeaderSignDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["deptLeaderAudi"] == '0' >
+			  	  			<td  class="formtable_td_value" colspan="3">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["deptLeaderAudi"] == '1' >
+			  	  			<td class="formtable_td_value" colspan="3">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["deptLeaderAdvice"])!""}</span></td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	   <!-- 开发部经理审批 -->
+	   <#if steps.key == 'mb_developManagerAudiTask'>
+			  	  	<tr>
+			  	  		<td colspan="4" class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">部门经理审批：</td>
+		  	  			<td  class="formtable_td_value">${(steps.vars["developManagerName"])!""}</td>
+		  	  			<td  class="formtable_td_key">审批时间：</td>
+		  	  			<td  class="formtable_td_value">${(steps.vars["developManagerSignDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["developManagerAudi"] == '0' >
+			  	  			<td  class="formtable_td_value" colspan="3">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["developManagerAudi"] == '1' >
+			  	  			<td class="formtable_td_value" colspan="3">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["developManagerAdvice"])!""}</span></td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	   <!-- 项目负责人 -->
+	   <#if steps.key == 'mb_projectAudiTask'>
+		  	  	<tr>
+			  	  	<td colspan="4" class="formtable_td_key">${steps.activityName}</td>
+			  	</tr>
+		  	  	<tr>
+			  	  	<td  class="formtable_td_key">项目负责人审批：</td>
+		  	  		<td  class="formtable_td_value">${(steps.vars["projectManagerName"])!""}</td>
+		  	  		<td  class="formtable_td_key">审批时间：</td>
+		  	  		<td  class="formtable_td_value">${(steps.vars["projectManagerSignDate"])!""}</td>
+			  	</tr>
+			  	<tr>
+			  	  	<td class="formtable_td_key">处理结果：</td>
+			  	  	<#if steps.vars["projectManagerAudi"] == '0' >
+			  	  		<td  class="formtable_td_value" colspan="3">同意</td>
+			  	  	</#if>
+			  	  	<#if steps.vars["projectManagerAudi"] == '1' >
+			  	  		<td class="formtable_td_value" colspan="3">不同意</td>
+			  	  	</#if>
+			  	</tr>
+			  	<tr>
+			  	  	<td class="formtable_td_key">处理意见：</td>
+			  	  	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["projectManagerAdvice"])!""}</span></td>
+			  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="3">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	    <!-- 项目开发人员处理 -->
+	   <#if steps.key == 'mb_feedbackAudiTask'>
+		  	  	<tr>
+			  	  	<td colspan="4" class="formtable_td_key">${steps.activityName}</td>
+			  	</tr>
+		  	  	<tr>
+			  	  	<td  class="formtable_td_key">项目开发人员：</td>
+		  	  		<td  class="formtable_td_value">${(steps.vars["feedbackAudiName"])!""}</td>
+		  	  		<td  class="formtable_td_key">反馈时间：</td>
+		  	  		<td  class="formtable_td_value">${(steps.vars["feedbackAudiSignDate"])!""}</td>
+			  	</tr>
+			  	
+			  	<tr>
+			  	  	<td class="formtable_td_key">反馈意见：</td>
+			  	  	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["feedbackAudiAdvice"])!""}</span></td>
+			  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="3">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	 <tr>
+		  	  		<td class="formtable_td_key">流程实例名称：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input id="processName${rand}" type="text" name="fp_processName"  style="width:400px"/>
+		  	  		</td>
+		  	  		
+		  	  	</tr>
+		  	  
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">项目名称：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id='projectId' class="easyui-combobox" name="fp_projectId"
+								data-options="valueField:'id',textField:'text',editable:false,required:true,
+										url:'project/queryItemName.json'"/>		
+		  	  			
+		  	  			<input id="projectLeaderId" type="hidden" name="fp_projectLeaderId" class="easyui-validatebox" data-options="required:true"/>
+		  	  			
+		  	  			<input type="hidden" name="fp_curUserId"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_projectName" id="projectName" value="" class="easyui-validatebox" data-options="required:true"/>
+		  	  			
+		  	  			<input type="hidden" name="fp_comboboxId" id="comboboxId" value=""/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_curUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请部门：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_orgId" value="${appuser.orgId?c}"/>
+						<input type="hidden" name="fp_orgName" value="${appuser.orgName}"/>
+						${appuser.orgName}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">变更内容：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea name="fp_changeContent" style="width: 750px; height: 150px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">描述：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea name="fp_description" class="formtable_remark" style="width: 750px; height: 100px"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+		   $(function(){
+			   $("#projectId").combobox({
+				   onSelect: function(){
+					   $("#comboboxId").val($("#projectId").combobox('getValue'));
+						$.post("project/loadAccount.json", {
+							projectId : $("#projectId").combobox('getValue')
+						}, function(data) {
+							$("#projectLeaderId").val(data.userId);
+							$("#projectName").val(data.projectName);
+						});
+				   }
+			   })
+		   })
+       </script>
+	</#if>
+</#if>
+
+
+ <!-- 修改表单 -->
+ <#if currentStep?exists> 
+	<#if processSteps??>
+	 <#if currentStep == 'nmb_updateSoftwareTask'>  
+		 <#list processSteps as steps>
+			  <#if steps.key == 'startevent1'>
+			    <#if steps.vars["projectLeaderId"]??>
+			  	  <#assign projectLeaderId=steps.vars["projectLeaderId"]/>
+			    </#if>
+			    <#if steps.vars["projectName"]??>
+			      <#assign projectName=steps.vars["projectName"]/>
+			    </#if>
+			    <#if steps.vars["comboboxId"]??>
+			      <#assign comboboxId=steps.vars["comboboxId"]/>
+			    </#if>
+			    <#if steps.vars["changeContent"]??>
+			      <#assign changeContent=steps.vars["changeContent"]/>
+			    </#if>
+			    <#if steps.vars["description"]??>
+			      <#assign description=steps.vars["description"]/>
+			    </#if>
+		     </#if>
+			 <#if steps.key == 'nmb_updateSoftwareTask'>
+			         <#if steps.vars["projectLeaderId"]??>
+			           <#assign projectLeaderId=steps.vars["projectLeaderId"]/>
+			         </#if>
+			         <#if steps.vars["updateProjectName"]??>
+			           <#assign projectName=steps.vars["updateProjectName"]/>
+			         </#if>
+			         <#if steps.vars["updateChangeContent"]??>
+			           <#assign changeContent=steps.vars["updateChangeContent"]/>
+			         </#if>
+			         <#if steps.vars["updateDescription"]??>
+			           <#assign description=steps.vars["updateDescription"]/>
+			         </#if>
+			         <#if steps.vars["updateComboboxId"]??>
+			           <#assign comboboxId=steps.vars["updateComboboxId"]/>
+			         </#if>
+			 </#if>
+			</#list>
+		<div id="nmb_updateSoftwareTask">
+			<form id="nmb_updateSoftwareTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_updateSoftwareTaskTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	     <tr>
+		  	  		<td colspan="4" class="formtable_td_key" align="center">修改申请表单</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">项目名称：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id='projectId' class="easyui-combobox" name="fp_updateProjectId"
+								data-options="valueField:'id',textField:'text',required:true,editable:false,multiple:false,
+										url:'project/queryItemName.json'" value='${(steps.vars["projectId"])!""}'/>		
+		  	  			
+		  	  			<input id="projectLeaderId" type="hidden" name="fp_projectLeaderId" />
+		  	  			
+		  	  			<input type="hidden" name="fp_updateCurUserId"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_updateProjectName" id="projectName"/>
+		  	  	        <input type="hidden" name="fp_updateComboboxId" id="comboboxId" />
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_updateCurUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请部门：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_updateOrgId" value="${appuser.orgId?c}"/>
+						<input type="hidden" name="fp_updateOrgName" value="${appuser.orgName}"/>
+						${appuser.orgName}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">变更内容：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="changeContentId${rand}" name="fp_updateChangeContent" style="width: 750px; height: 150px" class="formtable_remark easyui-validatebox" data-options="required:true" >${(steps.vars["changeContent"])!""}
+		  	  			</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">描述：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="description${rand}" name="fp_updateDescription" class="formtable_remark" style="width: 750px; height: 100px"> ${(steps.vars["description"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		   $(function(){
+			   if("${projectName}"){
+				   $("#projectName").val("${projectName}");
+			   }
+			   if("${projectLeaderId}"){
+				   $("#projectLeaderId").val("${projectLeaderId}");
+			   }
+			   if("${changeContent}"){
+				   $("#changeContentId${rand}").text("${changeContent}");
+			   }
+			   if("${description}"){
+				   $("#description${rand}").text("${description}");
+			   }
+			   if("${comboboxId}"){
+				   $("#comboboxId").val("${comboboxId}");
+			   }
+			   $("#projectId").combobox({
+				   onSelect: function(){
+					   $("#comboboxId").val($("#projectId").combobox('getValue'))
+						$.post("project/loadAccount.json", {
+							projectId : $("#projectId").combobox('getValue')
+						}, function(data) {
+							$("#projectLeaderId").val(data.userId);
+							$("#projectName").val(data.projectName);
+						});
+				   },
+				   onLoadSuccess : function (){
+					   if("${projectName}"){
+						   $("#projectId").combobox('setText',"${projectName}");
+					   }
+					   if("${comboboxId}"){
+						   $("#projectId").combobox('setValue',"${comboboxId}");
+					   }
+					}
+			   })
+		   })
+       </script>
+	  	</#if>
+	</#if>
+</#if> 
+
+
+<!-- 需求提出部门经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_deptLeaderAudiTask'>
+		<div id="mb_deptLeaderAudiTask">
+		  <form id="mb_deptLeaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_deptLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="4" class="formtable_td_key">部门经理审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门经理审批：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deptLeaderAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_deptLeaderName" value="${appuser.name}" mobile="部门经理审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deptLeaderSignDate" timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="deptLeaderAudi${rand}" name="fp_deptLeaderAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input id="deptLeaderAudi${rand}2" name="fp_deptLeaderAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea id="deptLeaderAdvice${rand}" name="fp_deptLeaderAdvice" class="formtable_remark" mobile="处理意见"  makethis_required_field_name="fp_deptLeaderAudi"   makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		$("#deptLeaderAdvice${rand}").validatebox({required:false});
+		var success = function(){
+			$("#deptLeaderAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+		}
+		var failure=function(){
+			$("#deptLeaderAdvice${rand}").val('');
+			$("#deptLeaderAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+		};
+		$("#deptLeaderAudi${rand}").bind("click",success);
+		$("#deptLeaderAudi${rand}2").bind("click",failure);
+		
+		//用于限制文本框输入全空格
+		function checkInput1(){
+			if($("input[name='fp_deptLeaderAudi']:checked").val() == '0'){
+				return;
+			}
+			var result=$("#deptLeaderAdvice${rand}").val();
+			if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+				$("#deptLeaderAdvice${rand}").val('');
+				$.messager.alert('信息提示:','输入不能为全空格!');
+			}
+		}
+	</script>
+	</#if>
+</#if>
+
+<!-- 信息中心开发部经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_developManagerAudiTask'>
+		<div id="mb_developManagerAudiTask">
+		  <form id="mb_developManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_developManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="4" class="formtable_td_key">开发部经理审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">开发部经理审批：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_developManagerAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_developManagerName" value="${appuser.name}" mobile="开发部经理审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_developManagerSignDate"  timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="developManagerAudi${rand}" name="fp_developManagerAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input id="developManagerAudi${rand}2" name="fp_developManagerAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea id="developManagerAdvice${rand}" name="fp_developManagerAdvice" class="formtable_remark" mobile="处理意见" makethis_required_field_name="fp_developManagerAudi"   makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		$("#developManagerAdvice${rand}").validatebox({required:false});
+		var success = function(){
+			$("#developManagerAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+		}
+		var failure=function(){
+			$("#developManagerAdvice${rand}").val('');
+			$("#developManagerAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+		};
+		$("#developManagerAudi${rand}").bind("click",success);
+		$("#developManagerAudi${rand}2").bind("click",failure);
+		
+		//用于限制文本框输入全空格
+		function checkInput1(){
+			if($("input[name='fp_developManagerAudi']:checked").val() == '0'){
+				return;
+			}
+			var result=$("#developManagerAdvice${rand}").val();
+			if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+				$("#developManagerAdvice${rand}").val('');
+				$.messager.alert('信息提示:','输入不能为全空格!');
+			}
+		}
+	</script>
+	</#if>
+</#if>
+
+
+<#if currentStep?exists>
+	<#if currentStep == 'mb_projectAudiTask'>
+		<div id="mb_projectAudiTask">
+			<form id="mb_projectAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_projectAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="4" class="formtable_td_key">项目负责人审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">项目负责人审批：</td>
+		  	  		<td width="185px" class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_projectManagerAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_projectManagerName" value="${appuser.name}" mobile="项目负责人审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_projectManagerSignDate" timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="projectManagerAudi${rand}" name="fp_projectManagerAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input id="projectManagerAudi${rand}2" name="fp_projectManagerAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea id="projectManagerAdvice${rand}" name="fp_projectManagerAdvice" class="formtable_remark" mobile="处理意见"  makethis_required_field_name="fp_projectManagerAudi"   makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr id="projectId${rand}">
+					<td class="formtable_td_key" rowspan="4">选择项目开发人员信息</td>
+						<td class="formtable_td_key">项目开发人员：</td>
+							<td class="formtable_td_value"  colspan="5">
+			  	  			<input id="projectLeaderAccount${rand}" type="hidden" name="fp_projectLeaderAccount" /> 
+			  	  			<input  data-options="required:true" id="projectLeaderName${rand}" name="fp_projectLeaderName" readonly="readonly" class="easyui-validatebox" selectUserUrl="loaduser/users.json"   nextAssigneeAttrName="fp_projectLeaderAccount"    mobile="项目开发人员信息"   relateFieldName="fp_projectManagerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"/>
+							<a id="openOrgWinTrainnerBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'"  mobile="选择">选择</a>
+			  	  		</td>
+				    </tr> 
+			<!-- <tr  id="projectId${rand}"> 
+				<td class="formtable_td_key">选择项目开发人员信息</td>
+				<td class="formtable_td_value" colspan="7"><input
+					id="assigneeAccount" type="hidden" name="fp_assigneeList" /> <textarea
+						id="assigneePersons" name="fp_assigneePersons" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 630px; height: 50px;" data-options="required:true" mobile="项目开发人员信息"     selectUserUrl="loaduser/loadDepa.json"   nextAssigneeAttrName="fp_assigneeList"    mobile="项目开发人员信息"   relateFieldName="fp_projectManagerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"></textarea>
+					<a id="openSelectPersonBtn" href="javascript:void(0);"  
+					class="easyui-linkbutton"   mobile="添加项目开发人员"  data-options="iconCls:'icon-search'">添加项目开发人员</a>
+				</td>
+			</tr> -->
+		  	  </table>
+			</form>
+		</div>
+		   <div id="orgWinTrainner-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserTrainnerEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserTrainnerWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersTrainner${rand}"></table>
+		</div>
+	</div>
+</div> 
+<!-- 
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			
+
+			<table id="users${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:100"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tags${rand}" value="" />
+		</div>
+	</div>
+</div>
+ -->
+
+
+		<script type="text/javascript">
+		$('#openOrgWinTrainnerBtn${rand}').bind('click', function(){
+			$('#orgWinTrainner-${rand}').dialog('open');	
+		});
+		
+		
+	/* 	var orgWin = $('#orgWin-${rand}');
+		
+		 var addUserList = new Array();
+	     var addNameList = new Array();
+	     var addOrgNameList = new Array(); */
+		$(function(){
+		/* 	var orgs = $('#orgs${rand}');
+			var users = $('#users${rand}');
+			var currentOrgId = 0; */
+			
+			
+			
+			//init tree
+		/* 	orgs.tree({
+			    url: 'loaduser/loadDepa.json',
+			    method:'get',
+			    required:true,
+			    lines:true,
+				panelWidth:300,
+				panelHeight:280,
+				onClick:function(node){
+	                currentOrgId = node.id;		
+					$('#users${rand}').datagrid('reload',{id:currentOrgId});
+				}
+			}); */
+			
+			
+			
+			   //init UserGrid 
+			   /*   $('#users${rand}').datagrid({
+				  fit:true,
+				  fitColumns:false,
+				  url:'bpmRole/users.json',
+				  queryParams:{
+						id:currentOrgId
+					},
+				  columns:[[
+					{field:'id',checkbox:true},
+					{field:'account',title:'帐号',width:100},
+					{field:'name',title:'姓名',width:100},
+					{field:'orgName',title:'部门',width:100}
+				  ]],
+				  border:false,
+				  nowrap: true,
+				  pagination:false,
+				  pageNumber:1,
+				  pageSize:20,
+				  fit : true,
+				  singleSelect:false,
+				  rownumbers:true,
+				  toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var node = orgs.tree('getSelected');
+							var orgName;
+							var row = users.datagrid('getSelections');
+				          if (row.length > 0) {
+								for (var i=0;i<row.length;i++) {
+						orgName="";
+						if(	row[i].orgName!=undefined&&row[i].orgName!=null&&row[i].orgName!=''){
+						    orgName=row[i].orgName;
+							}else{
+							if(node!=null&&node.text!=undefined&&node.text!=null&&node.text!=''){
+							orgName = node.text;
+							}
+							}
+								
+					
+							
+									addUser(row[i].account, row[i].name, orgName);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						  }
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							users.datagrid("clearSelections");
+						}
+					}],onSelect:function(rows,data){
+						var node = orgs.tree('getSelected');
+						addUser(data.account, data.name, node.text);
+					}
+				
+
+				}); */
+				//init UserGrid 
+				  
+				    $('#usersTrainner${rand}').datagrid({
+				  fit:true,
+				  fitColumns:false,
+				  url:'loaduser/users.json',
+				  columns:[[
+					{field:'id',checkbox:true},
+					{field:'account',title:'帐号',width:100},
+					{field:'name',title:'姓名',width:100},
+					{field:'orgName',title:'部门',width:100}
+				  ]],
+				  border:false,
+				  nowrap: true,
+				  pagination:false,
+				  pageNumber:1,
+				  pageSize:20,
+				  fit : true,
+				  singleSelect:false,
+				  rownumbers:true
+				});
+			   //弹出窗口
+			 /* 	$('#openSelectPersonBtn').bind('click', function(){
+			 		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+			 		
+			 		var assigneePersons = $('#assigneePersons').val();
+			 		var signOrgName = $('#signOrgname').val();
+			 		if (assigneePersons == null || assigneePersons.length <= 0){
+			 			$('#tags${rand}').importTags('');
+			 			addUserList = [];
+			 			addNameList = [];
+			 			addOrgNameList = [];
+			 		}
+			 	    orgWin.dialog('open');	
+//			 	    $('#users${rand}').datagrid('reload');
+			 	}); */
+			 	
+			 	
+			 	
+			/*  	$('#tags${rand}').tagsInput({
+		               width: 'auto',
+		               height: '100px',
+		               onRemoveTag: function (tag) {
+		                   var i = addNameList.indexOf(tag);
+		                   var id = addUserList[i];
+		                   var orgName = addOrgNameList[i];
+		                   removeUser(id, tag, orgName);
+		               },
+		               interactive: false
+		        }); */
+		        
+		      
+			    
+				
+				
+			});
+		
+		
+		/*   function addUser(id, name, orgName) {
+	            if ($.inArray(id, addUserList) == -1) {
+	                addUserList.push(id);
+	                addNameList.push(name + "[" + orgName + "]");
+	                addOrgNameList.push(orgName);
+	                $('#tags${rand}').addTag(name + "[" + orgName + "]");
+	            }
+	        }
+	         */
+		//选择用户完成事件
+		/*      function selectUserEnd(){
+		        
+		        
+		        $('#assigneePersons').val($('#tags${rand}').val());
+		        
+		        //处理人员Account
+		        var assigneeAccounts="";
+		        
+
+		        for(var i=0;i<addUserList.length;i++){
+		        		assigneeAccounts += addUserList[i]+","
+		        }
+		        if (assigneeAccounts.length > 0 && assigneeAccounts != null) {
+		        		assigneeAccounts = assigneeAccounts.substring(0,assigneeAccounts.length-1);
+		        }
+		        $('#assigneeAccount').val(assigneeAccounts);
+		        //处理部门名称
+		        var orgNameStr = "";
+		        var orgNameArr = pureMulti(addOrgNameList);
+		        for(var i=0;i<orgNameArr.length;i++){
+		        		orgNameStr += orgNameArr[i]+","
+		        }
+		        if (orgNameStr.length > 0 && orgNameStr != null) {
+		        		orgNameStr = orgNameStr.substring(0,orgNameStr.length-1);
+		        }
+		        $('#signOrgname').val(orgNameStr);
+		        
+		        orgWin.dialog('close');	
+		    }
+		 	
+	        function removeUser(id, name, orgName) {
+	            if ($.inArray(id, addUserList) != -1) {
+	                addUserList.pop(id);
+	                addNameList.pop(name + "[" + orgName + "]");
+	                addOrgNameList.pop(orgName);
+	                $('#tags${rand}').removeTag(name + "[" + orgName + "]");
+	            }
+	       }
+	       
+		    //去掉重复元素
+		    function pureMulti(arr){  
+		 	 var resultArr = [];  
+		    	 for(var i = 0,len = arr.length;i < len;i++){  
+		         ! RegExp(arr[i],"g").test(resultArr.join(",")) && (resultArr.push(arr[i]));  
+		      } 
+		      return resultArr;
+		    }
+		    
+		    function  closeSelectUserWin(){
+		    	 orgWin.dialog('close');	
+		    } */
+		//选择用户完成事件
+		function selectUserTrainnerEnd(){
+			var row = $('#usersTrainner${rand}').datagrid('getSelected');
+			if (row) {
+			    $('#projectLeaderAccount${rand}').val(row.account);
+			    $('#projectLeaderName${rand}').val(row.name);
+			       		
+			    $('#projectLeaderName${rand}').validatebox('validate');
+			       		
+			    $('#orgWinTrainner-${rand}').dialog('close');	
+			} else {
+				$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+			}
+		}
+			   
+		function  closeSelectUserTrainnerWin(){
+			$('#orgWinTrainner-${rand}').dialog('close');	
+		}
+		
+			$("#projectManagerAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#projectManagerAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				$("#projectId${rand}").show(); 
+				$("#projectLeaderName${rand}").validatebox({required:true});
+			}
+			var failure=function(){
+				$("#projectManagerAdvice${rand}").val('');
+				$("#projectManagerAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				$("#projectId${rand}").hide(); 
+				$("#projectLeaderName${rand}").validatebox({required:false});
+			};
+			$("#projectManagerAudi${rand}").bind("click",success);
+			$("#projectManagerAudi${rand}2").bind("click",failure);
+			
+			//用于限制文本框输入全空格
+			function checkInput1(){
+				if($("input[name='fp_projectManagerAudi']:checked").val() == '0'){
+					return;
+				}
+				var result=$("#projectManagerAdvice${rand}").val();
+				if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+					$("#developManagerAdvice${rand}").val('');
+					$.messager.alert('信息提示:','输入不能为全空格!');
+				}
+			}
+        </script> 
+	</#if>
+</#if>
+  
+  <#if currentStep?exists>
+	<#if currentStep == 'mb_feedbackAudiTask'>
+		<div id="mb_feedbackAudiTask">
+			<form id="mb_feedbackAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_feedbackAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="4" class="formtable_td_key">项目开发人员处理</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">项目开发人员：</td>
+		  	  		<td width="185px" class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_feedbackAudiName" value="${appuser.name}" mobile="项目开发人员处理"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">反馈时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiSignDate"  timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="反馈时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">反馈意见：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_feedbackAudiAdvice" class="formtable_remark" mobile="反馈意见"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		
+	</#if>
+</#if>
+
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'mb_applyUserConfirmTask'> 
+		<div id="mb_applyUserConfirmTask">
+			<form id="mb_applyUserConfirmTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_applyUserConfirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td colspan="4" class="formtable_td_key">发起人确认</td>
+			  	  	</tr>
+					<tr>
+						<td class="formtable_td_key">发起人确认</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptLeaderName" value="${appuser.name}" mobile="发起人确认"/>
+							${appuser.name}
+						</td>
+							<tr>
+		  	  		 <td class="formtable_td_key">验证是否通过</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+							<input id="endProcess-${rand}" type="radio" name="fp_endProcessAudi"  checked="checked" value="0" mobile="验证是否通过_是"/>是
+							<input id="continueProcess-${rand}" type="radio" name="fp_endProcessAudi"  value="1" mobile="验证是否通过_否"/>否
+					</td>
+		  	  	</tr>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px" id="deptLeaderAu${rand}"
+								name="fp_deptLeaderAudiAdvice" class="formtable_remark" mobile="确认意见" makethis_required_field_name="fp_endProcessAudi"   makethis_required_field_values="1"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptLeaderAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		   $(function(){
+			     $("#continueProcess-${rand}").bind('click',function(){
+			    	 $("#deptLeaderAu${rand}").validatebox({required:true});
+			     })
+			     $("#endProcess-${rand}").bind('click',function(){
+			    	 $("#deptLeaderAu${rand}").validatebox({required:false});
+			     })
+		   })
+        </script>
+</#if>
+<#include "/common/foot.html">

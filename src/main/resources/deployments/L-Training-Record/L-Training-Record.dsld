@@ -1,0 +1,101 @@
+ process(id:"L-Training-Record"){
+	step(id:"startevent1"){
+		field(name:"userName",validType:"required",label:"员工姓名")
+		
+		field(name:"applyUserAccount",validType:"required",label:"员工账号")
+		
+		field(name:"empId",validType:"required",label:"员工编号")
+		
+		field(name:"gender",validType:"required",label:"性别")
+		
+		field(name:"birthday",validType:"required",label:"出生年月日")
+		
+		field(name:"married",validType:"required",label:"婚否")
+		
+		field(name:"orgName",validType:"required",label:"部门")
+		
+		field(name:"job",validType:"required",label:"职位")
+		
+		field(name:"entryTime",validType:"required",label:"入职日期")
+		
+		field(name:"telephone",validType:"required",label:"联系电话")
+		
+		field(name:"education",validType:"required",label:"最高学历")
+		
+		field(name:"graduateSchool",validType:"required",label:"毕业院校")
+		
+		field(name:"professional",validType:"required",label:"所学专业")
+		
+		field(name:"graduationTime",validType:"required",label:"在校时间")
+		
+	}
+	step(id:"nmb_deptManagerAudiTask"){
+		field(name:"teacherAccount",validType:"required",label:"学员导师账号")
+		
+		field(name:"teacherNo",validType:"required",label:"学员导师员工编号")
+		
+		field(name:"teacherName",validType:"required",label:"学员导师姓名")
+		
+	}
+	
+	step(id:"teachTrainPlanResultTask"){
+		field(name:"applyUserAccount",validType:"required",label:"申请者账号")
+		
+		field(name:"studentStatus",validType:"required",label:"学员状态")
+		
+		field(name:"empGroup",validType:"required",label:"员工组")
+		
+		field(name:"entryTime",validType:"required",label:"入职时间")
+		
+		field(name:"trainTime",validType:"required",label:"反馈月份数")
+		
+		field(name:"empGroup",validType:"required",label:"员工组")
+	}
+	
+	step(id:"studentScoreByTeacherTask"){
+		field(name:"trainContentScore",validType:"required min(0) max(20) digits(20,2)",label:"计划执行评分")
+		
+		field(name:"studyAttitudeScore",validType:"required min(0) max(15) digits(15,2)",label:"学习能力评分")
+		
+		field(name:"studyInitiativeScore",validType:"required min(0) max(15) digits(15,2)",label:"工作态度评分")
+		
+	}
+	
+	step(id:"studentScoreByDeptManagerTask"){
+		field(name:"teamWorkScoreByDept",validType:"required min(0) max(15) digits(15,2)",label:"文化融入度评分")
+		
+		field(name:"performanceTargetsScoreByDept",validType:"required min(0) max(25) digits(25,2)",label:"岗位胜任力评分")
+		
+	}
+	
+	
+	step(id:"studentScoreByHrTask"){
+		field(name:"monthSummaryScore",validType:"required min(0) max(10) digits(10,2)",label:"其他评分")
+		
+		field(name:"extraPointsReason",validType:"required",label:"最终评分")
+		
+	}
+	
+	
+	step(id:"teacherScoreByStudentTask"){
+		field(name:"studyContentScore",validType:"required min(0) max(20) digits(20,2)",label:"培养计划制定评分")
+		
+		field(name:"trainAttitudeScore",validType:"required min(0) max(15) digits(15,2)",label:"培养计划执行/实施评分")
+		
+		field(name:"trainMethodsScore",validType:"required min(0) max(15) digits(15,2)",label:"积极性")
+		
+	}
+	step(id:"teacherScoreByDeptManagerTask"){
+		field(name:"trainAttitudeInWorkScore",validType:"required min(0) max(15) digits(15,2)",label:"辅导态度评分")
+		
+		field(name:"traineePerformanceTargetsScore",validType:"required min(0) max(25) digits(25,2)",label:"目标达成评分")
+		
+	}
+	step(id:"teacherScoreByHrTask"){
+		field(name:"monthSummaryScoreForTeacher",validType:"required min(0) max(10) digits(10,2)",label:"其他评分")
+		
+		field(name:"extraPointsReasonForTeacher",validType:"required",label:"最终评分")
+		
+	}
+	
+}

@@ -1,0 +1,2411 @@
+<#include "/common/head.html">
+
+<#assign companyShares=""/>
+<#assign corporateShares=""/>
+<#assign isOfficeWorker=""/>
+<#assign leaveReason=""/>
+<#assign planLeaveDate=""/>
+
+
+<#assign isAgreement=""/>
+<#assign dutaryTime=""/>
+<#assign ExecutiveDirectorAudiAdvice=""/>
+<#assign leaveNewDispositon=""/>
+<#assign leaveCompanyName=""/>
+
+<#assign isManager=""/>
+
+<#assign applyUserId=""/>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<div style="text-align:center;padding-bottom: 10px;"><span style="font-size: 15pt">离职申请表</span></div>
+<table class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		<#assign isManager=steps.vars["isManager"]/>
+		<tr>
+			<td class="formtable_td_key">姓名：</td>
+			<td class="formtable_td_value" width="100">${(steps.vars["userName"])!""}</td>
+			<td class="formtable_td_key">员工编码：</td>
+			<td class="formtable_td_value" width="100">${(steps.vars["userAccount"])!""}</td>
+			<td class="formtable_td_key">系统：</td>
+			<td class="formtable_td_value" width="100">${(steps.vars["userSystem"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门：</td>
+			<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+			<td class="formtable_td_key">职位：</td>
+			<td class="formtable_td_value">${(steps.vars["duty"])!""}</td>
+			<td class="formtable_td_key">入职日期：</td>
+			<td class="formtable_td_value">${(steps.vars["entryDate"])!""}</td>
+		</tr>
+		
+		<tr>
+			<td class="formtable_td_key">计划离职时间：</td>
+			<td class="formtable_td_value">${(steps.vars["planLeaveDate"])!""}</td>
+			<td class="formtable_td_key">是否经理级：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["isOfficeWorker"] == '2'>
+			是
+			</#if>
+			<#if steps.vars["isOfficeWorker"] == '1'>
+			否
+			</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >离职声明：</td>
+			<td class="formtable_td_value" colspan="5">
+			<span style="font-size: 13pt;  font-family:黑体">本人保证在办理离职手续期间正常完成本人原有工作，办好工作交接手续，若持有公司股份在离职前完成股份转让流程；
+					并且本人已知晓户口及党组织关系在离职一个月内办理转出手续，逾期未办理者公司不再承担任何监督及证明责任。</span></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >离职原因：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["leaveReason"])!""}</textarea></td>
+		</tr>
+		<tr>
+		    <td class="formtable_td_key">本人签字：</td>
+			<td class="formtable_td_value"  >${(steps.vars["signSelf"])!""}</td>
+			<td class="formtable_td_key">申请日期：</td>
+			<td class="formtable_td_value" colspan="3" >${(steps.vars["applicationDate"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+<!-- 修改离职申请 -->
+<#if steps.key =='nmb_uapdateLeaveInfoAudiTask'>
+	<#if steps.vars["updateUserAccount"]??>
+		<tr>
+			<td class="formtable_td_key">姓名：</td>
+			<td class="formtable_td_value">${(steps.vars["updateUserName"])!""}</td>
+			<td class="formtable_td_key">员工编码：</td>
+			<td class="formtable_td_value">${(steps.vars["updateUserAccount"])!""}</td>
+			<td class="formtable_td_key">系统：</td>
+			<td class="formtable_td_value">${(steps.vars["updateUserSystem"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门：</td>
+			<td class="formtable_td_value">${(steps.vars["updateOrgName"])!""}</td>
+			<td class="formtable_td_key">职位：</td>
+			<td class="formtable_td_value">${(steps.vars["updateDuty"])!""}</td>
+			<td class="formtable_td_key">入职日期：</td>
+			<td class="formtable_td_value">${(steps.vars["updateEntryDate"])!""}</td>
+		</tr>
+		
+		<tr>
+			<td class="formtable_td_key">计划离职时间：</td>
+			<td class="formtable_td_value">${(steps.vars["updatePlanLeaveDate"])!""}</td>
+			<td class="formtable_td_key">是否经理级(含)以上：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["isOfficeWorker"] == '2'>
+			是
+			</#if>
+			<#if steps.vars["isOfficeWorker"] == '1'>
+			否
+			</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >离职声明：</td>
+			<td class="formtable_td_value" colspan="5">
+			<span style="font-size: 13pt;  font-family:黑体">本人保证在办理离职手续期间正常完成本人原有工作，办好工作交接手续，若持有公司股份在离职前完成股份转让流程；
+							并且本人已知晓户口及党组织关系在离职一个月内办理转出手续，逾期未办理者公司不再承担任何监督及证明责任。</span></td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >离职原因：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateLeaveReason"])!""}</textarea></td>
+		</tr>
+		<tr>
+		    <td class="formtable_td_key">本人签字：</td>
+			<td class="formtable_td_value" colspan="2" >${(steps.vars["updateSignSelf"])!""}</td>
+			<td class="formtable_td_key">申请日期：</td>
+			<td class="formtable_td_value" colspan="2" >${(steps.vars["updateApplicationDate"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</#if>
+
+<!-- 主管面谈结果 -->
+<#if steps.key == 'mb_ExecutiveDirectorAudiTask'>
+	<tr>
+		<td class="formtable_td_key" rowspan="2">主管面谈结果</td>
+		<td class="formtable_td_value" colspan="5">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">主管签字：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["ExecutiveDirectorAudiName"])!""}
+		</td>
+		<td class="formtable_td_key">面谈时间：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["ExecutiveDirectorAudiTime"])!""}
+		</td>
+		<td class="formtable_td_value" >
+			<#if steps.vars["ExecutiveDirectorAudi"] == '0'>
+			同意
+			</#if>
+			<#if steps.vars["ExecutiveDirectorAudi"] == '1'>
+			不同意
+			</#if>
+		</td>
+		<td class="formtable_td_key">公司股份：</td>	
+		<td class="formtable_td_value" >
+			<#if steps.vars["companyShares"] == '0'>
+			同意
+			</#if>
+			<#if steps.vars["companyShares"] == '1'>
+			不同意
+			</#if>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+
+
+<!-- 流程发起人确认流程是否结束 -->
+<#if steps.key == 'mb_endTheProcessTask'>
+<#if steps.vars["endTheProcessAudi"] == '0'>
+	<tr>
+		<td class="formtable_td_key" rowspan="3">发起人确认流程是否结束</td>
+		<td class="formtable_td_key">是否结束该流程：</td>	
+		<td class="formtable_td_value" colspan="4">
+			<#if steps.vars["endTheProcessAudi"] == '0'>
+			是
+			</#if>
+			<#if steps.vars["endTheProcessAudi"] == '1'>
+			否
+			</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认意见：</td>	
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["applyUserAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发起人签字：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["applyUserName"])!""}
+		</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value"  colspan="2">
+			${(steps.vars["applyUserAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+		</#if>
+	</#if>
+</#if>
+
+<!-- 部门经理面谈结果 -->
+<#if steps.key == 'mb_departMangerAudiTask'>
+		<tr class="departManger">
+			<td class="formtable_td_key" colspan="6" align="center" style="font-size:13px;">部门经理面谈结果</td>
+		</tr>
+		<tr class="departManger">
+			<td class="formtable_td_key">部门经理签字：</td>
+			<td class="formtable_td_value" >${(steps.vars["departMangerAudiName"])!""}</td>
+			<td class="formtable_td_key">面谈日期：</td>
+			<td class="formtable_td_value" >${(steps.vars["departMangerAudiTime"])!""}</td>
+			<td class="formtable_td_key">是否同意离职：</td>
+			<td class="formtable_td_value">
+				<#if steps.vars["departMangerAudi"] == '0'>
+				同意
+				</#if>
+				<#if steps.vars["departMangerAudi"] == '1'>
+				不同意
+				</#if>
+			</td>
+		</tr>
+		<#if steps.vars["departMangerAudi"] == '0'>
+		<tr>
+			<td class="formtable_td_key" >是否执行竞业协议：</td>
+				<#if steps.vars["isAgreement"] == '0'>
+				<td class="formtable_td_value"  >
+					是
+				</#if>
+				<#if steps.vars["isAgreement"] == '1'>
+				<td class="formtable_td_value"  colspan="5">
+					否
+				</#if>
+			</td>
+			<#if steps.vars["isAgreement"] == '0'>
+				<td class="formtable_td_key">期限：</td>
+				<td class="formtable_td_value" colspan="3" >
+					<span style="color:red">执行竞业协议&nbsp;&nbsp; ${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span>
+				</td>
+			</#if>
+		</tr>
+		</#if>
+		<tr class="departManger">
+			<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+			<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</textarea>
+			</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+				 </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+
+<!-- 总监面谈结果 -->
+<#if steps.key == 'mb_ChiefInspectorAudiTask'>
+       <tr class="ChiefInspector">
+			<td class="formtable_td_key" colspan="6" align="center" style="font-size:13px;">总监面谈结果</td>
+		</tr>
+		<tr class="ChiefInspector">
+			<td class="formtable_td_key">部门总监签字：</td>
+			<td class="formtable_td_value" >${(steps.vars["ChiefInspectorAudiName"])!""}</td>
+			<td class="formtable_td_key">面谈日期：</td>
+			<td class="formtable_td_value" >${(steps.vars["ChiefInspectorAudiTime"])!""}</td>
+			<td class="formtable_td_key">是否同意离职：</td>
+			<td class="formtable_td_value">
+				<#if steps.vars["ChiefInspectorAudi"] == '0'>
+				同意
+				</#if>
+				<#if steps.vars["ChiefInspectorAudi"] == '1'>
+				不同意
+				</#if>
+			</td>
+		</tr>
+		<#if steps.vars["ChiefInspectorAudi"] == '0'>
+		<tr>
+			<td class="formtable_td_key" >是否执行竞业协议：</td>
+				<#if steps.vars["isAgreement"] == '0'>
+				<td class="formtable_td_value"  >
+					是
+				</#if>
+				<#if steps.vars["isAgreement"] == '1'>
+				<td class="formtable_td_value"  colspan="5">
+					否
+				</#if>
+			</td>
+			<#if steps.vars["isAgreement"] == '0'>
+				<td class="formtable_td_key">期限：</td>
+				<td class="formtable_td_value" colspan="3" >
+					<span style="color:red">执行竞业协议&nbsp;&nbsp; ${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span>
+				</td>
+			</#if>
+		</tr>
+		</#if>
+		<tr class="ChiefInspector">
+			<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+			<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</textarea>
+			</td>
+		</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- HR面谈 -->
+<#if steps.key == 'mb_recruiterAudiTask'>
+	<tr class="recruiter">
+		<td class="formtable_td_key" rowspan="7">HR面谈</td>
+		<td class="formtable_td_key">离职原因：</td>
+		<td class="formtable_td_value" colspan="4">
+			<#if steps.vars["leaveResionHr"] == '1' || steps.vars["leaveResionHr"] == '2' || steps.vars["leaveResionHr"] == '3' || 
+			steps.vars["leaveResionHr"] == '4' || steps.vars["leaveResionHr"] == '5' || steps.vars["leaveResionHr"] == '6' || 
+			steps.vars["leaveResionHr"] == '7' || steps.vars["leaveResionHr"] == '8' || steps.vars["leaveResionHr"] == '9' || 
+			steps.vars["leaveResionHr"] == '10' || steps.vars["leaveResionHr"] == '11' || steps.vars["leaveResionHr"] == '12' || 
+			steps.vars["leaveResionHr"] == '13'>
+				<#if steps.vars["leaveResionHr"] == '1' >薪酬福利</#if>
+				<#if steps.vars["leaveResionHr"] == '2' >公司层面</#if>
+				<#if steps.vars["leaveResionHr"] == '3' >主管上级</#if>
+				<#if steps.vars["leaveResionHr"] == '4' >工作环境</#if>
+				<#if steps.vars["leaveResionHr"] == '5' >个人发展</#if>
+				<#if steps.vars["leaveResionHr"] == '6' >工作内容</#if>
+				<#if steps.vars["leaveResionHr"] == '7' >家庭/身体等因素</#if>
+				<#if steps.vars["leaveResionHr"] == '8' >试用期不合格</#if>
+				<#if steps.vars["leaveResionHr"] == '9' >业绩不达标</#if>
+				<#if steps.vars["leaveResionHr"] == '10' >解聘</#if>
+				<#if steps.vars["leaveResionHr"] == '11' >协商解除</#if>
+				<#if steps.vars["leaveResionHr"] == '12' >自动离职</#if>
+				<#if steps.vars["leaveResionHr"] == '13' >体系调动</#if>
+			<#else>
+				${(steps.vars["leaveResionHr"])!""}
+			</#if>
+		</td>
+	</tr>
+	<tr class="recruiter">
+		<td class="formtable_td_key">详细原因：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["detailResionHr"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="recruiter">
+		<td class="formtable_td_key">团队/岗位工作表现与感受：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForJobByHr"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="recruiter"><td class="formtable_td_key">公司环境（企业文化/品牌建设/发展通道等）感受与建议：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForLeaderByHr"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="recruiter"><td class="formtable_td_key">薪酬&福利感受与建议：</td>
+		<td class="formtable_td_value" colspan="4" >
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForConpanyByHr"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="recruiter">
+		<td class="formtable_td_key">新去向：</td> 
+		<td class="formtable_td_value">
+			<#if steps.vars["newDispositon"] == '1' >无</#if>
+			<#if steps.vars["newDispositon"] == '2' >有</#if>
+		</td>
+		<td class="formtable_td_key">公司名称：</td>
+		<td class="formtable_td_value" colspan="2" >
+			${(steps.vars["companyName"])!""}
+		</td>
+	</tr>
+	<#if steps.vars["newDispositon"] == '1' >
+	<tr>
+		<td class="formtable_td_key">你在选择新公司时候最看重哪些方面？</td>
+		<td class="formtable_td_value" colspan="4" >
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["reasonOrWayConpanyByHr"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<#if steps.vars["newDispositon"] == '2' >
+	<tr>
+		<td class="formtable_td_key">是什么吸引你加入他们公司？</td>
+		<td class="formtable_td_value" colspan="4" >
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["reasonOrWayConpanyByHr"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<tr class="recruiter"><td class="formtable_td_key">面谈人签字：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["humanResouceAudiNameByHr"])!""}
+		</td>
+		<td class="formtable_td_key">面谈时间：</td>
+		<td class="formtable_td_value"  colspan="2">
+			${(steps.vars["humanResouceAudiTimeByHr"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 职员主管副总签字 -->
+<#if steps.key == 'mb_vicePresidentOfBusinessUnitsAudiTask'>
+	<tr class="vicePresidentOfBusinessUnits">
+		<td class="formtable_td_key" rowspan="4">主管副总审核：</td>
+		<td class="formtable_td_key" >是否执行竞业协议：</td>
+		<#if steps.vars["isAgreement"] == '0'>
+		<td class="formtable_td_value"  >
+			是
+		</#if>
+		<#if steps.vars["isAgreement"] == '1'>
+		<td class="formtable_td_value"  colspan="4">
+			否
+		</#if>
+		</td>
+		<#if steps.vars["isAgreement"] == '0'>
+			<td class="formtable_td_key">期限：</td>
+			<td class="formtable_td_value" colspan="2" >
+				<span style="color:red">执行竞业协议&nbsp;&nbsp; ${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span>
+			</td>
+		</#if>
+	</tr>
+	<tr class="vicePresidentOfBusinessUnits">
+		<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="vicePresidentOfBusinessUnits">	
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["vicePresidentOfBusinessUnitsAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="vicePresidentOfBusinessUnits">
+		<td class="formtable_td_key">签字：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["vicePresidentOfBusinessUnitsAudiName"])!""}
+		</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value"  colspan="2">
+			${(steps.vars["vicePresidentOfBusinessUnitsAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 招聘人事管理总监面谈 -->
+<#if steps.key == 'mb_HRChiefInspectorAudiTask'>
+	<#if isManager == '2'>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">是否执行竞业协议：</td> 
+		<#if steps.vars["hrIsAgreement"] == '0'>
+		<td class="formtable_td_value">是 </td>
+		</#if> 
+		<#if steps.vars["hrIsAgreement"] == '1'>
+		<td class="formtable_td_value" colspan="5">否 </td>
+		</#if>
+		<#if steps.vars["hrIsAgreement"] == '0'>
+		<td class="formtable_td_key">期限：</td>
+		<td class="formtable_td_value" colspan="3"><span
+			style="color: red">执行竞业协议&nbsp;&nbsp;
+				${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span></td>
+		 </#if>
+	</tr>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+		<td class="formtable_td_value" colspan="5"><textarea
+				class="easyui-validatebox"
+				style="font-size: 12px; width: 550px; height: 50px;"
+				readonly="readonly" disabled="disabled">${(steps.vars["HrExecutiveDirectorAudiAdvice"])!""}</textarea></td>
+	</tr>
+	</#if>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key" rowspan="7">HR副总监面谈</td>
+		<td class="formtable_td_key">离职原因：</td>
+		<td class="formtable_td_value" colspan="4">
+			<#if steps.vars["leaveResionHr"] == '1' || steps.vars["leaveResionHr"] == '2' || steps.vars["leaveResionHr"] == '3' || 
+			steps.vars["leaveResionHr"] == '4' || steps.vars["leaveResionHr"] == '5' || steps.vars["leaveResionHr"] == '6' || 
+			steps.vars["leaveResionHr"] == '7' || steps.vars["leaveResionHr"] == '8' || steps.vars["leaveResionHr"] == '9' || 
+			steps.vars["leaveResionHr"] == '10' || steps.vars["leaveResionHr"] == '11' || steps.vars["leaveResionHr"] == '12' || 
+			steps.vars["leaveResionHr"] == '13'>
+				<#if steps.vars["leaveResionHr"] == '1' >薪酬福利</#if>
+				<#if steps.vars["leaveResionHr"] == '2' >公司层面</#if>
+				<#if steps.vars["leaveResionHr"] == '3' >主管上级</#if>
+				<#if steps.vars["leaveResionHr"] == '4' >工作环境</#if>
+				<#if steps.vars["leaveResionHr"] == '5' >个人发展</#if>
+				<#if steps.vars["leaveResionHr"] == '6' >工作内容</#if>
+				<#if steps.vars["leaveResionHr"] == '7' >家庭/身体等因素</#if>
+				<#if steps.vars["leaveResionHr"] == '8' >试用期不合格</#if>
+				<#if steps.vars["leaveResionHr"] == '9' >业绩不达标</#if>
+				<#if steps.vars["leaveResionHr"] == '10' >解聘</#if>
+				<#if steps.vars["leaveResionHr"] == '11' >协商解除</#if>
+				<#if steps.vars["leaveResionHr"] == '12' >自动离职</#if>
+				<#if steps.vars["leaveResionHr"] == '13' >体系调动</#if>
+			<#else>
+				${(steps.vars["leaveResionHr"])!""}
+			</#if>
+		</td>
+	</tr>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">详细原因：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["detailResionHr"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">团队/岗位工作表现与感受：</td>
+		<td class="formtable_td_value"  colspan="4">
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForJob"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="HRChiefInspector"><td class="formtable_td_key">公司环境（企业文化/品牌建设/发展通道等）感受与建议：</td>
+		<td class="formtable_td_value" colspan="4">
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForLeader"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">薪酬&福利感受与建议：</td>
+		<td class="formtable_td_value"colspan="4" >
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["evaluationForConpany"])!""}</textarea>
+		</td>
+	</tr>
+	<tr class="HRChiefInspector">
+		<td class="formtable_td_key">新去向：</td> 
+		<td class="formtable_td_value">
+			<#if steps.vars["leaveNewDispositon"] == '1' >无</#if>
+			<#if steps.vars["leaveNewDispositon"] == '2' >有</#if>
+		</td>
+		<td class="formtable_td_key">公司名称：</td>
+		<td class="formtable_td_value"  colspan="2" >
+			${(steps.vars["leaveCompanyName"])!""}
+		</td>
+	</tr>
+	<#if steps.vars["leaveNewDispositon"] == '1' >
+	<tr>
+		<td class="formtable_td_key">你在选择新公司时候最看重哪些方面？</td>
+		<td class="formtable_td_value" colspan="4" >
+			<textarea class="easyui-validatebox"  style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["reasonOrWayConpany"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<#if steps.vars["leaveNewDispositon"] == '2' >
+	<tr>
+		<td class="formtable_td_key">是什么吸引你加入他们公司？</td>
+		<td class="formtable_td_value" colspan="4" >
+			<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["reasonOrWayConpany"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<tr class="HRChiefInspector"><td class="formtable_td_key">HR副总监签字：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["humanResouceAudiName"])!""}
+		</td>
+		<td class="formtable_td_key">面谈时间：</td>
+		<td class="formtable_td_value"  colspan="2">
+			${(steps.vars["humanResouceAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 主管副总签字 -->
+<#if steps.key == 'mb_VicePresidentOfBusinessAudiTask'>
+	<tr class="VicePresidentOfBusiness">
+		<td class="formtable_td_key" colspan="6" align="center" style="font-size:13px;">业务部门主管副总审核</td>
+	</tr>
+	<tr class="VicePresidentOfBusiness">
+		<td class="formtable_td_key">主管副总签字：</td>
+		<td class="formtable_td_value" >${(steps.vars["VicePresidentOfBusinessAudiName"])!""}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" >${(steps.vars["VicePresidentOfBusinessAudiTime"])!""}</td>
+		<td class="formtable_td_key">是否同意离职：</td>
+		<td class="formtable_td_value">
+			<#if steps.vars["DeputygmAudi"] == '0'>
+			同意
+			</#if>
+			<#if steps.vars["DeputygmAudi"] == '1'>
+			不同意
+			</#if>
+		</td>
+	</tr>
+	<tr class="VicePresidentOfBusiness">
+		<td class="formtable_td_key">是否执行竞业协议：</td>
+		<#if steps.vars["isAgreement"] == '0'>
+		<td class="formtable_td_value">是 </#if> 
+		<#if steps.vars["isAgreement"] == '1'>
+		<td class="formtable_td_value" colspan="5">否 </#if></td> 
+		<#if steps.vars["isAgreement"] == '0'>
+		<td class="formtable_td_key">期限：</td>
+		<td class="formtable_td_value" colspan="3">
+			<span style="color: red">执行竞业协议&nbsp;&nbsp; ${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span>
+		</td> 
+		</#if>
+	</tr>
+	<tr class="VicePresidentOfBusiness">
+		<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+		<td class="formtable_td_value" colspan="5"><textarea
+				class="easyui-validatebox"
+				style="font-size: 12px; width: 550px; height: 50px;"
+				readonly="readonly" disabled="disabled">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- HR副总裁签字 -->
+<#if steps.key == 'mb_humanResouceAudiTask'>
+	<tr class="humanResouce">
+		<td class="formtable_td_key" rowspan="2">HR副总裁审核：</td>
+		<td class="formtable_td_key">签字：</td>
+		<td class="formtable_td_value" >
+		</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value"  colspan="2">
+		</td>
+	</tr>
+	<tr class="humanResouce">	
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="4">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 550px; height: 100px;" readonly="readonly" disabled="disabled">${(steps.vars["humanResouceAudiAdvice"])!""}</textarea>
+		</td>
+	
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 董事长签字 -->
+<#if steps.key == 'mb_chairmanOfTheBoardAudiTask'>
+	<tr class="chairmanOfTheBoard">
+		<td class="formtable_td_key" rowspan="2">董事长审核： </td>
+		<td class="formtable_td_key">签字：</td>
+		<td class="formtable_td_value" ></td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value"  colspan="2"></td>
+	</tr>
+	<tr class="chairmanOfTheBoard">	
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="4">
+		<textarea class="easyui-validatebox" style="font-size: 12px; width: 550px; height: 100px;" readonly="readonly" disabled="disabled">${(steps.vars["chairmanOfTheBoardAudiAdvice"])!""}</textarea>
+		</td>
+	
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+<!-- 人事专员 -->
+<#if steps.key == 'nmb_hrCommissionerAudiTask'>
+	<tr>
+		<td class="formtable_td_key" colspan="6" align="center" style="font-size:13px;">人事专员处理结果</td>
+	</tr>
+	<tr>
+			<td class="formtable_td_key">操作类型:</td>
+			<td class="formtable_td_value">${(steps.vars["oprationText"])!""}</td>
+			<td class="formtable_td_key" >操作原因：</td>	
+			<td class="formtable_td_value">${(steps.vars["operationReasonText"])!""}</td>
+			<td class="formtable_td_key" >离职时间：</td>	
+			<td class="formtable_td_value">${(steps.vars["planLeaveDate"])!""}</td>
+	</tr>
+	<tr>
+			<td class="formtable_td_key" rowspan="4">人事专员处理</td>
+			<td class="formtable_td_key" >是否执行竞业协议：</td>
+			<#if steps.vars["isAgreement"] == '0'>
+			<td class="formtable_td_value"  >
+				是
+			</#if>
+			<#if steps.vars["isAgreement"] == '1'>
+			<td class="formtable_td_value"  colspan="4">
+				否
+			</#if>
+			</td>
+			<#if steps.vars["isAgreement"] == '0'>
+				<td class="formtable_td_key">期限：</td>
+				<td class="formtable_td_value" colspan="2" >
+					<span style="color:red">执行竞业协议&nbsp;&nbsp; ${(steps.vars["dutaryTime"])!""}&nbsp;&nbsp;个月</span>
+				</td>
+			</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+		<td class="formtable_td_value" colspan="4">
+		<textarea class="easyui-validatebox"   
+				style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["ExecutiveDirectorAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="4">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 550px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["hrCommissionerAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">签字：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["hrCommissionerName"])!""}
+		</td>
+		<td class="formtable_td_key">处理时间：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["hrCommissionerAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+				<input id="sureCommit${rand}" name="sureCommit" value="0" type="hidden"/>
+				<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input id="userAccount${rand}" readonly="readonly" class="easyui-validatebox" type="text" name="fp_userAccount" data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+						<input type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+						<input id="account${rand}" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+						<input  type="hidden" name="fp_orgId" value="${appuser.orgId?c}"/>
+						<input type="hidden" name="fp_isManager" id="isManager${rand}"/>
+							<input class="easyui-validatebox"  name="fp_userName"  value="${appuser.name}" data-options="required:true"/>
+						</td>
+						<td class="formtable_td_key">系统：</td>
+						<td class="formtable_td_value">
+							<input id="sysName${rand}" class="easyui-validatebox"  type="text" name="fp_userSystem" readonly="readonly"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门：</td>
+						<td class="formtable_td_value">
+							<input  class="easyui-validatebox"  type="text" value="${appuser.orgName}" name="fp_orgName" data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+							<input id="job${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_duty"  />
+						</td>
+						<td class="formtable_td_key">入职日期：</td>
+						<td class="formtable_td_value">
+							<input id="entryTime${rand}" readonly="readonly" class="easyui-validatebox" type="text" name="fp_entryDate"  />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">计划离职日期：</td>
+						<td class="formtable_td_value">
+							<input id="planLeaveDate${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_planLeaveDate"
+    								data-options="dateFmt:'yyyy-MM-dd ',width:120,required:true,minDate:'%y-%M-%d'" onfocus="leaveDateTip${rand}(this);"/>
+						</td>
+						<td class="formtable_td_key">是否经理级(含)以上：</td>
+						<td class="formtable_td_value" colspan="3" id="isOfficeWorker${rand}">
+							<input type="radio" name="fp_isOfficeWorker" value="2"/>是<input type="radio"  name="fp_isOfficeWorker" value="1"/>否
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >离职声明：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<span style="font-size: 13pt;color:red;font-family:黑体">本人保证在办理离职手续期间正常完成本人原有工作，办好工作交接手续，若持有公司股份在离职前完成股份转让流程；
+									并且本人已知晓户口及党组织关系在离职一个月内办理转出手续，逾期未办理者公司不再承担任何监督及证明责任。</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >离职原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 730px; height: 100px" name="fp_leaveReason" required="required" class="easyui-validatebox"></textarea>
+							<!-- 离职报表没经HR面谈或HR副总监审核时, 离职原因、详细原因默认为空-->
+							<input type="hidden" name="fp_leaveResionHr" value=""/>
+							<input type="hidden" name="fp_detailResionHr" value=""/>
+							<!-- 根据职员所在地址获取HR面谈、从事专员处理 节点的相应审核人-->
+							<input type="hidden" id="recruiterAccount${rand}" name="fp_recruiterAccount"/>
+							<input type="hidden" id="hrCommissionerAccount${rand}" name="fp_hrCommissionerAccount" required="required" class="easyui-validatebox"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >本人签字：</td>
+						<td class="formtable_td_value" >
+						<input class="easyui-validatebox"  type="hidden" name="fp_signSelf" data-options="required:true" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td class="formtable_td_value"  colspan="3">
+						<input  type="hidden" name="fp_applicationDate" readonly="readonly" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_value" colspan="6" >
+							<span style="font-size: 13pt;  font-family:黑体">注意：离职交接流程暂未上线，需走线下纸质流程。
+									离职交接须在离职申请流程完成后、离职日期前5天到OA中（我的控制台—常用表单）下载离职离职交接表并开始办理离职交接。</span>
+						</td>
+					</tr>
+				</table>
+			</form>
+		<script type="text/javascript">
+			$(function(){
+				//根据登录账号判断是经理级以上职员
+				$("input[name='fp_isOfficeWorker']").each(function(){
+					$(this).on("click",function(){
+						return false;
+					})
+				})
+				$.post("lead/checkIsManager.json",{
+					account:$("#account${rand}").val()
+				},function(data){
+					if(data.success){
+						$("#recruiterAccount${rand}").validatebox({required:false});
+						if(data.msg=="2"){
+							$("#isManager${rand}").val('2');
+							$("#isOfficeWorker${rand}").find("input[name='fp_isOfficeWorker']").get(0).checked=true;
+						}else{
+							$("#isManager${rand}").val('1');
+							$("#isOfficeWorker${rand}").find("input[name='fp_isOfficeWorker']").get(0).checked=true;
+						}
+						//经理级以上人事专员处理审核人
+						$.post("engineer/getLoginNo.json",{
+							engineerId:'00002091'//张锦菊
+						},function(data){
+							$("#hrCommissionerAccount${rand}").val(data);
+						});
+					}else{
+						$("#recruiterAccount${rand}").validatebox({required:true});
+						$("#isManager${rand}").val('0');
+						$("#isOfficeWorker${rand}").find("input[name='fp_isOfficeWorker']").get(1).checked=true;
+						
+						//根据职员账号判断是否是北京金立职员，并获取普通职员HR面谈、人事专员处理审核人
+						$.post("onlineFlow/isBeijingEmpByEmpId.json",{
+								account:$("#account${rand}").val()
+							},function(data){
+								if(data){
+									$.post("engineer/getLoginNo.json",{
+										engineerId:'00500153'//刘荣
+									},function(data){
+										$("#recruiterAccount${rand}").val(data);
+										$("#hrCommissionerAccount${rand}").val(data);
+									});
+								}else{
+									$.post("engineer/getLoginNo.json",{
+										engineerId:'00001938'//李丹
+									},function(data){
+										$("#recruiterAccount${rand}").val(data);
+									});
+									
+									$.post("engineer/getLoginNo.json",{
+										engineerId:'00002091'//张锦菊
+									},function(data){
+										$("#hrCommissionerAccount${rand}").val(data);
+									});
+								}
+						});
+					}
+				});
+				
+			//界面通过接口加载个人信息
+			$.post("hrFlow/getHrUserInfo.json",
+				{
+					account:$("#account${rand}").val()
+				},
+				function(data){
+					if (data.success) {
+						var empId="00000000"+data.obj.empId;
+						$("#userAccount${rand}").val(empId.substring(empId.length-8,empId.length));
+						$("#entryTime${rand}").val(data.obj.entryDate);
+						$("#job${rand}").val(data.obj.job);
+						$("#employeeGroup${rand}").val(data.obj.empGroup);
+						$("#sysName${rand}").val(data.obj.systemName);
+						$("#employeeType${rand}").val(data.obj.empType);
+						$("#oprationvalue${rand}").val("A6");
+						$('#processName${rand}').val("[姓名："+data.obj.name+",部门："+data.obj.orgName+",职务："+data.obj.job+",入职日期："+data.obj.entryDate+"]离职申请");//流程实例名称
+					}
+				});
+	
+			});
+			
+			function leaveDateTip${rand}(n){
+				//离职日期提示
+				   var date=$(n).val();
+				   if(date==null||date==''){
+					   return;
+				   }
+				   $.post("hrFlow/isRegularEmployee.json", {
+								account:$("#account${rand}").val()
+							},function(data){
+								if (data == true) {
+									$.post("hrFlow/checkSelectDate.json",{
+										date:date,
+										flag:1
+									},function(data){
+										if(!data){
+											$("#planLeaveDate${rand}").val(''); 
+											$("#planLeaveDate${rand}").validatebox({required:true});
+										   	$.messager.alert('信息提示','离职日期需提前30天!','warning');
+										}
+									});
+								}else if(data != true){
+									$.post("hrFlow/checkSelectDate.json",{
+										date:date,
+										flag:0
+									},function(data){
+										if(!data){
+											$("#planLeaveDate${rand}").val(''); 
+											$("#planLeaveDate${rand}").validatebox({required:true});
+											$.messager.alert('信息提示','离职日期需提前3天!','warning');
+										} 
+									});
+								}
+							}
+				   );
+			}
+	</script>
+	</#if> 
+</#if>
+<!--修改申请-->
+<#if currentStep?exists> 
+	<#if currentStep == 'nmb_uapdateLeaveInfoAudiTask'>
+		<#if processSteps??> 
+     		<#list processSteps as steps> 
+      			<#if steps.key == 'startevent1'>
+      			<#assign companyShares=steps.vars["companyShares"]/>
+      			<#assign corporateShares=steps.vars["corporateShares"]/>
+      			<#assign isOfficeWorker=steps.vars["isOfficeWorker"]/>
+		<div id="nmb_uapdateLeaveInfoAudiTask">
+			<form id="nmb_uapdateLeaveInfoAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="nmb_uapdateLeaveInfoAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">修改离职办理申请</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">姓名：</td>
+						<td class="formtable_td_value">
+						<input type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+						<input id="account${rand}" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+						<input  type="hidden" name="fp_orgId" value="${appuser.orgId?c}"/>
+						<input type="hidden" id="isManager${rand}" name="fp_isManager" value='${(steps.vars["isManager"])!""}'/>
+							<input class="easyui-validatebox"  name="fp_updateUserName" value='${(steps.vars["userName"])!""}'
+								data-options="required:true"/>
+						</td>
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input  class="easyui-validatebox" readonly="readonly" value='${(steps.vars["userAccount"])!""}' type="text" name="fp_updateUserAccount" data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">系统：</td>
+						<td class="formtable_td_value">
+							<input id="sysName${rand}" class="easyui-validatebox"  type="text" name="fp_updateUserSystem" readonly="readonly" value='${(steps.vars["userSystem"])!""}'/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门：</td>
+						<td class="formtable_td_value">
+							<input  class="easyui-validatebox"  type="text" value='${(steps.vars["orgName"])!""}' name="fp_updateOrgName" data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">职位：</td>
+						<td class="formtable_td_value">
+							<input id="job${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_updateDuty" value='${(steps.vars["duty"])!""}'/>
+						</td>
+						<td class="formtable_td_key">入职日期：</td>
+						<td class="formtable_td_value">
+							<input id="entryTime${rand}" readonly="readonly" class="easyui-validatebox" type="text" name="fp_updateEntryDate" value='${(steps.vars["entryDate"])!""}'/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">计划离职日期：</td>
+						<td class="formtable_td_value">
+							<input id="planLeaveDate${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_updatePlanLeaveDate"  value='${(steps.vars["planLeaveDate"])!""}'
+								data-options="dateFmt:'yyyy-MM-dd ',width:120,required:true,minDate:'%y-%M-%d'" onfocus="leaveDateTip${rand}(this);"/>
+						</td>
+						<td class="formtable_td_key">是否经理级：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="radio" name="fp_isOfficeWorker" value="2" <#if steps.vars["isOfficeWorker"]?contains("2")>checked</#if>/>是
+							<input type="radio" name="fp_isOfficeWorker" value="1" <#if steps.vars["isOfficeWorker"]?contains("1")>checked</#if>/>否
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >离职声明：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<span style="font-size: 13pt;  font-family:黑体">本人保证在办理离职手续期间正常完成本人原有工作，办好工作交接手续，若持有公司股份在离职前完成股份转让流程；
+								并且本人已知晓户口及党组织关系在离职一个月内办理转出手续，逾期未办理者公司不再承担任何监督及证明责任。</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >离职原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="leaveReason${rand}" style="width: 730px; height: 100px" name="fp_updateLeaveReason" data-options="required:true" class="easyui-validatebox">${(steps.vars["leaveReason"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >本人签字：</td>
+						<td class="formtable_td_value" >
+						<input class="easyui-validatebox"  type="hidden" name="fp_updateSignSelf" data-options="required:true" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td class="formtable_td_value"  colspan="3">
+						<input type="hidden" name="fp_updateApplicationDate" readonly="readonly" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+			</#if>
+			<#if steps.key == 'nmb_uapdateLeaveInfoAudiTask'>
+				<#assign companyShares=steps.vars["updateCompanyShares"]/>
+      			<#assign corporateShares=steps.vars["updateCorporateShares"]/>
+      			<#assign isOfficeWorker=steps.vars["isOfficeWorker"]/>
+      			<#assign leaveReason=steps.vars["updateLeaveReason"]/>
+      			<#assign planLeaveDate=steps.vars["updatePlanLeaveDate"]/>
+      			
+			</#if>
+		<script type="text/javascript">
+			$(function(){
+				$("input[name='fp_isOfficeWorker']").each(function(){
+					$(this).on("click",function(){
+						return false;
+					})
+				})
+				var  updateCompanyShares=$("[name=fp_updateCompanyShares]");
+				for(var i=0;i<updateCompanyShares.length;i++){
+					if(updateCompanyShares[i].value=="${companyShares}"){
+						updateCompanyShares[i].checked=true;
+					}
+				}
+				var  updateCorporateShares=$("[name=fp_updateCorporateShares]");
+				for(var i=0;i<updateCorporateShares.length;i++){
+					if(updateCorporateShares[i].value=="${corporateShares}"){
+						updateCorporateShares[i].checked=true;
+					}
+				}
+				var  isOfficeWorkers=$("[name=fp_isOfficeWorker]");
+				for(var i=0;i<isOfficeWorkers.length;i++){
+					if(isOfficeWorkers[i].value=="${isOfficeWorker}"){
+						isOfficeWorkers[i].checked=true;
+					}
+				}
+				if("${leaveReason}"){
+					$("#leaveReason${rand}").text("${leaveReason}");
+				}
+				if("${planLeaveDate}"){
+					$("#planLeaveDate${rand}").val("${planLeaveDate}");
+				}
+				
+			//界面通过接口加载个人信息
+			$.post("hrFlow/getHrUserInfo.json",
+				{
+					account:$("#account${rand}").val()
+				},
+				function(data){
+					if (data.success) {
+						$("#entryTime${rand}").val(data.obj.entryDate);
+						$("#job${rand}").val(data.obj.job);
+						$("#sysName${rand}").val(data.obj.systemName);
+						$("#employeeType${rand}").val(data.obj.empType);
+					}
+				});
+			});
+			
+			function leaveDateTip${rand}(n){
+				//离职日期提示
+				   var date=$(n).val();
+				   if(date==null||date==''){
+					   return;
+				   }
+				   $.post("hrFlow/isRegularEmployee.json", {
+								account:$("#account${rand}").val()
+							},function(data){
+								if (data == true) {
+									$.post("hrFlow/checkSelectDate.json",{
+										date:date,
+										flag:1
+									},function(data){
+										if(!data){
+											$("#planLeaveDate${rand}").val(''); 
+											$("#planLeaveDate${rand}").validatebox({required:true});
+										   	$.messager.alert('信息提示','离职日期需提前30天!','warning');
+										   	//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+										}
+									});
+								}else if(data != true){
+									$.post("hrFlow/checkSelectDate.json",{
+										date:date,
+										flag:0
+									},function(data){
+										if(!data){
+											$("#planLeaveDate${rand}").val(''); 
+											$("#planLeaveDate${rand}").validatebox({required:true});
+											$.messager.alert('信息提示','离职日期需提前3天!','warning');
+											//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));	   
+										} 
+									});
+								}
+							}
+				   );
+			}
+			
+			//操作类型初始化
+			 $.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',
+				vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+				function(data){
+					var i = new Array();
+					i[0] = data[6];
+					data = i; 
+				$('#opration${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json'); 
+	
+			//操作类型赋值		
+			$('#opration${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#oprationvalue${rand}').val(record.id);
+	           		$('#oprationText${rand}').val(record.text);
+     			}
+			});
+			//从SAP加载离职操作原因
+			//操作原因初始化
+  		 $.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+'A6'+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+				function(data){
+				$('#operationReason${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json');  
+  		//操作原因赋值		
+  		
+			$('#operationReason${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#operationReasonvalue${rand}').val(record.id);
+          		$('#operationReasonText${rand}').val(record.text);
+  				}
+			});
+	</script>
+			
+			</#list>
+		</#if> 
+	</#if> 
+</#if>
+<!-- 主管面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_ExecutiveDirectorAudiTask'>
+		<div id="mb_ExecutiveDirectorAudiTask">
+			<form id="mb_ExecutiveDirectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_ExecutiveDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" rowspan="2">主管面谈结果</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 730px; height: 100px"
+								name="fp_ExecutiveDirectorAudiAdvice" class="formtable_remark" mobile="主管面谈结果"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">主管签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox" type="text" mobile="主管签字" name="fp_ExecutiveDirectorAudiName" data-options="required:true" value="${appuser.name}" />
+						</td>
+						<td class="formtable_td_key">面谈时间：</td>
+						<td class="formtable_td_value"  >
+						<input class="easyui-datebox" mobile="面谈时间" timeEditor="1"  type="text" name="fp_ExecutiveDirectorAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd')}" />
+						</td>
+						<td class="formtable_td_value"  >
+						<input type="radio" name="fp_ExecutiveDirectorAudi" mobile="处理结果_同意" checked="checked" value="0" />同意
+							<input type="radio" name="fp_ExecutiveDirectorAudi" mobile="处理结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'mb_endTheProcessTask'> 
+		<div id="mb_endTheProcessTask">
+			<form id="mb_endTheProcessTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_endTheProcessTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				
+			   	<tr>
+			   		<td class="formtable_td_key" rowspan="3">发起人确认</td>
+			  	  	<td class="formtable_td_key">是否结束该流程</td>
+			  	  	<td class="formtable_td_value" colspan="5">
+								<input id="endProcess-${rand}" type="radio" name="fp_endTheProcessAudi"  value="0" mobile="是否结束该流程_是"/>是
+								<input id="continueProcess-${rand}" type="radio" name="fp_endTheProcessAudi" checked="checked" value="1" mobile="是否结束该流程_否"/>否
+					</td>
+		  	  	</tr>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="confirmAdvice-${rand}" style="width: 730px; height: 100px"  name="fp_applyUserAudiAdvice" class="easyui-validatebox" mobile="确认意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认人</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_applyUserAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_applyUserName" value="${appuser.name}" mobile="确认人"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_applyUserAudiTime" timeEditor="1"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="确认时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("#confirmAdvice-${rand}").validatebox({required:false});
+				var success = function(){
+					$("#confirmAdvice-${rand}").validatebox({required:true});
+				}
+				var falure = function(){
+					$("#confirmAdvice-${rand}").validatebox({required:false});
+				}
+				$("#endProcess-${rand}").bind("click",success);
+				$("#continueProcess-${rand}").bind("click",falure);
+			});
+		
+		</script>
+</#if>
+<!-- 部门经理面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_departMangerAudiTask'>
+		<div id="mb_departMangerAudiTask">
+			<form id="mb_departMangerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_departMangerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" colspan="6" align="center">部门经理面谈</td>
+					</tr>
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是" value="0" addField="true"      relateFieldName="fp_departMangerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否" checked="checked" value="1"    relateFieldName="fp_departMangerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"   />否
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"  relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"    unit="个月(0-6个月)"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_ExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark"   makethis_required_field_name="fp_departMangerAudi"   makethis_required_field_values="1"  ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理签字：</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox"  mobile="部门经理签字" readonly="readonly" type="hidden" name="fp_departMangerAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">面谈时间：</td>
+						<td class="formtable_td_value">
+							<input   type="hidden" mobile="面谈时间" timeEditor="1"  name="fp_departMangerAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd  HH:mm:ss')}" />${.now?string('yyyy-MM-dd  HH:mm:ss')}	
+						</td>
+						<td class="formtable_td_key">是否同意离职：</td>
+						<td class="formtable_td_value">
+							<input id="departManagerAgree${rand}"  type="radio" name="fp_departMangerAudi" mobile="是否同意离职_同意" checked="checked" value="0"   addField="true"/>同意
+							<input id="departManagerDidagree${rand}" type="radio" name="fp_departMangerAudi" mobile="是否同意离职_不同意" value="1" />不同意
+						</td>
+					</tr>
+					
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("#hideMonthText${rand}").numberbox({
+						 min:0,
+						 max:6,
+						 precision:0  
+				});
+			});
+		
+			$("#hideMonthText${rand}").validatebox({required:false});
+			$("#exectueAgreement${rand}").validatebox({required:false});
+			var success = function(){
+				$("#hideMonthText${rand}").attr('disabled',false);
+				$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+				$("#exectueAgreement${rand}").validatebox({required:true});
+			}
+			var failure=function(){
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#exectueAgreement${rand}").validatebox({required:false});
+				$("#hideMonthText${rand}").val('');
+				$("#hideMonthText${rand}").attr('disabled',true);
+			};
+			var success1 = function(){
+				$("#exectueAgreement${rand}").validatebox({required:true});
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#hideMonth${rand}").hide();
+			}
+			var failure1=function(){
+				$("#exectueAgreement${rand}").validatebox({required:false});
+				$("#hideMonth${rand}").show();
+			};
+			$("#isAgreement${rand}").bind("click",success);
+			$("#noAgreement${rand}").bind("click",failure);
+			$("#departManagerAgree${rand}").bind("click",failure1);
+			$("#departManagerDidagree${rand}").bind("click",success1);
+			/*   $("#hideMonthText${rand}").textbox('textbox').bind('keyup', function(e){
+			        $("#hideMonthText${rand}").textbox('setValue', $(this).val().replace(/\D/g,''));
+		    }); */
+		    function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+		</script>		
+	</#if>
+</#if>
+
+<!-- 总监面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_ChiefInspectorAudiTask'>
+	    <#list processSteps as steps> 
+	    
+	    		<#if steps.key == 'mb_departMangerAudiTask'>
+		     <#assign isAgreement=steps.vars["isAgreement"]/>
+		     <#if steps.vars["isAgreement"]=='0'>
+		       <#assign dutaryTime=steps.vars["dutaryTime"]/>
+		     </#if>
+		</#if>
+		
+		
+      			<#if steps.key == 'startevent1'>
+
+		</#if>
+     </#list>
+		<div id="mb_ChiefInspectorAudiTask">
+			<form id="mb_ChiefInspectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_ChiefInspectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					
+					<tr>
+						<td class="formtable_td_key" colspan="6" align="center">总监面谈结果</td>
+					</tr>
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是" value="0"  addField="true"   <#if isAgreement == '0'>checked="checked"</#if>     relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否"  value="1"  <#if isAgreement == '1'||isAgreement == ''>checked="checked"</#if>    relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"   />否
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value" colspan="3">
+						
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"  value="${dutaryTime!''}"   relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"   unit="个月(0-6个月)"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td>
+					</tr>
+					
+					
+					
+					
+				 <!-- 	<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value">
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是" value="0" addField="true"      relateFieldName="fp_departMangerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否" checked="checked" value="1"    relateFieldName="fp_departMangerAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"   />否
+						</td>
+						 <td class="formtable_td_key">期限<span style="color:red">(0 - 6个月)</span>：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"   mobile="期限" name="fp_dutaryTime"  relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"    unit="个月"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td> 
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="3">总监面谈结果</td>
+						<td class="formtable_td_key">总监意见：</td>
+						<td class="formtable_td_value"  colspan="4">
+						
+						</td>
+					</tr> --> 
+					
+					<!-- <tr>
+						<td  class="formtable_td_value" colspan="5">
+							<textarea id="chiefAdvice${rand}" style="width: 730px; height: 100px"
+								name="fp_ChiefInspectorAudiAdvice" mobile="总监面谈结果" class="formtable_remark"></textarea>
+						</td>
+					</tr> -->
+					<tr>
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_ExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark"    makethis_required_field_name="fp_ChiefInspectorAudi"   makethis_required_field_values="1"  ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">总监签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox"  mobile="总监签字"  type="hidden" name="fp_ChiefInspectorAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">面谈时间：</td>
+						<td class="formtable_td_value"  >
+						<input  mobile="面谈时间" timeEditor="1"   type="hidden" name="fp_ChiefInspectorAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd  HH:mm:ss')}" />${.now?string('yyyy-MM-dd  HH:mm:ss')}
+						</td>
+						<td class="formtable_td_key">是否同意离职：</td>
+						<td class="formtable_td_value">
+							<input id="chiefAgree${rand}" type="radio" name="fp_ChiefInspectorAudi" mobile="是否同意离职_同意" checked="checked" value="0"    addField="true"  />同意
+							<input id="chiefDisagree${rand}" type="radio" name="fp_ChiefInspectorAudi" mobile="是否同意离职_不同意" value="1" />不同意
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+			$(function(){
+				if("${isAgreement}"=="0"){
+					$("input[name=fp_isAgreement]").get(0).checked=true;
+					$("#hideMonthText${rand}").attr('disabled',false);
+					$("#hideMonthText${rand}").val("${dutaryTime}");
+					$("#exectueAgreement${rand}").validatebox({required:true});
+				}
+			})
+			$("#chiefAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#exectueAgreement${rand}").validatebox({required:true});//将不同意原因设置为必填项
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#hideMonth${rand}").hide();
+			}
+			var failure=function(){
+				$("#exectueAgreement${rand}").validatebox({required:false})
+				$("#hideMonth${rand}").show();
+			};
+			
+			var success1 = function(){
+				$("#hideMonthText${rand}").attr('disabled',false);
+				$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+				$("#exectueAgreement${rand}").validatebox({required:true});
+			}
+			var failure1=function(){
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#exectueAgreement${rand}").validatebox({required:false});
+				$("#hideMonthText${rand}").val('');
+				$("#hideMonthText${rand}").attr('disabled',true);
+			};
+		    function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+				$("#chiefDisagree${rand}").bind("click",success);
+				$("#chiefAgree${rand}").bind("click",failure);
+				$("#isAgreement${rand}").bind("click",success1);
+				$("#noAgreement${rand}").bind("click",failure1);
+		</script>
+	</#if>
+</#if>
+<!-- HR面谈-->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_recruiterAudiTask'>
+		<div id="mb_recruiterAudiTask">
+			<form id="mb_recruiterAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_recruiterAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					
+					<tr>
+						<td class="formtable_td_key" rowspan="7">HR面谈</td>
+						<td class="formtable_td_key">离职原因：</td>
+						<td class="formtable_td_value"  colspan="4">
+						<!--  
+							<input id="leaveResionByHr${rand}" class="easyui-combobox" type="text" style="width:180px;" name="fp_leaveResionByHr" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'薪酬原因',value:'1'},
+										{text:'家庭原因',value:'2'},
+										{text:'公司协商解除',value:'3'},
+										{text:'劳动合同到期',value:'4'},
+										{text:'企业文化',value:'5'},
+										{text:'发展空间',value:'6'},
+										{text:'个人职业规划',value:'7'},
+										{text:'岗位原因',value:'8'},
+										{text:'工作环境',value:'9'}, 
+										{text:'劳务派遣结束',value:'10'},
+										{text:'实习期满',value:'11'}]"/>
+						-->
+						
+						 <select  id="leaveResionByHr${rand}"  mobile="离职原因"   class="easyui-combobox"  name="fp_leaveResionHr" style="width:200px;"   data-options="required:true" validType="selectValueRequired['#leaveResionByHr${rand}']">
+                                  <option value=""    mobile=""  ></option>
+                                  <option value="1"   mobile="薪酬福利"  >薪酬福利</option>
+                                  <option value="2"   mobile="公司层面"  >公司层面</option>
+                                  <option value="3"   mobile="主管上级"  >主管上级</option>
+                                  <option value="4"   mobile="工作环境"  >工作环境</option>
+                                  <option value="5"   mobile="个人发展"  >个人发展</option>
+                                  <option value="6"   mobile="工作内容"  >工作内容</option>
+                                  <option value="7"   mobile="家庭/身体等因素"  >家庭/身体等因素</option>
+                                  <option value="8"   mobile="试用期不合格"  >试用期不合格</option>
+                                  <option value="9"   mobile="业绩不达标"  >业绩不达标</option>
+                                  <option value="10"   mobile="解聘"  >解聘</option>
+                                  <option value="11"   mobile="协商解除"  >协商解除</option>
+                                  <option value="12"   mobile="自动离职"  >自动离职</option>
+                                  <option value="13"   mobile="体系调动"  >体系调动</option>
+                            </select> 
+                            
+                            <!--
+                            <select  id="leaveResionByHr${rand}"  mobile="离职原因"   class="easyui-combobox"  name="fp_leaveResionByHr" style="width:200px;"     data-options="required:true"   validType="selectValueRequired['#leaveResionByHr${rand}']">
+                                  <option value=""    mobile=""  ></option>
+                                  <option value="1"   mobile="薪酬原因"  >薪酬原因</option>
+                                  <option value="2"   mobile="家庭原因"  >家庭原因</option>
+                                  <option value="3"   mobile="公司协商解除"  >公司协商解除</option>
+                                  <option value="4"   mobile="劳动合同到期"  >劳动合同到期</option>
+                                  <option value="5"   mobile="企业文化"  >企业文化</option>
+                                  <option value="6"   mobile="发展空间"  >发展空间</option>
+                                  <option value="7"   mobile="个人职业规划"  >个人职业规划</option>
+                                  <option value="8"   mobile="岗位原因"  >岗位原因</option>
+                                  <option value="9"   mobile="工作环境"  >工作环境</option>
+                                  <option value="10"   mobile="劳务派遣结束"  >劳务派遣结束</option>
+                                  <option value="11"   mobile="实习期满"  >实习期满</option>
+                            </select> 
+                            -->
+                           <!--  <input id="leaveResionByHr${rand}" class="easyui-combobox" type="text" style="width:180px;" name="fp_leaveResionByHr" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'薪酬原因',value:'1'},
+										{text:'家庭原因',value:'2'},
+										{text:'公司协商解除',value:'3'},
+										{text:'劳动合同到期',value:'4'},
+										{text:'企业文化',value:'5'},
+										{text:'发展空间',value:'6'},
+										{text:'个人职业规划',value:'7'},
+										{text:'岗位原因',value:'8'},
+										{text:'工作环境',value:'9'}, 
+										{text:'劳务派遣结束',value:'10'},
+										{text:'实习期满',value:'11'}]" /> --> 
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">详细原因：</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width:550px; height: 50px"
+							mobile="详细原因"	data-options="required:true" name="fp_detailResionHr" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">团队/岗位工作表现与感受：</td>
+						<td class="formtable_td_value" colspan="4">
+							<!--  <input type="radio" name="fp_evalvationByselfByHr" mobile="对自己的工作评价_满意" checked="checked" value="0" />满意
+							<input type="radio" name="fp_evalvationByselfByHr" mobile="对自己的工作评价_一般" value="1" />一般
+							<input type="radio" name="fp_evalvationByselfByHr"  mobile="对自己的工作评价_不满意" value="2" />不满意-->
+							<textarea style="width: 550px; height: 50px"
+								 mobile="团队/岗位工作表现与感受" data-options="required:true"  name="fp_evaluationForJobByHr" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">公司环境（企业文化/品牌建设/发展通道等）感受与建议：</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width:550px; height: 50px"
+							mobile="公司环境（企业文化/品牌建设/发展通道等）感受与建议"	data-options="required:true" name="fp_evaluationForLeaderByHr" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">薪酬&福利感受与建议：</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width: 550px; height: 50px"
+							mobile="薪酬&福利感受与建议"	data-options="required:true"  name="fp_evaluationForConpanyByHr" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">新去向：</td>
+						<td class="formtable_td_value" id="newDispositonTr${rand}">
+							<input type="radio" name="fp_newDispositon" value="1"  checked="checked"   mobile="新去向_无"/>无
+							<input type="radio" name="fp_newDispositon" value="2"  mobile="新去向_有"   addField="true" />有
+						</td>
+						<td class="formtable_td_key">公司名称：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="companyName${rand}" type="text"    mobile="公司名称"    style="width:300px;" name="fp_companyName" class="easyui-validatebox none-input" value="" readonly="readonly"   relateFieldName="fp_newDispositon"   relateShowFieldValue="2"   relateHideFieldValue="1"   relateFieldisRequired="true" />
+						</td>
+					</tr>
+					<tr>
+						<td id="reasonOrWayTd" class="formtable_td_key">你在选择新公司时候最看重哪些方面？</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width: 550px; height: 50px"
+							data-options="required:true"  name="fp_reasonOrWayConpanyByHr" class="easyui-validatebox"  mobile="你在选择新公司时候最看重哪些方面"	></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">访谈人：</td>
+						<td class="formtable_td_value" >
+							<input  class="easyui-validatebox"  mobile="访谈人"  type="hidden" name="fp_humanResouceAudiNameByHr"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">访谈时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  mobile="访谈时间" timeEditor="1"   type="hidden" name="fp_humanResouceAudiTimeByHr" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+				/*if("${planLeaveDate}"){
+					$("#planLeaveDate${rand}").val("${planLeaveDate}");
+				}*/
+				$("#newDispositonTr${rand}").find("input[name='fp_newDispositon']").click(function(){
+					var result=$("#newDispositonTr${rand}").find("input[name='fp_newDispositon']:checked").val();
+					if(result=='1'){
+						$("#companyName${rand}").val('');
+						$("#companyName${rand}").validatebox({required:false});
+						$("#companyName${rand}").attr("readonly","readonly");
+						$("#companyName${rand}").addClass("none-input");
+						$("#reasonOrWayTd").html('你在选择新公司时候最看重哪些方面？');
+					}else{
+						$("#companyName${rand}").removeAttr("readonly");
+						$("#companyName${rand}").removeClass("none-input");
+						$("#companyName${rand}").validatebox({required:true});
+						$("#reasonOrWayTd").html('是什么吸引你加入他们公司？');
+					}
+				});
+				
+		</script>
+	</#if>
+</#if>
+
+<!-- 职员业务部门主管副总签字 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_vicePresidentOfBusinessUnitsAudiTask'>
+	    <#list processSteps as steps> 
+	       <#if steps.key == 'mb_departMangerAudiTask'>
+		     <#assign isAgreement=steps.vars["isAgreement"]/>
+		     <#if steps.vars["isAgreement"]=='0'>
+		       <#assign dutaryTime=steps.vars["dutaryTime"]/>
+		     </#if>
+		   </#if>
+	       <#if steps.key == 'mb_ChiefInspectorAudiTask'>
+		     <#assign isAgreement=steps.vars["isAgreement"]/>
+		     <#if steps.vars["isAgreement"]=='0'>
+		       <#assign dutaryTime=steps.vars["dutaryTime"]/>
+		     </#if>
+		   </#if>
+		</#list>
+		
+		<div id="mb_vicePresidentOfBusinessUnitsAudiTask">
+			<form id="mb_vicePresidentOfBusinessUnitsAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_vicePresidentOfBusinessUnitsAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key" rowspan="4">业务部门主管副总审核：</td>
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是" value="0"  addField="true"   <#if isAgreement == '0'>checked="checked"</#if>     relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否"  value="1"  <#if isAgreement == '1'||isAgreement == ''>checked="checked"</#if>    relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"   />否
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value">
+						
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"  value="${dutaryTime!''}"   relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"   unit="个月(0-6个月)"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_ExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark"    makethis_required_field_name="fp_ChiefInspectorAudi"   makethis_required_field_values="1"  ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px"
+							mobile="审核意见"	name="fp_vicePresidentOfBusinessUnitsAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox" type="hidden" mobile="业务部门主管副总签字" name="fp_vicePresidentOfBusinessUnitsAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" >
+						<input   timeEditor="1"  type="hidden" mobile="签字时间" name="fp_vicePresidentOfBusinessUnitsAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+		<script type="text/javascript">
+			$(function(){
+				if("${isAgreement}"=="0"){
+					$("input[name=fp_isAgreement]").get(0).checked=true;
+					$("#hideMonthText${rand}").attr('disabled',false);
+					$("#hideMonthText${rand}").val("${dutaryTime}");
+					$("#exectueAgreement${rand}").validatebox({required:true});
+				}
+			});
+			var success1 = function(){
+				$("#hideMonthText${rand}").attr('disabled',false);
+				$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+				$("#exectueAgreement${rand}").validatebox({required:true});
+			}
+			var failure1=function(){
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#exectueAgreement${rand}").validatebox({required:false});
+				$("#hideMonthText${rand}").val('');
+				$("#hideMonthText${rand}").attr('disabled',true);
+			};
+		    function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+				$("#isAgreement${rand}").bind("click",success1);
+				$("#noAgreement${rand}").bind("click",failure1);
+		</script>
+	</#if>
+</#if>
+<!-- HR副总监面谈-->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_HRChiefInspectorAudiTask'>
+	      <#list processSteps as steps1> 
+	         <#if steps1.key == 'startevent1'>
+	             <#assign applyUserId=steps1.vars["applyUserId"]/>
+	             <#assign isManager=steps1.vars["isManager"]/>
+		<div id="mb_HRChiefInspectorAudiTask">
+			<form id="mb_HRChiefInspectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_HRChiefInspectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				  <#if steps1.vars["isManager"] == '2'>
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_hrIsAgreement" mobile="是否执行竞业协议_是"  value="0"    <#if isAgreement == '0'>checked="checked"</#if>   addField="true"     />是
+							<input id="noAgreement${rand}" type="radio" name="fp_hrIsAgreement" mobile="是否执行竞业协议_否"  value="1"    <#if isAgreement == '1'||isAgreement == ''>checked="checked"</#if>   />否
+						     <input id="hIsAgreement${rand}" type="hidden" value="${(steps.vars["hrIsAgreement"])!""}">
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"   value="${dutaryTime!''}"   relateFieldName="fp_hrIsAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"  unit="个月（0-6个月）"    isValidRange="true"     maxValue="6" minValue="0"  />个月
+						    <input  id="hMonthText${rand}" type="hidden" value="${(steps.vars["dutaryTime"])!""}">
+						</td>
+					</tr>
+					<tr id="hideAgreement${rand}">
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_HrExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark">${(steps.vars["HrExecutiveDirectorAudiAdvice"])!""}</textarea>
+						</td>
+					</tr>
+					</#if>
+					<tr>
+						<td class="formtable_td_key" rowspan="7">HR副总监面谈</td>
+						<td class="formtable_td_key">离职原因：</td>
+						<td class="formtable_td_value" colspan="4">
+							<!-- <input id="leaveResion${rand}" class="easyui-combobox" type="text" style="width:180px;" name="fp_leaveResion" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'薪酬原因',value:'1'},
+										{text:'家庭原因',value:'2'},
+										{text:'公司协商解除',value:'3'},
+										{text:'劳动合同到期',value:'4'},
+										{text:'企业文化',value:'5'},
+										{text:'发展空间',value:'6'},
+										{text:'个人职业规划',value:'7'},
+										{text:'岗位原因',value:'8'},
+										{text:'工作环境',value:'9'}, 
+										{text:'劳务派遣结束',value:'10'},
+										{text:'实习期满',value:'11'}]" value="${(steps.vars["leaveResion"])!""}"/> -->
+										
+							<select  id="leaveResion${rand}"  mobile="离职原因"   class="easyui-combobox"  name="fp_leaveResionHr" style="width:200px;"    data-options="required:true"   validType="selectValueRequired['#leaveResion${rand}']">
+                                  <option value=""    mobile="" ></option>
+                                  <option value="1"   mobile="薪酬福利"  >薪酬福利</option>
+                                  <option value="2"   mobile="公司层面"  >公司层面</option>
+                                  <option value="3"   mobile="主管上级"  >主管上级</option>
+                                  <option value="4"   mobile="工作环境"  >工作环境</option>
+                                  <option value="5"   mobile="个人发展"  >个人发展</option>
+                                  <option value="6"   mobile="工作内容"  >工作内容</option>
+                                  <option value="7"   mobile="家庭/身体等因素"  >家庭/身体等因素</option>
+                                  <option value="8"   mobile="试用期不合格"  >试用期不合格</option>
+                                  <option value="9"   mobile="业绩不达标"  >业绩不达标</option>
+                                  <option value="10"   mobile="解聘"  >解聘</option>
+                                  <option value="11"   mobile="协商解除"  >协商解除</option>
+                                  <option value="12"   mobile="自动离职"  >自动离职</option>
+                                  <option value="13"   mobile="体系调动"  >体系调动</option>
+                            </select>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">详细原因：</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width:550px; height: 50px"
+							mobile="详细原因"	data-options="required:true" name="fp_detailResionHr" class="easyui-validatebox">${(steps.vars["detailResion"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">团队/岗位工作表现与感受：</td>
+						<td class="formtable_td_value" colspan="4">
+							<!--  <input type="radio" name="fp_evalvationByself" mobile="对自己的工作评价_满意" checked="checked" value="0" />满意
+							<input type="radio" name="fp_evalvationByself" mobile="对自己的工作评价_一般" value="1" />一般
+							<input type="radio" name="fp_evalvationByself"  mobile="对自己的工作评价_不满意" value="2" />不满意-->
+							<textarea style="width: 550px; height: 50px"  data-options="required:true"
+								 mobile="团队/岗位工作表现与感受" name="fp_evaluationForJob" class="easyui-validatebox">${(steps.vars["evaluationForJob"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">公司环境（企业文化/品牌建设/发展通道等）感受与建议：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea style="width:550px; height: 50px"  data-options="required:true"
+							mobile="公司环境（企业文化/品牌建设/发展通道等）感受与建议"	name="fp_evaluationForLeader" class="easyui-validatebox">${(steps.vars["evaluationForLeader"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">薪酬&福利感受与建议：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea style="width: 550px; height: 50px"  data-options="required:true"
+							mobile="薪酬&福利感受与建议"	name="fp_evaluationForConpany" class="easyui-validatebox">${(steps.vars["evaluationForConpany"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">新去向：</td>
+						<td class="formtable_td_value" >
+							<input type="radio" name="fp_leaveNewDispositon" value="1"  checked="checked"    mobile="新去向_无"  />无
+							<input type="radio" name="fp_leaveNewDispositon" value="2"   addField="true"     mobile="新去向_有"  />有
+							<input id="hiddenLeaveNewDispositon${rand}" type="hidden" value="${(steps.vars["leaveNewDispositon"])!""}">
+						</td>
+						<td class="formtable_td_key">公司名称：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="leaveCompanyName${rand}" type="text"    mobile="公司名称"   style="width:300px;" name="fp_leaveCompanyName" class="easyui-validatebox" value="" disabled    relateFieldName="fp_leaveNewDispositon"   relateShowFieldValue="2"   relateHideFieldValue="1"   relateFieldisRequired="true" />
+						    <input id="hLeaveCompanyName${rand}" type="hidden" value="${(steps.vars["leaveCompanyName"])!""}">
+						</td>
+					</tr>
+					<tr>
+						<td id="leaveReasonOrWayTd" class="formtable_td_key">你在选择新公司时候最看重哪些方面？</td>
+						<td class="formtable_td_value"  colspan="4">
+							<textarea style="width: 550px; height: 50px"
+							data-options="required:true"  name="fp_reasonOrWayConpany"     mobile="你在选择新公司时候最看重哪些方面？"     class="easyui-validatebox">${(steps.vars["reasonOrWayConpany"])!""}</textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">访谈人：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox"  mobile="访谈人"  type="hidden" name="fp_humanResouceAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">访谈时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+						<input type="hidden" name="fp_DeputygmAudi" value="0">
+						<input mobile="访谈时间" timeEditor="1"   type="hidden" name="fp_humanResouceAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		   </#if>
+	           <#if steps1.key == 'mb_ChiefInspectorAudiTask'>
+	             <#assign isAgreement=steps1.vars["isAgreement"]/>
+			     <#if steps1.vars["isAgreement"]=='0'>
+			       <#assign dutaryTime=steps1.vars["dutaryTime"]/>
+			     </#if>
+	          </#if>
+		</#list>
+		<script type="text/javascript">
+			$(function(){
+				if("${isManager}"=="2"){
+					if($("#hIsAgreement${rand}").val()=="0"||'${isAgreement}'=="0"){
+						$("input[name=fp_hrIsAgreement]").get(0).checked=true;
+						$("#hideMonthText${rand}").attr('disabled',false);
+						$("#hideMonthText${rand}").val($("#hMonthText${rand}").val());
+						$("#exectueAgreement${rand}").validatebox({required:true});
+					}
+					if($("#hiddenLeaveNewDispositon${rand}").val()=="2"){
+						$("input[name=fp_leaveNewDispositon]").get(1).checked=true;
+						$("#leaveCompanyName${rand}").attr('disabled',false);
+						$("#leaveCompanyName${rand}").val($("#hLeaveCompanyName${rand}").val());
+					}
+		      }
+				$("input[name='fp_leaveNewDispositon']").click(function(){
+					var result=$("input[name='fp_leaveNewDispositon']:checked").val();
+					if(result=='1'){
+						$("#leaveCompanyName${rand}").val('');
+						$("#leaveCompanyName${rand}").validatebox({required:false});
+						$("#leaveCompanyName${rand}").attr("disabled",true);
+						$("#leaveReasonOrWayTd").html('你在选择新公司时候最看重哪些方面？');
+					}else{
+						$("#leaveCompanyName${rand}").attr("disabled",false);
+						$("#leaveCompanyName${rand}").validatebox({required:true});
+						$("#leaveReasonOrWayTd").html('是什么吸引你加入他们公司？');
+					}
+				});
+				$("#isAgreement${rand}").bind("click",function(){
+					$("#hideMonthText${rand}").attr('disabled',false);
+					$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+					$("#exectueAgreement${rand}").validatebox({required:true});
+				});
+				$("#noAgreement${rand}").bind("click",function(){
+					$("#hideMonthText${rand}").validatebox({required:false});
+					$("#exectueAgreement${rand}").validatebox({required:false});
+					$("#hideMonthText${rand}").val('');
+					$("#hideMonthText${rand}").attr('disabled',true);
+				});
+			});
+		    function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+
+		</script>
+	</#if>
+</#if>
+
+
+
+<!-- 经理级业务部门主管副总签字 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_VicePresidentOfBusinessAudiTask'>
+	 <#list processSteps as steps> 
+	             <#if steps.key == 'startevent1'>
+	                 <#assign applyUserId=steps.vars["applyUserId"]/>
+	             </#if>
+	             <#if steps.key == 'mb_ChiefInspectorAudiTask'>
+	                     <#assign isAgreement=steps.vars["isAgreement"]/>
+	                      <#if steps.vars["isAgreement"]=='0'>
+						       <#assign dutaryTime=steps.vars["dutaryTime"]/>
+						  </#if>
+	             </#if>
+      			<#if steps.key == 'mb_HRChiefInspectorAudiTask'>
+	      			  <#if steps.vars["hrIsAgreement"]??>
+		      			    <#assign isAgreement=steps.vars["hrIsAgreement"]/>
+				             <#if steps.vars["hrIsAgreement"]=='0'>
+						       <#assign dutaryTime=steps.vars["dutaryTime"]/>
+						     </#if>
+					  </#if>
+				      <#if steps.vars["ExecutiveDirectorAudiAdvice"]??>
+						  <#assign ExecutiveDirectorAudiAdvice=steps.vars["ExecutiveDirectorAudiAdvice"]/>
+					  </#if>
+			    </#if>
+		</#list>
+		<div id="mb_VicePresidentOfBusinessAudiTask">
+			<form id="mb_VicePresidentOfBusinessAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_VicePresidentOfBusinessAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" rowspan="4">业务部门主管副总审核：</td>
+						<td class="formtable_td_key">签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox" type="hidden" mobile="业务部门主管副总签字" name="fp_VicePresidentOfBusinessAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" >
+						<input  type="hidden" timeEditor="1"  mobile="签字时间" name="fp_VicePresidentOfBusinessAudiTime" data-options="editable:false,required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					<tr id="tr${rand}">
+						<td class="formtable_td_key">是否同意离职：</td>
+						<td class="formtable_td_value"  colspan="4">
+							<input id="DeputygmAgree${rand}" type="radio" name="fp_DeputygmAudi" mobile="是否同意离职_同意" checked="checked" value="0"   addField="true"/>同意
+							<input id="DeputygmDisagree${rand}" type="radio" name="fp_DeputygmAudi" mobile="是否同意离职_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是"  value="0"    <#if isAgreement == '0'>checked="checked"</#if>    addField="true"       relateFieldName="fp_DeputygmAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否"  value="1"    <#if isAgreement == '1'||isAgreement == ''>checked="checked"</#if>       relateFieldName="fp_DeputygmAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />否
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"  value="${dutaryTime!''}"    relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"   unit="个月(0-6个月)"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td>
+					</tr>
+					<!-- <tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea style="width: 730px; height: 100px"  data-options="required:true"
+							   mobile="审核意见"	 name="fp_VicePresidentOfBusinessAudiAdvice" class="easyui-validatebox"></textarea>
+						</td>
+					</tr> -->
+					<tr>
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_ExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark"  makethis_required_field_name="fp_DeputygmAudi"   makethis_required_field_values="1" ></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+              $(function(){
+            	//根据登录账号判断是经理级以上职员
+  				$.post("lead/checkIsManager.json",{
+  					account:"${applyUserId}"
+  				},function(data){
+  					if(data.msg!="2"){
+  						$("#tr${rand}").hide();
+  					}
+  				});
+            	  if("${isManager}"=="1"){
+            		  $("#tr${rand}").hide();
+            	  }
+            	  if("${isAgreement}"=="0"){
+  					$("input[name=fp_isAgreement]").get(0).checked=true;
+  					$("#hideMonthText${rand}").attr('disabled',false);
+  					$("#hideMonthText${rand}").val("${dutaryTime}");
+  					$("#exectueAgreement${rand}").validatebox({required:true});
+  				}
+            	 if("${ExecutiveDirectorAudiAdvice}"){
+            		 $("#exectueAgreement${rand}").text("${ExecutiveDirectorAudiAdvice}");
+            	 }
+            	  $("#isAgreement${rand}").bind("click",function(){
+  					$("#hideMonthText${rand}").attr('disabled',false);
+  					$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+  					$("#exectueAgreement${rand}").validatebox({required:true});
+  				});
+  				$("#noAgreement${rand}").bind("click",function(){
+  					$("#hideMonthText${rand}").validatebox({required:false});
+  					$("#exectueAgreement${rand}").validatebox({required:false});
+  					$("#hideMonthText${rand}").val('');
+  					$("#hideMonthText${rand}").attr('disabled',true);
+  				});
+  			   $("#DeputygmAgree${rand}").bind("click",function(){
+  				    $("#exectueAgreement${rand}").validatebox({required:false});
+	  				$("#hideMonth${rand}").show();
+  			   });
+  			   $("#DeputygmDisagree${rand}").bind("click",function(){
+  				 $("#exectueAgreement${rand}").validatebox({required:true});
+	  				$("#hideMonthText${rand}").validatebox({required:false});
+	  				$("#hideMonth${rand}").hide();
+  			   });
+              });
+              
+             
+              
+                function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+       </script>
+	</#if>
+</#if>
+<!-- HR副总裁签字 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_humanResouceAudiTask'>
+		<div id="mb_humanResouceAudiTask">
+			<form id="mb_humanResouceAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_humanResouceAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" rowspan="2">HR副总裁审核：</td>
+						<td class="formtable_td_key">签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox" type="hidden" mobile="HR副总裁签字" name="fp_humanResouceAudiName"/>
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" >
+						<input  type="hidden"  mobile="签字时间" name="fp_humanResouceAudiTime" data-options="editable:false,required:true"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px"     
+							mobile="审核意见"	name="fp_humanResouceAudiAdvice" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 董事长签字 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'mb_chairmanOfTheBoardAudiTask'>
+		<div id="mb_chairmanOfTheBoardAudiTask">
+			<form id="mb_chairmanOfTheBoardAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_chairmanOfTheBoardAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" rowspan="2">董事长审核：</td>
+						<td class="formtable_td_key">签字：</td>
+						<td class="formtable_td_value" >
+						<input  class="easyui-validatebox" type="hidden" mobile="董事长签字" name="fp_chairmanOfTheBoardAudiName"/>
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" >
+						<input   type="hidden"  mobile="签字时间" name="fp_chairmanOfTheBoardAudiTime" data-options="editable:false,required:true"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px"       
+								mobile="审核意见"	name="fp_chairmanOfTheBoardAudiAdvice" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 人事专员处理 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'nmb_hrCommissionerAudiTask'>
+	      <#list processSteps as steps1> 
+	         <#if steps1.key == 'startevent1'>
+	             <#assign applyUserId=steps1.vars["applyUserId"]/>
+	             <#assign planLeaveDate=steps1.vars["planLeaveDate"]/>
+	         </#if>
+	          <#if steps1.key == 'mb_vicePresidentOfBusinessUnitsAudiTask'>
+	             <#assign isAgreement=steps1.vars["isAgreement"]/>
+			     <#if steps1.vars["isAgreement"]=='0'>
+			       <#assign dutaryTime=steps1.vars["dutaryTime"]/>
+			     </#if>
+	          </#if>
+	           <#if steps1.key == 'mb_VicePresidentOfBusinessAudiTask'>
+	             <#assign isAgreement=steps1.vars["isAgreement"]/>
+			     <#if steps1.vars["isAgreement"]=='0'>
+			       <#assign dutaryTime=steps1.vars["dutaryTime"]/>
+			     </#if>
+	          </#if>
+	       </#list>  
+			<div id="nmb_hrCommissionerAudiTask">
+			<form id="nmb_hrCommissionerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="nmb_hrCommissionerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				    <tr>
+				    	<td class="formtable_td_key" colspan="6" align="center" style="font-size:13px;">人事专员处理</td>
+				    </tr>
+					<tr id="hideMonth${rand}" >
+						<td class="formtable_td_key">是否执行竞业协议：</td>
+						<td class="formtable_td_value" >
+							<input id="isAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_是" value="0"  addField="true"   <#if isAgreement == '0'>checked="checked"</#if>     relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"  />是
+							<input id="noAgreement${rand}" type="radio" name="fp_isAgreement" mobile="是否执行竞业协议_否"  value="1"  <#if isAgreement == '1'||isAgreement == ''>checked="checked"</#if>    relateFieldName="fp_ChiefInspectorAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true"   />否
+						</td>
+						<td class="formtable_td_key">期限<!-- <span style="color:red">(0 - 6个月)</span> -->：</td>
+						<td class="formtable_td_value" colspan="3">
+						
+							<input  id="hideMonthText${rand}"  class="easyui-numberbox"  type="text"  mobile="期限" name="fp_dutaryTime"  value="${dutaryTime!''}"   relateFieldName="fp_isAgreement"   relateShowFieldValue="0"   relateHideFieldValue="1"  data-options="validType:'intOrFloat'" relateFieldisRequired="true"   disabled onblur="check();"   unit="个月(0-6个月)"   isValidRange="true"     maxValue="6" minValue="0" />个月
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批意见/执行竞业协议原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea id="exectueAgreement${rand}" style="width: 730px; height: 100px" name="fp_ExecutiveDirectorAudiAdvice" mobile="审批意见/执行竞业协议原因" class="formtable_remark"    makethis_required_field_name="fp_ChiefInspectorAudi"   makethis_required_field_values="1"  ></textarea>
+						</td>
+					</tr>
+					<tr>
+						 <td class="formtable_td_key">操作类型：</td>
+						<td class="formtable_td_value">
+							<input id="oprationvalue${rand}" type="hidden" value="A6"  name="fp_oprationTypevalue"	mobile="操作类型"	 />
+						  <!-- 	<input id="opration${rand}" class="easyui-combobox" type="text"  /> -->
+						  	<input id="oprationText${rand}"  value="离职"  readonly="readonly" name="fp_oprationText"  	mobile="离职"	/>
+						</td>
+						<td class="formtable_td_key">操作原因：</td>
+						<td  class="formtable_td_value" >
+							<input id="operationReasonvalue${rand}" type="hidden" name="fp_operationReasonvalue"  	mobile="操作原因"	  onblur="loadViewName()" />
+						  	<input id="operationReason${rand}" class="easyui-combobox" type="text" onblur="loadViewName()" />
+						  	<input id="operationReasonText${rand}" type="hidden" name="fp_operationReasonText" onblur="loadViewName()"  />
+						</td> 
+						<td class="formtable_td_key">实际离职时间：</td>
+						<td class="formtable_td_value">
+							<!-- <input id="employeeGroup${rand}" type="text" name="fp_employeeGroup"  	mobile="实际离职时间"	/> -->
+							<!-- <input id="planLeaveDate${rand}" class="easyui-datebox" type="text" name="fp_planLeaveDate" 
+							data-options="validType:'greaterEq[\'${.now?string('yyyy-MM-dd')}\']',editable:false,required:true,onSelect:leaveDateTip${rand}" /> -->
+							<input id="planLeaveDate${rand}" type="text" class="easyui-my97" readonly="readonly" name="fp_planLeaveDate"
+    								data-options="dateFmt:'yyyy-MM-dd ',width:120,required:true"  timeEditor="4"    	mobile="计划离职时间"	/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 730px; height: 100px" data-options="required:true"
+							mobile="处理意见"	name="fp_hrCommissionerAdvice" class="easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+					  	  	<td  class="formtable_td_key" >温馨提示：</td>
+					  	  	<td class="formtable_td_value" colspan="5">
+					  	  		<span style="font-size: 13pt;  font-family:黑体;color: red" >务必核实该员工上述信息！无误后可点击完成按钮将调整信息，谨慎操作！</span></td>
+		  	  		</tr>
+		  	  		<tr>
+						<td class="formtable_td_key">签字：</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_hrCommissionerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_hrCommissionerName" mobile="签字" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_hrCommissionerAudiTime" timeEditor="1" 
+								mobile="处理时间"	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			var success1 = function(){
+				$("#hideMonthText${rand}").attr('disabled',false);
+				$("#hideMonthText${rand}").validatebox({required:true});//将执行竞业协议月份设置为必填项
+				$("#exectueAgreement${rand}").validatebox({required:true});
+			}
+			var failure1=function(){
+				$("#hideMonthText${rand}").validatebox({required:false});
+				$("#exectueAgreement${rand}").validatebox({required:false});
+				$("#hideMonthText${rand}").val('');
+				$("#hideMonthText${rand}").attr('disabled',true);
+			};
+		    function check(){
+				var number=$("#hideMonthText${rand}").val();
+				if((parseInt(number)>6)||(parseInt(number)<0)){
+					$.messager.alert('提示','竞业协议必须是在0到6月之间');
+					$("#hideMonthText${rand}").numberbox('setValue','');
+				}
+			}
+				$("#isAgreement${rand}").bind("click",success1);
+				$("#noAgreement${rand}").bind("click",failure1);
+			
+		$(function(){
+			if("${isAgreement}"=="0"){
+				$("input[name=fp_isAgreement]").get(0).checked=true;
+				$("#hideMonthText${rand}").attr('disabled',false);
+				$("#hideMonthText${rand}").val("${dutaryTime}");
+				$("#exectueAgreement${rand}").validatebox({required:true});
+			}
+			
+			$("#oprationvalue${rand}").val("A6");//讲操作类型设置为默认
+			//$("#opration${rand}").combobox('setValue','离职');
+			$("#oprationText${rand}").val("离职");
+			if("${planLeaveDate}"){
+				$("#planLeaveDate${rand}").val("${planLeaveDate}");
+			}
+		});
+		
+			/* 	//操作类型初始化
+				  $.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA06',
+					vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+					exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+					function(data){
+						var i = new Array();
+						i[0] = data[6];
+						data = i; 
+					$('#opration${rand}').combobox("clear").combobox('loadData',data);
+					},
+					'json'); 
+					
+					//操作类型赋值		
+					$('#opration${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:true,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#oprationvalue${rand}').val(record.id);
+			          		$('#oprationText${rand}').val(record.text);
+			 			}
+					});  */
+						
+				//从SAP加载离职操作原因
+					//操作原因初始化
+					 $.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+'A6'+'_NEXT_P_MASSG_VALUE_'+' ',
+						exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+						function(data){
+						$('#operationReason${rand}').combobox("clear").combobox('loadData',data);
+						},
+						'json');  
+				
+				//操作原因赋值		
+				
+				$('#operationReason${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#operationReasonvalue${rand}').val(record.id);
+		      		$('#operationReasonText${rand}').val(record.text);
+		      	 	
+					}
+				});
+		</script>
+	</#if>
+</#if>
+<script>
+$("textarea").each(function(){
+	  this.style.height = (this.scrollHeight-4)+"px";
+})
+//根据是否普通职员、经理、总监对全节点打印的处理
+var isManager='${isManager}';
+if(isManager == '0'){
+	$('.HRChiefInspector').hide();
+	$('.VicePresidentOfBusiness').hide();
+	$('.humanResouce').hide();
+	$('.chairmanOfTheBoard').hide();
+}else if(isManager == '1'){
+	$('.departManger').hide();
+	$('.recruiter').hide();
+	$('.vicePresidentOfBusinessUnits').hide();
+}else{
+	$('.departManger').hide();
+	$('.ChiefInspector').hide();
+	$('.recruiter').hide();
+	$('.vicePresidentOfBusinessUnits').hide();
+}
+</script>
+<#include "/common/foot.html">

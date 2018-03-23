@@ -1,0 +1,2959 @@
+<#include "/common/head.html">
+<style type="text/css">
+		.formtable_td_key {
+			text-align: center;
+			height:20px;
+			padding: 7px;
+			width:100px;
+			font-weight: bold;
+			color:#1D1D1D;
+			font-size:12x;
+		    background-color: #F1F6FF;
+		}
+		</style>
+		
+<#assign isStart = false>
+<#assign applyAccount=""/>
+<#assign assigneeList=""/>
+<#assign assigneeRelateList=""/>
+<#assign trainerNo=""/>
+<#assign zhuguanAccount=""/>
+<#assign jingliAccount=""/>
+<#assign curLoginNo=appuser.account/>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<#assign jingliextendProba=""/>
+  
+<#list processSteps as steps> 
+<form id="flowForm" method="post" enctype='multipart/form-data'>
+<table class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed">
+	<#if steps.key =='startevent'>
+	<#assign applyAccount=steps.vars["applyUserId"]!""/>
+	<#assign assigneeList=steps.vars["assigneeList"]!""/>
+	<#assign assigneeRelateList=steps.vars["assigneeRelateList"]!""/>
+	
+	<tr>
+	<td class="formtable_td_value" colspan="6">
+	<input type="radio"  id="zhuanzhengView${rand}"   <#if steps.vars["zhuanzhengOrJinsheng"] == '1'>checked</#if>   disabled  />试用期转正
+	<div id="zhuanzhengViewDiv${rand}" style="display:inline;">
+	<select id="zhuanzhengViewOption${rand}">
+	<option value="11"   <#if steps.vars["zhuanzhengOption"] == '11'>selected</#if>   disabled>试用期转正</option>
+	<option value="12"   <#if steps.vars["zhuanzhengOption"] == '12'>selected</#if>   disabled>延期转正</option>
+	<option value="13"   <#if steps.vars["zhuanzhengOption"] == '13'>selected</#if>   disabled>提前转正</option>
+	<option value="14"   <#if steps.vars["zhuanzhengOption"] == '14'>selected</#if>   disabled>实习转正式员工</option>
+	<option value="15"   <#if steps.vars["zhuanzhengOption"] == '15'>selected</#if>   disabled>短期转正式员工</option>
+	</select>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+	var Jinsheng=document.getElementById('jingshengView${rand}');
+	var yidong=document.getElementById('yidongView${rand}');
+	if(Jinsheng.checked){
+	document.getElementById('zhuanzhengViewDiv${rand}').style.display ="none";
+	}else if(yidong.checked){
+	document.getElementById('zhuanzhengViewDiv${rand}').style.display ="none";
+	}
+	})
+	</script>
+
+	<input type="radio"  id="jingshengView${rand}"   <#if steps.vars["zhuanzhengOrJinsheng"] == '2'>checked</#if>  disabled  />晋升考核
+	<input type="radio"  id="yidongView${rand}"   <#if steps.vars["zhuanzhengOrJinsheng"] == '3'>checked</#if>  disabled  />岗位异动
+	</td>
+	
+	</tr>
+		<tr>
+		  	<td class="formtable_td_key" >编号：</td>
+			<td class="formtable_td_value">${(steps.vars["empNo"])!""}</td>
+			<td class="formtable_td_key" >姓名：</td>
+			<td class="formtable_td_value">${(steps.vars["empName"])!""}</td>
+			<td class="formtable_td_key" >岗位：</td>
+			<td class="formtable_td_value">${(steps.vars["empJob"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门/科室/班组：</td>
+			<td class="formtable_td_value">${(steps.vars["keshi"])!""}</td>
+			<td class="formtable_td_key">入职日期：</td>
+			<td class="formtable_td_value" >${(steps.vars["inDate"])!""}</td>
+			<td class="formtable_td_key" >填表日期：</td>
+			<td class="formtable_td_value" >${(steps.vars["reqDate"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">员工组：</td>
+			<td class="formtable_td_value">${(steps.vars["empGroup"])!""}</td>
+			<td class="formtable_td_key">员工子组：</td>
+			<td class="formtable_td_value">${(steps.vars["childemployeeGroupText"])!""}</td>
+			<td class="formtable_td_key">申请调整起始日期：</td>
+			<td class="formtable_td_value" >${(steps.vars["adjustDate"])!""}</td>
+		 </tr>
+		<tr>
+		<td class="formtable_td_key">培训记录：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+	  </tr>
+		<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+		
+		 </#if>
+		 
+		
+		 <#if steps.key =='deptMultiInstTask'>
+		  <tr>
+		 <td class="formtable_td_key" colspan="8" align="center">部门评价（100分）</td>
+		 </tr>
+		  <tr>
+		 <td class="formtable_td_key"  align="center">评价项目</td>
+		 <td class="formtable_td_key"  colspan="4"  align="center">指标描述</td>
+		 <td class="formtable_td_key"  align="center"  colspan="3" >评分</td>
+		 
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">责任心（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">具有很强的责任意识，积极承担责任，信守职责，对工作效果负责。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3" >
+		 <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+			 ${muliSteps.vars["${muliSteps.assignee}signname"]}: ${muliSteps.vars["${muliSteps.assignee}respone"]}&nbsp;&nbsp;&nbsp;&nbsp;
+	     </#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		 		 <tr>
+		 <td class="formtable_td_key" align="center">主动性（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">主动承担工作任务，工作计划安排合理，无督促能按时准确地完成工作任务。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3" >
+		  <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signname"]}: ${muliSteps.vars["${muliSteps.assignee}inititave"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">专业知识（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">专业知识掌握的熟练程度及广度、深度</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3" >
+		   <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signname"]}:${muliSteps.vars["${muliSteps.assignee}special"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+	
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" align="center">专业技能（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">主动学习工作领域涉及的新知识、新技能，并不断提高解决实际问题的能力,能够完成上级安排的各项工作。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3" >
+		   <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signname"]}:${muliSteps.vars["${muliSteps.assignee}ability"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" align="center">发展潜力（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">胜任新岗位的能力需求，在新岗位有创新性思维和做法</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3" >
+		   <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signname"]}:${muliSteps.vars["${muliSteps.assignee}capacity"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" colspan="5">合计</td>
+		  <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+		    <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+              ${muliSteps.vars["${muliSteps.assignee}signname"]}:${muliSteps.vars["${muliSteps.assignee}totalscore"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+			</td>
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+		  </#if>
+		 <#if steps.key =='relateDeptMultiInstTask'>
+		 <tr>
+		 <td class="formtable_td_key" colspan="8" align="center">关联部门评价（100分）</td>
+		 </tr>
+		  <tr>
+		 <td class="formtable_td_key"  align="center">评价项目</td>
+		 <td class="formtable_td_key"  colspan="4"  align="center">指标描述</td>
+		 <td class="formtable_td_key"  align="center"  colspan="3"  >评分</td>
+		 
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">服务质量（25分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">对其他部门的要求以及时、专业精神作出反应，其他部门对协助工作结果非常满意</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+				 <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signrelatename"]}:${muliSteps.vars["${muliSteps.assignee}server"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+	
+		 </tr>
+		 
+		 		 <tr>
+		 <td class="formtable_td_key" align="center">沟通能力（25分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">沟通方式有效，能准确清晰传递关键信息，集中于所要表达的结果进行沟通，赢得承诺与支持的能力</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+		  <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signrelatename"]}:${muliSteps.vars["${muliSteps.assignee}communicate"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">协作性（25分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">能够牺牲个人利益，和他人通力合作，积极达成目标，充分理解团队目标，乐意为团队目标作贡献</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+		  <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signrelatename"]}:${muliSteps.vars["${muliSteps.assignee}assitant"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" align="center">解决冲突能力（25分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">能不以带攻击性或贬低他人的方式表达不同意见,知道何时应该妥协,何时应该坚持立场，进而解决冲突的能力</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+		   <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+				${muliSteps.vars["${muliSteps.assignee}signrelatename"]}:${muliSteps.vars["${muliSteps.assignee}handle"]}&nbsp;&nbsp;&nbsp;&nbsp;
+		</#list> 
+         </#if> 
+		</td>
+		
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_key" colspan="5">合计</td>
+		  <td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3"  >
+		 	   <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+			${muliSteps.vars["${muliSteps.assignee}signrelatename"]}:${muliSteps.vars["${muliSteps.assignee}relatetotalscore"]}&nbsp;&nbsp;&nbsp;&nbsp;
+				</#list> 
+         </#if> 
+			</td>
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+		 </#if>
+		 
+		 <#if steps.key =='trainer'>
+		 <#assign trainerNo=steps.vars["trainerAccount"]/>
+		 <tr>
+		 <td class="formtable_td_key" colspan="5">部门综合评分</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+				${(steps.vars["composite"])!""}
+			</td>
+		 </tr>
+		 <#if steps.vars["relatecomposite"] != '0' >
+		 <tr>
+		 	<td class="formtable_td_key" colspan="5">关联部门综合评分</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+				${(steps.vars["relatecomposite"])!""}
+			</td>
+		 </tr>
+		 </#if>
+		 <tr>
+		 <td class="formtable_td_key" colspan="5">笔试得分</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+				${(steps.vars["wrritenScore"])!""}
+			</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_key" colspan="5">最终成绩</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+				${(steps.vars["finalScore"])!""}
+			</td>
+		 </tr>
+		 
+		 <tr>
+			<td class="formtable_td_key" colspan="5">是否完成岗位培训课程</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3">
+	        <input type="radio"   <#if steps.vars["isCompleteCourse"] == '1'>checked</#if>   disabled  />是
+	        <input type="radio"   <#if steps.vars["isCompleteCourse"] == '2'>checked</#if>  disabled  />否
+			</td>
+		  	
+			
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+		 </#if>
+		 
+		<#if steps.key == 'zhuguan'>
+			<#assign zhuguanAccount=steps.vars["zhuguanAccount"]/>
+		 	    <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">直属主管考评意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		  </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'   <#if steps.vars["isAujustOpt"] == '1'>checked</#if>  disabled/>
+			 
+			是
+			<#if (assigneeList?contains(curLoginNo) || assigneeRelateList?contains(curLoginNo) || curLoginNo==applyAccount || curLoginNo==trainerNo)&&curLoginNo!=zhuguanAccount&&curLoginNo!=jingliAccount>
+			<#else>
+			由 薪资等级:
+			<u>${(steps.vars["curSalaryGroup"])!""}---${(steps.vars["curSalary1"])!""}</u>
+			 调整至  
+	
+			    薪资等级: 
+			<u>${(steps.vars["fuSalaryGroup"])!""}---${(steps.vars["fuSalary1"])!""}</u>
+			&nbsp;&nbsp;&nbsp;&nbsp; 调整幅度:
+			 <u> ${(steps.vars["zhuguanScope"])!""}</u>
+			  
+			</#if>
+			</td>
+		  </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'    <#if steps.vars["isAujustOpt"] == '2'>checked</#if>  disabled/>转正或考核通过，但不调薪
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'   <#if steps.vars["isAujustOpt"] == '3'>checked</#if>  disabled/>延长试用期或考核期至 <u>${(steps.vars["extendProba"])!""}</u>
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'   <#if steps.vars["isAujustOpt"] == '4'>checked</#if>  disabled/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<u>${(steps.vars["zhuguanReason"])!""}</u>
+			</td>
+			 </tr>
+		
+		 <tr>
+		 <td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["zhuguanMonth"])!""}</u>
+			</td>
+			<td class="formtable_td_value" colspan="2">直属主管签字:</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["zhuguanSign"])!""}</u>
+			</td>
+		
+		 </tr>
+		
+			<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+	</#if>
+	<#if steps.key == 'jingli'>
+	 <#assign jingliAccount=steps.vars["jingliAccount"]/>
+	 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">部门经理意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		  </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["jingliisAujustOpt"] == '1'>checked</#if>  disabled/>
+			
+			是
+			<#if (assigneeList?contains(curLoginNo) || assigneeRelateList?contains(curLoginNo) || curLoginNo==applyAccount || curLoginNo==trainerNo)&&curLoginNo!=zhuguanAccount&&curLoginNo!=jingliAccount>
+			<#else>
+			由  薪资等级:
+			<u>${(steps.vars["jinglicurSalaryGroup"])!""}---${(steps.vars["jinglicurSalary1"])!""}</u>
+			 调整至  
+			    薪资等级: 
+			<u>${(steps.vars["jinglifuSalaryGroup"])!""}---${(steps.vars["jinglifuSalary1"])!""}</u>
+			&nbsp;&nbsp;&nbsp;&nbsp;   调整幅度:
+			 <u> ${(steps.vars["jingliScope"])!""}</u> 
+			</#if>
+			</td>
+		  </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'      <#if steps.vars["jingliisAujustOpt"] == '2'>checked</#if>  disabled/>转正或考核通过，但不调薪
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["jingliisAujustOpt"] == '3'>checked</#if>  disabled/>延长试用期或考核期至   <u>${(steps.vars["jingliextendProba"])!""}</u>
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["jingliisAujustOpt"] == '4'>checked</#if>  disabled/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<u>${(steps.vars["jingliReason"])!""}</u>
+			</td>
+			 </tr>
+			 
+		 <tr>
+		 <td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["jingliMonth"])!""}</u>
+			</td>
+			<td class="formtable_td_value" colspan="2">部门经理审核:</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["jingliSign"])!""}</u>
+			</td>
+		
+		 </tr>
+		
+			<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+	</#if>
+	
+		<#if steps.key == 'checkSalary'>
+		 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">薪酬专员意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		  </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["xinchouisAujustOpt"] == '1'>checked</#if>  disabled/>
+			是
+			<#if (assigneeList?contains(curLoginNo) || assigneeRelateList?contains(curLoginNo) || curLoginNo==applyAccount || curLoginNo==trainerNo)&&curLoginNo!=zhuguanAccount&&curLoginNo!=jingliAccount>
+			<#else>
+			由  薪资等级:
+			<u>${(steps.vars["xinchoucurSalaryGroup"])!""}---${(steps.vars["xinchoucurSalary1"])!""}</u>
+			 调整至  
+			    薪资等级: 
+			<u>${(steps.vars["xinchoufuSalaryGroup"])!""}---${(steps.vars["xinchoufuSalary1"])!""}</u>
+			&nbsp;&nbsp;&nbsp;&nbsp; 调整幅度:
+			 <u> ${(steps.vars["xinchouScope"])!""}</u> 
+			</#if>
+			</td>
+			</tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'      <#if steps.vars["xinchouisAujustOpt"] == '2'>checked</#if>  disabled/>转正或考核通过，但不调薪
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["xinchouisAujustOpt"] == '3'>checked</#if>  disabled/>延长试用期或考核期至<u>${(steps.vars["xinchouextendProba"])!""}</u>
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["xinchouisAujustOpt"] == '4'>checked</#if>  disabled/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<u>${(steps.vars["xinchouReason"])!""}</u>
+			</td>
+			 </tr>
+			 
+		 <tr>
+		 <td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["xinchouMonth"])!""}</u>
+			</td>
+			<td class="formtable_td_value" colspan="2">经办:</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["xinchouSign"])!""}</u>
+			</td>
+		
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+	</#if>
+	
+	<#if steps.key == 'hrManager'>
+	 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">人力资源经理查核意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		  </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			<input class='easyui-validatebox' type='radio'     <#if steps.vars["hrManagerisAujustOpt"] == '1'>checked</#if>  disabled/>
+			
+			是
+			<#if (assigneeList?contains(curLoginNo) || assigneeRelateList?contains(curLoginNo) || curLoginNo==applyAccount || curLoginNo==trainerNo)&&curLoginNo!=zhuguanAccount&&curLoginNo!=jingliAccount>
+			<#else>
+			由  薪资等级:
+			<u>${(steps.vars["hrManagercurSalaryGroup"])!""}---${(steps.vars["hrManagercurSalary1"])!""}</u>
+			 调整至  
+			  薪资等级: 
+			<u>${(steps.vars["hrManagerfuSalaryGroup"])!""}---${(steps.vars["hrManagerfuSalary1"])!""}</u>
+			&nbsp;&nbsp;&nbsp;&nbsp; 调整幅度:
+			 <u> ${(steps.vars["hrManagerScope"])!""}</u>
+			</#if>  
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'      <#if steps.vars["hrManagerisAujustOpt"] == '2'>checked</#if>  disabled/>转正或考核通过，但不调薪
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["hrManagerisAujustOpt"] == '3'>checked</#if>  disabled/>延长试用期或考核期至<u>${(steps.vars["hrManagerextendProba"])!""}</u>
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["hrManagerisAujustOpt"] == '4'>checked</#if>  disabled/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<u>${(steps.vars["hrManagerReason"])!""}</u>
+			</td>
+			 </tr>
+			 
+		
+		 <tr>
+		 <td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["hrManagerMonth"])!""}</u>
+			</td>
+			<td class="formtable_td_value" colspan="2">审核：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["hrManagerSign"])!""}</u>
+			</td>
+		
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+	        </#if>
+		 
+
+<#if steps.key == 'ceo'>
+
+ <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">总经理查核意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		  </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["ceoisAujustOpt"] == '1'>checked</#if>  disabled/>
+			 
+		
+			是
+			<#if (assigneeList?contains(curLoginNo) || assigneeRelateList?contains(curLoginNo) || curLoginNo==applyAccount || curLoginNo==trainerNo)&&curLoginNo!=zhuguanAccount&&curLoginNo!=jingliAccount>
+			<#else>
+			由  薪资等级:
+			<u>${(steps.vars["ceocurSalaryGroup"])!""}---${(steps.vars["ceocurSalary1"])!""}</u>
+			 调整至  
+			  薪资等级: 
+			<u>${(steps.vars["ceofuSalaryGroup"])!""}---${(steps.vars["ceofuSalary1"])!""}</u>
+			&nbsp;&nbsp;&nbsp;&nbsp; 调整幅度:
+			 <u> ${(steps.vars["ceoScope"])!""}</u>
+			</#if>   
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'      <#if steps.vars["ceoisAujustOpt"] == '2'>checked</#if>  disabled/>转正或考核通过，但不调薪
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["ceoisAujustOpt"] == '3'>checked</#if>  disabled/>延长试用期或考核期至<u>${(steps.vars["ceoextendProba"])!""}</u>
+			</td>
+			 </tr>
+		 <tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'     <#if steps.vars["ceoisAujustOpt"] == '4'>checked</#if>  disabled/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<u>${(steps.vars["ceoReason"])!""}</u>
+			</td>
+			 </tr>
+			 
+		
+		 <tr>
+		 <td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["ceoMonth"])!""}</u>
+			</td>
+			<td class="formtable_td_value" colspan="2">总经理签署：</td>
+			<td class="formtable_td_value">
+			<u>${(steps.vars["ceoSign"])!""}</u>
+			</td>
+		
+		 </tr>
+		 
+		 	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+		 
+	</#if>	
+		 </table> 
+		 </form>
+		 </#list>
+		 
+		
+	</#if>	
+
+
+<!--填写表单-->
+	
+<#if currentStep?exists>
+	<#if currentStep == 'startevent'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input id="account" type="hidden" name="fp_applyUserId" value="${appuser.account}" style="width:80px"/>
+			
+		<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					 
+	<tr>
+		<td class="formtable_td_value" colspan="6">
+	 
+		<input type="radio" id="zhuanzheng${rand}"   name="fp_zhuanzhengOrJinsheng" checked="checked" value="1" />试用期转正
+		<div id="zhuanzhengDiv${rand}" style="display:inline;">
+		<select id="zhuanzhengOption${rand}" name="fp_zhuanzhengOption">
+		<option value="11">试用期转正</option>
+		<option value="12">延期转正</option>
+		<option value="13">提前转正</option>
+		<option value="14">实习转正式员工</option>
+		<option value="15">短期转正式员工</option>
+		</select>
+		</div>
+		<input type="radio" id="jingsheng${rand}"   name="fp_zhuanzhengOrJinsheng" value="2" />晋升考核
+		<input type="radio" id="yidong${rand}"   name="fp_zhuanzhengOrJinsheng" value="3" />岗位异动
+		</td>
+			
+	</tr>
+		  	  <tr>
+		  	<td width="170px" class="formtable_td_key">编号：</td>
+			<td  class="formtable_td_value">
+			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+			<input class='easyui-validatebox' type='text' id="curUserId${rand}"   name='fp_empNo' data-options="required:true" />
+			
+			</td>
+			<td width="170px"  class="formtable_td_key">姓名：</td>
+			<td  class="formtable_td_value">
+				 <input class='easyui-validatebox' type='text'  id="userName${rand}"  name='fp_empName'  data-options="required:true" readonly/>
+			</td>
+			<td width="170px"  class="formtable_td_key" >岗位：</td>
+			<td  class="formtable_td_value" >
+			 <input class='easyui-validatebox' type='text' id="job${rand}"  name='fp_empJob'  data-options="required:true" readonly/>
+			</td>
+			
+		</tr>
+		<tr>
+		
+		<td class="formtable_td_key">部门/科室/班组：</td>
+			<td class="formtable_td_value">
+			 <input class='easyui-validatebox' type='text'  id="orgName${rand}"   name='fp_keshi' data-options="required:true" readonly/>
+			</td>
+		  	<td class="formtable_td_key">入职日期：</td>
+			<td class="formtable_td_value">
+			 <input class='easyui-validatebox' type='text' id="entryTime${rand}"  name='fp_inDate'  data-options="required:true" readonly/>
+			</td>
+			<td class="formtable_td_key">填表日期：</td>
+			<td class="formtable_td_value" >
+				 <input  type='text'  id="curdate${rand}"   name='fp_reqDate'  />
+			</td>
+		 </tr>
+		 <tr>
+			<td class="formtable_td_key">员工组：</td>
+			<td class="formtable_td_value" >
+			 	<input class='easyui-validatebox' type='text' id="empGroup${rand}"   name='fp_empGroup'   data-options="required:true" readonly/>
+			</td>
+		 	<td class="formtable_td_key">员工子组：</td>
+			<td class="formtable_td_value" >
+				<input class='easyui-validatebox' type='text' id="empChildGroupName${rand}"   name='fp_childemployeeGroupText'   data-options="required:true" readonly/>
+				<input class='easyui-validatebox' type='hidden' id="empChildGroup${rand}" />
+			</td>
+			<td class="formtable_td_key" >申请调整起始日期：</td>
+			<td class="formtable_td_value">
+			 <input class="easyui-validatebox  Wdate"  type='text' id='reqDate${rand}'  name='fp_adjustDate'   data-options="editable:false,required:true"  onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			</td>
+		 </tr>
+ <tr>
+	<td class="formtable_td_value" colspan="8">
+	<input id="partAccount" type="hidden" name="fp_partList" /> 
+	<input id="participantList_val" type="hidden"   name="fp_participantList" /> 
+	<input id="participantList4Hidden" type="hidden" name="fp_participantList4Hidden" /> 
+	<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">上传培训文档</a>
+	<a id="downloadTravelExcel" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-down_load'">下载培训文档EXCEL电子模板</a>
+<div id="participantList" style="font-size: 12px; "></div>
+</td>
+</tr>
+       <tr>
+				<td class="formtable_td_value" colspan="8">
+				<div style="display:none"><textarea
+						id="signOrgname" name="fp_signOrgname" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 1px; height: 1px;"></textarea>
+						
+					</div>
+						</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门评分人</td>
+				<td class="formtable_td_value" colspan="7"><input
+					id="assigneeAccount" type="hidden" name="fp_assigneeList" /> <textarea
+						id="assigneePersons" name="fp_assigneePersons" readonly="readonly"
+						class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 50px;" data-options="required:true"></textarea>
+					<a id="openSelectPersonBtn" href="javascript:void(0);"  
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'">添加评分人员(3人)</a>
+				</td>
+			</tr>
+			
+			<tr id="relatePerson${rand}">
+				<td class="formtable_td_key">相关部门评分人</td>
+				<td class="formtable_td_value" colspan="7">
+				<input id="assigneeAccountRelate" type="hidden" name="fp_assigneeRelateList" /> 
+					<textarea id="assigneePersonsRelate" name="fp_assigneePersonsRelate" readonly="readonly"
+						class="easyui-validatebox" style="font-size: 12px; width: 600px; height: 50px;" data-options="required:true"></textarea>
+					<a id="openSelectPersonRelateBtn" href="javascript:void(0);"
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'">添加相关部门评分人员(3人)</a>
+				</td>
+			</tr>
+			
+		<!-- 	<tr>
+		  	        <td class="formtable_td_key">培训专员：
+				  	<td class="formtable_td_value" colspan="7">
+				  		 <input id="accepterTrainner${rand}" type="hidden" value="" name="fp_accepterTrainner" style="width:80px"/>
+				  		 <input id="accepterNameTrainner${rand}" class="easyui-validatebox" name="fp_accepterNameTrainner" data-options="required:true" readonly="readonly">
+				  		 <a id="openOrgWinTrainnerBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+				  	</td>
+		  	  	</tr> -->
+		  	  	
+		</table>
+	</form>
+</div>
+
+<div id="importWin-${rand}" class="easyui-dialog"
+		data-options="modal:true, title:'上传培训文档',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+		<div  style="padding:10px 10px;">
+		<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+					<td>
+						<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+		
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			
+			<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+	员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+</div>
+
+			<table id="users${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:100"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tags${rand}" value="" />
+		</div>
+	</div>
+</div>
+
+<div id="orgWinRelate-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectRelateUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectRelateUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgsRelate${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			
+	<div id="userRelateGridToolBar${rand}" style="padding:2px 5px;">
+	员工账号: <input id="userAccountRelate${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	员工姓名: <input id="searchNameRelate${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+	<a id="userRelateGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+</div>
+
+			<table id="usersRelate${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:100"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tagsRelate${rand}" value="" />
+		</div>
+	</div>
+</div>
+
+		<!-- select trainer win 选择培训专员-->
+<div id="orgWinTrainner-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserTrainnerEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserTrainnerWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<!-- 
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgsTrainner${rand}" />
+		</div>
+	 -->	
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersTrainner${rand}"></table>
+		</div>
+	</div>
+</div>
+
+	<script type="text/javascript">	
+	//加载个人信息
+			$(function(){
+				//界面通过接口加载个人信息
+				$("#curUserId${rand}").bind('blur', function(){
+					var account=$("#curUserId${rand}").val();
+					if(account==null||$.trim(account)==''||account==undefined){
+						return;
+					}
+					loadUserInfo();
+				//	loadUserEmpGroup();
+				});
+			});
+			//当输入用户Id时重新加载用户信息
+			function loadUserInfo(){
+				//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfoById.json",	{
+					account:$("#curUserId${rand}").val()	
+				},function(data){
+						if (data.success) {
+							$("#userName${rand}").val(data.obj[0].name);
+							$("#orgName${rand}").val(data.obj[0].orgName);
+							$("#entryTime${rand}").val(data.obj[0].entryDate);
+							$("#job${rand}").val(data.obj[0].job);
+							$("#signSelf${rand}").val(data.obj[0].name);
+							$("#empGroup${rand}").val(data.obj[0].empGroup);
+							$("#empChildGroup${rand}").val(data.obj[0].empChildGroup);
+							$("#empChildGroupName${rand}").val(data.obj[0].empChildGroupName);
+							$('#processName${rand}').val("[编码："+$("#curUserId${rand}").val()+",姓名："+data.obj[0].name+"]试用期转正");//流程实例名称	
+					}
+						var empChildGroupName =	$("#empChildGroupName${rand}").val();
+						if(empChildGroupName == "员工"){
+							$("#relatePerson${rand}").hide() ;//如果是员工，移除关联部门评分
+							$("#assigneePersonsRelate").validatebox({required:false});
+						}else{
+							$("#relatePerson${rand}").show() ;
+							$("#assigneePersonsRelate").validatebox({required:true});
+						}
+
+				});
+			}
+		
+			
+	function current(){ 
+    var d=new Date();
+    str=''; 
+    str +=d.getFullYear()+'-'; //获取当前年份 
+    str +=d.getMonth()+1+'-'; //获取当前日期（0——11） 
+    str +=d.getDate(); 
+    return str; 
+    }  
+ 
+$(function(){
+$("#curdate${rand}").val(current()) ;
+});
+</script>
+
+<script type="text/javascript">
+
+//选择部门评分人
+
+	var orgWin = $('#orgWin-${rand}');
+	
+	 var addUserList = new Array();
+     var addNameList = new Array();
+     var addOrgNameList = new Array();
+	
+	$(function(){
+	
+
+
+$('#zhuanzheng${rand}').bind('click', function(){
+document.getElementById('zhuanzhengDiv${rand}').style.display ="inline";
+}) 
+
+$('#jingsheng${rand}').bind('click', function(){
+document.getElementById('zhuanzhengDiv${rand}').style.display ="none";
+}) 
+$('#yidong${rand}').bind('click', function(){
+document.getElementById('zhuanzhengDiv${rand}').style.display ="none";
+}) 
+		var orgs = $('#orgs${rand}');
+		var users = $('#users${rand}');
+		var currentOrgId = 0;
+
+		//init tree
+		orgs.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+                currentOrgId = node.id;		
+				$('#users${rand}').datagrid('reload',{id:currentOrgId});
+			}
+		});
+		//init Tags 
+		$('#tags${rand}').tagsInput({
+               width: 'auto',
+               height: '100px',
+               onRemoveTag: function (tag) {
+                   var i = addNameList.indexOf(tag);
+                   var id = addUserList[i];
+                   var orgName = addOrgNameList[i];
+                   removeUser(id, tag, orgName);
+               },
+               interactive: false
+        });
+        
+        function addUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) == -1) {
+                addUserList.push(id);
+                addNameList.push(name + "[" + orgName + "]");
+                addOrgNameList.push(orgName);
+                $('#tags${rand}').addTag(name + "[" + orgName + "]");
+            }
+        }
+        
+        function removeUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) != -1) {
+                addUserList.pop(id);
+                addNameList.pop(name + "[" + orgName + "]");
+                addOrgNameList.pop(orgName);
+                $('#tags${rand}').removeTag(name + "[" + orgName + "]");
+            }
+       }
+       
+
+//user search
+	$('#userGridSearchBtn${rand}').bind('click', function(){
+		var userAccount = $('#userAccount${rand}').val();
+		var userName = $('#searchName${rand}').val();
+		$('#users${rand}').datagrid('reload',
+			{
+				userAccount:userAccount,
+				userName:userName
+			});
+	});
+ //user search
+    //init UserGrid 
+     $('#users${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:currentOrgId
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:false,
+	  rownumbers:true,
+	  toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var node = orgs.tree('getSelected');
+							var orgName;
+							var row = users.datagrid('getSelections');
+				          if (row.length > 0) {
+								for (var i=0;i<row.length;i++) {
+						orgName="";
+						if(	row[i].orgName!=undefined&&row[i].orgName!=null&&row[i].orgName!=''){
+						    orgName=row[i].orgName;
+							}else{
+							if(node!=null&&node.text!=undefined&&node.text!=null&&node.text!=''){
+							orgName = node.text;
+							}
+							}
+								
+					
+							
+									addUser(row[i].account, row[i].name, orgName);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						  }
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							users.datagrid("clearSelections");
+						}
+					}],onSelect:function(rows,data){
+						var node = orgs.tree('getSelected');
+						addUser(data.account, data.name, node.text);
+					}
+	});
+	//init UserGrid 
+	  
+	});
+
+	//弹出窗口
+	$('#openSelectPersonBtn').bind('click', function(){
+		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+		
+		var assigneePersons = $('#assigneePersons').val();
+		var signOrgName = $('#signOrgname').val();
+		if (assigneePersons == null || assigneePersons.length <= 0){
+			$('#tags${rand}').importTags('');
+			addUserList = [];
+			addNameList = [];
+			addOrgNameList = [];
+		}
+	    orgWin.dialog('open');	
+//	    $('#users${rand}').datagrid('reload');
+	});
+	//选择用户完成事件
+    function selectUserEnd(){
+       //设置值，并关闭窗口
+        if(addUserList.length!=3){
+           $.messager.alert('信息提示','只能选择三个人!','info');
+           return;
+        }
+       
+       
+       $('#assigneePersons').val($('#tags${rand}').val());
+       
+       //处理人员Account
+       var assigneeAccounts="";
+       
+
+       for(var i=0;i<addUserList.length;i++){
+       		assigneeAccounts += addUserList[i]+","
+       }
+       if (assigneeAccounts.length > 0 && assigneeAccounts != null) {
+       		assigneeAccounts = assigneeAccounts.substring(0,assigneeAccounts.length-1);
+       }
+       $('#assigneeAccount').val(assigneeAccounts);
+       //处理部门名称
+       var orgNameStr = "";
+       var orgNameArr = pureMulti(addOrgNameList);
+       for(var i=0;i<orgNameArr.length;i++){
+       		orgNameStr += orgNameArr[i]+","
+       }
+       if (orgNameStr.length > 0 && orgNameStr != null) {
+       		orgNameStr = orgNameStr.substring(0,orgNameStr.length-1);
+       }
+       $('#signOrgname').val(orgNameStr);
+       
+       orgWin.dialog('close');	
+   }
+   //去掉重复元素
+   function pureMulti(arr){  
+	 var resultArr = [];  
+   	 for(var i = 0,len = arr.length;i < len;i++){  
+        ! RegExp(arr[i],"g").test(resultArr.join(",")) && (resultArr.push(arr[i]));  
+     } 
+     return resultArr;
+   }
+   
+   function  closeSelectUserWin(){
+   	 orgWin.dialog('close');	
+   }
+   
+
+	//上传培训文档
+	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+		 $("#importWin-${rand}").dialog('open');
+	 });
+	function clearInputFile${rand}(){
+			//清空文件框
+			$("#upload_file-${rand}").remove(); //移除原来的
+		    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+		   	$('#td_input_${rand}').html(newFileInput); //添加新的
+		    $.parser.parse('#td_input_${rand}');
+		}
+	 $("#upfile-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform-${rand}").form('submit',{
+				url:'teamActivities/importTraining.json',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						countIsOffice = 0;
+						countNotOffice = 0;
+						var str = "";
+						var str4Hidden = "";
+						if(data.obj.length>0){
+							$('#participantList').val("");
+							str = "<table border=1 cellspace=1 width=100%>";
+							str +="<tr align=center><td width=10%>序号</td><td width=10%>培训内容</td><td width=10%>培训时间</td><td width=10%>课时（H）</td><td width=10%>培训讲师</td><td width=10%>考核方式</td><td width=20%>考核结果</td></tr>";
+							for(var i = 0;i < data.obj.length;i++){
+							  str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].content+"</td><td>"+data.obj[i].date+"</td><td>"+data.obj[i].hour+"</td><td>"+data.obj[i].teacher+"</td><td>"+data.obj[i].type+"</td><td>"+data.obj[i].result+"</td></tr>"
+							  str4Hidden +="["+data.obj[i].number+","+data.obj[i].content+","+data.obj[i].date+","+data.obj[i].hour+","+data.obj[i].teacher+","+data.obj[i].type+","+data.obj[i].result+"]:"
+							}
+							str+="</table>"
+							document.getElementById("participantList").innerHTML=str;
+							$('#participantList4Hidden').val(str4Hidden);
+						}
+						document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+					} 
+					$("#importWin-${rand}").dialog('close');
+					$.messager.progress('close');
+					$.messager.alert("提示信息",data.msg)
+				}
+			});
+	 });
+	 
+
+	//导出模板
+	$("#downloadTravelExcel").bind('click',function(){
+		submitForm("download.training.name");
+	});
+	function submitForm(value){
+		var form = $("<form>");
+		form.attr('style','display:none');
+		form.attr('method','post');
+		form.attr('action','${base}sysprocess/task/download.html');
+		
+		var key = $("<input>");
+		key.attr('type','hidden');
+		key.attr('name','key');
+		key.attr('value',value);
+		
+		$("body").append(form);
+		form.append(key);
+		
+		form.submit();
+		form.remove();
+	}
+
+
+
+	
+
+</script>
+
+<script type="text/javascript">
+
+//选择 关联部门评分人
+	var orgWinRelate = $('#orgWinRelate-${rand}');
+	
+	 var addUserRelateList = new Array();
+     var addNameRelateList = new Array();
+     var addOrgNameRelateList = new Array();
+	
+	$(function(){
+		var orgsRelate = $('#orgsRelate${rand}');
+		var usersRelate = $('#usersRelate${rand}');
+		var currentOrgId = 0;
+		
+		
+		//init tree
+		orgsRelate.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+		    onClick:function(node){
+                currentOrgId = node.id;		
+				$('#usersRelate${rand}').datagrid('reload',{id:currentOrgId});
+			}
+		});
+		//init Tags 
+		$('#tagsRelate${rand}').tagsInput({
+               width: 'auto',
+               height: '100px',
+               onRemoveTag: function (tag) {
+                   var i = addNameRelateList.indexOf(tag);
+                   var id = addUserRelateList[i];
+                   var orgName = addOrgNameRelateList[i];
+                   removeUserRelate(id, tag, orgName);
+               },
+               interactive: false
+        });
+        
+        function addUserRelate(id, name, orgName) {
+            if ($.inArray(id, addUserRelateList) == -1) {
+                addUserRelateList.push(id);
+                addNameRelateList.push(name + "[" + orgName + "]");
+                addOrgNameRelateList.push(orgName);
+                $('#tagsRelate${rand}').addTag(name + "[" + orgName + "]");
+            }
+        }
+        
+        function removeUserRelate(id, name, orgName) {
+            if ($.inArray(id, addUserRelateList) != -1) {
+                addUserRelateList.pop(id);
+                addNameRelateList.pop(name + "[" + orgName + "]");
+                addOrgNameRelateList.pop(orgName);
+                $('#tagsRelate${rand}').removeTag(name + "[" + orgName + "]");
+            }
+       }
+       
+
+//userRelate search
+	$('#userRelateGridSearchBtn${rand}').bind('click', function(){
+		var userAccountRelate = $('#userAccountRelate${rand}').val();
+		var userNameRelate = $('#searchNameRelate${rand}').val();
+		$('#usersRelate${rand}').datagrid('reload',
+			{
+				userAccount:userAccountRelate,
+				userName:userNameRelate
+			});
+	});
+ //userRelate search
+    //init UserRelateGrid 
+     $('#usersRelate${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:currentOrgId
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:true,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:false,
+	  rownumbers:true,toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var nodeRelate = orgsRelate.tree('getSelected');
+							var orgNameRelate;
+							var rowRelate = usersRelate.datagrid('getSelections');
+				          if (rowRelate.length > 0) {
+								for (var i=0;i<rowRelate.length;i++) {
+								orgNameRelate="";
+						if(	rowRelate[i].orgName!=undefined&&rowRelate[i].orgName!=null&&rowRelate[i].orgName!=''){
+						    orgNameRelate=rowRelate[i].orgName;
+							}else{
+							if(nodeRelate!=null&&nodeRelate.text!=undefined&&nodeRelate.text!=null&&nodeRelate.text!=''){
+							orgNameRelate = nodeRelate.text;
+							}
+							}
+
+							
+							
+									addUserRelate(rowRelate[i].account, rowRelate[i].name, orgNameRelate);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						  }
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							usersRelate.datagrid("clearSelections");
+						}
+					}],onSelect:function(rows,data){
+						var nodeRelate = orgsRelate.tree('getSelected');
+						addUserRelate(data.account, data.name, nodeRelate.text);
+					}
+	});
+	//init UserGrid 
+
+
+       
+	});
+
+
+	//选择用户完成事件
+    function selectRelateUserEnd(){
+       //设置值，并关闭窗口
+       if(addUserRelateList.length!=3){
+          $.messager.alert('信息提示','只能选择三个人!','info');
+          return;
+        }
+
+       $('#assigneePersonsRelate').val($('#tagsRelate${rand}').val());
+       
+       //处理人员Account
+       var assigneeAccountsRelate="";
+
+       for(var i=0;i<addUserRelateList.length;i++){
+       		assigneeAccountsRelate += addUserRelateList[i]+","
+       }
+       if (assigneeAccountsRelate.length > 0 && assigneeAccountsRelate != null) {
+       		assigneeAccountsRelate = assigneeAccountsRelate.substring(0,assigneeAccountsRelate.length-1);
+       }
+       $('#assigneeAccountRelate').val(assigneeAccountsRelate);
+       //处理部门名称
+       var orgNameRelateStr = "";
+       var orgNameRelateArr = pureMulti(addOrgNameRelateList);
+       for(var i=0;i<orgNameRelateArr.length;i++){
+       		orgNameRelateStr += orgNameRelateArr[i]+","
+       }
+       if (orgNameRelateStr.length > 0 && orgNameRelateStr != null) {
+       		orgNameRelateStr = orgNameRelateStr.substring(0,orgNameRelateStr.length-1);
+       }
+       $('#signOrgnameRelate').val(orgNameRelateStr);
+       
+       orgWinRelate.dialog('close');	
+   }
+   //去掉重复元素
+   function pureMulti(arr){  
+	 var resultArr = [];  
+   	 for(var i = 0,len = arr.length;i < len;i++){  
+        ! RegExp(arr[i],"g").test(resultArr.join(",")) && (resultArr.push(arr[i]));  
+     } 
+     return resultArr;
+   }
+   
+   function  closeSelectRelateUserWin(){
+   	 orgWinRelate.dialog('close');	
+   }
+   
+
+
+
+
+	//弹出窗口
+	$('#openSelectPersonRelateBtn').bind('click', function(){
+		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+		
+		var assigneePersonsRelate = $('#assigneePersonsRelate').val();
+		var signOrgName = $('#signOrgname').val();
+		if (assigneePersonsRelate == null || assigneePersonsRelate.length <= 0){
+			$('#tags${rand}').importTags('');
+			addUserRelateList = [];
+			addNameRelateList = [];
+			addOrgNameRelateList = [];
+		}
+	    orgWinRelate.dialog('open');	
+	});
+</script>
+
+		
+<script type="text/javascript">	
+//选择培训专员
+//弹出选择培训专员窗口
+$('#openOrgWinTrainnerBtn${rand}').bind('click', function(){
+	$('#orgWinTrainner-${rand}').dialog('open');	
+});
+
+
+//init org win
+$(function(){
+				//用户
+				$('#usersTrainner${rand}').datagrid({
+					fitColumns:true,
+					url:'hrFlow/trainers.json',
+					columns:[[
+						{field:'id',hidden:true,checkbox:false},
+					  	{field:'account',title:'帐号',width:150},
+					  	{field:'name',title:'姓名',width:150}
+					]],
+				 	nowrap: true,       
+					fit : true,
+					border : false,
+					pagination:true,
+					pageNumber : 1,
+					pageSize : 20,
+					rownumbers:true,
+					singleSelect:true
+				});
+});
+
+//选择用户完成事件
+function selectUserTrainnerEnd(){
+	var row = $('#usersTrainner${rand}').datagrid('getSelected');
+	if (row) {
+	    $('#accepterTrainner${rand}').val(row.account);
+	    $('#accepterNameTrainner${rand}').val(row.name);
+	       		
+	    $('#accepterNameTrainner${rand}').validatebox('validate');
+	       		
+	    $('#orgWinTrainner-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+function  closeSelectUserTrainnerWin(){
+	$('#orgWinTrainner-${rand}').dialog('close');	
+}
+
+</script>		
+	
+</#if>
+			
+			
+
+		 <#if currentStep == 'deptMultiInstTask'>
+		<div id="deptMultiInstTask${rand}">
+			<form id="deptMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+			
+				<table id="deptMultiInstTaskTable" class="formtable" cellspacing="1" cellpadding="0">
+		 <tr>
+		 <td class="formtable_td_key" colspan="8" align="center">部门评价（100分）</td>
+		 </tr>
+		  <tr>
+		 <td class="formtable_td_key"  align="center">评价项目</td>
+		 <td class="formtable_td_key"  colspan="4"  align="center">指标描述</td>
+		 <td class="formtable_td_key"  align="center"  colspan="3" >评分</td>
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">责任心（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">具有很强的责任意识，积极承担责任，信守职责，对工作效果负责。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value">
+				<input  type='text'  name='fp_${appuser.account}respone'   data-options="required:true" style="width:80px"   class="easyui-numberbox dept" min="0" max="20" precision="1" required="true" missingMessage="必须填写0~20之间的数字"      style="text-align:right;"/>
+				<input class='easyui-validatebox' type='hidden'  name='fp_${appuser.account}signname' value='${appuser.name}'/>
+		</td>
+		
+		 </tr>
+		 
+		 		 <tr>
+		 <td class="formtable_td_key" align="center">主动性（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">主动承担工作任务，工作计划安排合理，无督促能按时准确地完成工作任务。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value">
+				<input  type='text'  name='fp_${appuser.account}inititave'  data-options="required:true" style="width:80px"   class="easyui-numberbox dept" min="0" max="20" precision="1" required="true" missingMessage="必须填写0~20之间的数字"   style="text-align:right;"/>
+		</td>
+	
+		 </tr>
+		 
+		 <tr>
+		 <td class="formtable_td_key" align="center">专业知识（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">专业知识掌握的熟练程度及广度、深度</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value">
+				<input  type='text'  name='fp_${appuser.account}special'  data-options="required:true" style="width:80px"   class="easyui-numberbox dept" min="0" max="20" precision="1" required="true" missingMessage="必须填写0~20之间的数字"      style="text-align:right;"/>
+		</td>
+		
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" align="center">专业技能（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">主动学习工作领域涉及的新知识、新技能，并不断提高解决实际问题的能力,能够完成上级安排的各项工作。</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value">
+				<input  type='text'  name='fp_${appuser.account}ability'  data-options="required:true" style="width:80px"   class="easyui-numberbox dept" min="0" max="20" precision="1" required="true" missingMessage="必须填写0~20之间的数字"      style="text-align:right;"/>
+		</td>
+	
+		 </tr>
+		 
+		  <tr>
+		 <td class="formtable_td_key" align="center">发展潜力（20分）</td>
+		 <td class="formtable_td_key"  colspan="4"   align="center">胜任新岗位的能力需求，在新岗位有创新性思维和做法</td>
+		 <td id="td_outEducation${rand}" class="formtable_td_value">
+				<input  type='text'  name='fp_${appuser.account}capacity'  data-options="required:true" style="width:80px"   class="easyui-numberbox dept" min="0" max="20" precision="1" required="true" missingMessage="必须填写0~20之间的数字"      style="text-align:right;"/>
+		</td>
+	
+		 </tr>
+		
+		   <tr>
+		 <td class="formtable_td_key" colspan="5">合计</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+			<input class='easyui-validatebox totalscore' type='text'  name='fp_${appuser.account}totalscore'  data-options="required:true" style="width:80px"   readonly="readonly"/>
+			</td>
+		 </tr>  
+		        </table>
+		        
+			</form>
+			
+			<script type="text/javascript">
+				//计算综合成绩
+	function showDeptTatolScore(){
+		$("#deptMultiInstTask${rand}").find('.easyui-numberbox.dept').bind('blur', function(){
+			var score =$("#deptMultiInstTask${rand}").find('.easyui-numberbox.dept');
+			var total=0;
+			if (score != null || score.length > 0){
+				for(var m=0;m<score.length;m++){
+				if(score[m].value!=null&&score[m].value!=""){
+				total+=parseFloat(score[m].value);
+				}
+				}
+			}
+			$("#deptMultiInstTask${rand}").find('.easyui-validatebox.totalscore').val(total.toFixed(1));
+		});
+		}
+	
+	$(function(){
+	   showDeptTatolScore();
+       // 为body元素绑定click事件
+       $("body").bind("click",function(){
+       showDeptTatolScore();
+       });
+   });
+</script>
+		</div>
+
+	</#if>
+
+
+	<#if currentStep == 'relateDeptMultiInstTask'>
+		<div id="relateDeptMultiInstTask${rand}">
+			<form id="relateDeptMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="relateDeptMultiInstTaskTable" class="formtable" cellspacing="1" cellpadding="0">
+					 <tr>
+					 <td class="formtable_td_key" colspan="8" align="center">关联部门评价（100分）</td>
+					 </tr>
+					 <tr>
+						 <td class="formtable_td_key"  align="center">评价项目</td>
+						 <td class="formtable_td_key"  colspan="4"  align="center">指标描述</td>
+						 <td class="formtable_td_key"  align="center"  colspan="3"  >评分</td>
+					 </tr>
+					 <tr>
+						 <td class="formtable_td_key" align="center">服务质量（25分）</td>
+						 <td class="formtable_td_key"  colspan="4"   align="center">对其他部门的要求以及时、专业精神作出反应，其他部门对协助工作结果非常满意</td>
+						 <td id="td_outEducation${rand}" class="formtable_td_value">
+						 	<input  type='text'  name='fp_${appuser.account}server'   data-options="required:true" style="width:80px"   class="easyui-numberbox relateDept" min="0" max="25" precision="1" required="true" missingMessage="必须填写0~25之间的数字"      style="text-align:right;"/>
+							<input  type='hidden'  name='fp_${appuser.account}signrelatename' value='${appuser.name}' style="width:80px" data-options="required:true"/>
+						 </td>
+					 </tr>
+					 <tr>
+						 <td class="formtable_td_key" align="center">沟通能力（25分）</td>
+						 <td class="formtable_td_key"  colspan="4"   align="center">沟通方式有效，能准确清晰传递关键信息，集中于所要表达的结果进行沟通，赢得承诺与支持的能力</td>
+						 <td id="td_outEducation${rand}" class="formtable_td_value">
+						 <input  type='text'  name='fp_${appuser.account}communicate'   data-options="required:true" style="width:80px"   class="easyui-numberbox relateDept" min="0" max="25" precision="1" required="true" missingMessage="必须填写0~25之间的数字"      style="text-align:right;"/>
+					     </td>
+					 </tr>
+					 <tr>
+						 <td class="formtable_td_key" align="center">协作性（25分）</td>
+						 <td class="formtable_td_key"  colspan="4"   align="center">能够牺牲个人利益，和他人通力合作，积极达成目标，充分理解团队目标，乐意为团队目标作贡献</td>
+						 <td id="td_outEducation${rand}" class="formtable_td_value">
+						  <input  type='text'  name='fp_${appuser.account}assitant'   data-options="required:true" style="width:80px"   class="easyui-numberbox relateDept" min="0" max="25" precision="1" required="true" missingMessage="必须填写0~25之间的数字"      style="text-align:right;"/>
+						 </td>
+					 </tr>
+					 <tr>
+						 <td class="formtable_td_key" align="center">解决冲突能力（25分）</td>
+						 <td class="formtable_td_key"  colspan="4"   align="center">能不以带攻击性或贬低他人的方式表达不同意见,知道何时应该妥协,何时应该坚持立场，进而解决冲突的能力</td>
+						 <td id="td_outEducation${rand}" class="formtable_td_value">
+						 	<input  type='text'  name='fp_${appuser.account}handle'   data-options="required:true" style="width:80px"   class="easyui-numberbox relateDept" min="0" max="25" precision="1" required="true" missingMessage="必须填写0~25之间的数字"      style="text-align:right;"/>
+						 </td>
+					 </tr>
+				     <tr>
+					 	<td class="formtable_td_key" colspan="5">合计</td>
+						<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+						<input class='easyui-validatebox relatetotalscore' type='text' style="width:80px"   name='fp_${appuser.account}relatetotalscore' style="width:80px"   data-options="required:true"  readonly="readonly"/>
+						</td>
+					 </tr>  
+		        </table>
+			</form>
+			
+			
+	<script type="text/javascript">
+	//计算综合成绩
+
+	function showRelateDeptTatolScore(){
+		$("#relateDeptMultiInstTask${rand}").find('.easyui-numberbox.relateDept').bind('blur', function(){
+		var score =$("#relateDeptMultiInstTask${rand}").find('.easyui-numberbox.relateDept');
+		var total=0;
+		if (score != null || score.length > 0){
+			for(var m=0;m<score.length;m++){
+			if(score[m].value!=null&&score[m].value!=""){
+			total+=parseFloat(score[m].value);
+			}
+			}
+		}
+		$("#relateDeptMultiInstTask${rand}").find('.easyui-validatebox.relatetotalscore').val(total.toFixed(1));
+		});
+	}
+	$(function(){
+		showRelateDeptTatolScore();
+	    // 为body元素绑定click事件
+	    $("body").bind("click",function(){
+	    showRelateDeptTatolScore();
+	    });
+	})
+	</script>
+	</div>
+	</#if>
+	
+	<#if currentStep == 'trainer'>
+		<#if processSteps??> 
+		 <#list processSteps as steps>
+			<#if steps.key == 'deptMultiInstTask'> 
+			     <#if steps.multiInstances??>
+			         <#list steps.multiInstances as muliSteps>
+			         <input  type='hidden'  class='deptTotal'  data-options="required:true" value='${muliSteps.vars["${muliSteps.assignee}totalscore"]}'/>&nbsp;&nbsp;&nbsp;&nbsp;
+				     </#list> 
+		         </#if> 
+		    </#if>
+	         
+	         <#if steps.key == 'relateDeptMultiInstTask'> 
+			     <#if steps.multiInstances??>
+			         <#list steps.multiInstances as muliSteps>
+			         <input  type='hidden'  class='relateTotal'  data-options="required:true" value='${muliSteps.vars["${muliSteps.assignee}relatetotalscore"]}'/>&nbsp;&nbsp;&nbsp;&nbsp;
+				     </#list> 
+		         </#if> 
+	         </#if>
+	         </#list>
+		</#if>
+		<div id="trainer">
+		<form id="trainerForm" method="post" enctype='multipart/form-data'> 
+			<table id="trainerTable" class="formtable" cellspacing="1" cellpadding="0">
+				 <tr>
+				 	<td class="formtable_td_key" colspan="5">部门综合评分</td>
+					<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+						 <input class='easyui-validatebox' type='text'   id='deptScore${rand}'    name='fp_composite' style="width:80px" data-options="required:true" readonly="readonly"/>
+					</td>
+				 </tr>
+				 <tr id="relateResult${rand}">
+				 	<td class="formtable_td_key" colspan="5">关联部门综合评分</td>
+					<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+						<input id="trainerNo${rand}" type="hidden" name="fp_trainerAccount"  value="${appuser.account}"/>
+						 <input class='easyui-validatebox' type='text'   id='relateScore${rand}'   name='fp_relatecomposite' style="width:80px" data-options="required:true" readonly="readonly"/>
+					</td>
+				 </tr>
+				 <td class="formtable_td_key" colspan="5">笔试得分</td>
+					<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+						<input id='wrritenScore${rand}'  type='text'  name='fp_wrritenScore'    data-options="required:true"  style="width:80px"    class="easyui-numberbox wrritenScore"    min="0" max="100" precision="1" required="true" missingMessage="必须填写0~100之间的数字"      style="text-align:right;"/>
+					</td>
+				 </tr>
+				 <tr>
+				 <td class="formtable_td_key" colspan="5">最终成绩</td>
+					<td id="td_outEducation${rand}" class="formtable_td_value" colspan="3">
+						<input class='easyui-validatebox' type='text'    id='finalScore${rand}'   name='fp_finalScore' style="width:80px" data-options="required:true" readonly="readonly"/>
+					</td>
+				 </tr>
+				    <tr>
+					<td class="formtable_td_key" colspan="5">是否完成岗位培训课程</td>
+					<td id="td_outEducation${rand}" class="formtable_td_value"  colspan="3">
+					<input type="radio" name="fp_isCompleteCourse" checked="checked" value="1" />是
+			        <input type="radio" name="fp_isCompleteCourse" value="2" />否
+					</td>
+				 </tr>
+	        </table>
+		</form>
+			
+<script type="text/javascript">
+	//计算综合成绩
+	$(function(){
+		
+		
+		var score =document.getElementsByClassName('deptTotal');
+		var total=0;
+		if (score != null || score.length > 0){
+			for(var m=0;m<score.length;m++){
+			if(score[m].value!=null&&score[m].value!=""){
+			total+=parseFloat(score[m].value);
+			}
+			}
+			total= Math.round(total/3.0*10)/10;
+			$('#deptScore${rand}').val(total);
+		}
+		
+		var relatescore =document.getElementsByClassName('relateTotal');
+		var relatetotal=0;
+		if (relatescore != null || relatescore.length > 0){
+			for(var n=0;n<relatescore.length;n++){
+				if(relatescore[n].value!=null&&relatescore[n].value!=""){
+				relatetotal+=parseFloat(relatescore[n].value);
+				}
+			}
+			relatetotal= Math.round(relatetotal/3.0*10)/10;
+			$('#relateScore${rand}').val(relatetotal);
+			var relateResult = $('#relateScore${rand}').val();
+			if(relateResult==0){
+				$("#relateResult${rand}").hide();
+			}
+		}
+	});
+	//最终成绩
+	$('#wrritenScore${rand}').bind('blur', function(){
+	var score1 =document.getElementById('deptScore${rand}');
+	var score2 =document.getElementById('relateScore${rand}');
+	var score3 =document.getElementById('wrritenScore${rand}');
+		var final=0;
+		var relateResult = $('#relateScore${rand}').val();
+		if(relateResult!=0){
+			if ((score1 != null || score1.length > 0)&&(score2 != null ||score2.length > 0)&&(score3 != null || score3.length > 0)){
+				final=parseFloat(score1.value)*0.6+parseFloat(score2.value)*0.2+(parseFloat(score3.value)>100?100:parseFloat(score3.value))*0.2;
+				final=Math.round(final*10)/10;
+			}
+		}else if(relateResult==0){
+			if ((score1 != null || score1.length > 0)&&(score3 != null || score3.length > 0)){
+				final=parseFloat(score1.value)*0.6+(parseFloat(score3.value)>100?100:parseFloat(score3.value))*0.4;
+				final=Math.round(final*10)/10;
+			}
+		}
+		$('#finalScore${rand}').val(final);
+	});
+</script>
+
+		</div>
+	
+	</#if>
+	
+	
+	
+	
+	
+		<#if currentStep == 'zhuguan'>
+		 <#if processSteps??> 
+	 <#list processSteps as steps>
+     <#if steps.key == 'startevent'> 
+		<div id="zhuguan">
+			<form id="zhuguanForm" method="post" enctype='multipart/form-data'>
+			 <table id="zhuguanFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		 					
+		 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">直属主管考评意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+		     <input class='easyui-validatebox' type='hidden' id="emp"  value='${steps.vars["empNo"]}'/>
+			 <input class='easyui-validatebox' type='radio'  name='fp_isAujustOpt' value="1" checked="checked"/>
+			 <div id="zhuguanXinziDiv${rand}" style="display:inline;">
+			 是 由  
+			(薪资等级组
+			<input class='easyui-validatebox' type='text'  id='curSalaryGroup${rand}'  name='fp_curSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='curSalary1${rand}'  name='fp_curSalary1' style="width:80px" data-options="required:true" />
+			 调整至  
+			 (薪资等级组
+			<input class='easyui-validatebox' type='text'  id='fuSalaryGroup${rand}'  name='fp_fuSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='fuSalary1${rand}'  name='fp_fuSalary1' style="width:80px" data-options="required:true" />)
+			调整幅度<input class='easyui-validatebox' type='text'  id='zhuguanScope${rand}'  name='fp_zhuguanScope' style="width:80px"   data-options="required:true" readonly="readonly"/>
+			</div>
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'  name='fp_isAujustOpt' value="2"/>转正或考核通过，但不调薪
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'  name='fp_isAujustOpt' value="3"/>延长试用期或考核期至<input class='easyui-validatebox' type='text'  name='fp_extendProba' style="width:80px"/>
+			</td>
+			</tr>
+			
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox' type='radio'  name='fp_isAujustOpt' value="4"/>否&nbsp;&nbsp;&nbsp;&nbsp;意见:<input class='easyui-validatebox' type='text'  name='fp_zhuguanReason' style="width:320px"/>
+			</td>
+			</tr>
+	
+			<tr>
+			<td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<input class="easyui-validatebox  Wdate" type='text' id='zhuguanreqDate${rand}'  name='fp_zhuguanMonth'  value='${steps.vars["adjustDate"]}'  style="width:160px"   data-options="editable:false,required:true"   onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			</td>
+			<td class="formtable_td_value" colspan="2">直属主管签字:</td>
+			<td class="formtable_td_value">
+			 <input type="hidden" name="fp_zhuguanAccount"  value="${appuser.account}"/>
+			 <input class='easyui-validatebox' type='text'  name='fp_zhuguanSign' style="width:80px" data-options="required:true" value="${appuser.name}"/>
+			</td>
+		 </tr>
+		 
+		 
+		
+		 
+		</table>
+			</form>
+
+	
+	<script type="text/javascript">
+	//测试SAP接口
+	$(function(){
+//薪资明细是否显示	
+//如果调薪显示薪资明细
+ $('input[name="fp_isAujustOpt"]').change(function(){
+ if($('input[name="fp_isAujustOpt"]:checked').val()==1){
+ document.getElementById('zhuguanXinziDiv${rand}').style.display ="inline";
+ }else{
+ document.getElementById('zhuguanXinziDiv${rand}').style.display ="none";
+ $("#curSalaryGroup${rand}").val("0");
+ $("#curSalary1${rand}").val("0");
+ $("#fuSalaryGroup${rand}").val("0");
+ $("#fuSalary1${rand}").val("0");
+ $("#zhuguanScope${rand}").val("0");
+ }
+   
+  });
+
+	//计算调整幅度
+	function countScope(){
+	$('#fuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('curSalary1${rand}');
+	    var var2 =document.getElementById('fuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#zhuguanScope${rand}').val(diff);
+	});
+	}
+	
+	countScope();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+    });	
+	
+			
+});
+	</script>
+	
+		</div>
+	</#if>
+	
+	</#list>
+	</#if>
+	</#if>
+	
+	
+     
+     <#if currentStep == 'jingli'>
+      <#if processSteps??> 
+	 <#list processSteps as steps>
+	<#if steps.key == 'startevent'> 
+    <input  type='hidden'  id="adjustDate${rand}"  data-options="required:true" value='${(steps.vars["adjustDate"])!""}'/>
+    <input class='easyui-validatebox' type='hidden' id="empNo${rand}"  value='${steps.vars["empNo"]}'/>
+    </#if>
+    
+     <#if steps.key == 'zhuguan'> 
+    <input  type='hidden'  id="zhuguanisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["isAujustOpt"])!""}'/>
+    
+    <input  type='hidden'  id="zhuguancurSalaryGroup${rand}"   value='${(steps.vars["curSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguancurSalary1${rand}"   value='${(steps.vars["curSalary1"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalaryGroup${rand}"   value='${(steps.vars["fuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalary1${rand}"   value='${(steps.vars["fuSalary1"])!""}'/>
+     
+    <input  type='hidden'  id="zhuguanextendProba${rand}"  data-options="required:true" value='${(steps.vars["extendProba"])!""}'/>
+    <input  type='hidden'  id="zhuguanMonth${rand}"  data-options="required:true" value='${(steps.vars["zhuguanMonth"])!""}'/>
+    <input  type='hidden'  id="zhuguanScope${rand}"  data-options="required:true" value='${(steps.vars["zhuguanScope"])!""}'/>
+    </#if>
+    </#list>
+	</#if>
+	
+		<div id="jingli">
+			<form id="jingliForm" method="post" enctype='multipart/form-data'>
+					 <table id="jingliFormTable" class="formtable" cellspacing="1" cellpadding="0">
+	 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">部门经理意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox jingliisAujustOpt' type='radio' id='checkadjust${rand}'  name='fp_jingliisAujustOpt' value="1"  />
+			 <div id="jingliXinziDiv${rand}" style="display:inline;">
+			 
+			  是 由  
+			(薪资等级组
+			<input class='easyui-validatebox' type='text'  id='jinglicurSalaryGroup${rand}'  name='fp_jinglicurSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='jinglicurSalary1${rand}'  name='fp_jinglicurSalary1' style="width:80px" data-options="required:true" />
+			 调整至  
+			 (薪资等级组
+			<input class='easyui-validatebox' type='text'  id='jinglifuSalaryGroup${rand}'  name='fp_jinglifuSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='jinglifuSalary1${rand}'  name='fp_jinglifuSalary1' style="width:80px" data-options="required:true" />)
+			调整幅度<input class='easyui-validatebox' type='text'  id='jingliScope${rand}'  name='fp_jingliScope' style="width:80px"   data-options="required:true" readonly="readonly"/>
+			
+			</div>
+			
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox jingliisAujustOpt' type='radio'  name='fp_jingliisAujustOpt' value="2"  />转正或考核通过，但不调薪
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox jingliisAujustOpt' type='radio'  name='fp_jingliisAujustOpt' value="3"  />延长试用期或考核期至<input class='easyui-validatebox' type='text' id='jingliextendProba${rand}'  name='fp_jingliextendProba'   style="width:80px"/>
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox jingliisAujustOpt' type='radio'  name='fp_jingliisAujustOpt' value="4"  />否&nbsp;&nbsp;&nbsp;&nbsp;意见:<input class='easyui-validatebox' type='text'  name='fp_jingliReason' style="width:320px"/>
+			</td>
+			</tr>
+				
+		 
+			<tr>
+			<td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<input class="easyui-validatebox  Wdate" type='text' id='jingliMonth${rand}'  name='fp_jingliMonth'    style="width:160px"   data-options="editable:false,required:true" onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			</td>
+			<td class="formtable_td_value" colspan="2">部门经理审核:</td>
+			<td class="formtable_td_value">
+			 <input type="hidden" name="fp_jingliAccount"  value="${appuser.account}"/>
+			 <input class='easyui-validatebox' type='text'  name='fp_jingliSign' style="width:80px" data-options="required:true" value="${appuser.name}"/>
+			</td>
+		 </tr>
+		 
+		 
+	
+		 
+		</table>
+			</form>
+			
+<script type="text/javascript">
+	$(function(){
+		var zhuguanisAujustOpt =document.getElementById('zhuguanisAujustOpt${rand}');
+		var zhuguancurSalaryGroup =document.getElementById('zhuguancurSalaryGroup${rand}');
+		var zhuguancurSalary1 =document.getElementById('zhuguancurSalary1${rand}');
+		var zhuguanfuSalaryGroup =document.getElementById('zhuguanfuSalaryGroup${rand}');
+		var zhuguanfuSalary1 =document.getElementById('zhuguanfuSalary1${rand}');
+		
+		var zhuguanextendProba =document.getElementById('zhuguanextendProba${rand}');
+		var zhuguanMonth =document.getElementById('zhuguanMonth${rand}');
+		
+		var adjustDate=document.getElementById('adjustDate${rand}');
+		var zhuguanScope=document.getElementById('zhuguanScope${rand}');
+		var finalMonth="";
+		
+	 	if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+			$('#jinglicurSalaryGroup${rand}').val(zhuguancurSalaryGroup.value);
+			$('#jinglicurSalary1${rand}').val(zhuguancurSalary1.value);
+			$('#jinglifuSalaryGroup${rand}').val(zhuguanfuSalaryGroup.value);
+			$('#jinglifuSalary1${rand}').val(zhuguanfuSalary1.value);
+			
+			$('#jingliextendProba${rand}').val(zhuguanextendProba.value);
+			$('#jingliMonth${rand}').val(zhuguanMonth.value);
+			$('#jingliScope${rand}').val(zhuguanScope.value);
+			finalMonth=zhuguanMonth.value;
+			}else{
+			$('#jingliMonth${rand}').val(adjustDate.value);
+			finalMonth=adjustDate.value;
+				}
+			
+	
+		//单选钮初始化	
+		var flag=false;
+		var adjust =document.getElementsByClassName('easyui-validatebox jingliisAujustOpt');
+        if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var x=0;x<adjust.length;x++){
+			if(zhuguanisAujustOpt.value==adjust[x].value){
+			adjust[x].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[x].value==1){
+			document.getElementById('jingliXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}
+		if(!flag){
+		document.getElementById('checkadjust${rand}').checked=true;
+		}
+	
+	//薪资明细是否显示	
+//如果调薪显示薪资明细
+function showAdjustSalaryDiv(){
+ if($('input[name="fp_jingliisAujustOpt"]:checked').val()==1){
+ document.getElementById('jingliXinziDiv${rand}').style.display ="inline";
+ }else{
+ document.getElementById('jingliXinziDiv${rand}').style.display ="none";
+ $("#jinglicurSalaryGroup${rand}").val("0");
+ $("#jinglicurSalary1${rand}").val("0");
+ $("#jinglifuSalaryGroup${rand}").val("0");
+ $("#jinglifuSalary1${rand}").val("0");
+ $("#jingliScope${rand}").val("0");
+ }
+ 
+  }
+  
+   function  initAdjustSalaryDiv(){
+ $('input[name="fp_jingliisAujustOpt"]').change(function(){
+showAdjustSalaryDiv();
+   
+  });
+  }
+  
+//---薪资明细是否显示
+
+	//计算调整幅度
+	function countScope(){
+	$('#jinglifuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('jinglicurSalary1${rand}');
+	    var var2 =document.getElementById('jinglifuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#jingliScope${rand}').val(diff);
+	});		
+}
+	
+	countScope();
+	showAdjustSalaryDiv();
+    initAdjustSalaryDiv();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+    showAdjustSalaryDiv();
+    initAdjustSalaryDiv();
+    });
+    
+	});
+	</script>
+	
+
+
+		</div>
+	
+	
+	</#if>
+	
+	
+
+	<#if currentStep == 'checkSalary'>
+	<#if processSteps??> 
+	 <#list processSteps as steps>
+	 <#if steps.key == 'zhuguan'> 
+	<input  type='hidden'  id="zhuguanisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["isAujustOpt"])!""}'/>
+	    <#if steps.vars["extendProba"]??>
+                  <#assign jingliextendProba=steps.vars["extendProba"]/>
+         </#if>
+    <input  type='hidden'  id="zhuguancurSalaryGroup${rand}"   value='${(steps.vars["curSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguancurSalary1${rand}"   value='${(steps.vars["curSalary1"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalaryGroup${rand}"   value='${(steps.vars["fuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalary1${rand}"   value='${(steps.vars["fuSalary1"])!""}'/>
+    
+    <input  type='hidden'  id="zhuguanextendProba${rand}"   value='${(steps.vars["extendProba"])!""}'/>
+    <input  type='hidden'  id="zhuguanMonth${rand}"   value='${(steps.vars["zhuguanMonth"])!""}'/>
+    <input  type='hidden'  id="zhuguanScope${rand}"   value='${(steps.vars["zhuguanScope"])!""}'/>
+    </#if>
+    
+    <#if steps.key == 'jingli'> 
+    <input  type='hidden'  id="jingliisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["jingliisAujustOpt"])!""}'/>
+    
+    <input  type='hidden'  id="jinglicurSalaryGroup${rand}"   value='${(steps.vars["jinglicurSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="jinglicurSalary1${rand}"   value='${(steps.vars["jinglicurSalary1"])!""}'/>
+    <input  type='hidden'  id="jinglifuSalaryGroup${rand}"   value='${(steps.vars["jinglifuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="jinglifuSalary1${rand}"   value='${(steps.vars["jinglifuSalary1"])!""}'/>
+    
+    <input  type='hidden'  id="jingliextendProba${rand}"   value='${(steps.vars["jingliextendProba"])!""}'/>
+    <input  type='hidden'  id="jingliMonth${rand}"   value='${(steps.vars["jingliMonth"])!""}'/>
+    <input  type='hidden'  id="jingliScope${rand}"   value='${(steps.vars["jingliScope"])!""}'/>
+         <#if steps.vars["jingliextendProba"]??>
+                  <#assign jingliextendProba=steps.vars["jingliextendProba"]/>
+         </#if>
+   
+    </#if>
+    
+	</#list>
+	</#if>
+		<div id="checkSalary">
+			<form id="checkSalaryForm" method="post" enctype='multipart/form-data'>
+					 <table id="checkSalaryFormTable" class="formtable" cellspacing="1" cellpadding="0">
+	 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">薪酬专员查核意见</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox xinchouisAujustOpt' type='radio' id='checkXinchouAdjust{rand}'  name='fp_xinchouisAujustOpt' value="1" />
+			 <div id="checkSalaryXinziDiv${rand}" style="display:inline;">
+			  是 由  
+			(薪资等级组
+			<input class='easyui-validatebox' type='text'  id='xinchoucurSalaryGroup${rand}'  name='fp_xinchoucurSalaryGroup' style="width:80px"  data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='xinchoucurSalary1${rand}'  name='fp_xinchoucurSalary1' style="width:80px"  data-options="required:true" />
+			 调整至  
+			 (薪资等级组
+			<input class='easyui-validatebox' type='text'  id='xinchoufuSalaryGroup${rand}'  name='fp_xinchoufuSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='xinchoufuSalary1${rand}'  name='fp_xinchoufuSalary1' style="width:80px" data-options="required:true" />)
+			
+			调整幅度<input class='easyui-validatebox' type='text'  id='xinchouScope${rand}'  name='fp_xinchouScope' style="width:80px"     data-options="required:true" readonly="readonly"/>
+			
+			</div>
+			 
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox xinchouisAujustOpt' type='radio'  name='fp_xinchouisAujustOpt' value="2" />转正或考核通过，但不调薪
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox xinchouisAujustOpt' type='radio'  name='fp_xinchouisAujustOpt' value="3" />延长试用期或考核期至<input class='easyui-validatebox' type='text'  id='xinchouextendProba${rand}'  name='fp_xinchouextendProba'   style="width:80px"/>
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox xinchouisAujustOpt' type='radio'  name='fp_xinchouisAujustOpt' value="4" />否&nbsp;&nbsp;&nbsp;&nbsp;意见:<input class='easyui-validatebox' type='text'  name='fp_xinchouReason' style="width:320px"/>
+			</td>
+			</tr>
+			
+		 
+			<tr>
+			<td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<input class="easyui-validatebox  Wdate" type='text'   id='xinchouMonth${rand}'  name='fp_xinchouMonth'     style="width:160px"   data-options="editable:false,required:true" onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			
+			</td>
+			<td class="formtable_td_value" colspan="2">经办:</td>
+			<td class="formtable_td_value">
+			 <input class='easyui-validatebox' type='text'  name='fp_xinchouSign' style="width:80px" data-options="required:true" value="${appuser.name}"/>
+			</td>
+		 </tr>
+		 
+
+		 
+		</table>
+			</form>
+			
+	<script type="text/javascript">
+		var finalchangeReason;
+		var finalchangeReasonText;
+		var finaltype;
+		var finaltypeText;
+		var finalarea;
+		var finalareaText;
+	    var finalfuSalaryLevelText;
+	    
+	$(function(){
+	
+	     if("${jingliextendProba}"){
+	    	 $("#xinchouextendProba${rand}").val("${jingliextendProba}");
+	     }
+		var zhuguanisAujustOpt =document.getElementById('zhuguanisAujustOpt${rand}');
+		
+		var zhuguancurSalaryGroup =document.getElementById('zhuguancurSalaryGroup${rand}');
+		var zhuguancurSalary1 =document.getElementById('zhuguancurSalary1${rand}');
+		var zhuguanfuSalaryGroup =document.getElementById('zhuguanfuSalaryGroup${rand}');
+		var zhuguanfuSalary1 =document.getElementById('zhuguanfuSalary1${rand}');
+		
+		var zhuguanextendProba =document.getElementById('zhuguanextendProba${rand}');
+		var zhuguanMonth =document.getElementById('zhuguanMonth${rand}');
+		var zhuguanScope =document.getElementById('zhuguanScope${rand}');
+		
+		
+		var jingliisAujustOpt =document.getElementById('jingliisAujustOpt${rand}');
+		
+		var jinglicurSalaryGroup =document.getElementById('jinglicurSalaryGroup${rand}');
+		var jinglicurSalary1 =document.getElementById('jinglicurSalary1${rand}');
+		var jinglifuSalaryGroup =document.getElementById('jinglifuSalaryGroup${rand}');
+		var jinglifuSalary1 =document.getElementById('jinglifuSalary1${rand}');
+		
+		var jingliextendProba =document.getElementById('jingliextendProba${rand}');
+		var jingliMonth =document.getElementById('jingliMonth${rand}');
+		var jingliScope =document.getElementById('jingliScope${rand}');
+		var finalMonth="";
+		var finalScope="";
+		
+		
+		if (jingliisAujustOpt != null &&jingliisAujustOpt.value!=""){
+			$('#xinchoucurSalaryGroup${rand}').val(jinglicurSalaryGroup.value);
+			$('#xinchoucurSalary1${rand}').val(jinglicurSalary1.value);
+			$('#xinchoufuSalaryGroup${rand}').val(jinglifuSalaryGroup.value);
+			$('#xinchoufuSalary1${rand}').val(jinglifuSalary1.value);
+			
+			$('#xinchouextendProba${rand}').val(jingliextendProba.value);
+			$('#xinchouMonth${rand}').val(jingliMonth.value);
+			$('#xinchouScope${rand}').val(jingliScope.value);
+			
+			finalMonth=jingliMonth.value;
+			finalScope=jingliScope.value;
+			
+			}else  if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+			$('#xinchoucurSalaryGroup${rand}').val(zhuguancurSalaryGroup.value);
+			$('#xinchoucurSalary1${rand}').val(zhuguancurSalary1.value);
+			$('#xinchoufuSalaryGroup${rand}').val(zhuguanfuSalaryGroup.value);
+			$('#xinchoufuSalary1${rand}').val(zhuguanfuSalary1.value);
+			
+			$('#xinchouextendProba${rand}').val(zhuguanextendProba.value);
+			$('#xinchouMonth${rand}').val(zhuguanMonth.value);
+			$('#xinchouScope${rand}').val(zhuguanScope.value);
+			
+			finalMonth=zhuguanMonth.value;
+			finalScope=zhuguanScope.value;
+			}
+			
+	   //申请日期初始化
+	
+			
+		//单选钮初始化	
+			var adjust =document.getElementsByClassName('easyui-validatebox xinchouisAujustOpt');
+			var flag=false;
+		if (jingliisAujustOpt != null &&jingliisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var m=0;m<adjust.length;m++){
+			
+			if(jingliisAujustOpt.value==adjust[m].value){
+			adjust[m].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[m].value==1){
+			document.getElementById('checkSalaryXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}else 	if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var n=0;n<adjust.length;n++){
+			
+			if(zhuguanisAujustOpt.value==adjust[n].value){
+			adjust[n].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[n].value==1){
+			document.getElementById('checkSalaryXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}
+		
+		if(!flag){
+		document.getElementById('checkXinchouAdjust${rand}').checked=true;
+		}
+
+	//薪资明细是否显示	
+//如果调薪显示薪资明细
+ function  showAdjustSalaryDiv(){
+
+ if($('input[name="fp_xinchouisAujustOpt"]:checked').val()==1){
+ document.getElementById('checkSalaryXinziDiv${rand}').style.display ="inline";
+ }else{
+ document.getElementById('checkSalaryXinziDiv${rand}').style.display ="none";
+ $("#xinchoucurSalaryGroup${rand}").val("0");
+ $("#xinchoucurSalary1${rand}").val("0");
+ $("#xinchoufuSalaryGroup${rand}").val("0");
+ $("#xinchoufuSalary1${rand}").val("0");
+ $("#xinchouScope${rand}").val("0");
+ }
+
+  }
+
+  function  initAdjustSalaryDiv(){
+ $('input[name="fp_xinchouisAujustOpt"]').change(function(){
+showAdjustSalaryDiv();
+   
+  });
+  }
+//---薪资明细是否显示
+	//计算调整幅度
+	function countScope(){
+	$('#xinchoufuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('xinchoucurSalary1${rand}');
+	    var var2 =document.getElementById('xinchoufuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#xinchouScope${rand}').val(diff);
+	});		
+}
+	
+	countScope();
+	showAdjustSalaryDiv();
+	initAdjustSalaryDiv();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+    showAdjustSalaryDiv();
+    initAdjustSalaryDiv();
+    });		
+	
+
+
+	});
+
+
+	</script>
+	
+
+		</div>
+	
+	
+	
+	</#if>
+	
+	
+	<#if currentStep == 'hrManager'>
+	<#if processSteps??> 
+	 <#list processSteps as steps>
+  <#if steps.key == 'zhuguan'> 
+	<input  type='hidden'  id="zhuguanisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["isAujustOpt"])!""}'/>
+	 
+    <input  type='hidden'  id="zhuguancurSalaryGroup${rand}"   value='${(steps.vars["curSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguancurSalary1${rand}"   value='${(steps.vars["curSalary1"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalaryGroup${rand}"   value='${(steps.vars["fuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="zhuguanfuSalary1${rand}"   value='${(steps.vars["fuSalary1"])!""}'/>
+    
+    <input  type='hidden'  id="zhuguanextendProba${rand}"   value='${(steps.vars["extendProba"])!""}'/>
+    <input  type='hidden'  id="zhuguanMonth${rand}"   value='${(steps.vars["zhuguanMonth"])!""}'/>
+    <input  type='hidden'  id="zhuguanScope${rand}"   value='${(steps.vars["zhuguanScope"])!""}'/>
+    </#if>
+    
+    <#if steps.key == 'jingli'> 
+    <input  type='hidden'  id="jingliisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["jingliisAujustOpt"])!""}'/>
+    
+    <input  type='hidden'  id="jinglicurSalaryGroup${rand}"   value='${(steps.vars["jinglicurSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="jinglicurSalary1${rand}"   value='${(steps.vars["jinglicurSalary1"])!""}'/>
+    <input  type='hidden'  id="jinglifuSalaryGroup${rand}"   value='${(steps.vars["jinglifuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="jinglifuSalary1${rand}"   value='${(steps.vars["jinglifuSalary1"])!""}'/>
+    
+    <input  type='hidden'  id="jingliextendProba${rand}"   value='${(steps.vars["jingliextendProba"])!""}'/>
+    <input  type='hidden'  id="jingliMonth${rand}"   value='${(steps.vars["jingliMonth"])!""}'/>
+    <input  type='hidden'  id="jingliScope${rand}"   value='${(steps.vars["jingliScope"])!""}'/>
+    </#if>
+    
+    <#if steps.key == 'checkSalary'> 
+    <input  type='hidden'  id="xinchouisAujustOpt${rand}"   value='${(steps.vars["xinchouisAujustOpt"])!""}'/>
+    <input  type='hidden'  id="xinchouextendProba${rand}"   value='${(steps.vars["xinchouextendProba"])!""}'/>
+    <input  type='hidden'  id="xinchouMonth${rand}"   value='${(steps.vars["xinchouMonth"])!""}'/>
+   
+    <input  type='hidden'  id="xinchoucurSalaryGroup${rand}"   value='${(steps.vars["xinchoucurSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="xinchoucurSalary1${rand}"   value='${(steps.vars["xinchoucurSalary1"])!""}'/>
+    <input  type='hidden'  id="xinchoufuSalaryGroup${rand}"   value='${(steps.vars["xinchoufuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="xinchoufuSalary1${rand}"   value='${(steps.vars["xinchoufuSalary1"])!""}'/>
+    <input  type='hidden'  id="xinchouScope${rand}"   value='${(steps.vars["xinchouScope"])!""}'/>
+    </#if>
+    
+	 </#list>
+	</#if>
+		<div id="hrManager">
+			<form id="hrManagerForm" method="post" enctype='multipart/form-data'>
+				<table id="hrManagerTable" class="formtable" cellspacing="1" cellpadding="0">
+				
+				 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">人力资源经理查核建议</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox hrManagerisAujustOpt' type='radio' id='checkHrManagerAdjust${rand}'   name='fp_hrManagerisAujustOpt' value="1" />
+			 
+			<div id="hrManagerXinziDiv${rand}" style="display:inline;">
+			 是 由  
+			(薪资等级组
+			<input class='easyui-validatebox' type='text'  id='hrManagercurSalaryGroup${rand}'  name='fp_hrManagercurSalaryGroup' style="width:80px"  data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='hrManagercurSalary1${rand}'  name='fp_hrManagercurSalary1' style="width:80px"  data-options="required:true" />
+			 调整至  
+			 (薪资等级组
+			<input class='easyui-validatebox' type='text'  id='hrManagerfuSalaryGroup${rand}'  name='fp_hrManagerfuSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='hrManagerfuSalary1${rand}'  name='fp_hrManagerfuSalary1' style="width:80px" data-options="required:true" />)
+			 调整幅度<input class='easyui-validatebox' type='text'  id='hrManagerScope${rand}'  name='fp_hrManagerScope' style="width:80px"     data-options="required:true" readonly="readonly"/>
+			 
+			 
+			  </div> 
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox hrManagerisAujustOpt' type='radio'  name='fp_hrManagerisAujustOpt' value="2" />转正或考核通过，但不调薪
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox hrManagerisAujustOpt' type='radio'  name='fp_hrManagerisAujustOpt' value="3" />延长试用期或考核期至<input class='easyui-validatebox' type='text' id='hrManagerextendProba'   name='fp_hrManagerextendProba'   style="width:80px"/>
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox hrManagerisAujustOpt' type='radio'  name='fp_hrManagerisAujustOpt' value="4" />否&nbsp;&nbsp;&nbsp;&nbsp;意见:<input class='easyui-validatebox' type='text'  name='fp_hrManagerReason' style="width:320px"/>
+			</td>
+			</tr>
+			
+	
+			<tr>
+			<td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<input class="easyui-validatebox  Wdate" type='text'  id='hrManagerMonth${rand}'   name='fp_hrManagerMonth'     style="width:160px"   data-options="editable:false,required:true" onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			</td>
+			<td class="formtable_td_value" colspan="2">审核:</td>
+			<td class="formtable_td_value">
+			 <input class='easyui-validatebox' type='text'  name='fp_hrManagerSign' style="width:80px" data-options="required:true" value="${appuser.name}"/>
+			</td>
+		 </tr>
+		 
+		 
+		 
+	
+		        </table>
+		
+			</form>
+			
+	<script type="text/javascript">
+		var finalchangeReason;
+		var finalchangeReasonText;
+		var finaltype;
+		var finaltypeText;
+		var finalarea;
+		var finalareaText;
+	    var finalfuSalaryLevelText;
+	    
+	$(function(){
+		var zhuguanisAujustOpt =document.getElementById('zhuguanisAujustOpt${rand}');
+		
+		var zhuguancurSalaryGroup =document.getElementById('zhuguancurSalaryGroup${rand}');
+		var zhuguancurSalary1 =document.getElementById('zhuguancurSalary1${rand}');
+		var zhuguanfuSalaryGroup =document.getElementById('zhuguanfuSalaryGroup${rand}');
+		var zhuguanfuSalary1 =document.getElementById('zhuguanfuSalary1${rand}');
+		
+		var zhuguanextendProba =document.getElementById('zhuguanextendProba${rand}');
+		var zhuguanMonth =document.getElementById('zhuguanMonth${rand}');
+		var zhuguanScope =document.getElementById('zhuguanScope${rand}');
+		
+		var jingliisAujustOpt =document.getElementById('jingliisAujustOpt${rand}');
+		
+		var jinglicurSalaryGroup =document.getElementById('jinglicurSalaryGroup${rand}');
+		var jinglicurSalary1 =document.getElementById('jinglicurSalary1${rand}');
+		var jinglifuSalaryGroup =document.getElementById('jinglifuSalaryGroup${rand}');
+		var jinglifuSalary1 =document.getElementById('jinglifuSalary1${rand}');
+		
+		var jingliextendProba =document.getElementById('jingliextendProba${rand}');
+		var jingliMonth =document.getElementById('jingliMonth${rand}');
+		var jingliScope =document.getElementById('jingliScope${rand}');
+		
+		var xinchouisAujustOpt =document.getElementById('xinchouisAujustOpt${rand}');
+		
+		var xinchoucurSalaryGroup =document.getElementById('xinchoucurSalaryGroup${rand}');
+		var xinchoucurSalary1 =document.getElementById('xinchoucurSalary1${rand}');
+		var xinchoufuSalaryGroup =document.getElementById('xinchoufuSalaryGroup${rand}');
+		var xinchoufuSalary1 =document.getElementById('xinchoufuSalary1${rand}');
+		
+		var xinchouextendProba =document.getElementById('xinchouextendProba${rand}');
+		var xinchouMonth =document.getElementById('xinchouMonth${rand}');
+		var xinchouScope =document.getElementById('xinchouScope${rand}');
+		
+		var finalMonth="";
+		var finalScope="";
+		
+			if (xinchouisAujustOpt != null &&xinchouisAujustOpt.value!=""){
+			$('#hrManagercurSalaryGroup${rand}').val(xinchoucurSalaryGroup.value);
+			$('#hrManagercurSalary1${rand}').val(xinchoucurSalary1.value);
+			$('#hrManagerfuSalaryGroup${rand}').val(xinchoufuSalaryGroup.value);
+			$('#hrManagerfuSalary1${rand}').val(xinchoufuSalary1.value);
+			
+			$('#hrManagerextendProba${rand}').val(xinchouextendProba.value);
+			$('#hrManagerMonth${rand}').val(xinchouMonth.value);
+			$('#hrManagerScope${rand}').val(xinchouScope.value);
+			
+			finalMonth=xinchouMonth.value;
+			finalScope=xinchouScope.value;
+			
+			}else  if (jingliisAujustOpt != null &&jingliisAujustOpt.value!=""){
+			$('#hrManagercurSalaryGroup${rand}').val(jinglicurSalaryGroup.value);
+			$('#hrManagercurSalary1${rand}').val(jinglicurSalary1.value);
+			$('#hrManagerfuSalaryGroup${rand}').val(jinglifuSalaryGroup.value);
+			$('#hrManagerfuSalary1${rand}').val(jinglifuSalary1.value);
+			
+			$('#hrManagerextendProba${rand}').val(jingliextendProba.value);
+			$('#hrManagerMonth${rand}').val(jingliMonth.value);
+			$('#hrManagerScope${rand}').val(jingliScope.value);
+			
+			finalMonth=jingliMonth.value;
+			finalScope=jingliScope.value;
+			
+			}else  if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+			$('#hrManagercurSalaryGroup${rand}').val(zhuguancurSalaryGroup.value);
+			$('#hrManagercurSalary1${rand}').val(zhuguancurSalary1.value);
+			$('#hrManagerfuSalaryGroup${rand}').val(zhuguanfuSalaryGroup.value);
+			$('#hrManagerfuSalary1${rand}').val(zhuguanfuSalary1.value);
+			
+			$('#hrManagerextendProba${rand}').val(zhuguanextendProba.value);
+			$('#hrManagerMonth${rand}').val(zhuguanMonth.value);
+			$('#hrManagerScope${rand}').val(zhuguanScope.value);
+			
+			finalMonth=zhuguanMonth.value;
+			finalScope=zhuguanScope.value;
+			
+			}
+	  //申请日期初始化
+	
+     
+     
+		//单选钮初始化	
+		var adjust =document.getElementsByClassName('easyui-validatebox hrManagerisAujustOpt');
+		if (xinchouisAujustOpt != null &&xinchouisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var a=0;a<adjust.length;a++){
+			
+			if(xinchouisAujustOpt.value==adjust[a].value){
+			adjust[a].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[a].value==1){
+			document.getElementById('hrManagerXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}else  if (jingliisAujustOpt != null &&jingliisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var m=0;m<adjust.length;m++){
+			
+			if(jingliisAujustOpt.value==adjust[m].value){
+			adjust[m].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[m].value==1){
+			document.getElementById('hrManagerXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}else 	if (zhuguanisAujustOpt != null &&zhuguanisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var n=0;n<adjust.length;n++){
+			
+			if(zhuguanisAujustOpt.value==adjust[n].value){
+			adjust[n].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[n].value==1){
+			document.getElementById('hrManagerXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}
+		
+		
+	if(!flag){
+		document.getElementById('checkHrManagerAdjust${rand}').checked=true;
+		}
+		
+//薪资明细是否显示	
+//如果调薪显示薪资明细
+function  showAdjustSalaryDiv(){
+ if($('input[name="fp_hrManagerisAujustOpt"]:checked').val()==1){
+ document.getElementById('hrManagerXinziDiv${rand}').style.display ="inline";
+ }else{
+ document.getElementById('hrManagerXinziDiv${rand}').style.display ="none";
+ $("#hrManagercurSalaryGroup${rand}").val("0");
+ $("#hrManagercurSalary1${rand}").val("0");
+ $("#hrManagerfuSalaryGroup${rand}").val("0");
+ $("#hrManagerfuSalary1${rand}").val("0");
+ $("#hrManagerScope${rand}").val("0");
+ }
+  }
+  
+  function  initAdjustSalaryDiv(){
+ $('input[name="fp_hrManagerisAujustOpt"]').change(function(){
+showAdjustSalaryDiv();
+  });
+  }
+//---薪资明细是否显示	
+		
+	
+	//计算调整幅度
+	function countScope(){
+	$('#hrManagerfuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('hrManagercurSalary1${rand}');
+	    var var2 =document.getElementById('hrManagerfuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#hrManagerScope${rand}').val(diff);
+	});		
+}	
+
+	countScope();
+	showAdjustSalaryDiv();
+	initAdjustSalaryDiv();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+    showAdjustSalaryDiv();
+	initAdjustSalaryDiv();
+    });		
+		
+	});
+
+	</script>
+	
+	
+		
+		</div>
+	
+	
+	</#if>
+	
+	
+	<#if currentStep == 'ceo'>
+	<#if processSteps??> 
+	 <#list processSteps as steps>
+	 
+	<#if steps.key == 'hrManager'> 
+    <input  type='hidden'  id="hrManagerisAujustOpt${rand}"  data-options="required:true" value='${(steps.vars["hrManagerisAujustOpt"])!""}'/>
+
+    <input  type='hidden'  id="hrManagercurSalaryGroup${rand}"   value='${(steps.vars["hrManagercurSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="hrManagercurSalary1${rand}"   value='${(steps.vars["hrManagercurSalary1"])!""}'/>
+    <input  type='hidden'  id="hrManagerfuSalaryGroup${rand}"   value='${(steps.vars["hrManagerfuSalaryGroup"])!""}'/>
+    <input  type='hidden'  id="hrManagerfuSalary1${rand}"   value='${(steps.vars["hrManagerfuSalary1"])!""}'/>
+     
+    <input  type='hidden'  id="hrManagerextendProba${rand}"  data-options="required:true" value='${(steps.vars["hrManagerextendProba"])!""}'/>
+    <input  type='hidden'  id="hrManagerMonth${rand}"  data-options="required:true" value='${(steps.vars["hrManagerMonth"])!""}'/>
+    <input  type='hidden'  id="hrManagerScope${rand}"  data-options="required:true" value='${(steps.vars["hrManagerScope"])!""}'/>
+    </#if>
+    </#list>
+	</#if> 
+     
+		<div id="ceo">
+			<form id="ceoForm" method="post" enctype='multipart/form-data'>
+			<table id="ceoTable" class="formtable" cellspacing="1" cellpadding="0">
+				 <tr>
+		 <td class="formtable_td_key" colspan="2" rowspan="6">总经理查核建议</td>
+		 <td class="formtable_td_value" colspan="6"> 是否予以转正或通过考核期：</td>
+		 </tr>
+		 <tr>
+		 <td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox ceoisAujustOpt' type='radio' id='checkceoAdjust${rand}'   name='fp_ceoisAujustOpt' value="1" />
+			
+			<div id="ceoXinziDiv${rand}" style="display:inline;">
+			 是 由  
+			(薪资等级组
+			<input class='easyui-validatebox' type='text'  id='ceocurSalaryGroup${rand}'  name='fp_ceocurSalaryGroup' style="width:80px"  data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='ceocurSalary1${rand}'  name='fp_ceocurSalary1' style="width:80px"  data-options="required:true" />
+			 调整至  
+			 (薪资等级组
+			<input class='easyui-validatebox' type='text'  id='ceofuSalaryGroup${rand}'  name='fp_ceofuSalaryGroup' style="width:80px" data-options="required:true" />
+			金额
+			<input class='easyui-validatebox' type='text'  id='ceofuSalary1${rand}'  name='fp_ceofuSalary1' style="width:80px" data-options="required:true" />)
+			 调整幅度<input class='easyui-validatebox' type='text'  id='ceoScope${rand}'  name='fp_ceoScope' style="width:80px"     data-options="required:true" readonly="readonly"/>
+			  
+			  
+			  </div>
+			 </td>
+			</tr>
+			
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox ceoisAujustOpt' type='radio'  name='fp_ceoisAujustOpt' value="2" />转正或考核通过，但不调薪
+			</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox ceoisAujustOpt' type='radio'  name='fp_ceoisAujustOpt' value="3" />延长试用期或考核期至<input class='easyui-validatebox' type='text' id='ceoextendProba${rand}'   name='fp_ceoextendProba'   style="width:80px"/>
+			</td>
+			</tr>
+			
+	<tr>
+			<td class="formtable_td_value" colspan="6">
+			 <input class='easyui-validatebox ceoisAujustOpt' type='radio'  name='fp_ceoisAujustOpt' value="4" />否&nbsp;&nbsp;&nbsp;&nbsp;意见:<input class='easyui-validatebox' type='text'  name='fp_ceoReason' style="width:320px"/>
+			</td>
+			</tr>
+			
+	
+			<tr>
+			<td class="formtable_td_value" colspan="2">转正（调整）日期：</td>
+			<td class="formtable_td_value">
+			<input class="easyui-validatebox   Wdate"  type='text'   id='ceoMonth${rand}'   name='fp_ceoMonth'      style="width:160px"   data-options="editable:false,required:true" onfocus="WdatePicker({dateFmt:'yyyy-MM'})"/>
+			</td>
+			<td class="formtable_td_value" colspan="2">总经理签署:</td>
+			<td class="formtable_td_value">
+			 <input class='easyui-validatebox' type='text'  name='fp_ceoSign' style="width:80px" data-options="required:true" value="${appuser.name}"/>
+			</td>
+		 </tr>
+		 </table>
+		 
+			</form>
+			
+			<script type="text/javascript">
+	    $(function(){
+		var hrManagerisAujustOpt =document.getElementById('hrManagerisAujustOpt${rand}');
+		
+		var hrManagercurSalaryGroup =document.getElementById('hrManagercurSalaryGroup${rand}');
+		var hrManagercurSalary1 =document.getElementById('hrManagercurSalary1${rand}');
+		var hrManagerfuSalaryGroup =document.getElementById('hrManagerfuSalaryGroup${rand}');
+		var hrManagerfuSalary1 =document.getElementById('hrManagerfuSalary1${rand}');
+		
+		var hrManagerextendProba =document.getElementById('hrManagerextendProba${rand}');
+		var hrManagerMonth =document.getElementById('hrManagerMonth${rand}');
+		var hrManagerScope =document.getElementById('hrManagerScope${rand}');
+		
+		var adjustDate=document.getElementById('hrManagerMonth${rand}');
+		
+		var finalMonth="";
+		var finalScope="";
+		
+	 	if (hrManagerisAujustOpt != null &&hrManagerisAujustOpt.value!=""){
+			
+			$('#ceocurSalaryGroup${rand}').val(hrManagercurSalaryGroup.value);
+			$('#ceocurSalary1${rand}').val(hrManagercurSalary1.value);
+			$('#ceofuSalaryGroup${rand}').val(hrManagerfuSalaryGroup.value);
+			$('#ceofuSalary1${rand}').val(hrManagerfuSalary1.value);
+			
+			$('#ceoextendProba${rand}').val(hrManagerextendProba.value);
+			$('#ceoMonth${rand}').val(hrManagerMonth.value);
+			$('#ceoScope${rand}').val(hrManagerScope.value);
+			
+			finalMonth=hrManagerMonth.value;
+			finalScope=hrManagerScope.value;
+			
+			}else{
+			$('#ceoMonth${rand}').val(hrManagerMonth.value);
+			finalMonth=hrManagerMonth.value;
+			}
+				
+				
+	  //申请日期初始化
+	
+     
+		//单选钮初始化	
+		var flag=false;
+		var adjust =document.getElementsByClassName('easyui-validatebox ceoisAujustOpt');
+        if (hrManagerisAujustOpt != null &&hrManagerisAujustOpt.value!=""){
+		if (adjust != null || adjust.length > 0){
+			for(var x=0;x<adjust.length;x++){
+			if(hrManagerisAujustOpt.value==adjust[x].value){
+			adjust[x].checked=true;
+			flag=true;
+			//判断是否调薪
+			if(adjust[x].value==1){
+			document.getElementById('ceoXinziDiv${rand}').style.display ="inline";
+			}
+			break;
+			   }
+			 }
+			}
+		}
+		if(!flag){
+		document.getElementById('checkceoadjust${rand}').checked=true;
+		}
+
+
+//薪资明细是否显示	
+//如果调薪显示薪资明细
+ function  showAdjustSalaryDiv(){
+ if($('input[name="fp_ceoisAujustOpt"]:checked').val()==1){
+ document.getElementById('ceoXinziDiv${rand}').style.display ="inline";
+ }else{
+ document.getElementById('ceoXinziDiv${rand}').style.display ="none";
+ $("#ceocurSalaryGroup${rand}").val("0");
+ $("#ceocurSalary1${rand}").val("0");
+ $("#ceofuSalaryGroup${rand}").val("0");
+ $("#ceofuSalary1${rand}").val("0");
+ $("#ceoScope${rand}").val("0");
+ }
+  }
+  
+ function  initAdjustSalaryDiv(){
+ $('input[name="fp_ceoisAujustOpt"]').change(function(){
+showAdjustSalaryDiv();
+  });
+  }
+//---薪资明细是否显示
+	//计算调整幅度
+	function countScope(){
+	$('#ceofuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('ceocurSalary1${rand}');
+	    var var2 =document.getElementById('ceofuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#ceoScope${rand}').val(diff);
+	});		
+}
+	
+	countScope();
+	 showAdjustSalaryDiv();
+	initAdjustSalaryDiv();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+     showAdjustSalaryDiv();
+	initAdjustSalaryDiv();
+    });		
+
+
+
+			});
+	</script>
+			
+			
+		</div>
+	
+	
+
+	</#if>
+		
+</#if>
+<#include "/common/foot.html">

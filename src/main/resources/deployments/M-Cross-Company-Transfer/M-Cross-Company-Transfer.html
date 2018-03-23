@@ -1,0 +1,1614 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent'>
+		<tr>
+		  	<td class="formtable_td_key">姓名：</td>
+			<td class="formtable_td_value">${steps.vars["userName"]}</td>
+			<td class="formtable_td_key">员工编号：</td>
+			<td class="formtable_td_value">
+				 ${steps.vars["applyUserAccount"]}
+			</td>
+			<td class="formtable_td_key">性别：</td>
+			<td class="formtable_td_value">
+				 ${steps.vars["outSex"]}
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">年龄：</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value">
+				${steps.vars["outAge"]}
+			</td>
+		  	<td class="formtable_td_key">学历：</td>
+			<td id="td_outEducation${rand}" class="formtable_td_value">
+				${steps.vars["outEducation"]}
+			</td>
+			<td class="formtable_td_key">专业：</td>
+			<td id="td_outMajor${rand}" class="formtable_td_value">
+				${steps.vars["outMajor"]}
+			</td>
+		 </tr>
+		 <tr>
+		  	 <td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  	调出公司
+		  	 </td>
+		 </tr>
+		 <tr>
+		 	<td class="formtable_td_key">公司名称：</td>
+			<td class="formtable_td_value">
+				${steps.vars["outComName"]}
+			</td>
+		  	<td class="formtable_td_key">系统名称：</td>
+			<td class="formtable_td_value">
+				${steps.vars["outSysName"]}
+			</td>
+			<td class="formtable_td_key">部门名称：</td>
+			<td class="formtable_td_value">
+				 ${steps.vars["outOrgName"]}
+			</td>
+		 </tr>
+		 <tr>
+			<td class="formtable_td_key">入职日期：</td>
+			<td id="td_outEntryDate${rand}" class="formtable_td_value">
+				${(steps.vars["outEntryDate"])?date("yyyy-MM-dd")}
+			</td>
+			<td class="formtable_td_key">岗位：</td>
+			<td id="td_outJob${rand}" class="formtable_td_value" colspan="3">
+				${steps.vars["outJob"]}
+			</td>
+		 </tr>
+		 <tr>
+		  	<td class="formtable_td_key" width="800" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  	调入公司
+		  	</td>
+		 </tr>
+		 <tr>
+		 	<td class="formtable_td_key">公司名称：</td>
+			<td class="formtable_td_value">
+				${steps.vars["inComName"]}
+			</td>
+		  	<td class="formtable_td_key">系统名称：</td>
+			<td class="formtable_td_value">
+				${steps.vars["inSysName"]}
+			</td>
+			<td class="formtable_td_key">部门名称：</td>
+			<td class="formtable_td_value">
+				${steps.vars["inOrgName"]}
+			</td>
+		 </tr>
+		 <tr>
+		  	<td class="formtable_td_key">拟安排岗位：</td>
+			<td class="formtable_td_value">
+				${steps.vars["inJob"]}
+			</td>
+			<td class="formtable_td_key">调动日期：</td>
+			<td class="formtable_td_value" colspan="3">
+				${steps.vars["inTransferDate"]}
+			</td>
+		 </tr>
+		 <tr>
+		  	<td class="formtable_td_key">调动原因：</td>
+		  	<td class="formtable_td_value" colspan="5">
+		  		${steps.vars["transferReason"]}
+		  	 </td>
+		 </tr>
+		 <tr>
+		  	<td class="formtable_td_key">申请人：</td>
+			<td class="formtable_td_value">
+				${steps.vars["userName"]}
+			</td>
+			<td class="formtable_td_key">申请时间：</td>
+			<td class="formtable_td_value" colspan="3">
+				${steps.vars["outDeptLeaderAudiTime"]}
+			</td>
+		 </tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 调出部门经理 -->
+<#if steps.key == 'outDeptLeaderAudiTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	${steps.activityName}
+			</td>
+		</tr>
+		<tr>
+		<td class="formtable_td_key">部门经理：</td>
+		<td class="formtable_td_value">
+			${steps.vars["outDeptLeaderName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["outDeptLeaderAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["outDeptLeaderAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outDeptLeaderAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outDeptLeaderAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出部门总监 -->
+<#if steps.key == 'outMajordomoAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  ${steps.activityName}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">部门总监：</td>
+		<td class="formtable_td_value">
+			${steps.vars["outDeptMajordomoName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["outDeptMajordomoAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["outDeptMajordomoAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outDeptMajordomoAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outDeptMajordomoAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出部门主管副总 -->
+<#if steps.key == 'outDirectorAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			 ${steps.activityName}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">部门主管副总：</td>
+		<td class="formtable_td_value">
+			${steps.vars["outDirectorName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["outDirectorAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["outDirectorAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outDirectorAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outDirectorAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出公司总裁或董事长审批 -->
+<#if steps.key == 'outGeneralManagerAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			 ${steps.activityName}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">总裁或董事长：</td>
+		<td class="formtable_td_value">
+			${steps.vars["outGeneralManagerName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["outGeneralManagerAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["outGeneralManagerAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outGeneralManagerAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outGeneralManagerAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+			steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br/> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出公司人力资源部-人事处理 -->
+<#if steps.key == 'outHRPersonMattersAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	${steps.activityName}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">人事处理</td>
+		<td class="formtable_td_value">
+			${steps.vars["outPersonMattersName"]}
+		</td>
+		<td class="formtable_td_key">档案情况：</td>
+		<#if steps.vars["outRecordDisposition"] == '0' >
+			<td class="formtable_td_value">调出</td>
+		</#if>
+		<#if steps.vars["outRecordDisposition"] == '1' >
+			<td class="formtable_td_value">其他</td>
+		</#if>
+		<td class="formtable_td_key">工龄起始日期：</td>
+		<td class="formtable_td_value">
+			${steps.vars["outServiceStartDate"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outPersonMattersAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outPersonMattersAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出公司人力资源部-薪酬 -->
+
+<!-- 调出公司人力资源部 -->
+<#if steps.key == 'outHRAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  调出公司人力资源部审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">人力总监</td>
+		<td class="formtable_td_value">
+			${steps.vars["outHRName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["outHRAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["outHRAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["outHRAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["outHRAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调入部门经理 -->
+<#if steps.key == 'inDeptLeaderAudiTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	调入部门经理审批
+			</td>
+		</tr>
+		<#if steps.vars["inAssessmentAudi"] == '0' >
+		<tr>
+			<td class="formtable_td_key">是否有考核期：</td>
+			<td class="formtable_td_value" colspan="5">否</td>
+		</tr>
+		</#if>
+		<#if steps.vars["inAssessmentAudi"] == '1' >
+		<tr>
+			<td class="formtable_td_key">是否有考核期：</td>
+			<td class="formtable_td_value">是</td>
+			<td id="td_appendOne" class="formtable_td_key">考核期：</td>
+			<td id="td_appendTwo" class="formtable_td_value" colspan="3">
+				${steps.vars["inAssMonth"]} 个月
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">考核期薪资是否异动：</td>
+			<#if steps.vars["inWageChangeAudi"] == '0' >
+			<td class="formtable_td_value" colspan="5">否</td>
+			</#if>
+			<#if steps.vars["inWageChangeAudi"] == '1' >
+				<td class="formtable_td_value">是</td>
+				<td class="formtable_td_key">职级职等：</td>
+				<td class="formtable_td_value">
+					${steps.vars["inRankLevel"]}
+				</td>
+				<td class="formtable_td_key">薪资总额：</td>
+				<td class="formtable_td_value">
+					${steps.vars["inTotalSalary"]}
+				</td>
+			</#if>
+		</tr>
+		</#if>
+		<tr>
+			<td class="formtable_td_key">部门经理</td>
+			<td class="formtable_td_value">
+				${steps.vars["inDeptLeaderName"]}
+			</td>
+			<td class="formtable_td_key">审批结果：</td>
+			<#if steps.vars["inDeptLeaderAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+			</#if>
+			<#if steps.vars["inDeptLeaderAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+			</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["inDeptLeaderAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["inDeptLeaderAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调入部门总监 -->
+<#if steps.key == 'inMajordomoAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  调入部门总监审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">部门总监</td>
+		<td class="formtable_td_value">
+			${steps.vars["inDeptMajordomoName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["inDeptMajordomoAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["inDeptMajordomoAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["inDeptMajordomoAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["inDeptMajordomoAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调入部门主管副总 -->
+<#if steps.key == 'inDirectorAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  调入部门主管副总审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">部门主管副总</td>
+		<td class="formtable_td_value">
+			${steps.vars["inDirectorName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["inDirectorAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["inDirectorAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["inDirectorAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["inDirectorAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+
+<!-- 总经理 -->
+<#if steps.key == 'generalManagerAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  调入部门总裁或董事长审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			 总裁或董事长审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">总经理</td>
+		<td class="formtable_td_value">
+			${steps.vars["inGeneralManagerName"]}
+		</td>
+		<td class="formtable_td_key">审批结果：</td>
+		<#if steps.vars["inGeneralManagerAudi"] == '0' >
+			<td class="formtable_td_value" colspan="3">同意</td>
+		</#if>
+		<#if steps.vars["inGeneralManagerAudi"] == '1' >
+			<td class="formtable_td_value" colspan="3">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["inGeneralManagerAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["inGeneralManagerAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+			steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br/> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 调出公司人力资源部 -->
+<#if steps.key == 'inHRAudiTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	调出公司人力资源部审批
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">档案情况：</td>
+		<#if steps.vars["inRecordDisposition"] == '0' >
+			<td class="formtable_td_value">调出</td>
+		</#if>
+		<#if steps.vars["inRecordDisposition"] == '1' >
+			<td class="formtable_td_value">其他</td>
+		</#if>
+		<td class="formtable_td_key">工龄起始日期：</td>
+		<td class="formtable_td_value">
+			${steps.vars["inServiceStartDate"]}
+		</td>
+		<td class="formtable_td_key">工资结算日：</td>
+		<td class="formtable_td_value">
+			${steps.vars["inWageSettDate"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">社保公积金：</td>
+		<#if steps.vars["inSocialSecurity"] == '0' >
+			<td class="formtable_td_value" colspan="5">转出</td>
+		</#if>
+		<#if steps.vars["inSocialSecurity"] == '1' >
+			<td class="formtable_td_value" colspan="5">已停</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">人力资源部审批</td>
+		<td class="formtable_td_value" >
+			${steps.vars["inHRName"]}
+		</td>
+		<#if steps.vars["inHRAudi"] == '0' >
+			<td class="formtable_td_value" colspan="4">同意</td>
+		</#if>
+		<#if steps.vars["inHRAudi"] == '1' >
+			<td class="formtable_td_value" colspan="4">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+			${steps.vars["inHRAudiAdvice"]}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${steps.vars["inHRAudiTime"]}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+</#list> 
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">姓名：</td>
+		  	        <input id="curUserAccount" type="hidden" name="fp_applyUserAccount" value="${appuser.account}"/>
+		  	        <input id="userName" type="hidden" name="fp_userName" value="${appuser.name}"/>
+				  	<td class="formtable_td_value">${appuser.name}</td>
+				  	<td class="formtable_td_key">员工编号：</td>
+				  	<td class="formtable_td_value">
+				  		${appuser.account}
+				  	</td>
+				  	<td class="formtable_td_key">性别：</td>
+				  	<td id="td_outSex${rand}" class="formtable_td_value">
+				  		<input id="outSex${rand}" type="hidden" name="fp_outSex"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">年龄：</td>
+				  	<td id="td_outAge${rand}" class="formtable_td_value">
+				  		<input id="outAge${rand}" type="hidden" name="fp_outAge"/>
+				  	</td>
+		  	        <td class="formtable_td_key">学历：</td>
+				  	<td id="td_outEducation${rand}" class="formtable_td_value">
+				  		<input id="outEducation${rand}" type="hidden" name="fp_outEducation"/>
+				  	</td>
+				  	<td class="formtable_td_key">专业：</td>
+				  	<td id="td_outMajor${rand}" class="formtable_td_value">
+				  		<input id="outMajor${rand}" type="hidden" name="fp_outMajor"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  			调出公司
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">公司名称：</td>
+				  	<td id="td_outComName${rand}" class="formtable_td_value">
+						<input id="outComName${rand}" class="easyui-validatebox"  type="hidden" name="fp_outComName"
+								data-options="required:true" />
+					</td>
+		  	        <td class="formtable_td_key">系统名称：</td>
+				  	<td id="td_outSysName${rand}" class="formtable_td_value">
+						<input id="outSysName${rand}" class="easyui-validatebox"  type="hidden" name="fp_outSysName"
+								data-options="required:true" />
+					</td>
+				  	<td class="formtable_td_key">部门名称：</td>
+				  	<td class="formtable_td_value">
+				  		<input type="hidden" name="fp_outOrgName" value="${appuser.orgName}"/>
+				  		${appuser.orgName}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">入职日期：</td>
+				  	<td id="td_outEntryDate${rand}" class="formtable_td_value">
+				  		<input id="outEntryDate${rand}" type="hidden" name="fp_outEntryDate"/>
+				  	</td>
+				  	 <td class="formtable_td_key">岗位：</td>
+				  	<td id="td_outJob${rand}" class="formtable_td_value" colspan="3">
+						<input id="outJob${rand}" type="hidden" name="fp_outJob"/>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  			调入公司
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		 <td class="formtable_td_key">公司名称：</td>
+				  	<td class="formtable_td_value">
+				  		<input id="combo_inComName${rand}" type="text" value=""/>
+				  		<input id="hidden_inComName${rand}" type="hidden" name="fp_inComName" value=""/>
+					</td>
+		  	        <td class="formtable_td_key">系统名称：</td>
+				  	<td class="formtable_td_value">
+						<input id="combo_inSysName${rand}" type="text" value=""/>
+						<input id="hidden_inSysName${rand}" type="hidden" name="fp_inSysName" value=""/>
+					</td>
+				  	<td class="formtable_td_key">部门名称：</td>
+				  	<td class="formtable_td_value">
+				  		<input id="combo_inOrgName${rand}" type="text" name="fp_inOrgId" value=""/>
+				  		<input id="hidden_inOrgName${rand}" type="hidden" name="fp_inOrgName" value=""/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">拟安排岗位：</td>
+				  	<td class="formtable_td_value" colspan="5">
+						<input id="combo_inJobName${rand}" type="text" value=""/>
+						<input id="hidden_inJobName${rand}" type="hidden" name="fp_inJob" value=""/>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">调动日期：</td>
+				  	<td class="formtable_td_value" colspan="5">
+				  		<input id="inTransferDate${rand}" class="easyui-datebox"  type="text" name="fp_inTransferDate" 
+				  			data-options="editable:false,required:true,onSelect:inTransferDateTip${rand}"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">调动原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px"
+								name="fp_transferReason" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">申请人：</td>
+				  	<td class="formtable_td_value">
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">申请时间：</td>
+				  	<td class="formtable_td_value" colspan="3">
+						<input type="hidden" name="fp_outDeptLeaderAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#curUserAccount").val()
+					},
+					function(data){
+						if (data.success) {
+							$("#outSex${rand}").val(data.obj.sex);
+							$("#outAge${rand}").val(data.obj.age);
+							$("#outEducation${rand}").val(data.obj.education);
+							$("#outJob${rand}").val(data.obj.job);
+							$("#outMajor${rand}").val(data.obj.major);
+							$("#outEntryDate${rand}").val(data.obj.entryDate);
+							$("#outComName${rand}").val(data.obj.companyName);
+							$("#outSysName${rand}").val(data.obj.systemName);
+							//设置TD
+							$("#td_outSex${rand}").append(data.obj.sex);
+							$("#td_outAge${rand}").append(data.obj.age);
+							$("#td_outEducation${rand}").append(data.obj.education);
+							$("#td_outJob${rand}").append(data.obj.job);
+							$("#td_outMajor${rand}").append(data.obj.major);
+							$("#td_outEntryDate${rand}").append(data.obj.entryDate);
+							$("#td_outComName${rand}").append(data.obj.companyName);
+							$("#td_outSysName${rand}").append(data.obj.systemName);
+						}
+				});
+				
+				//init combobox
+				var combo_inComName = $('#combo_inComName${rand}');
+				var combo_inSysName = $("#combo_inSysName${rand}");
+				var combo_inOrgName = $('#combo_inOrgName${rand}');
+				var combo_inJobName = $('#combo_inJobName${rand}');
+				
+				var hidden_inComName = $('#hidden_inComName${rand}');
+				var hidden_inSysName = $("#hidden_inSysName${rand}");
+				var hidden_inOrgName = $('#hidden_inOrgName${rand}');
+				var hidden_inJobName = $('#hidden_inJobName${rand}');
+				
+				//提交的是显示的值
+				combo_inComName.combobox({
+				    url:'hrFlow/allCompanyInfo.json',
+				    valueField:'id',
+				    textField:'text',
+				    required:true,
+				    panelWidth:200,
+				    onChange:function(newValue, oldValue){
+						$.get('hrFlow/systemInfoFromCompany.json',{companyId:newValue},
+							function(data){
+								combo_inSysName.combobox("clear").combobox('loadData',data);
+								combo_inOrgName.combobox("clear");
+								combo_inJobName.combobox("clear");
+								
+								//clear cascade value
+						    	hidden_inSysName.val("");
+								hidden_inOrgName.val("");
+								hidden_inJobName.val("");
+						},'json');
+					},
+					onSelect:function(record){
+						//set cur hidden value
+						hidden_inComName.val(record.text);
+					}
+				});
+				
+				combo_inSysName.combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					required:true,
+					onChange:function(newValue, oldValue){
+						var companyId = combo_inComName.combobox('getValue');
+						$.get('hrFlow/deptInfoFromSystem.json',
+							{
+								companyId:companyId,
+								sysNo:newValue
+							},
+							function(data){
+								combo_inOrgName.combobox("clear").combobox('loadData',data);
+								combo_inJobName.combobox("clear");
+							
+								//clear cascade value
+								hidden_inOrgName.val("");
+								hidden_inJobName.val("");
+						},'json');
+					},
+					onSelect:function(record){
+						//set cur hidden value
+						hidden_inSysName.val(record.text);
+					}
+				});
+				
+				combo_inOrgName.combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					required:true,
+					onChange:function(newValue, oldValue){
+						combo_inOrgName.val(combo_inOrgName.combobox('getText'));
+						hidden_inJobName.val("");
+						$.get('hrFlow/jonInfoFromDept.json',{deptId:newValue},function(data){
+							combo_inJobName.combobox("clear").combobox('loadData',data);
+							//clear cascade value
+							hidden_inJobName.val("");
+						},'json');
+					},
+					onSelect:function(record){
+						//set cur hidden value
+						hidden_inOrgName.val(record.text);
+					}
+				});
+				
+				combo_inJobName.combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+                		hidden_inJobName.val(record.text);
+            		}
+				});
+			});
+			
+	   //调动日期提示
+	   function inTransferDateTip${rand}(date){
+	   		var y = date.getFullYear();
+	   		var m = date.getMonth()+1;
+	   		var d = date.getDate();
+	   		if (parseInt(d) <=15) {
+	   			$.messager.alert('信息提示','调动日期15号之前为当月1日!','warning');
+	   		} else {
+	   			m = m + 1;
+	   			if(m > 12){
+	   				y = y + 1;
+	   				m = 1;
+	   			}
+	   			$.messager.alert('信息提示','调动日期15号之后为次月1日!','warning');
+	   		}
+	   		$('#inTransferDate${rand}').datebox('setValue', y + "-" + (m<10?'0'+m:m) + "-" + "01");
+	   }
+	</script>
+	</#if>
+</#if>
+
+<!-- 调出部门经理签字 -->
+<#if currentStep?exists && currentStep == 'outDeptLeaderAudiTask'> 
+		<div id="outDeptLeaderAudiTask">
+			<form id="outDeptLeaderAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outDeptLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				调出部门经理审批
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outDeptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outDeptLeaderName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_outDeptLeaderAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_outDeptLeaderAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outDeptLeaderAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outDeptLeaderAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调出部门总监签字 -->
+<#if currentStep?exists && currentStep == 'outMajordomoAudiTask'> 
+		<div id="outMajordomoAudiTask">
+			<form id="outMajordomoAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="outMajordomoAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" width="">部门总监审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outDeptMajordomoAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outDeptMajordomoName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_outDeptMajordomoAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_outDeptMajordomoAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outDeptMajordomoAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outDeptMajordomoAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+<!-- 调出部门主管副总 -->
+<#if currentStep?exists && currentStep == 'outDirectorAudiTask'> 
+		<div id="outDirectorAudiTask">
+			<form id="outDirectorAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">主管副总审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outDirectorAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outDirectorName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_outDirectorAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_outDirectorAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outDirectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outDirectorAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调出公司总经理 -->
+<#if currentStep?exists && currentStep == 'outGeneralManagerAudiTask'> 
+		<div id="outGeneralManagerAudiTask">
+			<form id="outGeneralManagerAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outGeneralManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">总经理审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outGeneralManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outGeneralManagerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_outGeneralManagerAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_outGeneralManagerAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outGeneralManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outGeneralManagerAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调出公司HR人事审批 -->
+<#if currentStep?exists && currentStep == 'outHRPersonMattersAudiTask'> 
+		<div id="outHRPersonMattersAudiTask">
+			<form id="outHRPersonMattersAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outHRPersonMattersAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">人事处理：</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outPersonMattersAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outPersonMattersName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">档案情况：</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="radio" name="fp_outRecordDisposition" checked="checked" value="0" />调出
+							<input type="radio" name="fp_outRecordDisposition" value="1" />其他
+						</td>
+						<td class="formtable_td_key">工龄起始日期：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-datebox"  type="text" name="fp_outServiceStartDate" 
+									data-options="editable:false,required:true"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outPersonMattersAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outPersonMattersAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调出公司HR薪酬处理 -->
+<#if currentStep?exists && currentStep == 'outHRPaymentAudiTask'> 
+		<div id="outHRPaymentAudiTask">
+			<form id="outHRPaymentAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outHRPaymentAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">薪酬处理：</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_outPaymentAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outPaymentName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">薪资总额：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-validatebox"  type="text" name="fp_outTotalSalary" data-options="required:true"/>
+						</td>
+						<td class="formtable_td_key">工资结算日(止)：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-datebox"  type="text" name="fp_outServiceStartDate" 
+									data-options="editable:false,required:true"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">社保：</td>
+						<td class="formtable_td_value">
+							<input type="radio" name="fp_outSocialSecurity" checked="checked" value="0" />调出
+							<input type="radio" name="fp_outSocialSecurity" value="1" />不调
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							转出公司已停社保
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">公积金：</td>
+						<td class="formtable_td_value">
+							<input type="radio" name="fp_outProvidentFund" checked="checked" value="0" />调出
+							<input type="radio" name="fp_outProvidentFund" value="1" />不调
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							转出公司已停公积金
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outPersonMattersAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outPersonMattersAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调出HR审批 -->
+<#if currentStep?exists && currentStep == 'outHRAudiTask'> 
+		<div id="outHRAudiTask">
+			<form id="outHRAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="outHRAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部审批</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_outHRAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_outHRName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_outHRAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_outHRAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_outHRAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_outHRAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调入部门经理签字 -->
+<#if currentStep?exists && currentStep == 'inDeptLeaderAudiTask'> 
+		<div id="inDeptLeaderAudiTask">
+			<form id="inDeptLeaderAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="inDeptLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+		  	  		<tr id="tr_inDeptAudi${rand}">
+						<td class="formtable_td_key">是否有考核期：</td>
+						<td id="td_inAssessmentAudi${rand}" class="formtable_td_value" colspan="5">
+							<input type="radio" name="fp_inAssessmentAudi" checked="checked" value="0" />否
+							<input type="radio" name="fp_inAssessmentAudi" value="1" />是
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_inDeptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_inDeptLeaderName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_inDeptLeaderAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_inDeptLeaderAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_inDeptLeaderAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_inDeptLeaderAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("input[name='fp_inAssessmentAudi']").bind("click",function(){ 
+			        //是否有考核期 
+			        var $selectedvalue = $(this).val(); 
+			        if ($selectedvalue == 0) {
+			        	//移除增加的td
+			            $("#td_appendOne").remove();
+			            $("#td_appendTwo").remove();
+			            
+			            //移除薪资异动行
+			            $('#tr_inWageChangeAudi${rand}').remove();
+			        
+			        	$("#td_inAssessmentAudi${rand}").attr("colspan", "5");
+			            
+			        } else if ($selectedvalue == 1) {
+			        	$("#td_inAssessmentAudi${rand}").attr("colspan", "1");
+			        
+			        	var trObj = '<td id="td_appendOne" class="formtable_td_key">考核期：</td>'
+			        		+'<td id="td_appendTwo" class="formtable_td_value" colspan="3">'
+			        		+'<input class="easyui-validatebox" type="text" name="fp_inAssMonth" data-options="required:true" size=5/>&nbsp;个月'
+			        		+'</td>';
+			        	
+			        	var isAssMonth = $("input[name=fp_inAssMonth]");
+			        	if (isAssMonth.length <= 0) {
+			        		$("#td_inAssessmentAudi${rand}").after(trObj);
+			        	}
+			            
+			            $.parser.parse('#tr_inDeptAudi${rand}');
+			            
+			            //增加薪资异动行
+			            var tr_inWageChangeAudi = $('#tr_inWageChangeAudi${rand}');
+			            if (tr_inWageChangeAudi.length <= 0) {
+			            	var trObjTwo = '<tr id="tr_inWageChangeAudi${rand}">'
+			        		+'<td class="formtable_td_key">考核期薪资是否异动：</td>'
+			        		+'<td id="td_inWageChangeAudi${rand}" class="formtable_td_value" colspan="5">'
+			        		+'<input type="radio" name="fp_inWageChangeAudi" checked="checked" value="0" />否'
+			        		+'<input type="radio" name="fp_inWageChangeAudi" value="1" />是'
+			        		+'</td>'
+			        		+'</tr>';
+			        	
+			        		$("#tr_inDeptAudi${rand}").after(trObjTwo);
+			            }
+			        	
+			        	//薪资是否异动
+				        $("input[name='fp_inWageChangeAudi']").bind("click",function(){ 
+				        	alert($(this).val());
+					        var $selectedvalue = $(this).val(); 
+					        if ($selectedvalue == 0) {
+					        	//移除增加的td
+					            $("#td_append3rd").remove();
+					            $("#td_append4th").remove();
+					            $("#td_append5th").remove();
+					            $("#td_append6th").remove();
+					        
+					        	$("#td_inWageChangeAudi${rand}").attr("colspan", "5");
+					            
+					        } else if ($selectedvalue == 1) {
+					        	$("#td_inWageChangeAudi${rand}").attr("colspan", "1");
+					        
+					        	var trObj = '<td id="td_append3rd" class="formtable_td_key">职级职等：</td>'
+					        		+'<td id="td_append4th" class="formtable_td_value">'
+					        		+'<input class="easyui-validatebox"  type="text" name="fp_inRankLevel" data-options="required:true" />'
+					        		+'</td>'
+					        		+'<td id="td_append5th" class="formtable_td_key">薪资总额：</td>'
+					        		+'<td id="td_append6th" class="formtable_td_value">'
+					        		+'<input class="easyui-validatebox"  type="text" name="fp_inTotalSalary" data-options="required:true" />'
+					        		+'</td>'
+					        	
+					        	var inRankLevel = $("input[name=fp_inRankLevel]");
+					        	var inTotalSalary = $("input[name=fp_inTotalSalary]");
+					        	if (inRankLevel.length <= 0 && inTotalSalary.length <= 0) {
+					        		$("#td_inWageChangeAudi${rand}").after(trObj);
+					        	}
+					            
+					            $.parser.parse('#tr_inWageChangeAudi${rand}');
+					        }
+				        });
+			        }
+		        });
+			});
+		</script>
+</#if>
+
+<!-- 调入部门总监签字 -->
+<#if currentStep?exists && currentStep == 'inMajordomoAudiTask'> 
+		<div id="inMajordomoAudiTask">
+			<form id="inMajordomoAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="inMajordomoAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" width="">部门总监审批</td>
+						<td class="formtable_td_value"  width="160px">
+							<input type="hidden" name="fp_inDeptMajordomoAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_inDeptMajordomoName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_inDeptMajordomoAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_inDeptMajordomoAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_inDeptMajordomoAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_inDeptMajordomoAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调入部门主管副总 -->
+<#if currentStep?exists && currentStep == 'inDirectorAudiTask'> 
+		<div id="inDirectorAudiTask">
+			<form id="inDirectorAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="inDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				${currentStepName}
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">主管副总审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_inDirectorAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_inDirectorName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_inDirectorAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_inDirectorAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_inDirectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_inDirectorAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调入公司总经理 -->
+<#if currentStep?exists && currentStep == 'inGeneralManagerAudiTask'> 
+		<div id="inGeneralManagerAudiTask">
+			<form id="inGeneralManagerAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="inGeneralManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				总经理审批
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">总经理审批</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="hidden" name="fp_inGeneralManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_inGeneralManagerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_inGeneralManagerAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_inGeneralManagerAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_inGeneralManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_inGeneralManagerAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<!-- 调入HR审批 -->
+<#if currentStep?exists && currentStep == 'inHRAudiTask'> 
+		<div id="inHRAudiTask">
+			<form id="inHRAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="inHRAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+		  	  				调出公司人力资源部审批
+		  	  			</td>
+		  	  		</tr>
+		  	  		<tr>
+						<td class="formtable_td_key">档案情况：</td>
+						<td class="formtable_td_value" width="160px">
+							<input type="radio" name="fp_inRecordDisposition" checked="checked" value="0" />调出
+							<input type="radio" name="fp_inRecordDisposition" value="1" />其他
+						</td>
+						<td class="formtable_td_key">工龄起始日期：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-datebox"  type="text" name="fp_inServiceStartDate" 
+									data-options="editable:false,required:true"/>
+						</td>
+						<td class="formtable_td_key">工资结算日：</td>
+						<td class="formtable_td_value">
+							<input class="easyui-datebox"  type="text" name="fp_inWageSettDate" 
+									data-options="editable:false,required:true"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">社保公积金：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input type="radio" name="fp_inSocialSecurity" checked="checked" value="0" />转出
+							<input type="radio" name="fp_inSocialSecurity" value="1" />已停
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部审批</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_inHRAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_inHRName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="4">
+							<input type="radio" name="fp_inHRAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_inHRAudi" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_inHRAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_inHRAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+<#include "/common/foot.html">

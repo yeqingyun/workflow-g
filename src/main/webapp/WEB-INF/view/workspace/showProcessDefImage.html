@@ -1,0 +1,8 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+<br>
+<div id="graphProcessDefinitionImage${rand}" data-options="border:false" align='center' class="easyui-panel">
+	<image src='workspace/graphProcessDefinitionImage?processDefinitionId=${RequestParameters.processDefinitionId}' align="center" style="max-width:97%"/>
+</div>
+
+<#include "/common/foot.ftl">

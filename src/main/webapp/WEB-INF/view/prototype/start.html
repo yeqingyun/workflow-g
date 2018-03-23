@@ -1,0 +1,58 @@
+<#assign title="发起流程">
+<#include "head.ftl">
+<script type="text/javascript">
+$(function() {
+  $('#item').tree({
+	onSelect: function(param) {
+	  console.log('aa');
+	  $('#form').show();
+	}
+  });
+});
+</script>
+<div>
+<div style="float:left;">
+<select style="width:200px;">
+  <option>HR流程</option>
+  <option>信息部流程</option>
+  <option>销售部流程</option>
+  <option>内部流程</option>
+</select>
+
+<ul id="item" style="padding-top:20px;">
+  <li>项目立项申请</li>
+  <li>项目申请</li>
+  <li>人员调动申请</li>
+  <li>请假申请</li>
+  <li>出差申请</li>
+</ul>
+</div>
+<div id="form" style="float:left;margin-left:20px;padding:30px;display:none;border:1px solid black;">
+  <h3>请假申请</h3>
+  <table>
+	<tr>
+	  <td>申请人</td>
+	  <td><input type="text"/></td>
+	</tr>
+	<tr>
+	  <td>开始时间</td>
+	  <td><input type="text"/></td>
+	</tr>
+	<tr>
+	  <td>结束时间</td>
+	  <td><input type="text"/></td>
+	</tr>
+	<tr>
+	  <td>请假事由</td>
+	  <td><textarea></textarea></td>
+	</tr>
+	<tr>
+	  <td colspan="2">
+	  </td>
+	</tr>
+  </table>
+<button>确定</button>
+<button>添加附件</button>
+</div>
+</div>
+<#include "foot.ftl">

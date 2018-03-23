@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script type="text/javascript" src="${base}js/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${base}css/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${base}css/themes/icon.css">
+	
+<script type="text/javascript" src="${base}js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${base}js/common/common.js"></script>
+<style type="text/css">
+body {
+  font-size: 14px;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+	$('.handle').click(handle);
+});
+//办理窗口
+function handle() {
+	// 当前节点的英文名称
+	var tkey = $(this).attr('tkey');
+
+	// 当前节点的中文名称
+	var tname = $(this).attr('tname');
+
+	// 任务ID
+	var taskId = $(this).attr('tid');
+	
+	var post_url = 'task/complete/' + taskId + '.json';
+	
+	readFormFields(taskId);
+	//alert("aaa");
+	
+	//设置标题
+	$('#handleDialog').dialog('setTitle', '办理任务[' + tname + ']');
+	
+	$('#handleDialog').dialog('open');
+	
+	$('#dynamic-form').form({
+			url:post_url,
+		    onSubmit: function(){
+		       return $(this).form('validate');
+		    },
+		    success:function(data){
+		       var result = JSON.parse(data); 
+		       $('#handleDialog').dialog('close');
+		       $.messager.show({
+		           title: '信息提示',
+		           msg: result.msg
+		       });
+		       if (result.success) {
+		       	 //跳转到处理页面
+		       	 setTimeout("window.location.href='tasks.html';", 1500);	
+		       }
+			}
+	});
+}
+
+/**
+ * 读取表单字段
+ */
+function readFormFields(taskId) {
+	var dialog = this;
+
+	// 清空对话框内容
+	$('#content').html("<form id='dynamic-form' class='dynamic-form' method='post'><table class='dynamic-form-table'></table></form>");
+	var $form = $('.dynamic-form');
+
+	var trs = "";
+	// 读取启动时的表单
+	$.getJSON('getform/task/' + taskId + '.json', function(data) {
+		$.each(data.taskFormData.formProperties, function() {
+			trs += "<tr>" + createFieldHtml(this, data)
+			trs += "</td></tr>";
+		});
+		// 添加table内容
+		$('.dynamic-form-table').html(trs);
+		
+		$.parser.parse("#handleDialog");
+	});
+}
+
+/**
+ * form对应的string/date/long/enum/boolean类型表单组件生成器
+ * fp_的意思是form paremeter
+ */
+var formFieldCreator = {
+	'string': function(prop, data) {
+		var result = "<td width='120'>" + prop.name + "：</td>";
+		if (prop.writable === true) {
+			result += "<td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-validatebox' value='" + prop.value + "' data-options='required:"+ prop.required +"'/>";
+		} else {
+			result += "<td><input type='text' id='" + prop.id + "' class='easyui-validatebox' value='" + prop.value + "' disabled='disabled'/>";
+		}
+		return result;
+	},
+	'date': function(prop, data) {
+		var result = "<td width='120'>" + prop.name + "：</td>";
+		if (prop.writable === true) {
+			result += "<td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-datebox' value='" + prop.value + "' data-options='required:"+ prop.required +"'/>";
+		} else {
+			result += "<td><input type='text' id='" + prop.id + "' class='easyui-datebox' value='" + prop.value + "' disabled='disabled'/>";
+		}
+		return result;
+	},
+	'enum': function(prop, data) {
+		var result = "<td width='120'>" + prop.name + "：</td>";
+		if (prop.writable === true) {
+			result += "<td><select id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-combobox' data-options='width:155,required:"+ prop.required +"'>";
+			$.each(data[prop.id], function(k, v) {
+				result += "<option value='" + k + "'>" + v + "</option>";
+			});
+			result += "</select>";
+		} else {
+			result += "<td><select id='" + prop.id + "' class='easyui-combobox' disabled='disabled' data-options='width:155'>";
+			$.each(data[prop.id], function(k, v) {
+				if (k == prop.value) {
+					result += "<option value='" + k + "' selected='true'>" + v + "</option>";
+				} else {
+					result += "<option value='" + k + "'>" + v + "</option>";
+				}
+			});
+			result += "</select>";
+		}
+		
+		return result;
+	},
+	'users': function(prop, data) {
+		var result = "<td width='120'>" + prop.name + "：</td>";
+		if (prop.writable === true) {
+			result += "<td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='' value='" + prop.value + "' />";
+		} else {
+			result += "<td>" + prop.value;
+		}
+		return result;
+	}
+};
+
+/**
+ * 生成一个field的html代码
+ */
+function createFieldHtml(prop, className) {
+	return formFieldCreator[prop.type.name](prop, className);
+}
+
+function formHandle(){
+	$('#dynamic-form').submit();
+}
+</script>
+</head>
+<body>
+<#if message?has_content>
+<div id="message" style="background:#aaffff;border:1px solid black;padding:20px;">${message!""}</div>
+</#if>
+<table>
+  <tr>
+	<th>ID</th>
+	<th>Name</th>
+	<th>Key</th>
+	<th>Category</th>
+	<th></th>
+  </tr>
+<#list tasks as f>
+  <tr id="tasklist">
+	<td>${f.id}</td>
+	<td>${f.name}</td>
+	<td>${f.taskDefinitionKey}</td>
+	<td>${f.category!""}</td>
+	<td><a class="handle" href="javascript:void(0)" tkey='${f.taskDefinitionKey }' tname='${f.name }' tid='${f.id }'>处理</a></td>
+  </tr>
+</#list>
+</table>
+  <div id="handleDialog" class="easyui-dialog" title="Dialog" style="width:700px;height:450px;padding:10px"
+            data-options="
+            	closed:true,
+                toolbar: [{
+                    text:'提交表单',
+                    iconCls:'icon-save',
+                    handler:function(){
+                        formHandle();
+                    }
+                }],
+     
+            ">
+        <div id="content"></div>
+    </div>
+</body>
+</html>
+

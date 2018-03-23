@@ -1,0 +1,87 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<#if startevent1?exists>
+<div id="start">
+<#else>
+<div id="start" style="display: none">
+</#if>
+  <form id="startForm" method="post" enctype='multipart/form-data'>
+  	  <table>
+  	  	<tr>
+  	  		<td>借用单号：</td>
+  	  		<td><input class="easyui-validatebox" type="text" name="fp_borrowNo"/></td>
+  	  	</tr>
+  	  	<tr>
+  	  		<input type="hidden" name="fp_currentUserId" value="${appuser.account}"/>
+  	  		<td>借物人：</td>
+  	  		<td><input class="easyui-validatebox" type="text" name="fp_currentUserNm" value="${appuser.name}"/></td>
+  	  	</tr>
+  	  	<tr>
+  	  		<td>借物时间：</td>
+  	  		<td><input class="easyui-validatebox" type="text" name="fp_borrowDate" value=""/></td>
+  	  	</tr>
+  	  	<tr>
+  	  		<td>归还时间：</td>
+  	  		<td><input class="easyui-validatebox" type="text" name="fp_returnDate" value=""/></td>
+  	  	</tr>
+  	  	<tr>
+  	  		<td>备注：</td>
+  	  		<td><textarea name="fp_remark"></textarea></td>
+  	  	</tr>
+  	  </table>
+	</form>
+</div>
+
+<#if leaderAudiTask?exists>
+<div id="leaderAudiTask">
+<#else>
+<div id="leaderAudiTask" style="display: none">
+</#if>
+  <form id="leaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+  	  <table>
+  	  	<tr>
+  	  		<td>处理结果：</td>
+  	  		<td> 
+  	  			<select name="fp_leaderAudi">
+			    	<option value="1">同意</option>
+			    	<option value="0">不同意</option>
+			  	</select>
+	  		</td>
+  	  	</tr>
+  	  	<tr>
+  	  		<td>处理意见：</td>
+  	  		<td><textarea name="fp_treatmentAdvice"></textarea></td>
+  	  	</tr>
+  	  </table>
+	</form>
+</div>
+
+<#if propertyAudiTask?exists>
+<div id="propertyAudiTask">
+<#else>
+<div id="leaderAudiTask" style="display: none">
+</#if>
+  <form id="propertyAudiTaskForm" method="post" enctype='multipart/form-data'>
+  	  <table>
+  	  	<tr>
+  	  		<td>处理结果：</td>
+  	  		<td> 
+  	  			<select name="fp_leaderAudi">
+			    	<option value="1">同意</option>
+			    	<option value="0">不同意</option>
+			  	</select>
+	  		</td>
+  	  	</tr>
+  	  	<tr>
+  	  		<td>处理意见：</td>
+  	  		<td><textarea name="fp_treatmentAdvice"></textarea></td>
+  	  	</tr>
+  	  </table>
+	</form>
+</div>
+
+<script type="text/javascript">
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="305">
+  <process id="L-Product-Change-Application" name="产品变更申请" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="mb_LPDTAudiTask" name="LPDT 意见" activiti:assignee="${LPDTAssignerAccount}"></userTask>
+    <userTask id="mb_SLPDTAudiTask" name="SLPDT 意见" activiti:assignee="${SLPDTAssignerAccount}"></userTask>
+    <userTask id="mb_UEDAudiTask" name="UED 意见" activiti:assignee="${UEDAssignerAccount}"></userTask>
+    <userTask id="mb_qualityAudiTask" name="品质意见" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;品质意见负责人&quot;,execution)}"></userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="mb_chairmanAudiTask" name="董事长意见" activiti:assignee="${startAccount}"></userTask>
+    <sequenceFlow id="flow11" name="同意/其他" sourceRef="mb_chairmanAudiTask" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chairmanAudi != '1'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="n_flow12" name="不同意" sourceRef="mb_chairmanAudiTask" targetRef="endevent2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${chairmanAudi == '1'}]]></conditionExpression>
+    </sequenceFlow>
+    <parallelGateway id="parallelgateway1" name="Parallel Gateway"></parallelGateway>
+    <parallelGateway id="parallelgateway2" name="Parallel Gateway"></parallelGateway>
+    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="parallelgateway1"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="parallelgateway1" targetRef="mb_LPDTAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="parallelgateway1" targetRef="mb_SLPDTAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="parallelgateway1" targetRef="mb_UEDAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="mb_LPDTAudiTask" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="mb_SLPDTAudiTask" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="mb_UEDAudiTask" targetRef="parallelgateway2"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="parallelgateway2" targetRef="mb_qualityAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="mb_qualityAudiTask" targetRef="mb_chairmanAudiTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Product-Change-Application">
+    <bpmndi:BPMNPlane bpmnElement="L-Product-Change-Application" id="BPMNPlane_L-Product-Change-Application">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="80.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_LPDTAudiTask" id="BPMNShape_mb_LPDTAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_SLPDTAudiTask" id="BPMNShape_mb_SLPDTAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_UEDAudiTask" id="BPMNShape_mb_UEDAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="310.0" y="250.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_qualityAudiTask" id="BPMNShape_mb_qualityAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="600.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="911.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_chairmanAudiTask" id="BPMNShape_mb_chairmanAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="740.0" y="160.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="775.0" y="282.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway1" id="BPMNShape_parallelgateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="200.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="parallelgateway2" id="BPMNShape_parallelgateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="500.0" y="167.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="845.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="911.0" y="187.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="51.0" x="845.0" y="187.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="n_flow12" id="BPMNEdge_n_flow12">
+        <omgdi:waypoint x="792.0" y="215.0"></omgdi:waypoint>
+        <omgdi:waypoint x="792.0" y="282.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="800.0" y="236.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="115.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="220.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="87.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="240.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="220.0" y="207.0"></omgdi:waypoint>
+        <omgdi:waypoint x="220.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="310.0" y="277.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="415.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="87.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="415.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="415.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="277.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="207.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="540.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="600.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="705.0" y="187.0"></omgdi:waypoint>
+        <omgdi:waypoint x="740.0" y="187.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

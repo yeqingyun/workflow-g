@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script type="text/javascript" src="${base}js/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${base}css/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${base}css/themes/icon.css">
+	
+<script type="text/javascript" src="${base}js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${base}js/common/common.js"></script>
+<script type="text/javascript" src="${base}js/common/datagrid-detailview.js"></script>
+
+<style type="text/css">
+body {
+  font-size: 14px;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+	$('.startprocess').click(showStartDialog);
+});
+
+function showStartDialog(){
+	var $ele = $(this);
+	
+	var tid = $(this).attr('tid');
+	
+	var tname = $(this).attr('tname');
+	
+	// 设置表单提交id
+	var post_url = 'startprocess/' + tid + '.json';
+	
+	readFormFields(tid);
+	
+	//设置标题
+	$('#win').dialog('setTitle', '办理任务[' + tname + ']');
+	
+	$('#win').dialog('open');
+	
+	$('#dynamic-form').form({
+			url:post_url,
+		    onSubmit: function(){
+		       return $(this).form('validate');
+		    },
+		    success:function(data){
+		       var result = JSON.parse(data); 
+		       $('#win').dialog('close');
+		       $.messager.show({
+		           title: '信息提示',
+		           msg: result.msg
+		       });
+		       if (result.success) {
+		       	 //跳转到处理页面
+		       	 setTimeout("window.location.href='tasks.html';", 1500);	
+		       }
+			}
+	});
+}
+
+/**
+ * 读取表单字段
+ */
+function readFormFields(processDefinitionId) {
+	var dialog = this;
+
+	// 清空对话框内容
+	$('#content').html("<form id='dynamic-form' class='dynamic-form' method='post'><table class='dynamic-form-table'></table></form>");
+	var $form = $('.dynamic-form');
+
+	var trs = "";
+	// 读取启动时的表单
+	$.getJSON('start/' + processDefinitionId + '.json', function(data) {
+		$.each(data.form.formProperties, function() {
+			trs += "<tr>" + createFieldHtml(data, this)
+			trs += "</td></tr>";
+		});
+
+		// 添加table内容
+		$('.dynamic-form-table').html(trs);
+		
+		$.parser.parse("#win");
+	});
+}
+
+/**
+ * form对应的string/date/long/enum/boolean类型表单组件生成器
+ * fp_的意思是form paremeter
+ */
+var formFieldCreator = {
+	string: function(formData, prop) {
+		var result = "<td width='120'>" + prop.name + "：</td><td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-validatebox' data-options='required:"+ prop.required +"'/>";
+		return result;
+	},
+	date: function(formData, prop) {
+		var result = "<td>" + prop.name + "：</td><td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-datebox' data-options='required:"+ prop.required +"'/>";
+		return result;
+	},
+	'enum': function(formData, prop) {
+		console.log(prop);
+		var result = "<td width='120'>" + prop.name + "：</td>";
+		if(prop.writable === true) {
+			result += "<td><select id='" + prop.id + "' name='fp_" + prop.id + "' class='easyui-combobox' data-options='width:155,required:"+ prop.required +"'>" ;
+			
+			$.each(formData['enum_' + prop.id], function(k, v) {
+				result += "<option value='" + k + "'>" + v + "</option>";
+			});
+			 
+			result += "</select>";
+		} else {
+			result += "<td>" + prop.value;
+		}
+		return result;
+	},
+	'users': function(formData, prop) {
+		var result = "<td width='120'>" + prop.name + "：</td><td><input type='text' id='" + prop.id + "' name='fp_" + prop.id + "' class='' />";
+		return result;
+	}
+};
+
+//生成单个Field
+function createFieldHtml(formData, prop, className) {
+	return formFieldCreator[prop.type.name](formData, prop, className);
+}
+
+function startProcess(){
+	$('#dynamic-form').submit();
+}
+
+</script>
+</head>
+<body>
+<table>
+  <tr>
+	<th>ID</th>
+	<th>Name</th>
+	<th>Key</th>
+	<th>Category</th>
+	<th></th>
+  </tr>
+<#list flows as f>
+  <tr>
+	<td>${f.id}</td>
+	<td>${f.name!""}</td>
+	<td>${f.key}</td>
+	<td>${f.category}</td>
+	<td><a class="startprocess" href="javascript:void(0)" tid='${f.id}' tname='${f.name }'>启动</a></td>
+  </tr>
+</#list>
+</table>
+	<!-- Window -->
+	<div id="win" class="easyui-dialog" title="Dialog" style="width:700px;height:450px;padding:10px"
+            data-options="
+            	closed:true,
+                toolbar: [{
+                    text:'提交表单',
+                    iconCls:'icon-save',
+                    handler:function(){
+                        startProcess();
+                    }
+                }],
+     
+            ">
+        <div id="content"></div>
+    </div>
+</body>
+</html>

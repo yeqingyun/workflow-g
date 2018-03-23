@@ -1,0 +1,930 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<#assign handleType=""/>
+<#assign applicationrensons=""/>
+<#assign continueToHandle=""/>
+
+<!-- 展示表单 -->
+<#if processSteps??>
+	<div style="text-align:center;padding-bottom: 10px;"><span style="font-size: 15pt">户口办理申请书</span></div>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">姓名：</td>
+				  	  		<td class="formtable_td_value" width="100">${(steps.vars["userName"])!""}</td>
+				  	  		<td class="formtable_td_key">部门：</td>
+				  	  		<td class="formtable_td_value"  width="100">${(steps.vars["orgName"])!""}</td>
+				  	  		<td class="formtable_td_key">职位：</td>
+				  	  		<td class="formtable_td_value"  width="100">${(steps.vars["job"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  	    <td class="formtable_td_key">入职日期：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["entryTime"])!""}</td>
+				  	  		<td class="formtable_td_key">员工编号：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["empId"])!""}</td>
+				  	  		<td class="formtable_td_key">学历：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["education"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+                        	<td class="formtable_td_key">办理类型：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  		    <#if steps.vars["handleType"]== '1'>
+				  	  		              调干
+				  	  		    </#if>
+				  	  		    <#if steps.vars["handleType"]== '2'>
+				  	  		              招工
+				  	  		    </#if>
+				  	  		</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td colspan="6" width="800" class="formtable_td_value" >
+				  	  		a) 调干：既调户口又调档案。档案身份是干部，且档案和户口在同一地区。原户口必须为“非农业”户口。 <br>b) 招工：只调户口不调档案。 </b>
+			  	  			</td>
+				  	  	</tr>
+				  	  	<tr>
+                        	<td class="formtable_td_key">申请原因：</td>
+				  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["applicationrensons"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td colspan="6" width="800" class="formtable_td_value" >&nbsp;&nbsp;&nbsp;&nbsp;<b>本人承诺：本人所提供的资料均为真实合法有效，如伪造、变造或故意提供虚假材料造成公司出现严重后果，其责任全部由申请人
+								本人承担。如涉嫌犯罪的，公司有权将其移送司法机关依法处理。</b>
+			  	  			</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">拟招调人员签字：</td>
+			  	  			<td class="formtable_td_value" colspan="2">${(steps.vars["recruitagentsName"])!""}</td>
+			  	  	   		<td class="formtable_td_key">签字时间：</td>
+			  	  			<td class="formtable_td_value" colspan="2">${(steps.vars["recruitagentsSignDate"])!""}</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+	   </#if>
+	   <!-- 表单修改情况  -->
+	    <#if steps.key == 'updateAHAudiTask'>
+					  	 <tr>
+				  	  		<td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">修改表单</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">姓名：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+				  	  		<td class="formtable_td_key">部门：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				  	  		<td class="formtable_td_key">职位：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["job"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  	    <td class="formtable_td_key">入职日期：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["entryTime"])!""}</td>
+				  	  		<td class="formtable_td_key">员工编号：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["updateEmpId"])!""}</td>
+				  	  		<td class="formtable_td_key">学历：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["education"])!""}</td>
+				  	  	</tr>
+				  	  		<tr>
+                        	<td class="formtable_td_key">办理类型：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  		    <#if steps.vars["handleType"]== '1'>
+				  	  		              调干
+				  	  		    </#if>
+				  	  		    <#if steps.vars["handleType"]== '2'>
+				  	  		              招工
+				  	  		    </#if>
+				  	  		</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td colspan="6" width="800" class="formtable_td_value" >
+				  	  		a) 调干：既调户口又调档案。档案身份是干部，且档案和户口在同一地区。原户口必须为“非农业”户口。 <br>b) 招工：只调户口不调档案。 </b>
+			  	  			</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">是否办理户口申请：</td>
+				  	  		<#if steps.vars["continueToHandle"] == '1' >
+			  	  				<td class="formtable_td_value" colspan="5">是</td>
+				  	  		</#if>
+				  	  		<#if steps.vars["continueToHandle"] == '2' >
+				  	  			<td class="formtable_td_value" colspan="5">否</td>
+				  	  		</#if>
+				  	  	</tr>
+				  	  	<tr>
+                        	<td class="formtable_td_key">申请原因：</td>
+				  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["applicationrensons"])!""}</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+	       </#if>
+	   <!-- 绩效考核专员签字 -->
+	    <#if steps.key == 'mb_achievementsManAudiTask'>
+			  	  	<tr>
+			  	  	  <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  
+			  	  	<tr>
+			  	  		<td   class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["achievementsManAudi"] == '0' >
+			  	  			<td colspan="5"  class="formtable_td_value">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["achievementsManAudi"] == '1' >
+			  	  			<td colspan="5"  class="formtable_td_value">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">绩效考核成绩：</td>
+		  	  			<td  class="formtable_td_value" colspan="5">
+		  	  			<input type="checkbox"   disabled="disabled"   value="1"  <#if steps.vars["performanceScore"]?contains("1")>checked</#if>/> S 
+		                <input type="checkbox"   disabled="disabled"    value="2" <#if steps.vars["performanceScore"]?contains("2")>checked</#if>/>A
+		                <input type="checkbox"   disabled="disabled"    value="3" <#if steps.vars["performanceScore"]?contains("3")>checked</#if>/>B
+		                <input type="checkbox"   disabled="disabled"   value="4" <#if steps.vars["performanceScore"]?contains("4")>checked</#if>/>C
+		                <input type="checkbox"   disabled="disabled"    value="5" <#if steps.vars["performanceScore"]?contains("5")>checked</#if>/>D
+		  	  			</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">处理意见：</td>
+			  	  		<td colspan="5"  class="formtable_td_value">${(steps.vars["achievementsManAudiAdvice"])!""}</td>
+			  	  	</tr>
+			  	  		<tr>
+			  	  		<td  class="formtable_td_key">绩效考核专员签字：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["achievementsManName"])!""}</td>
+		  	  			<td  class="formtable_td_key">签字时间：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["achievementsManSignDate"])!""}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	   <!-- 部门经理签字 -->  
+	     <#if steps.key == 'mb_departmentleaderAudiTask'>
+			  	  	<tr>
+			  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">部门经理签字：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["departmentleaderName"])!""}</td>
+		  	  			<td  class="formtable_td_key">签字时间：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["departmentleaderSignDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["departmentleaderAudi"] == '0' >
+			  	  			<td  class="formtable_td_value" colspan="5">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["departmentleaderAudi"] == '1' >
+			  	  			<td class="formtable_td_value" colspan="5">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["departmentleaderAudiAdvice"])!""}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	    <!-- 总监签字 -->
+	    <#if steps.key == 'mb_inspectorgeneralAudiTask'>
+			  	  	<tr>
+			  	  		<td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">总监签字：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["inspectorgeneralName"])!""}</td>
+		  	  			<td  class="formtable_td_key">签字时间：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["inspectorgeneralSignDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["inspectorgeneralAudi"] == '0' >
+			  	  			<td class="formtable_td_value" colspan="5">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["inspectorgeneralAudi"] == '1' >
+			  	  			<td class="formtable_td_value" colspan="5">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["inspectorgeneralAudiAdvice"])!""}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	   
+	    <!--主管副总签字 -->
+	    <#if steps.key == 'mb_deputygeneralAudiTask'>
+			  	  	<tr>
+			  	  		<td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">主管副总签字：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["deputygeneralAudiName"])!""}</td>
+		  	  			<td  class="formtable_td_key">签字时间：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["deputygeneralAudiDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理结果：</td>
+			  	  		<#if steps.vars["deputygeneralAudi"] == '0' >
+			  	  			<td class="formtable_td_value" colspan="5">同意</td>
+			  	  		</#if>
+			  	  		<#if steps.vars["deputygeneralAudi"] == '1' >
+			  	  			<td class="formtable_td_value" colspan="5">不同意</td>
+			  	  		</#if>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["deputygeneralAudiAdvice"])!""}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	   
+	   	    <!--人力资源签字 -->
+	    <#if steps.key == 'mb_humanresourcesAudiTask'>
+			  	  	<tr>
+			  	  		<td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+							class="formtable_td_key">${steps.activityName}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td  class="formtable_td_key">人力资源签字：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["humanresourcesAudiName"])!""}</td>
+		  	  			<td  class="formtable_td_key">签字时间：</td>
+		  	  			<td  class="formtable_td_value" colspan="2">${(steps.vars["humanresourcesAudiDate"])!""}</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">备注：</td>
+			  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["humanresourcesAudiAdvice"])!""}</td>
+			  	  	</tr>
+			  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	 </#if>
+	   </#if>
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">姓名：</td>
+		  	        <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" value="[${appuser.account},${appuser.name}]户口办理申请流程"/>
+		  	        <input type="hidden" name="fp_curUserId" value="${appuser.userId?c}"/>
+		  	        <input id="curUserId" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	        <input id="userName" type="hidden" name="fp_userName" value="${appuser.name}"/>
+		  	        <input type="hidden" name="fp_orgName" value="${appuser.orgName}"/>
+				  	<td class="formtable_td_value">${appuser.name}</td>
+				  	<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value">${appuser.orgName}</td>
+				  	<td class="formtable_td_key">职位：</td>
+				  	<td id="td_job${rand}" class="formtable_td_value">
+				  		<input id="job${rand}"" type="hidden" type="text" name="fp_job"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">入职日期：</td>
+				  	<td id="td_entryTime${rand}" class="formtable_td_value">
+				  		<input id="entryTime${rand}" type="hidden" name="fp_entryTime"/>
+				  	</td>
+				  	<td class="formtable_td_key">员工编号：</td>
+				  	<td id="td_empId${rand}" class="formtable_td_value">
+				  		<input id="empId${rand}" type="hidden" name="fp_empId"/>
+				  		<input type="hidden" id="isManager${rand}" name="fp_isManager" value=""/>
+				  	</td>
+				  	<td class="formtable_td_key">学历：</td>
+				  	<td id="td_education${rand}" class="formtable_td_value">
+				  		<input id="education${rand}"" type="hidden" name="fp_education"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">办理类型：</td>
+		  	  	   <td class="formtable_td_value" > <input type=radio name="fp_handleType" value="1" />调干
+		                <input type="radio" name="fp_handleType" value="2" />招工
+		                <font color="red"> (至少勾选一个) </font>
+	                     <input id="hmoduleName${rand}" name="fp_hmoduleName" class="easyui-validatebox"  data-options="required:true"  missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"  />
+		           </td>
+		           <td  class="formtable_td_value"  colspan="4">a) 调干：既调户口又调档案。档案身份是干部，且档案和户口在同一地区。原户口必须为“非农业”户口。 <br>b) 招工：只调户口不调档案。 </td>
+		  	  	</tr>  	
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="applicationrensons${rand}" name="fp_applicationrensons" class="easyui-validatebox" required="true" style="width: 730px; height: 100px"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key">&nbsp;&nbsp;&nbsp;&nbsp;本人承诺：本人所提供的资料均为真实合法有效，如伪造、变造或故意提供虚假材料造成公司出现严重后果，其责任全部由申请人
+						本人承担。如涉嫌犯罪的，公司有权将其移送司法机关依法处理。
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">拟招调人员签字：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_recruitagentsName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  	    <td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_recruitagentsSignDate"
+									value="${.now?string('yyyy-MM-dd')}" />
+							${.now?string('yyyy-MM-dd')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				//根据登录账号判断是经理级以上职员
+				$.post("lead/checkIsManager.json",{
+					account:"${appuser.account}"
+				},function(data){
+					if(data.success){
+							$("#isManager${rand}").val("1");
+					}else{
+						$("#isManager${rand}").val("0");
+					}
+				});
+			//界面通过接口加载个人信息
+				$.post("hrFlow/getHrUserInfo.json",
+					{
+						account:$("#curUserId").val()
+					},
+					function(data){
+						if (data.success) {
+							$.ajaxSetup({async : false});
+							$("#entryTime${rand}").val(data.obj.entryDate);
+							$("#job${rand}").val(data.obj.job);
+							$("#education${rand}").val(data.obj.education);
+							var accounts='00000000'+data.obj.empId;
+							//设置TD
+							$("#td_entryTime${rand}").append(data.obj.entryDate);
+							$("#td_job${rand}").append(data.obj.job);
+							$("#td_education${rand}").append(data.obj.education);
+							$("#td_empId${rand}").append(accounts.substring(accounts.length-8,accounts.length)); 
+							$("#empId${rand}").val(accounts.substring(accounts.length-8,accounts.length));
+						}
+				});
+				
+				//判断是否成功办理过该流程
+				$.post("proAccountHandle/isCanAccountHandle.json",
+					{
+						account:$("#curUserId").val()
+					},
+					function(data){
+						if (!data.success) {
+							$('#applicationrensons${rand}').attr("readonly","readonly");
+							$.messager.alert('信息提示', data.msg,'error');
+						}
+				});
+				$("input[name='fp_handleType']").bind("click",function(){
+	            	document.getElementById("hmoduleName${rand}").value = "";
+	            	var str="";
+	            	  $("input[name='fp_handleType']").each(function(){ 
+			                if($(this).prop("checked")){
+			                    str += $(this).val()+","
+			                    document.getElementById("hmoduleName${rand}").value = str;
+			                }
+			            })
+	            });
+			});
+	</script>
+	</#if>
+</#if>
+
+ <!-- 绩效考核专员签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_achievementsManAudiTask'>
+		<div id="mb_achievementsManAudiTask" style="margin-top: 10px;">
+		  <form id="mb_achievementsManAudiTaskForm"  method="post"  enctype='multipart/form-data'>
+			  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >绩效考核专员审批</td>
+				</tr>
+			  </table>
+			  <input type="hidden" id="isManager${rand}" name="fp_isManager" value="${proHisVar.vars['isManager']}"/>
+		  	  <table id="mb_achievementsManAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+				<tr height="0">
+			  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+					<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+					</td>
+					<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+					<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+					</td>
+				</tr>
+		  	  	<tr id="tr${rand}">
+		  	  		<td class="formtable_td_key">绩效考核成绩：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  		     <input  type="checkbox"  name="fp_performanceScore" value="1">S
+		  	  		     <input  type="checkbox"  name="fp_performanceScore" value="2">A
+		  	  		     <input  type="checkbox"  name="fp_performanceScore" value="3">B
+		  	  		     <input  type="checkbox"  name="fp_performanceScore" value="4">C
+		  	  		     <input  type="checkbox"  name="fp_performanceScore" value="5">D
+		  	  		     <font color="red"> (至少勾选一个) </font>
+	                     <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox"  data-options="required:true"  missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"  />
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr >
+		  	  		<td class="formtable_td_key">绩效考核专员签字：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_achievementsManName" value="${appuser.name}" mobile="绩效考核专员签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_achievementsManSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签字时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_achievementsManAudi${rand}" name="fp_achievementsManAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意" readonly="readonly"/>同意
+		  	  			<input  id="fp_achievementsManAudi2${rand}" name="fp_achievementsManAudi" type="radio" value="1" mobile="处理结果_不同意" readonly="readonly"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea id="achievementsManAudiAdvice${rand}" name="fp_achievementsManAudiAdvice" class="formtable_remark" mobile="处理意见"  makethis_required_field_name="fp_achievementsManAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				 $("input[name='fp_achievementsManAudi']").bind("click",function(){
+					 return false;
+				 });
+				 $("input[name='fp_performanceScore']").bind("click",function(){
+		            	document.getElementById("moduleName${rand}").value = "";
+		            	var str="";
+		            	  $("input[name='fp_performanceScore']").each(function(){ 
+				                if($(this).prop("checked")){
+				                    str += $(this).val()+","
+				                    document.getElementById("moduleName${rand}").value = str;
+				                    if(str.indexOf("4")!=-1|| str.indexOf("5")!=-1){
+				                    	$("#fp_achievementsManAudi2${rand}").prop("checked",true);
+				                    	failure()
+				                    }else{
+				                    	$("#fp_achievementsManAudi${rand}").prop("checked",true);
+				                    	success()
+				                    }
+				                }
+				            })
+		            });
+			})
+				$("#achievementsManAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#tr${rand}").show();
+					document.getElementById("moduleName${rand}").value = "";
+					var str="";
+					$("input[name='fp_performanceScore']").each(function(){ 
+		                if($(this).prop("checked")){
+		                   str += $(this).val()+","
+		                    document.getElementById("moduleName${rand}").value = str;
+		                }
+		            })
+					$("#achievementsManAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				}
+				var failure=function(){
+					document.getElementById("moduleName${rand}").value = "同意";
+					$("#achievementsManAudiAdvice${rand}").val('');
+					$("#achievementsManAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				};
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_achievementsManAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#achievementsManAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#achievementsManAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+
+ <!-- 部门经理签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_departmentleaderAudiTask'>
+		<div id="mb_departmentleaderAudiTask" style="margin-top: 10px">
+			<form id="mb_departmentleaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+			  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >部门经理审批</td>
+				</tr>
+			  </table>
+			  <input type="hidden" id="isManager${rand}" name="fp_isManager" value="${proHisVar.vars['isManager']}"/>
+		  	  <table id="mb_departmentleaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门经理签字：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_departmentleaderName" value="${appuser.name}" mobile="部门经理签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_departmentleaderSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签字时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_departmentleaderAudi${rand}" name="fp_departmentleaderAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input id="fp_departmentleaderAudi2${rand}"  name="fp_departmentleaderAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_departmentleaderAudiAdvice${rand}" name="fp_departmentleaderAudiAdvice" class="formtable_remark" mobile="处理意见"  makethis_required_field_name="fp_departmentleaderAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		
+		
+				$("#fp_departmentleaderAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#fp_departmentleaderAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				}
+				var failure=function(){
+					$("#fp_departmentleaderAudiAdvice${rand}").val('');
+					$("#fp_departmentleaderAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				};
+				$("#fp_departmentleaderAudi${rand}").bind("click",success);
+				$("#fp_departmentleaderAudi2${rand}").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_departmentleaderAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#fp_departmentleaderAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#fp_departmentleaderAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+
+<!-- 总监签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_inspectorgeneralAudiTask'>
+		<div id="mb_inspectorgeneralAudiTask" style="margin-top: 10px">
+			<form id="mb_inspectorgeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+			  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >总监审批</td>
+				</tr>
+			  </table>
+			  <input type="hidden" id="isManager${rand}" name="fp_isManager" value="${proHisVar.vars['isManager']}"/>
+		  	  <table id="mb_inspectorgeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">总监签字：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_inspectorgeneralName" value="${appuser.name}" mobile="总监签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_inspectorgeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签字时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input id="fp_inspectorgeneralAudi${rand}" name="fp_inspectorgeneralAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input  id="fp_inspectorgeneralAudi2${rand}" name="fp_inspectorgeneralAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_inspectorgeneralAudiAdvice${rand}" name="fp_inspectorgeneralAudiAdvice" class="formtable_remark" mobile="处理意见" makethis_required_field_name="fp_inspectorgeneralAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		
+		
+				$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				}
+				var failure=function(){
+					$("#fp_inspectorgeneralAudiAdvice${rand}").val('');
+					$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				};
+				$("#fp_inspectorgeneralAudi${rand}").bind("click",success);
+				$("#fp_inspectorgeneralAudi2${rand}").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_inspectorgeneralAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#fp_inspectorgeneralAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#fp_inspectorgeneralAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+
+<!-- 主管副总签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_deputygeneralAudiTask'>
+		<div id="mb_deputygeneralAudiTask" style="margin-top: 10px;">
+			<form id="mb_deputygeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+			  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >主管副总审批</td>
+				</tr>
+			  </table>
+			<input type="hidden" id="isManager${rand}" name="fp_isManager" value="${proHisVar.vars['isManager']}"/>
+		  	  <table id="mb_deputygeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">主管副总签字：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deputygeneralAudiName" value="${appuser.name}" mobile="主管副总签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deputygeneralAudiDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签字时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input id="fp_deputygeneralAudi${rand}" name="fp_deputygeneralAudi" type="radio" value="0" checked="checked" mobile="处理结果_同意"/>同意
+		  	  			<input  id="fp_deputygeneralAudi2${rand}" name="fp_deputygeneralAudi" type="radio" value="1" mobile="处理结果_不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_deputygeneralAudiAdvice${rand}" name="fp_deputygeneralAudiAdvice" class="formtable_remark" mobile="处理意见"  makethis_required_field_name="fp_deputygeneralAudi" makethis_required_field_values="1" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+			<script type="text/javascript">
+		
+		
+				$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				}
+				var failure=function(){
+					$("#fp_inspectorgeneralAudiAdvice${rand}").val('');
+					$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				};
+				$("#fp_deputygeneralAudi${rand}").bind("click",success);
+				$("#fp_deputygeneralAudi2${rand}").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_deputygeneralAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#fp_deputygeneralAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#fp_deputygeneralAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+
+<!-- 人力资源专员签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_humanresourcesAudiTask'>
+		<div id="mb_humanresourcesAudiTask" style="margin-top: 10px;">
+			<form id="mb_humanresourcesAudiTaskForm" method="post" enctype='multipart/form-data'>
+			  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >人力资源专员确认</td>
+				</tr>
+			  </table>
+			  <input type="hidden" id="isManager${rand}" name="fp_isManager" value="${proHisVar.vars['isManager']}"/>
+		  	  <table id="mb_humanresourcesAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人力资源专员签字：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_humanresourcesAudiName" value="${appuser.name}" mobile="人力资源"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">签字时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_humanresourcesAudiDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签字时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_humanresourcesAudiAdvice${rand}" name="fp_humanresourcesAudiAdvice" class="formtable_remark" mobile="处理意见" makethis_required_field_name="fp_humanresourcesAudi" makethis_required_field_values="1" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 修改户口办理申请-->
+<#if currentStep?exists>
+	<#if processSteps?exists>
+	<#if currentStep == 'updateAHAudiTask'>
+	     <#list processSteps as steps> 
+          	<#if steps.key == 'startevent1'>
+          	         <#assign handleType=steps.vars["handleType"]/>
+          	          <#assign applicationrensons=steps.vars["applicationrensons"]/>
+	        </#if>
+	        <#if steps.key == 'updateAHAudiTask'>
+          	         <#assign handleType=steps.vars["handleType"]/>
+          	         <#assign applicationrensons=steps.vars["applicationrensons"]/>
+          	         <#assign continueToHandle=steps.vars["continueToHandle"]/>
+	        </#if>
+	     </#list>
+				<div id="updateAHAudiTask">
+					<form id="updateAHAudiTaskForm" method="post" enctype='multipart/form-data'>
+				  	  <table id="updateAHAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				  	  	<tr>
+						  	<td style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key">修改户口办理申请</td>
+						</tr>
+						<tr>
+				  	        <td class="formtable_td_key">姓名：</td>
+				  	        <input type="hidden" name="fp_curUserId" value="${appuser.userId?c}"/>
+				  	        <input id="curUserId" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+				  	        <input id="userName" type="hidden" name="fp_userName" value="${appuser.name}"/>
+				  	        <input type="hidden" name="fp_orgName" value="${appuser.orgName}"/>
+						  	<td class="formtable_td_value">${appuser.name}</td>
+						  	<td class="formtable_td_key">部门：</td>
+						  	<td class="formtable_td_value">${appuser.orgName}</td>
+						  	<td class="formtable_td_key">职位：</td>
+						  	<td id="td_job${rand}" class="formtable_td_value">
+						  		<input id="job${rand}"" type="hidden" type="text" name="fp_job"/>
+						  	</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	        <td class="formtable_td_key">入职日期：</td>
+						  	<td id="td_entryTime${rand}" class="formtable_td_value">
+						  		<input id="entryTime${rand}" type="hidden" name="fp_entryTime"/>
+						  	</td>
+						  	<td class="formtable_td_key">员工编号：</td>
+						  	<td id="td_empId${rand}" class="formtable_td_value">
+						  		<input id="empId${rand}" type="hidden" name="fp_updateEmpId"/>
+						  	</td>
+						  	<td class="formtable_td_key">学历：</td>
+						  	<td id="td_education${rand}" class="formtable_td_value">
+						  		<input id="education${rand}"" type="hidden" name="fp_education"/>
+						  	</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  	<td class="formtable_td_key">办理类型：</td>
+				  	  	   <td class="formtable_td_value" > <input type="radio" name="fp_handleType" value="1"  <#if handleType=='1'> checked  </#if> />调干
+				                <input type="radio" name="fp_handleType" value="2"  <#if handleType=='2'> checked  </#if>/>招工
+				           </td>
+				           <td  class="formtable_td_value"  colspan="4">a) 调干：既调户口又调档案。档案身份是干部，且档案和户口在同一地区。原户口必须为“非农业”户口。 <br>b) 招工：只调户口不调档案。 </td>
+				  	  	</tr>  	
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">是否办理户口申请：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  			<input class="easyui-combobox" name="fp_continueToHandle" data-options="valueField:'id',textField:'text',
+				  	  					required:true,multiple:false,panelHeight:80,
+										data: [{
+											id: '1',
+											text: '是'
+										},{
+											id: '2',
+											text: '否'
+										}]"   value="${continueToHandle!''}"/>
+				  	  		</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">申请原因：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  			<textarea name="fp_applicationrensons" class="easyui-validatebox" required="true" style="width: 730px; height: 100px">${applicationrensons!""}</textarea>
+				  	  		</td>
+				  	  	</tr>
+				  	  </table>
+					</form>
+				</div>
+				<script type="text/javascript">
+                 $(function(){
+                	 //界面通过接口加载个人信息
+     				$.post("hrFlow/getHrUserInfo.json",
+     					{
+     						account:$("#curUserId").val()
+     					},
+     					function(data){
+     						if (data.success) {
+     							$.ajaxSetup({async : false});
+     							$("#entryTime${rand}").val(data.obj.entryDate);
+     							$("#job${rand}").val(data.obj.job);
+     							$("#education${rand}").val(data.obj.education);
+     							var accounts='00000000'+data.obj.empId;
+     							//设置TD
+     							$("#td_entryTime${rand}").append(data.obj.entryDate);
+     							$("#td_job${rand}").append(data.obj.job);
+     							$("#td_education${rand}").append(data.obj.education);
+     							$("#td_empId${rand}").append(accounts.substring(accounts.length-8,accounts.length)); 
+     							$("#empId${rand}").val(accounts.substring(accounts.length-8,accounts.length))
+     						}
+     				});
+                 })
+               </script>
+			 </#if>
+	</#if>
+</#if>
+<#include "/common/foot.html">

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="239">
+  <process id="L-Performance-Evaluation" name="绩效考核流程" isExecutable="true">
+    <documentation>绩效考核流程</documentation>
+    <startEvent id="startevent" name="Start"></startEvent>
+    <userTask id="superiorLeaderAudiTask" name="上级领导考核" default="flow2" activiti:assignee="${processHelpService.findOrgLeaderForSpec(applyUserId,1)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent" targetRef="superiorLeaderAudiTask"></sequenceFlow>
+    <userTask id="hrAudiTask" name="人事考核" default="flow3" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;人事考核&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow2" name="通过" sourceRef="superiorLeaderAudiTask" targetRef="hrAudiTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${superiorLeaderAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="hrAudiTask" targetRef="endevent1"></sequenceFlow>
+    <userTask id="assesserModifyTask" name="被考核人修改" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow5" name="不通过" sourceRef="superiorLeaderAudiTask" targetRef="assesserModifyTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${superiorLeaderAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow7" name="修改完毕" sourceRef="assesserModifyTask" targetRef="superiorLeaderAudiTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Performance-Evaluation">
+    <bpmndi:BPMNPlane bpmnElement="L-Performance-Evaluation" id="BPMNPlane_L-Performance-Evaluation">
+      <bpmndi:BPMNShape bpmnElement="startevent" id="BPMNShape_startevent">
+        <omgdc:Bounds height="35.0" width="35.0" x="100.0" y="79.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="superiorLeaderAudiTask" id="BPMNShape_superiorLeaderAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="69.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="hrAudiTask" id="BPMNShape_hrAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="500.0" y="69.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="690.0" y="79.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="assesserModifyTask" id="BPMNShape_assesserModifyTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="206.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="135.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="96.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="335.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="500.0" y="96.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="369.0" y="79.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="605.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="690.0" y="96.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="282.0" y="124.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="206.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="291.0" y="158.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="230.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="233.0"></omgdi:waypoint>
+        <omgdi:waypoint x="178.0" y="96.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="96.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="181.0" y="166.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.gionee</groupId>
+	<artifactId>gniflow</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>gniflow</name>
+
+	<properties>
+		<spring.version>3.2.5.RELEASE</spring.version>
+		<activiti.version>5.15-SNAPSHOT</activiti.version>
+		<!--<activiti.version>6.0.0</activiti.version>-->
+		<fastjson.version>1.1.41</fastjson.version>
+		<quartz.version>1.6.3</quartz.version>
+		<itext.version>5.5.3</itext.version>
+		<poi.version>3.9</poi.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-engine</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-spring</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-json-converter</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-rest</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-explorer</artifactId>
+			<version>${activiti.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>vaadin</artifactId>
+					<groupId>com.vaadin</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dcharts-widget</artifactId>
+					<groupId>org.vaadin.addons</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>activiti-simple-workflow</artifactId>
+					<groupId>org.activiti</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-modeler</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.activiti</groupId>
+			<artifactId>activiti-diagram-rest</artifactId>
+			<version>${activiti.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.3.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>gnif-core-oracle</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>gnif-auth-oracle</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>devtool-support-oracle</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>devtool</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>gnif-mail-oracle</artifactId>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
+
+		<!-- quartz -->
+		<dependency>
+			<groupId>opensymphony</groupId>
+			<artifactId>quartz</artifactId>
+			<version>${quartz.version}</version>
+		</dependency>
+		<!-- Poi word -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<!-- iText -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext-pdfa</artifactId>
+			<version>${itext.version}</version>
+		</dependency>
+		<!-- htmlparser -->
+		<dependency>
+			<groupId>org.htmlparser</groupId>
+			<artifactId>htmlparser</artifactId>
+			<version>2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext-xtra</artifactId>
+			<version>${itext.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>gnif-web-base</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+		    <groupId>net.sourceforge.jexcelapi</groupId>
+		    <artifactId>jxl</artifactId>
+		    <version>2.6.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gionee</groupId>
+			<artifactId>gnif-oss-api</artifactId>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.codehaus.groovy</groupId>
+		  <artifactId>groovy-backports-compat23</artifactId>
+		  <version>2.4.5</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>flow</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<useProjectReferences>false</useProjectReferences>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<overlays>
+						<overlay>
+							<groupId>com.gionee</groupId>
+							<artifactId>gnif-web-base</artifactId>
+							<excludes>
+								<exclude>WEB-INF/web.xml</exclude>
+							</excludes>
+						</overlay>
+						<overlay>
+							<groupId>com.gionee</groupId>
+							<artifactId>devtool</artifactId>
+							<includes>
+								<include>WEB-INF/view/dev/**</include>
+								<include>css/**</include>
+								<include>js/**</include>
+								<include>dev/**</include>
+							</includes>
+						</overlay>
+						<overlay>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.0.RC0</version>
+				<configuration>
+					<scanIntervalSeconds>1600</scanIntervalSeconds>
+					<contextXml>src/test/resources/jetty-contexts.xml</contextXml>
+					<webAppConfig>
+						<contextPath>/gniflow</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<filtering>true</filtering> <!-- 是否使用过滤器 -->
+				<directory>${basedir}/src/main/resources</directory>
+				<includes>
+					<include>*.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+				<excludes>
+					<exclude>*.properties</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.gionee</groupId>
+					<artifactId>sapjco</artifactId>
+					<version>3.0</version>
+					<classifier>win64</classifier>
+				</dependency>
+			</dependencies>
+			<properties>
+				<three.depart.byOrgId>http://16.6.10.18:8088/Usr!getOneDept.shtml</three.depart.byOrgId>
+				<depart.isOff.threeDepart>http://16.6.10.18:8088/Usr!isSpecialEmployee.shtml</depart.isOff.threeDepart>
+				<db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//192.168.0.78:1521/pdborcl</db.url>
+				<db.user>flow_dev</db.user>
+				<db.password>flow_dev</db.password>
+				 
+				<!--<db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//192.168.0.78:1521/pdborcl</db.url>
+				<db.user>flow_test</db.user>
+				<db.password>flow_test</db.password>-->
+				
+				<!--<db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//16.6.6.126:1521/pdborcl</db.url>
+				<db.user>flow</db.user>
+				<db.password>flow#20150210</db.password>-->
+				<!-- <db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//16.6.6.126:1521/pdborcl</db.url>
+				<db.user>flow</db.user>
+				<db.password>flow#20150210</db.password>-->
+				<!-- <db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</db.driver> -->
+				<!-- <db.url>jdbc:sqlserver://192.168.0.44:1433;DatabaseName=gn_flow</db.url> -->
+				<!-- <db.user>sa</db.user> -->
+				<!-- <db.password>12345678</db.password> -->
+				<base.path>http://192.168.189.33:8080/${project.artifactId}/</base.path>
+				
+				<mail.db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</mail.db.driver>
+				<mail.db.url>jdbc:sqlserver://192.168.0.44:1433;DatabaseName=GnMail_before</mail.db.url>
+				<mail.db.user>sa</mail.db.user>
+				<mail.db.password>12345678</mail.db.password>
+
+				<uaam.url>http://uaam.go.gionee.com</uaam.url>
+				<app.authCode>AAA</app.authCode>
+				<cas.login.url>http://auth.go.gionee.com/login</cas.login.url>
+				<cas.logout.url>http://auth.go.gionee.com/logout?redirect=localhost:8080/${project.artifactId}/</cas.logout.url>
+				<cas.auth.url>http://auth.go.gionee.com</cas.auth.url>
+
+				<env.read.template>deployments</env.read.template>
+				<file.param.diyFolder>WorkFlow/DOC</file.param.diyFolder>
+
+				<!-- oss config -->
+				<oss.key>a15a6146a9bbbc24</oss.key>
+				<oss.code>workflow</oss.code>
+				<oss.serverUrl>http://192.168.189.33:8000/gnif-oss/</oss.serverUrl>
+				<file.download.url>http://192.168.189.33:8000/gnif-oss/download.html</file.download.url>
+				<file.upload.url>http://192.168.189.33:8000/gnif-oss/common_upload.html</file.upload.url>
+
+				<!--<oss.key>M4IcVyvAuEBCtX>J</oss.key>-->
+				<!--<oss.code>workflow</oss.code>-->
+				<!--<oss.serverUrl>http://file.go.gionee.com/</oss.serverUrl>-->
+				<!--<file.download.url>http://file.go.gionee.com/download.html</file.download.url>-->
+				<!--<file.upload.url>http://file.go.gionee.com/common_upload.html</file.upload.url>-->
+			</properties>
+		</profile>
+
+		<profile>
+			<id>lem</id>
+			<properties>
+				<db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</db.driver>
+				<db.url>jdbc:sqlserver://localhost:1433;DatabaseName=gn_flow</db.url>
+				<db.user>sa</db.user>
+				<db.password>123456</db.password>
+				<base.path>http://localhost:8080/${project.artifactId}/</base.path>
+				<app.user>admin,1,1</app.user>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>test</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.gionee</groupId>
+					<artifactId>sapjco</artifactId>
+					<version>3.0</version>
+					<classifier>linux64</classifier>
+				</dependency>
+			</dependencies>
+			<properties>
+				<three.depart.byOrgId>http://16.6.10.18:8088/Usr!getOneDept.shtml</three.depart.byOrgId>
+				<depart.isOff.threeDepart>http://16.6.10.18:8088/Usr!isSpecialEmployee.shtml</depart.isOff.threeDepart>
+				<db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//192.168.0.78:1521/pdborcl</db.url>
+				<db.user>flow_dev</db.user>
+				<db.password>flow_dev</db.password>
+				<base.path>http://flow.go.gionee.com/</base.path>
+				
+				<mail.db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</mail.db.driver>
+				<mail.db.url>jdbc:sqlserver://192.168.0.44:1433;DatabaseName=GnMail_before</mail.db.url>
+				<mail.db.user>sa</mail.db.user>
+				<mail.db.password>12345678</mail.db.password>
+
+				<uaam.url>http://uaam.go.gionee.com/</uaam.url>
+				<app.authCode>AAA</app.authCode>
+				<cas.login.url>http://auth.go.gionee.com/login</cas.login.url>
+				<cas.logout.url>http://auth.go.gionee.com/logout?redirect=flow.go.gionee.com</cas.logout.url>
+				<cas.auth.url>http://172.18.0.81:8080</cas.auth.url>
+
+				<env.read.template></env.read.template>
+				<file.param.diyFolder>WorkFlow/DOC</file.param.diyFolder>
+
+				<!-- oss config -->
+				<oss.key>M4IcVyvAuEBCtX>J</oss.key>
+				<oss.code>workflow</oss.code>
+				<oss.serverUrl>http://file.go.gionee.com/</oss.serverUrl>
+				<file.download.url>http://file.go.gionee.com/download.html</file.download.url>
+				<file.upload.url>http://file.go.gionee.com/common_upload.html</file.upload.url>
+
+			</properties>
+		</profile>
+
+		<profile>
+			<id>production</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.gionee</groupId>
+					<artifactId>sapjco</artifactId>
+					<version>3.0</version>
+					<classifier>linux64</classifier>
+				</dependency>
+			</dependencies>
+			<properties>
+				<three.depart.byOrgId>http://16.6.10.18:8088/Usr!getOneDept.shtml</three.depart.byOrgId>
+				<depart.isOff.threeDepart>http://16.6.10.18:8088/Usr!isSpecialEmployee.shtml</depart.isOff.threeDepart>
+				<db.driver>oracle.jdbc.driver.OracleDriver</db.driver>
+				<db.url>jdbc:oracle:thin:@//192.168.0.78:1521/pdborcl</db.url>
+				<db.user>flow_dev</db.user>
+				<db.password>flow_dev</db.password>
+				<base.path>http://flow.gionee.com/</base.path>
+				
+				<mail.db.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</mail.db.driver>
+				<mail.db.url>jdbc:sqlserver://192.168.0.44:1433;DatabaseName=GnMail_before</mail.db.url>
+				<mail.db.user>sa</mail.db.user>
+				<mail.db.password>12345678</mail.db.password>
+
+				<uaam.url>http://uaam.gionee.com</uaam.url>
+				<app.authCode>AAA</app.authCode>
+				<cas.login.url>http://auth.gionee.com/login</cas.login.url>
+				<cas.logout.url>http://auth.gionee.com/logout?redirect=flow.gionee.com</cas.logout.url>
+				<cas.auth.url>http://auth.gionee.com</cas.auth.url>
+
+				<env.read.template></env.read.template>
+				<file.param.diyFolder>WorkFlow/DOC</file.param.diyFolder>
+				<!-- oss config -->
+				<oss.key>M4IcVyvAuEBCtX>J</oss.key>
+				<oss.code>workflow</oss.code>
+				<oss.serverUrl>http://file.gionee.com/</oss.serverUrl>
+				<file.download.url>http://file.gionee.com/download.html</file.download.url>
+				<file.upload.url>http://file.gionee.com/common_upload.html</file.upload.url>
+			</properties>
+		</profile>
+	</profiles>
+</project>

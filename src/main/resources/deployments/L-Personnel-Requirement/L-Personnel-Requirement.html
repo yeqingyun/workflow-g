@@ -1,0 +1,3470 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+
+
+<#assign reqRank = "">
+<#assign reqNumber = "">
+<#assign reqJob = "">
+<#assign reqDate = "">
+<#assign reqHopeDate = "">
+<#assign preparation = "">
+<#assign reqParticulars = "">
+<#assign reqType = "">
+<#assign workContent = "">
+<#assign sex = "">
+<#assign education = "">
+<#assign ageFrom = "">
+<#assign ageTo = "">
+<#assign major = "">
+<#assign reqChannels = "">
+<#assign workSkill = "">
+<#assign workExperience = "">
+<#assign otherReq = "">
+<#assign startRecruitTime = "">
+<#assign endRecruitTime = "">
+<#assign outReqReason = "">
+<#assign curOrgId = "">
+<#assign reqReason2nd = "">
+
+
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent'>
+	<tr>
+		<td class="formtable_td_key">需求系统：</td>
+		<td class="formtable_td_value" width="120px">
+			${(steps.vars["reqSystem"])!""}
+		</td>
+		<td class="formtable_td_key">需求部门：</td>
+		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+		<td class="formtable_td_key">需求岗位名称：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["reqJob"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求人数：</td>
+		<td class="formtable_td_value">
+			<#if steps.vars["reqRank"] == '1' >
+			    助理级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+			<#if steps.vars["reqRank"] == '2' >
+			    中级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+			<#if steps.vars["reqRank"] == '3' >
+			   高级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+		</td>
+		<td class="formtable_td_key">需求日期：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["reqDate"])!""}
+		<td class="formtable_td_key">希望到岗日期：</td>
+		<td id="td_education" class="formtable_td_value">
+			${(steps.vars["reqHopeDate"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求类型：</td>
+		<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["reqType"] == '1' >
+				校园招聘(<span style="color: red">公司统一收集需求，到岗时间为次年7月份</span>)
+			</#if>
+			<#if steps.vars["reqType"] == '2' >
+				实习生招聘(<span style="color: red">临时性，最长实习期为6个月</span>)
+			</#if>
+			<#if steps.vars["reqType"] == '3' >
+				社会招聘(<span style="color: red">常规</span>)
+			</#if>
+		 </td>
+		 <td class="formtable_td_key">编制情况：</td>
+		 <td class="formtable_td_value">
+		 	<#if steps.vars["preparation"] == '1' >
+				编制内
+			</#if>
+			<#if steps.vars["preparation"] == '2' >
+				编制外
+			</#if>
+		 </td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求明细：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["reqParticulars"] == '1' >
+				离职补员
+			</#if>
+			<#if steps.vars["reqParticulars"] == '2' >
+				调岗补员
+			</#if>
+			<#if steps.vars["reqParticulars"] == '3' >
+				新增岗位
+			</#if>
+			<#if steps.vars["reqParticulars"] == '4' >
+				新增人员
+			</#if>
+		</td>
+	</tr>
+	<#if steps.vars["reqParticulars"] == '1' || steps.vars["reqParticulars"] == '2' >
+	<tr>
+	       			<#if steps.vars["reqParticulars"] == '1' >
+				  	<td colspan="6" class="formtable_td_key" align="center">离职补员</td>
+				  	</#if>
+				  	<#if steps.vars["reqParticulars"] == '2' >
+				  	<td colspan="6" class="formtable_td_key" align="center">调岗补员</td>
+				  	</#if>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:1000px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="24" align="center">序号</td>
+											<td width="150" align="center">被代替者姓名</td>
+											<td width="150" align="center">岗位</td>
+											<td width="150" align="center">离职日期</td>
+											<#if steps.vars["reqParticulars"]=='1'>
+											<td width="150" align="center">职级</td>
+											</#if>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+										<#if steps.vars["MFixedAssetsDetraction"]??>
+						   					<#assign text1>
+												${(steps.vars["MFixedAssetsDetraction"])!""}
+											</#assign>
+											<#assign json=text1?eval />
+											<#list json.accessoryData as item>
+												<tr>
+													<td width="24" align="center">${item.rows}</td>
+													<td width="150" align="center">${item.reqReplacePerson}</td>
+													<td width="150" align="center">${item.job}</td>
+													<td width="150" align="center">${item.transferDate}</td>
+													<#if steps.vars["reqParticulars"]=='1'>
+													 <td width="150" align="center">${item.grades}</td>
+													</#if>
+												</tr>
+											</#list>
+			   							</#if>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+	  <tr>
+	</#if>
+	<#if steps.vars["reqParticulars"] == '3' >
+	<tr>
+		<td class="formtable_td_key">新增编制说明：</td>
+		<td class="formtable_td_value"  colspan="5" >${steps.vars["participantList"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">增设原因：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["reqReason2nd"]!""}</td>
+	</tr>
+	</#if>
+		<td class="formtable_td_key">工作内容与职责：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["workContent"])!""}</textarea>
+		 </td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:12px;">
+			任职资格
+		</td>
+	</tr>
+	<tr>
+	<td class="formtable_td_key">性别：</td>
+		<#if steps.vars["sex"] == '1' >
+			<td class="formtable_td_value" >男</td>
+		</#if>
+		<#if steps.vars["sex"] == '2' >
+			<td class="formtable_td_value"  >女</td>
+		</#if>
+		<#if steps.vars["sex"] == '3' >
+			<td class="formtable_td_value"  >不限</td>
+		</#if>
+		<td class="formtable_td_key">学历：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["education"])!""}
+		</td>
+		<td class="formtable_td_key">年龄：</td>
+		<td class="formtable_td_value" > 
+			${(steps.vars["ageFrom"])!""} &nbsp;
+						岁到
+			${(steps.vars["ageTo"])!""}岁
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">专业：</td>
+		<td  class="formtable_td_value" colspan="5">
+			${(steps.vars["major"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">知识/技能：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["workSkill"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">工作经验：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["workExperience"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">其他要求：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["otherReq"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">招聘途径：</td>
+		<td colspan="5" class="formtable_td_value">
+		<#if steps.vars["reqChannels"]??> 
+			<#if steps.vars["reqChannels"]?contains("1")>只向内部招聘 </#if>&nbsp;&nbsp;
+			<#if steps.vars["reqChannels"]?contains("2")>只向外部招聘</#if>&nbsp;&nbsp;
+			<#if steps.vars["reqChannels"]?contains("3")>同步启动猎头招聘(<span style="color: red">经理级及以上岗位、高级职称岗位方可启动猎头</span>)</#if>&nbsp;&nbsp;
+			<#if steps.vars["reqChannels"]?contains("4")>同步内招 </#if>&nbsp;&nbsp;
+		</#if>
+		</td>
+	</tr>
+	<#if steps.vars["reqChannels"] ?contains("1") >
+	<tr>
+		<td class="formtable_td_key">内招期限：</td>
+		<td colspan="5" class="formtable_td_value">
+			${(steps.vars["startRecruitTime"])!""}&nbsp;&nbsp;到 &nbsp;&nbsp;${(steps.vars["endRecruitTime"])!""}
+		</td>
+	</tr>
+	</#if>
+	<#if steps.vars["reqChannels"] ?contains("3") >
+	<tr>
+		<td class="formtable_td_key">启动猎头原因：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["outReqReason"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+<!-- 修改申请表单 -->
+	<#if steps.key =='nmb_updatePersonnelRequiremnetTask'>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:12px;">
+			申请修改表单
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求系统：</td>
+		<td class="formtable_td_value" width="120px">
+			${(steps.vars["updatereqSystem"])!""}
+		</td>
+		<td class="formtable_td_key">需求部门：</td>
+		<td class="formtable_td_value">${(steps.vars["updateorgName"])!""}</td>
+		<td class="formtable_td_key">需求岗位名称：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["updateReqJob"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求人数：</td>
+		<td class="formtable_td_value">
+			<#if steps.vars["reqRank"] == '1' >
+			    助理级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+			<#if steps.vars["reqRank"] == '2' >
+			    中级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+			<#if steps.vars["reqRank"] == '3' >
+			   高级&nbsp;&nbsp;${(steps.vars["reqNumber"])!""}人
+			</#if>
+		</td>
+		<td class="formtable_td_key">需求日期：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["updatereqDate"])!""}
+		<td class="formtable_td_key">希望到岗日期：</td>
+		<td id="td_education" class="formtable_td_value">
+			${(steps.vars["updatereqHopeDate"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求类型：</td>
+		<td class="formtable_td_value" colspan="3">
+			<#if steps.vars["updatereqType"] == '1' >
+				校园招聘(<span style="color: red">公司统一收集需求，到岗时间为次年7月份</span>)
+			</#if>
+			<#if steps.vars["updatereqType"] == '2' >
+				实习生招聘(<span style="color: red">临时性，最长实习期为6个月</span>)
+			</#if>
+			<#if steps.vars["updatereqType"] == '3' >
+				社会招聘(<span style="color: red">常规</span>)
+			</#if>
+		 </td>
+		 <td class="formtable_td_key">编制情况：</td>
+		 <td class="formtable_td_value">
+		 	<#if steps.vars["preparation"] == '1' >
+				编制内
+			</#if>
+			<#if steps.vars["preparation"] == '2' >
+				编制外
+			</#if>
+		 </td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">需求明细：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["reqParticulars"] == '1' >
+				离职补员
+			</#if>
+			<#if steps.vars["reqParticulars"] == '2' >
+				调岗补员
+			</#if>
+			<#if steps.vars["reqParticulars"] == '3' >
+				新增岗位
+			</#if>
+			<#if steps.vars["reqParticulars"] == '4' >
+				新增人员
+			</#if>
+		</td>
+	</tr>
+	<#if steps.vars["reqParticulars"] == '1' || steps.vars["reqParticulars"] == '2' >
+	<tr>
+	       			<#if steps.vars["reqParticulars"] == '1' >
+				  	<td colspan="6" class="formtable_td_key" align="center">离职补员</td>
+				  	</#if>
+				  	<#if steps.vars["reqParticulars"] == '2' >
+				  	<td colspan="6" class="formtable_td_key" align="center">调岗补员</td>
+				  	</#if>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:1000px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="24" align="center">序号</td>
+											<td width="150" align="center">被代替者姓名</td>
+											<td width="150" align="center">岗位</td>
+											<td width="150" align="center">离职日期</td>
+											<#if steps.vars["reqParticulars"]=='1'>
+											<td width="150" align="center">职级</td>
+											</#if>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+										<#if steps.vars["MFixedAssetsDetraction"]??>
+						   					<#assign text1>
+												${(steps.vars["MFixedAssetsDetraction"])!""}
+											</#assign>
+											<#assign json=text1?eval />
+											<#list json.accessoryData as item>
+												<tr>
+													<td width="24" align="center">${item.rows}</td>
+													<td width="150" align="center">${item.reqReplacePerson}</td>
+													<td width="150" align="center">${item.job}</td>
+													<td width="150" align="center">${item.transferDate}</td>
+													<#if steps.vars["reqParticulars"]=='1'>
+													 <td width="150" align="center">${item.grades}</td>
+													</#if>
+												</tr>
+											</#list>
+			   							</#if>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+		  <tr>
+		</#if>
+		<#if steps.vars["reqParticulars"] == '3' >
+		<tr>
+			<td class="formtable_td_key">新增编制说明：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">增设原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["reqReason2nd"]!""}</td>
+		</tr>
+		
+		</#if>
+		<td class="formtable_td_key">工作内容与职责：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateworkContent"])!""}</textarea>
+		 </td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:12px;">
+			任职资格
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">性别：</td>
+		<#if steps.vars["updatesex"] == '1' >
+			<td class="formtable_td_value" colspan="5">男</td>
+		</#if>
+		<#if steps.vars["updatesex"] == '2' >
+			<td class="formtable_td_value" colspan="5">女</td>
+		</#if>
+		<#if steps.vars["updatesex"] == '3' >
+			<td class="formtable_td_value" colspan="5">不限</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">学历：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["updateeducation"])!""}
+		</td>
+		<td class="formtable_td_key">年龄：</td>
+		<td class="formtable_td_value" colspan="3"> 
+			${(steps.vars["updateageFrom"])!""} &nbsp;
+						岁到
+			${(steps.vars["updateageTo"])!""}岁
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">专业：</td>
+		<td  class="formtable_td_value" colspan="5">
+			${(steps.vars["updatemajor"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">知识/技能：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateworkSkill"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">工作经验：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateworkExperience"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">其他要求：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateotherReq"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">招聘途径：</td>
+		<td colspan="5" class="formtable_td_value">
+		<#if steps.vars["updatereqChannels"]??> 
+			<#if steps.vars["updatereqChannels"]?contains("1")>只向内部招聘 </#if>&nbsp;&nbsp;
+			<#if steps.vars["updatereqChannels"]?contains("2")>只向外部招聘</#if>&nbsp;&nbsp;
+			<#if steps.vars["updatereqChannels"]?contains("3")>同步启动猎头招聘(<span style="color: red">经理级及以上岗位、高级职称岗位方可启动猎头</span>)</#if>&nbsp;&nbsp;
+			<#if steps.vars["updatereqChannels"]?contains("4")>同步内招 </#if>&nbsp;&nbsp;
+		</#if>
+		</td>
+	</tr>
+	<#if steps.vars["updatereqChannels"] ?contains("1") >
+	<tr>
+		<td class="formtable_td_key">内招期限：</td>
+		<td colspan="5" class="formtable_td_value">
+			${(steps.vars["startRecruitTime"])!""}&nbsp;&nbsp;到 &nbsp;&nbsp;${(steps.vars["endRecruitTime"])!""}
+		</td>
+	</tr>
+	</#if>
+	<#if steps.vars["updatereqChannels"] ?contains("3") >
+	<tr>
+		<td class="formtable_td_key">启动猎头原因：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["updateoutReqReason"])!""}</textarea>
+		</td>
+	</tr>
+	</#if>
+	<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 部门经理 -->
+<#if steps.key == 'mb_deptManagerTask'>
+	<tr>
+		<td class="formtable_td_key">部门经理</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["deptLeaderName"])!""}
+		</td>
+		<#if steps.vars["deptManagerAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["deptManagerAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["deptLeaderAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["deptLeaderAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 部门总监 -->
+<#if steps.key == 'mb_deptMajordomoAudiTask'>
+	<tr>
+		<td class="formtable_td_key">部门总监</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["deptMajordomoName"])!""}
+		</td>
+		<#if steps.vars["deptMajordomoAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["deptMajordomoAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["deptMajordomoAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["deptMajordomoAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+
+<!-- 招聘主管 -->
+<#if steps.key == 'mb_reZhuGuanTask'>
+	<tr>
+		<td class="formtable_td_key">招聘主管</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["reZhuGuanName"])!""}
+		</td>
+		<#if steps.vars["reZhuGuanAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["reZhuGuanAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["reZhuGuanAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["reZhuGuanAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+<!-- 主管副总 -->
+<#if steps.key == 'mb_vicePresidentAudiTask'>
+	<tr>
+		<td class="formtable_td_key">主管副总</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["directorName"])!""}
+		</td>
+		<#if steps.vars["vicePresidentAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["vicePresidentAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["directorAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["directorAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 招聘人事总监 -->
+<#if steps.key == 'mb_recruitmentManagerDirectorTask'>
+	<tr>
+		<td class="formtable_td_key">招聘人事总监审批</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["recruitmentManagerDirectorName"])!""}
+		</td>
+		<#if steps.vars["recruitmentManagerDirectorAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["recruitmentManagerDirectorAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["recruitmentManagerDirectorAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["recruitmentManagerDirectorAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- HR副总裁 -->
+<#if steps.key == 'mb_hrViceChairmanTask'>
+	<tr>
+		<td class="formtable_td_key">人力资源中心总监</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["hrMajordomoName"])!""}
+		</td>
+		<#if steps.vars["hrViceChairmanAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["hrViceChairmanAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["hrMajordomoAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["hrMajordomoAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 董事长审批 -->
+<#if steps.key == 'mb_chairmanOfTheBoardTask'>
+	<tr>
+		<td class="formtable_td_key">董事长审批</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["generalManagerName"])!""}
+		</td>
+		<#if steps.vars["chairmanOfTheBoardAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["chairmanOfTheBoardAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["generalManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["generalManagerAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- 招聘专员 -->
+<#if steps.key == 'mb_recruiterAudiTask'>
+	<tr>
+		<td class="formtable_td_key">招聘专员</td>
+		<td class="formtable_td_value" colspan="3">
+			${(steps.vars["recruiterName"])!""}
+		</td>
+		<#if steps.vars["recruiterAudi"] == '0' >
+			<td colspan="2"  class="formtable_td_value">同意</td>
+		</#if>
+		<#if steps.vars["recruiterAudi"] == '1' >
+			<td colspan="2"  class="formtable_td_value">不同意</td>
+		</#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 800px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["recruiterAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["recruiterAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+</#list> 
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">需求系统：</td>
+		  	        <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" value="[${appuser.orgId?c},${appuser.orgName}]人员需求流程"/>
+		  	        <input type="hidden" name="fp_curUserId" value="${appuser.userId?c}"/>
+		  	        <input id="curUserId${rand}" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	        <input id="userName${rand}" type="hidden" name="fp_userName" value="${appuser.name}"/>
+		  	        <input id="orgId${rand}" type="hidden" name="fp_curOrgId" value="${appuser.orgId?c}"/>
+		  	        <input type="hidden" name="fp_orgName" value="${appuser.orgName}"/>
+				     
+				   
+				  
+				  	<td id="td_reqSystem${rand}"  class="formtable_td_value" >
+				  		<input id="reqSystem${rand}" class="easyui-validatebox"  type="hidden" name="fp_reqSystem"/>
+				  	</td>
+				  	<td class="formtable_td_key">需求部门：</td>
+				  	<td class="formtable_td_value" >${appuser.orgName}</td>
+				  	<td class="formtable_td_key">需求岗位名称：</td>
+				  	<td class="formtable_td_value">
+						<input id="combo_reqJob${rand}" type="text" data-options="editable:false" value=""/>
+						<input id="hidden_reqJob${rand}" type="hidden" name="fp_reqJob" value=""/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	  <td class="formtable_td_key">需求人数：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<input type="radio" name="fp_reqRank" value="1" checked="checked"/>助理级&nbsp;<input  id="reqNumber${rand}" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  		<input type="radio" name="fp_reqRank" value="2"/>中级&nbsp;&nbsp;&nbsp;&nbsp;<input  id="reqNumber2${rand}" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  		<input type="radio" name="fp_reqRank" value="3"/>高级&nbsp;&nbsp;&nbsp;&nbsp;<input  id="reqNumber3" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">需求日期：</td>
+				  	<td class="formtable_td_value" colspan="3"> 
+				  		<input type="hidden" name="fp_reqDate" value="${.now?string('yyyy-MM-dd')}" />${.now?string('yyyy-MM-dd ')}
+				  	<td class="formtable_td_key">希望到岗日期：</td>
+				  	<td id="td_education" class="formtable_td_value">
+				  		<input id="reaHopeDate${rand}" class="easyui-my97" name="fp_reqHopeDate" readonly="readonly"
+								data-options="width:130,required:true,minDate:'%y-%M-{%d}',validType:'reqdate'" />
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">需求类型：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input type="radio" name="fp_reqType" value="3" checked="checked"/>社会招聘(<span style="color: red">常规</span>)&nbsp;&nbsp;&nbsp;&nbsp;
+		  	  			<input type="radio" name="fp_reqType" value="2" />实习生招聘(<span style="color: red">临时性，最长实习期为6个月</span>)</br>
+		  	  			<input type="radio" name="fp_reqType" value="1" />校园招聘(<span style="color: red">公司统一收集需求，到岗时间为次年7月份</span>)
+		  	  		</td>
+		  	  		<td class="formtable_td_key">编制情况：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="preparation${rand}" class="easyui-combobox" name="fp_preparation" 
+		  	  				data-options="required:true,panelHeight:70,editable:false,valueField:'value',textField:'text', 
+		  	  				data: [{value: '1',text: '编制内'},
+		  	  					   {value: '2',text: '编制外'}]"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr id="reqReason${rand}">
+		  	  		<td class="formtable_td_key">需求明细：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		  <input id="reqParticulars${rand}" class="easyui-combobox" name="fp_reqParticulars" 
+		  	  				data-options="required:true,valueField:'id',textField:'text', 
+		  	  				data:[{ id : '1',text: '离职补员'},
+		  	  					   {id: '2',text: '调岗补员'},
+		  	  					   {id: '3',text: '新增岗位'},
+		  	  					   {id: '4',text: '新增人员'}]"/>
+		  	  			
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr class="scrapWay1">
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    						<input type="hidden" id="firstPersonAccount${rand}" name="fp_firstPersonAccount" />
+	    						
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:1000px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable" id="">
+									<thead>
+										<tr id="tr${rand}">
+											<td width="1" align="center"><input type="checkbox" class="thchk" /></td>
+											<td width="24" align="center">序号</td>
+											<td width="150" align="center">被代替者姓名</td>
+											<td width="150" align="center">岗位</td>
+											<td width="150" align="center">离职日期</td>
+											<td width="150" align="center" id="gradesId${rand}">职级</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="accessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+		  	  	 	<tr id="tr7${rand}">
+					<td class="formtable_td_key">新增编制说明</td>
+								<td class="formtable_td_value" colspan="5">
+									<input id="partAccount" type="hidden" name="fp_partList" /> 
+									<input id="participantList_val" type="hidden" name="fp_participantList" /> 
+									<input id="rapList${rand}" type="hidden" name="fp_rapList" />
+									<input id="participantList4Hidden" type="hidden" name="fp_participantList4Hidden" /> 
+									<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+											data-options="iconCls:'icon-upload'">导入新增编制说明</a>
+									<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+											data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+									<font color="red"> (请上传文件) </font>
+			                        <input id="confineUpload${rand}" name="fp_confineUpload" class="easyui-validatebox" data-options="required:true" missingMessage="请上传文件" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+									<input id="reAssigned${rand}" type="hidden" name="fp_reAssigned" />
+									<div id="participantList" style="font-size: 12px; "></div>
+								</td>
+					</tr>
+		  	  	  
+		  	  	
+		  	  	<!-- <tr id="reqReason${rand}-1st">
+					<td class="formtable_td_key">被替代者姓名：</td>
+			       	<td class="formtable_td_value">
+			      		<input class="easyui-validatebox" type="text" name="fp_reqReplacePerson" data-options="required:true"/>
+			        </td>
+			        <td class="formtable_td_key">岗位：</td>
+			      	<td class="formtable_td_value">
+			        	<input class="easyui-validatebox"  type="text" name="fp_reqStation" data-options="required:true"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key" id="td${rand}">离职日期：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input class="easyui-my97" name="fp_transferDate" readonly="readonly"  
+		  	  				data-options="width:130,required:true" />
+		  	  		</td>
+		  	  	</tr> -->
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作内容与职责：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px"
+								name="fp_workContent" class="easyui-validatebox" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key" align="center"  colspan="6">
+						任职资格
+					</td>
+				</tr> 
+				<tr>
+		  	        <td class="formtable_td_key">性别：</td>
+				  	<td class="formtable_td_value"  colspan="6">
+				  		<input type="radio" name="fp_sex" value="1" />男
+				  		<input type="radio" name="fp_sex" value="2" />女
+				  		<input type="radio" name="fp_sex" value="3" checked="checked"/>不限
+				  	</td>
+				  	<!-- <td class="formtable_td_key">岗位职级：</td>
+				  	<td class="formtable_td_value" colspan="3"> 
+				  		<input class="easyui-validatebox"  type="text" name="fp_salaryFrom" data-options="required:true" />
+						级到
+						<input class="easyui-validatebox"  type="text" name="fp_salaryTo" data-options="required:true" />
+						助理级<input id="assistantNum${rand}" style="width:80px" class="easyui-numberbox" name="fp_assistantNum" type="text" data-options="required:false,onChange:function(newValue,oldValue){try{v1=parseInt(newValue,10);}catch(e){v1=0};getTotalScoreByManager()}" onblur="check();"/>人;
+						中级<input id="middleLevel${rand}" style="width:80px" class="easyui-numberbox" name="fp_middleLevelNum" type="text" data-options="required:false,onChange:function(newValue,oldValue){try{v2=parseInt(newValue,10);}catch(e){v2=0};getTotalScoreByManager()}" onblur="check();"/>人;
+						高级<input id="highLevel${rand}" style="width:80px" class="easyui-numberbox" name="fp_highLevelNum" type="text"  data-options="required:false,onChange:function(newValue,oldValue){try{v3=parseInt(newValue,10);}catch(e){v3=0};getTotalScoreByManager()}" onblur="check();"/>人;
+						<input id="totalNum${rand}" class="easyui-numberbox"  type="hidden" name="fp_totalNum" />
+					</td> -->
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">学历：</td>
+				  	<td class="formtable_td_value">
+				  		<input class="easyui-combobox" name="fp_education"
+							data-options="valueField:'id',textField:'text',editable:false,required:true,multiple:false,
+										url:'bpmCommCode/loadDateForCategory.json?catagory=Education'"/>
+				  	</td>
+				  	<td class="formtable_td_key">年龄：</td>
+				  	<td class="formtable_td_value" colspan="3"> 
+				  		<input id="ageFrom-${rand}" class="easyui-validatebox"  type="text" name="fp_ageFrom"
+								data-options="required:true,validType:['positiveInteger','ageScopeFrom','compareAge']"/>
+						岁到
+						<input id="ageTo-${rand}" class="easyui-validatebox"  type="text" name="fp_ageTo"
+								data-options="required:true,validType:['positiveInteger','ageScopeTo','compareAge']" />岁
+					</td>
+		  	  	</tr>
+		  	  		<tr>
+		  	        <td class="formtable_td_key">专业：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<input class="easyui-validatebox"  type="text" name="fp_major"
+								data-options="required:true" size="45"/>
+				  	</td>
+		  	  	</tr>
+		  	  		<tr id="recruitmentChannels${rand}">
+		  	        <td class="formtable_td_key">招聘途径：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<!-- <input type="radio" name="fp_reqChannels" value="2" checked="checked"/>先内招&nbsp;&nbsp;后外招
+				  		<input type="radio" name="fp_reqChannels" value="1" />只向内部招聘
+				  		<input type="radio" name="fp_reqChannels" value="4" />外部招聘
+				  		<input type="radio" name="fp_reqChannels" value="3" />同步启动猎头招聘 -->
+				  		<input type="checkbox"  name="fp_reqChannels" value="2"/>只向外部招聘
+				  		<input type="checkbox" name="fp_reqChannels" value="1" id="fp_reqChannels" />只向内部招聘
+				  		<input type="checkbox" name="fp_reqChannels" value="4" />同步内招
+				  		<input type="checkbox" name="fp_reqChannels" value="3" id="fp_reqChannels3"  />同步启动猎头招聘(<span style="color: red">经理级及以上岗位、高级职称岗位方可启动猎头</span>)
+				  	</td>
+		  	  	</tr>
+				<tr>
+		  	  		<td class="formtable_td_key">知识/技能：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px"
+								name="fp_workSkill" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作经验：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px"
+								name="fp_workExperience" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">其他要求：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px"
+								name="fp_otherReq" class="formtable_remark"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入奖惩人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td width="120" align="center">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+							<td>
+								<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+		    </div>
+	 </div> 
+		<script type="text/javascript">
+			v1=0;v2=0;v3=0;
+			function getTotalScoreByManager(){
+				$("#totalNum${rand}").numberbox("setValue",v1+v2+v3);
+			}//计算总分
+			
+			//用于获取三层部门的名称
+			 $.post("taskmonitor/getOrgName.josn", {
+					orgId : "${appuser.orgId?c}"
+				}, function(data) {
+					data=eval("("+data+")");
+					if (data.success) {
+						$("#firstPersonAccount${rand}").val(data.msg);
+					}
+				});
+			
+			function check(){
+				   var zlj=$('#assistantNum${rand}').val();
+				   var zj=$('#middleLevel${rand}').val();
+				   var gj=$('#highLevel${rand}').val();
+				   
+				   if(!$('#middleLevel${rand}').val()){
+					   zj=0;
+				   }
+				   if(!$('#assistantNum${rand}').val()){
+					   zlj=0;
+				   }
+				   if(!$('#highLevel${rand}').val()){
+					   gj=0;
+				   }
+				   var count =parseInt(zlj)+parseInt(zj)+parseInt(gj);
+				    if(count>parseInt($('#reqCount${rand}').val())){
+				    	$('#middleLevel${rand}').numberbox('setValue','');
+				    	$('#assistantNum${rand}').numberbox('setValue','');
+				    	$('#highLevel${rand}').numberbox('setValue','');
+				    	$.messager.alert('提示','岗位人数不能超过需求人数,请重新输入','warning');
+				    	return ;
+				    }
+				}
+			
+			
+				$.post("hrFlow/getIfOffThreeDepartById.json", {
+					orgId : '${appuser.orgId?c}',
+					parentId:'50011894'
+				}, function(data) {
+					if (data.success) {
+						$("#reAssigned${rand}").val(data.msg);
+					}
+				});
+			
+			 $("#reqNumber3").attr("disabled",true);
+			 $("#reqNumber2${rand}").attr("disabled",true);
+			
+			 $(".scrapWay1").hide();
+			 $("#tr7${rand}").hide();
+			$(function(){
+				$("input[name='fp_reqRank']").bind("click",function(){
+					   var value=$('input:radio[name="fp_reqRank"]:checked').val();
+					   if(value==1){
+						  chuji();
+					   }else if(value==2){
+						  zhongji();
+					   }else{
+						  gaoji();
+					   }
+			        });
+				 $("#reqParticulars${rand}").combobox({
+					onSelect : function(record){
+						var accessoryInfoTb=document.getElementById("accessoryInfoTb${rand}").innerHTML;
+						if($.trim(accessoryInfoTb)!=''){
+							document.getElementById("accessoryInfoTb${rand}").innerHTML='';
+						}
+						if(record.id==1 ||record.id==2){
+							if(record.id==1){
+								$("#gradesId${rand}").show();
+							}else{
+								$("#gradesId${rand}").hide();
+							}
+							$("#confineUpload${rand}").val("可以");
+							$(".scrapWay1").show();
+							$("#tr7${rand}").hide();
+							if ($('#reqReason${rand}-2nd').length > 0) {
+								$("#reqReason${rand}-2nd").remove();
+				        	}
+							if($("#combo_reqJob${rand}").combobox('getValue')){
+								
+							}else{
+								$("#combo_reqJob${rand}").combobox({required:true});
+								$('#combo_reqJob${rand}').combobox('enable');
+							}
+						}else if(record.id==3){
+							$("#confineUpload${rand}").val("");
+							$(".scrapWay1").hide();
+							$("#tr7${rand}").show();
+							var trObj = '<tr id="reqReason${rand}-2nd">'
+				        		+ '<td class="formtable_td_key">增设原因：</td>'
+				        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 60px" name="fp_reqReason2nd" class="easyui-validatebox" data-options="required:true"></textarea>'
+				        		+ '</td></tr>';
+				        		if ($('#reqReason${rand}-2nd').length <= 0) {
+					        		$("#tr7${rand}").after(trObj);
+					        	}
+				        		$.parser.parse('#reqReason${rand}-2nd');
+				        		
+				        		
+				        	$("#hidden_reqJob${rand}").val('');
+							$("#combo_reqJob${rand}").combobox('setValue','');
+							$("#combo_reqJob${rand}").combobox({required:false});
+							$('#combo_reqJob${rand}').combobox('disable');
+						}else{
+							$("#confineUpload${rand}").val("可以");
+							$("#tr7${rand}").hide();
+							$(".scrapWay1").hide();
+							if ($('#reqReason${rand}-2nd').length > 0) {
+								$("#reqReason${rand}-2nd").remove();
+				        	}
+							if($("#combo_reqJob${rand}").combobox('getValue')){
+								
+							}else{
+								$("#combo_reqJob${rand}").combobox({required:true});
+								$('#combo_reqJob${rand}').combobox('enable');
+							}
+						}
+					}
+				
+				}) 
+				
+				
+				
+				
+				
+				 
+				 $("input[name='fp_reqRank']").bind("click",function(){
+					   var value=$('input:radio[name="fp_reqRank"]:checked').val();
+					   if(value==1){
+						   $("#reqNumber${rand}").attr("disabled",false);
+						   $("#reqNumber${rand}").validatebox({required:true});
+						   $("#reqNumber${rand}").css("background-color","none");
+						   $("#reqNumber3").validatebox({required:false});
+						   $("#reqNumber3").attr("disabled",true);
+						   $("#reqNumber3").css("background-color","smoky gray");
+						   $("#reqNumber2${rand}").validatebox({required:false}); 
+						   $("#reqNumber2${rand}").attr("disabled",true);
+						   $("#reqNumber2${rand}").css("background-color","smoky gray");
+					   }else if(value==2){
+						   $("#reqNumber2${rand}").attr("disabled",false);
+						   $("#reqNumber2${rand}").validatebox({required:true});
+						   $("#reqNumber2${rand}").css("background-color","none");
+						   $("#reqNumber3").validatebox({required:false});
+						   $("#reqNumber3").attr("disabled",true);
+						   $("#reqNumber3").css("background-color","smoky gray");
+						   $("#reqNumber${rand}").validatebox({required:false});
+						   $("#reqNumber${rand}").attr("disabled",true);
+						   $("#reqNumber${rand}").css("background-color","smoky gray");
+						
+					   }else{
+						   $("#reqNumber3").attr("disabled",false);
+						   $("#reqNumber3").validatebox({required:true});
+						   $("#reqNumber3").css("background-color","none");
+						   $("#reqNumber2${rand}").validatebox({required:false});
+						   $("#reqNumber2${rand}").attr("disabled",true);
+						   $("#reqNumber2${rand}").css("background-color","smoky gray");
+						   $("#reqNumber${rand}").validatebox({required:false});
+						   $("#reqNumber${rand}").attr("disabled",true);
+						   $("#reqNumber${rand}").css("background-color","smoky gray");
+						  
+					   }
+			        });
+				 
+				 
+				//同步请求
+				$.ajax({  
+			         type : "post",  
+			         url : "hrFlow/getHrUserInfo.json",  
+			         data : {
+						account:$("#curUserId${rand}").val()
+					 },  
+			         async : false,  
+			         dataType: "json",
+			         success : function(data){  
+			             if (data.success) {
+							$("#reqSystem${rand}").val(data.obj.systemName);
+							//设置TD
+							$("#td_reqSystem${rand}").append(data.obj.systemName);
+						} 
+			         }  
+			     }); 
+			     
+			    //init combo
+			    var combo_reqJob = $('#combo_reqJob${rand}');
+			    var hidden_reqJob = $('#hidden_reqJob${rand}');
+				combo_reqJob.combobox({
+						valueField:'id',
+						textField:'text',
+						url:'hrFlow/jonInfoFromDept.json?deptId='+$('#orgId${rand}').val(),
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+	                		hidden_reqJob.val(record.text);
+	            		}
+				});
+
+				$("input[name='fp_reqReason']").bind("click",function(){ 
+			        //测试操作代码 
+			        var $selectedvalue = $(this).val(); 
+			        if ($selectedvalue == 1) {
+			        	$("#combo_reqJob${rand}").combobox("enable");
+			        	$("#combo_reqJob${rand}").combobox({ required:true });
+			        	var trObj = '<tr id="reqReason${rand}-1st">'
+			        		+'<td class="formtable_td_key">被替代者姓名：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox" type="text" name="fp_reqReplacePerson" data-options="required:true"/>'
+			        		+'</td>'
+			        		+'<td class="formtable_td_key">岗位：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox"  type="text" name="fp_reqStation" data-options="required:true"/>'
+		  	  				+'</td>'
+		  	  				+'<td class="formtable_td_key">离职日期：</td>'
+		  	  				+'<td class="formtable_td_value">'
+		  	  				+'<input id="transferDate${rand}" name="fp_transferDate" readonly="readonly"/>'
+		  	  				+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqReason${rand}-1st').length <= 0) {
+			        		 $("#reqReason${rand}").after(trObj);
+			        	}
+			        	if($("#hidden_reqJob${rand}").val()==""){
+							$("#combo_reqJob${rand}").combobox("setValue","");
+						}
+			            $.parser.parse('#reqReason${rand}-1st');
+			            
+			            $('#transferDate${rand}').my97({
+							width:100,
+							minDate:'%y-%M-{%d}',
+							width:130,
+							required:true
+						});
+			            
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			            $("#reqReason${rand}-4th").remove();
+			        }else if($selectedvalue == 4){
+			        	$("#combo_reqJob${rand}").combobox("enable");
+			        	$("#combo_reqJob${rand}").combobox({ required:true });
+			        	var trObj = '<tr id="reqReason${rand}-4th">'
+			        		+'<td class="formtable_td_key">被替代者姓名：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox" type="text" name="fp_reqReplacePerson4th" data-options="required:true"/>'
+			        		+'</td>'
+			        		+'<td class="formtable_td_key">岗位：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox"  type="text" name="fp_reqStation4th" data-options="required:true"/>'
+		  	  				+'</td>'
+		  	  				+'<td class="formtable_td_key">调动日期：</td>'
+		  	  				+'<td class="formtable_td_value">'
+		  	  				+'<input id="transferDate4th${rand}" name="fp_transferDate4th" readonly="readonly"/>'
+		  	  				+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqReason${rand}-4th').length <= 0) {
+			        		 $("#reqReason${rand}").after(trObj);
+			        	}
+			        	if($("#hidden_reqJob${rand}").val()==""){
+							$("#combo_reqJob${rand}").combobox("setValue","");
+						}
+			            $.parser.parse('#reqReason${rand}-4th');
+			            
+			            $('#transferDate4th${rand}').my97({
+							width:100,
+							required:true,
+							minDate:'%y-%M-{%d}',
+							width:130,
+							required:true
+						});
+			            $("#reqReason${rand}-1st").remove();
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			        
+			        } else if ($selectedvalue == 2) {
+			        	$("#combo_reqJob${rand}").combobox("setValue"," ");
+						$("#combo_reqJob${rand}").combobox("disable");
+			        	var trObj = '<tr id="reqReason${rand}-2nd">'
+			        		+ '<td class="formtable_td_key">增设原因：</td>'
+			        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_reqReason2nd" class="easyui-validatebox" data-options="required:true"></textarea>'
+			        		+ '</td></tr>';
+			        	
+			        	if ($('#reqReason${rand}-2nd').length <= 0) {
+			        		$("#reqReason${rand}").after(trObj);
+			        	}
+			        	if($("#hidden_reqJob${rand}").val()==""){
+							$("#combo_reqJob${rand}").combobox("setValue","");
+						}
+			        	$.parser.parse('#reqReason${rand}-2nd');
+			        	
+			            $("#reqReason${rand}-1st").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			            $("#reqReason${rand}-4th").remove();
+			        } else if ($selectedvalue == 3) {
+			        	$("#combo_reqJob${rand}").combobox("enable");
+			        	$("#combo_reqJob${rand}").combobox({ required:true });
+			       		 var trObj = '<tr id="reqReason${rand}-3rd">'
+			        		+ '<td class="formtable_td_key" colspan="">增设原因：</td>'
+			        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_reqReason3rd" class="easyui-validatebox" data-options="required:true"></textarea>'
+			        		+ '</td></tr>';
+			        	
+			        	if ($('#reqReason${rand}-3rd').length <= 0) {
+			        		$("#reqReason${rand}").after(trObj);
+			        	}
+			        	if($("#hidden_reqJob${rand}").val()==""){
+							$("#combo_reqJob${rand}").combobox("setValue","");
+						}
+			        	$.parser.parse('#reqReason${rand}-3rd');
+			        	
+			            $("#reqReason${rand}-1st").remove();  
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-4th").remove();
+			        }
+		        });
+				
+				var ageFrom = parseInt($("#ageFrom-${rand}").val());
+				var ageTo = $("#ageTo-${rand}").val();
+				//验证需求人员年龄
+				$.extend($.fn.validatebox.defaults.rules, {
+					positiveInteger: {// 验证正整数 
+			       		validator: function (value) {
+			       			var reg=/^[0-9]*[1-9][0-9]*$/;
+			          		return reg.test(value);
+			       		},	
+			       		message: '请输入正整数 '
+			   		},
+			   		ageScopeFrom:{
+			   			validator:function(value){
+			   				return value >= 16;
+			       		},	
+			       		message: '输入的年龄不能小于16周岁'
+			   		},
+			   		ageScopeTo:{
+			   			validator:function(value){
+			   				return value <= 55;
+			       		},	
+			       		message: '输入的年龄不能大于55周岁'
+			       	},
+			       	compareAge:{
+							validator:function(value){
+								var ageFrom = parseInt($("#ageFrom-${rand}").val());
+								return ageFrom <= value ;
+							},
+							message:'起始年龄不能大于截止年龄！'
+					},
+					reqdate:{
+						validator:function(){
+							   var now = new Date().getTime();
+							   var startWorkTime = new Date($("#reaHopeDate${rand}").val()).getTime(); 
+							   var twentydays = 30*24*60*60*1000;
+							   return startWorkTime-now>=twentydays; 
+						},
+						message:'到岗日期必须为1个月之后！'
+					}
+				});
+				
+		        //招聘途径
+		        $("input[name='fp_reqChannels']").bind("click",function(){ 
+			        //测试操作代码 
+			        var $selectedvalue = $(this).val(); 
+			        if ($selectedvalue == 1 && document.getElementById('fp_reqChannels').checked) {
+			        	var trObj = '<tr id="reqChannels${rand}-1st">'
+			        		+'<td class="formtable_td_key">内招期限：</td>'
+			        		+'<td class="formtable_td_value" colspan="5">'
+			        		+'<input id="startRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_startRecruitTime"/>'
+			        		+'&nbsp;到&nbsp;<input id="endRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_endRecruitTime"/>'
+			        		+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqChannels${rand}-1st').length <= 0) {
+			        		$("#recruitmentChannels${rand}").after(trObj);
+			        		
+			        		 $('#startRecruitTime').my97({
+			        		 	width:200,
+				            	minDate:'%y-%M-{%d}',
+				            	maxDate:'#F{$dp.$D(\'endRecruitTime\')}',
+				            	required:true
+				            });
+				            
+				            $('#endRecruitTime').my97({
+				            	width:200,
+								minDate:'#F{$dp.$D(\'startRecruitTime\')}',
+				            	required:true
+			            	});
+			        	}
+			            $.parser.parse('#reqChannels${rand}-1st');
+			            if(document.getElementById('fp_reqChannels3').checked==false){
+			            	 $("#reqChannels${rand}-3rd").remove(); 
+			            }
+			        } else if ($selectedvalue == 2) {
+			        	if(document.getElementById('fp_reqChannels').checked==false){
+			        		 $("#reqChannels${rand}-1st").remove();
+			        	}
+			            if(document.getElementById('fp_reqChannels3').checked==false){
+			            	$("#reqChannels${rand}-3rd").remove(); 
+			            }
+			        } else if ($selectedvalue == 3 && document.getElementById('fp_reqChannels3').checked) {
+			        	var trObj = '<tr id="reqChannels${rand}-3rd">'
+					        + '<td class="formtable_td_key" colspan="">启动猎头原因：</td>'
+					        + '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_outReqReason" class="easyui-validatebox" data-options="required:true"></textarea>'
+					        + '</td></tr>';
+			        	if ($('#reqChannels${rand}-3rd').length <= 0) {
+			        		$("#recruitmentChannels${rand}").after(trObj);
+			        	}
+			        	$.parser.parse('#reqChannels${rand}-3rd');
+			        	
+			            /* $("#reqChannels${rand}-1st").remove();   */
+			        }
+			        if(document.getElementById('fp_reqChannels').checked==false){
+			        	 $("#reqChannels${rand}-1st").remove();
+			        }
+			        if(document.getElementById('fp_reqChannels3').checked==false){
+			        	 $("#reqChannels${rand}-3rd").remove();
+			        }
+		        });
+		      //下载模板
+		   	 $("#downloadTravelExcel${rand}").bind('click',function(){
+		   	 	submitForm("download.newcompile.name");
+		   	 });
+		   	//导入人员名单
+		   	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+		   		 $("#importWin-${rand}").dialog('open');
+		   	 });
+		   	 $("#upfile-${rand}").bind('click',function(){
+				 $.messager.progress();
+				 $("#upform-${rand}").form('submit',{
+						url:'teamActivities/newCompile.html',
+						onSubmit:function(){
+							var validateResult = $(this).form('validate');
+					    	if (!validateResult) {
+					    		$.messager.progress('close');
+								return false;
+					    	} else {
+					    		return true;
+					    	}
+					    },
+						success:function(data){
+							if(typeof(data).toLowerCase()=='string'){
+								data=eval("("+data+")");
+							}
+							if(data.success){
+								if(data.obj == null || data.obj.length == 0){
+									$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+								}else{
+									countIsOffice = 0;
+									var str = "";
+									var str4Hidden = "";
+									if(data.obj.length>0){
+										$('#participantList').val("");
+										str = "<table border=1 cellspace=1 width=100%>";
+										for(var i = 0;i < data.obj.length;i++){
+										    if(i==2||i==4||i==6||i==8){ 
+										      str += "<tr align=center><td><font color=red>"+data.obj[i].content+"</font></td></tr>";
+										    }else{
+										    	 str += "<tr align=center><td>"+data.obj[i].content+"</font></tr>";
+										    }
+										  str4Hidden +="["+data.obj[i].content+"]:";
+										  $.ajaxSetup({async : false});
+										  countIsOffice++;
+										}
+										str+="</table>"
+										document.getElementById("participantList").innerHTML=str;
+										$('#participantList4Hidden').val(str4Hidden);
+										$('#numOfPeople${rand}').val(countIsOffice);
+										$("#joinNumber${rand}").val(data.obj.length)
+								   }
+									//用于获取下一个节点处理人
+									/* $("#curUserId${rand}").val(data.obj[0].account); */
+									document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+									$('#fundsBudget${rand}').val(countIsOffice * 1000);
+									$("#confineUpload${rand}").val("可以");
+									$.messager.alert("提示信息",data.msg);
+								}
+							}else{ 
+								$.messager.alert("提示信息",data.msg);
+							}
+							$("#importWin-${rand}").dialog('close');
+							$.messager.progress('close');
+							if($("#numOfPeople${rand}").val() != null && $("#numOfPeople${rand}").val() != ''){
+								$("#numOfPeople${rand}").removeClass('validatebox-invalid');
+							}else{
+								$("#numOfPeople${rand}").addClass('validatebox-invalid');
+							}
+							if($("#fundsBudget${rand}").val() != null && $("#fundsBudget${rand}").val() != ''){
+								$("#fundsBudget${rand}").removeClass('validatebox-invalid');
+							}else{
+								$("#fundsBudget${rand}").addClass('validatebox-invalid');
+							}
+						
+						}
+					});
+			 });
+		   	
+			});
+			function submitForm(value){
+				var form = $("<form>");
+				form.attr('style','display:none');
+				form.attr('method','post');
+				form.attr('action','${base}sysprocess/task/download.html');
+				
+				var key = $("<input>");
+				key.attr('type','hidden');
+				key.attr('name','key');
+				key.attr('value',value);
+				
+				$("body").append(form);
+				form.append(key);
+				form.submit();
+				form.remove();
+			}
+			function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input_${rand}');
+			}
+			function addAccessory(){
+				
+				var value=$("#reqParticulars${rand}").combobox('getValue')    
+				
+				
+				var rows = $('#accessoryInfoTb${rand} tbody tr'); 
+				var rowno = rows.length + 1;
+				 var tr='<tr><td width="1"><input type="checkbox" class="tdchk" /></td>'
+				     +'<td width="24" align="center">' + rowno + '</td>'
+				     +'<td width="150" ><input id=reqReplacePerson'+rowno+'${rand} class="easyui-validatebox" type="text" name="fp_reqReplacePerson" onblur="makeAccessory()" /></td>'
+				     +'<td width="150" ><input id=job'+rowno+'${rand} class=easyui-validatebox  type=text name=fp_job onblur="makeAccessory()"/></td>'
+				     +'<td width="150" ><input  id=transferDate'+rowno+'${rand} class="easyui-my97" name="fp_transferDate" readonly="readonly"   onblur="makeAccessory()"/></td>'
+				     if(value==1){
+						  tr+='<td width="24" ><input id=grades'+rowno+'${rand} class=easyui-validatebox  type=text name=fp_grades onblur="makeAccessory()"/></td>'
+					  } 
+				     tr+="</tr>";  
+				     
+				    $('#accessoryInfoTb${rand}').append(tr); 
+				    $.parser.parse($('#accessoryInfoTb${rand}').find("tr").eq(-1));
+				     $("#reqReplacePerson"+rowno+"${rand}").validatebox({required:true });
+				     $("#job"+rowno+"${rand}").validatebox({required:true });
+				     $("#transferDate"+rowno+"${rand}").my97({required:true,
+				    	
+				     });
+				     if(value==1){
+				    	 $("#grades"+rowno+"${rand}").validatebox({required:true });
+				     }
+				     
+			}
+			function removeAccessory() {
+		    	var rows = $('#accessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+	            if (rows.length == 0) {
+	        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+	        		return false;
+	            }
+	            $.each(rows, function () {        
+	                $(this).parent("td").parent("tr").remove();
+	            });
+	         }
+			function makeAccessory() {
+				var rows = $('#accessoryInfoTb${rand} tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rows = 1;
+	        		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+	        			var reqReplacePerson = $.trim($(this).find('td').eq(2).find("input").val());
+	        			var job = $.trim($(this).find('td').eq(3).find("input").val());
+	        			var transferDate = $.trim($(this).find('td').eq(4).find("input").val());
+	        			var grades = $.trim($(this).find('td').eq(5).find("input").val());
+	        			
+	        			if(grades){
+	        				MFixedAssetsDetraction.accessoryData.push({
+		        				rows:rows,reqReplacePerson:reqReplacePerson,job:job,transferDate:transferDate,grades:grades
+		        			})
+	        			}else{
+	        				MFixedAssetsDetraction.accessoryData.push({
+		        				rows:rows,reqReplacePerson:reqReplacePerson,job:job,transferDate:transferDate
+		        			})
+	        			}
+	        			rows++;
+	        		});
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			}
+			function chuji(){
+				   $("#reqNumber${rand}").attr("disabled",false);
+				   $("#reqNumber${rand}").validatebox({required:true});
+				   $("#reqNumber${rand}").css("background-color","none");
+				   $("#reqNumber3").validatebox({required:false});
+				   $("#reqNumber3").attr("disabled",true);
+				   $("#reqNumber3").css("background-color","smoky gray");
+				   $("#reqNumber3").val("");
+				   $("#reqNumber2${rand}").validatebox({required:false}); 
+				   $("#reqNumber2${rand}").attr("disabled",true);
+				   $("#reqNumber2${rand}").css("background-color","smoky gray");
+				   $("#reqNumber2${rand}").val("");
+			}
+			function zhongji(){
+				   $("#reqNumber2${rand}").attr("disabled",false);
+				   $("#reqNumber2${rand}").validatebox({required:true});
+				   $("#reqNumber2${rand}").css("background-color","none");
+				   $("#reqNumber3").validatebox({required:false});
+				   $("#reqNumber3").attr("disabled",true);
+				   $("#reqNumber3").css("background-color","smoky gray");
+				   $("#reqNumber3").val("");
+				   $("#reqNumber${rand}").validatebox({required:false});
+				   $("#reqNumber${rand}").attr("disabled",true);
+				   $("#reqNumber${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").val("");
+			}
+			function gaoji(){
+				   $("#reqNumber3").attr("disabled",false);
+				   $("#reqNumber3").validatebox({required:true});
+				   $("#reqNumber3").css("background-color","none");
+				   $("#reqNumber2${rand}").validatebox({required:false});
+				   $("#reqNumber2${rand}").attr("disabled",true);
+				   $("#reqNumber2${rand}").val("");
+				   $("#reqNumber2${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").validatebox({required:false});
+				   $("#reqNumber${rand}").attr("disabled",true);
+				   $("#reqNumber${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").val("");
+			}
+		</script>
+	</#if>
+</#if>
+
+
+
+<!-- 修改申请 -->
+<#if currentStep?exists>
+		<#if processSteps??>
+		 <#if currentStep == 'nmb_updatePersonnelRequiremnetTask'>
+		
+		 <#list processSteps as steps>
+			<#if steps.key == 'startevent'> 
+			
+		     <#assign reqRank=steps.vars["reqRank"]/>
+		     <#assign reqNumber=steps.vars["reqNumber"]/>
+		     <#if steps.vars["reqJob"]??> 
+		     <#assign reqJob=steps.vars["reqJob"]/>
+		     </#if>
+		     <#assign reqHopeDate=steps.vars["reqHopeDate"]/>
+		     <#assign preparation=steps.vars["preparation"]/>
+		     <#assign reqParticulars=steps.vars["reqParticulars"]/>
+		     <#assign reqType=steps.vars["reqType"]/>
+		     <#assign workContent=steps.vars["workContent"]/>
+		     <#assign sex=steps.vars["sex"]/>
+		     <#assign education=steps.vars["education"]/>
+		     <#assign ageFrom=steps.vars["ageFrom"]/>
+		     <#assign ageTo=steps.vars["ageTo"]/>
+		     <#assign major=steps.vars["major"]/>
+		     <#assign reqChannels=steps.vars["reqChannels"]/>
+		      <#if steps.vars["outReqReason"]??> 
+		       <#assign outReqReason=steps.vars["outReqReason"]/>
+		     </#if>
+		      <#if steps.vars["reqReason2nd"]??> 
+		       <#assign reqReason2nd=steps.vars["reqReason2nd"]/>
+		     </#if>
+		     
+		     
+		     <#if steps.vars["workSkill"]??> 
+		       <#assign workSkill=steps.vars["workSkill"]/>
+		     </#if>
+		     <#if steps.vars["workExperience"]??> 
+		       <#assign workExperience=steps.vars["workExperience"]/>
+		     </#if>
+		      <#if steps.vars["otherReq"]??> 
+		       <#assign otherReq=steps.vars["otherReq"]/>
+		     </#if>
+		     <#if steps.vars["startRecruitTime"]??> 
+		       <#assign startRecruitTime=steps.vars["startRecruitTime"]/>
+		     </#if>
+		     <#if steps.vars["endRecruitTime"]??> 
+		       <#assign endRecruitTime=steps.vars["endRecruitTime"]/>
+		     </#if>
+		     
+		     
+		 </#if>
+		 
+		 
+		 
+		 <#if steps.key == 'nmb_updatePersonnelRequiremnetTask'> 
+			
+		     <#assign reqRank=steps.vars["reqRank"]/>
+		     <#assign reqNumber=steps.vars["reqNumber"]/>
+		     <#if steps.vars["updateReqJob"]??> 
+		       <#assign reqJob=steps.vars["updateReqJob"]/>
+		     </#if>
+		     <#if steps.vars["reqReason2nd"]??> 
+		       <#assign reqReason2nd=steps.vars["reqReason2nd"]/>
+		     </#if>
+		     <#assign reqHopeDate=steps.vars["updatereqHopeDate"]/>
+		     <#assign preparation=steps.vars["preparation"]/>
+		     <#assign reqParticulars=steps.vars["reqParticulars"]/>
+		     <#assign reqType=steps.vars["updatereqType"]/>
+		     <#assign workContent=steps.vars["updateworkContent"]/>
+		     <#assign sex=steps.vars["updatesex"]/>
+		     <#assign education=steps.vars["updateeducation"]/>
+		     <#assign ageFrom=steps.vars["updateageFrom"]/>
+		     <#assign ageTo=steps.vars["updateageTo"]/>
+		     <#assign major=steps.vars["updatemajor"]/>
+		     <#assign reqChannels=steps.vars["updatereqChannels"]/>
+		       <#if steps.vars["outReqReason"]??> 
+		       <#assign outReqReason=steps.vars["outReqReason"]/>
+		     </#if>
+		     <#if steps.vars["updateworkSkill"]??> 
+		       <#assign workSkill=steps.vars["updateworkSkill"]/>
+		     </#if>
+		     <#if steps.vars["updateworkExperience"]??> 
+		       <#assign workExperience=steps.vars["updateworkExperience"]/>
+		     </#if>
+		      <#if steps.vars["updateotherReq"]??> 
+		       <#assign otherReq=steps.vars["updateotherReq"]/>
+		     </#if>
+		     <#if steps.vars["startRecruitTime"]??> 
+		       <#assign startRecruitTime=steps.vars["startRecruitTime"]/>
+		     </#if>
+		     <#if steps.vars["endRecruitTime"]??> 
+		       <#assign endRecruitTime=steps.vars["endRecruitTime"]/>
+		     </#if>
+		     
+		     
+		 </#if>
+		
+		</#list>
+		<div id="nmb_updatePersonnelRequiremnetTask">
+			<form id="nmb_updatePersonnelRequiremnetTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_updatePersonnelRequiremnetTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">修改申请表单</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	
+		  	        <td class="formtable_td_key">需求系统：</td>
+		  	       	<input type="hidden" name="fp_updatecurUserId" value="${appuser.userId?c}"/>
+		  	        <input id="curUserId${rand}" type="hidden" name="fp_updateapplyUserId" value="${appuser.account}"/>
+		  	        <input id="userName${rand}" type="hidden" name="fp_updateuserName" value="${appuser.name}"/>
+		  	        <input id="orgId${rand}" type="hidden" name="fp_updatecurOrgId" value="${appuser.orgId?c}"/>
+		  	        <input type="hidden" name="fp_updateorgName" value="${appuser.orgName}"/> 
+				  	<td id="td_reqSystem${rand}"  class="formtable_td_value">
+				  		<input id="reqSystem${rand}" class="easyui-validatebox"  type="hidden" name="fp_updatereqSystem"  />
+				  	</td>
+				  	<td class="formtable_td_key">需求部门：</td>
+				  	<td class="formtable_td_value" >${appuser.orgName}</td>
+				  	<td class="formtable_td_key">需求岗位名称：</td>
+				  	<td class="formtable_td_value">
+						<input id="combo_reqJob${rand}" type="text"  value="${(steps.vars["reqJob"])!""}"/>
+						<input id="hidden_reqJob${rand}" type="hidden" name="fp_updateReqJob" value='${(steps.vars["reqJob"])!""}'/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	 <td class="formtable_td_key">需求人数：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<input type="radio" name="fp_reqRank" value="1" />助理级&nbsp;&nbsp;<input  id="reqNumber${rand}" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  		<input type="radio" name="fp_reqRank" value="2" />中级&nbsp;&nbsp;&nbsp;<input  id="reqNumber2${rand}" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  		<input type="radio" name="fp_reqRank" value="3" />高级&nbsp;&nbsp;&nbsp;<input  id="reqNumber3" class="easyui-validatebox"  type="text" name="fp_reqNumber"    style="width:60px" data-options="required:true,validType:['number']" />人数
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>    
+		  	       
+				  	<td class="formtable_td_key">需求日期：</td>
+				  	<td class="formtable_td_value" colspan="3"> 
+				  	<input type="hidden" name="fp_updatereqDate" value="${.now?string('yyyy-MM-dd')}" />${.now?string('yyyy-MM-dd ')}
+				  	<td class="formtable_td_key">希望到岗日期：</td>
+				  	<td id="td_education" class="formtable_td_value">
+				  		<input id="reaHopeDate${rand}" class="easyui-my97" name="fp_updatereqHopeDate" value="${(steps.vars["reqHopeDate"])!""}" readonly="readonly"
+								data-options="width:130,required:true,minDate:'%y-%M-{%d}',validType:'reqdate'" />
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">需求类型：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input type="radio" name="fp_updatereqType" value="3" />社会招聘(<span style="color: red">常规</span>)&nbsp;&nbsp;&nbsp;&nbsp;
+		  	  			<input type="radio" name="fp_updatereqType" value="2" />实习生招聘(<span style="color: red">临时性，最长实习期为6个月</span>)</br>
+		  	  			<input type="radio" name="fp_updatereqType" value="1" />校园招聘(<span style="color: red">公司统一收集需求，到岗时间为次年7月份</span>)
+		  	  			<input id="initRadio${rand}" type="hidden" value="${(steps.vars["reqType"])!""}" />
+		  	  		</td>
+		  	  		<td class="formtable_td_key">编制情况：</td>  
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="preparation${rand}" class="easyui-combobox" name="fp_preparation"  
+		  	  				data-options="required:true,editable:false,panelHeight:70,valueField:'value',textField:'text', 
+		  	  				data: [{value: '1',text: '编制内'},
+		  	  					   {value: '2',text: '编制外'}]" value="${(steps.vars["preparation"])!""}"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr id="reqReason${rand}">
+		  	  		<td class="formtable_td_key">需求明细：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		  <input id="reqParticulars${rand}" class="easyui-combobox" name="fp_reqParticulars" 
+		  	  				data-options="required:true,valueField:'id',textField:'text', 
+		  	  				data:[{ id : '1',text: '离职补员'},
+		  	  					   {id: '2',text: '调岗补员'},
+		  	  					   {id: '3',text: '新增岗位'},
+		  	  					   {id: '4',text: '新增人员'}]"  value="${(steps.vars["reqParticulars"])!""}"/>
+		  	  			
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr class="scrapWay1">
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    						<input type="hidden" id="firstPersonAccount${rand}" name="fp_firstPersonAccount" value="0"/>
+	    						
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:1000px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable" id="">
+									<thead>
+										<tr id="tr${rand}">
+											<td width="1" align="center"><input type="checkbox" class="thchk" /></td>
+											<td width="24" align="center">序号</td>
+											<td width="150" align="center">被代替者姓名</td>
+											<td width="150" align="center">岗位</td>
+											<td width="150" align="center">离职日期</td>
+											<td width="150" align="center" id="gradesId${rand}">职级</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="accessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+		  	  	 	<tr id="tr7${rand}">
+					<td class="formtable_td_key">新增编制说明</td>
+								<td class="formtable_td_value" colspan="5">
+									<input id="partAccount" type="hidden" name="fp_partList" /> 
+									<input id="participantList_val" type="hidden" name="fp_participantList" /> 
+									<input id="rapList${rand}" type="hidden" name="fp_rapList" />
+									<input id="participantList4Hidden" type="hidden" name="fp_participantList4Hidden" /> 
+									<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+											data-options="iconCls:'icon-upload'">导入新增编制说明</a>
+									<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+											data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+									<font color="red"> (请上传文件) </font>
+			                        <input id="confineUpload${rand}" name="fp_confineUpload" class="easyui-validatebox" data-options="required:true" missingMessage="请上传文件" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+									<div id="participantList" style="font-size: 12px; "></div>
+								</td>
+					</tr>
+		  	  	  
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作内容与职责：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px" id="workContent${rand}"
+								name="fp_updateworkContent" class="easyui-validatebox" data-options="required:true">${(steps.vars["workContent"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key" align="center"  colspan="6">
+						任职资格
+					</td>
+				</tr> 
+				<tr>
+		  	        <td class="formtable_td_key">性别：</td>
+				  	<td class="formtable_td_value" colspan="5">
+				  		<input type="radio" name="fp_updatesex" value="1" />男
+				  		<input type="radio" name="fp_updatesex" value="2" />女
+				  		<input type="radio" name="fp_updatesex" value="3" />不限
+				  	</td>
+				  
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">学历：</td>
+				  	<td class="formtable_td_value">
+				  		<input class="easyui-combobox" name="fp_updateeducation" id="education${rand}"
+							data-options="valueField:'id',textField:'text',editable:false,required:true,multiple:false,
+										url:'bpmCommCode/loadDateForCategory.json?catagory=Education'" value='${(steps.vars["education"])!""}'/>
+				  	</td>
+				  	<td class="formtable_td_key">年龄：</td>
+				  	<td class="formtable_td_value" colspan="3"> 
+				  		<input id="ageFrom-${rand}" class="easyui-validatebox"  type="text" name="fp_updateageFrom"
+								data-options="required:true,validType:['positiveInteger','ageScopeFrom','compareAge']" value='${(steps.vars["ageFrom"])!""}'/>
+						岁到
+						<input id="ageTo-${rand}" class="easyui-validatebox"  type="text" name="fp_updateageTo"
+								data-options="required:true,validType:['positiveInteger','ageScopeTo','compareAge']" value='${(steps.vars["ageTo"])!""}'/>岁
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">专业：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<input class="easyui-validatebox"  type="text" name="fp_updatemajor" id="major${rand}"
+								data-options="required:true" size="45" value='${(steps.vars["major"])!""}'/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr id="recruitmentChannels${rand}">
+		  	        <td class="formtable_td_key">招聘途径：</td>
+				  	<td  class="formtable_td_value" colspan="5">
+				  		<!-- <input type="radio" name="fp_reqChannels" value="2" checked="checked"/>先内招&nbsp;&nbsp;后外招
+				  		<input type="radio" name="fp_reqChannels" value="1" />只向内部招聘
+				  		<input type="radio" name="fp_reqChannels" value="4" />外部招聘
+				  		<input type="radio" name="fp_reqChannels" value="3" />同步启动猎头招聘 -->
+				  		<input type="checkbox" name="fp_updatereqChannels" value="2" id="fp_updatereqChannels2"/>只向外部招聘
+				  		<input type="checkbox" name="fp_updatereqChannels" value="1" id="fp_updatereqChannels" />只向内部招聘
+				  		<input type="checkbox" name="fp_updatereqChannels" value="4" id="fp_updatereqChannels4" />同步内招
+				  		<input type="checkbox" name="fp_updatereqChannels" value="3" id="fp_updatereqChannels3" />同步启动猎头招聘(<span style="color: red">经理级及以上岗位、高级职称岗位方可启动猎头</span>)
+				  		<font color="red"> (至少勾选一个) </font>
+	                    <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox" data-options="required:true" missingMessage="至少勾选一个" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+				  		<input id="startRecruitTime${rand}" type="hidden" value='${(steps.vars["startRecruitTime"])!""}'/>
+				  		<input id="endRecruitTime${rand}" type="hidden" value='${(steps.vars["endRecruitTime"])!""}'/>
+		  	  			<textarea id="outReqReason${rand}" style="display:none;">${(steps.vars["outReqReason"])!""}</textarea>
+				  	</td>
+		  	  	</tr>
+				<tr>
+		  	  		<td class="formtable_td_key">知识/技能：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px" id="workSkill${rand}"
+								name="fp_updateworkSkill" class="formtable_remark">${(steps.vars["workSkill"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作经验：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px" id="workExperience${rand}"
+								name="fp_updateworkExperience" class="formtable_remark">${(steps.vars["workExperience"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">其他要求：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea style="width: 780px; height: 120px" id="otherReq${rand}"
+								name="fp_updateotherReq" class="formtable_remark">${(steps.vars["otherReq"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+		</div>
+		<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入奖惩人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td width="120" align="center">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+							<td>
+								<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+		    </div>
+	
+		<script type="text/javascript">
+		/*v1=0;v2=0;v3=0;
+			 function getTotalScoreByManager(){
+				$("#totalNum${rand}").numberbox("setValue",v1+v2+v3);
+			}//计算总分 */
+			  
+			 $("#confineUpload${rand}").val('可以');
+			  if("${reqRank}"==1){
+				  chuji();
+				  $("input[type='radio'][name='fp_reqRank']").get(0).checked = true;
+				  $("#reqNumber${rand}").val("${reqNumber}");
+			  }else if("${reqRank}"==2){
+				  zhongji();
+				  $("input[type='radio'][name='fp_reqRank']").get(1).checked = true;
+				  $("#reqNumber2${rand}").val("${reqNumber}");
+			  }else{
+				  gaoji();
+				  $("input[type='radio'][name='fp_reqRank']").get(2).checked = true;
+				  $("#reqNumber3").val("${reqNumber}");
+			  }
+			
+			if("${reqHopeDate}"){
+				$("#reaHopeDate${rand}").val("${reqHopeDate}");
+			}
+			if("${preparation}"){
+				$("#preparation${rand}").val("${preparation}");
+			}
+			
+			
+			
+			
+			
+			if("${reqJob}"){
+				$("#combo_reqJob${rand}").val("${reqJob}");
+				$("#hidden_reqJob${rand}").val("${reqJob}");
+			}
+			
+			if("${reqType}"==3){
+				$("input[type='radio'][name='fp_updatereqType']").get(0).checked = true;
+			}else if("${reqType}"==2){
+				$("input[type='radio'][name='fp_updatereqType']").get(1).checked = true;
+			}else{
+				$("input[type='radio'][name='fp_updatereqType']").get(2).checked = true;
+			}
+			if("${workContent}"){
+				$("#workContent${rand}").text("${workContent}");
+			}
+			if("${sex}"==1){
+				$("input[type='radio'][name='fp_updatesex']").get(0).checked = true;
+			}else if("${sex}"==2){
+				$("input[type='radio'][name='fp_updatesex']").get(1).checked = true;
+			}else{
+				$("input[type='radio'][name='fp_updatesex']").get(2).checked = true;
+			}
+			if("${reqParticulars}"){
+				$("#reqParticulars${rand}").val("${reqParticulars}"); 
+			}
+			$("#education${rand}").val("${education}");
+			$("#ageFrom-${rand}").val("${ageFrom}"); 
+			$("#ageTo-${rand}").val("${ageTo}");
+			$("#major${rand}").val("${major}");
+			var reqChannels= "${reqChannels}";
+			if(reqChannels.indexOf(',')!=-1){
+				var str=reqChannels.split(',');
+				 for(var i=0;i<str.length;i++){
+					if(str[i]==2){
+						$("input[type='checkbox'][name='fp_updatereqChannels']").get(0).checked = true;
+					}else if(str[i]==1){
+						$("input[type='checkbox'][name='fp_updatereqChannels']").get(1).checked = true;
+					}else if(str[i]==4){
+						$("input[type='checkbox'][name='fp_updatereqChannels']").get(2).checked = true;
+					}else if(str[i]==3){
+						$("input[type='checkbox'][name='fp_updatereqChannels']").get(3).checked = true;
+					}
+				}  
+			}else{
+				if("${reqChannels}"==2){
+					$("input[type='checkbox'][name='fp_updatereqChannels']").get(0).checked = true;
+				}else if("${reqChannels}"==1){
+					$("input[type='checkbox'][name='fp_updatereqChannels']").get(1).checked = true;
+				}else if("${reqChannels}"==4){
+					$("input[type='checkbox'][name='fp_updatereqChannels']").get(2).checked = true;
+				}else if("${reqChannels}"==3){
+					$("input[type='checkbox'][name='fp_updatereqChannels']").get(3).checked = true;
+				}
+			}
+			if("${workSkill}"){
+				$("#workSkill${rand}").val("${workSkill}");
+			}
+			if("${workExperience}"){
+				$("#workExperience${rand}").val("${workExperience}");
+			}
+			if("${otherReq}"){
+				$("#otherReq${rand}").val("${otherReq}");
+			}
+			
+			 $(".scrapWay1").hide();
+			 $("#tr7${rand}").hide();
+			 
+			 
+			 
+			$(function(){
+				 $("input[name='fp_reqRank']").bind("click",function(){
+					   var value=$('input:radio[name="fp_reqRank"]:checked').val();
+					   if(value==1){
+						  chuji();
+					   }else if(value==2){
+						  zhongji();
+					   }else{
+						  gaoji();
+					   }
+			        });
+				
+				
+				$("#reqParticulars${rand}").combobox({
+					onSelect : function(record){
+						var accessoryInfoTb=document.getElementById("accessoryInfoTb${rand}").innerHTML;
+						if($.trim(accessoryInfoTb)!=''){
+							document.getElementById("accessoryInfoTb${rand}").innerHTML='';
+						}
+						if(record.id==1 ||record.id==2){
+							if(record.id==1){
+								$("#gradesId${rand}").show();
+							}else{
+								$("#gradesId${rand}").hide();
+							}
+							if ($('#reqReason${rand}-2nd').length > 0) {
+								$("#reqReason${rand}-2nd").remove();
+				        	}
+							$("#confineUpload${rand}").val("可以");
+							$(".scrapWay1").show();
+							$("#tr7${rand}").hide();
+							$("#combo_reqJob${rand}").combobox({required:true});
+							$('#combo_reqJob${rand}').combobox('enable');
+						}else if(record.id==3){
+							$("#confineUpload${rand}").val("");
+							$(".scrapWay1").hide();
+							$("#tr7${rand}").show();
+							var trObj = '<tr id="reqReason${rand}-2nd">'
+				        		+ '<td class="formtable_td_key">增设原因：</td>'
+				        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 60px" name="fp_reqReason2nd" class="easyui-validatebox" data-options="required:true"></textarea>'
+				        		+ '</td></tr>';
+				        		if ($('#reqReason${rand}-2nd').length <= 0) {
+					        		$("#tr7${rand}").after(trObj);
+					        	}
+				        		$.parser.parse('#reqReason${rand}-2nd');
+				        	$("#hidden_reqJob${rand}").val('');
+							$("#combo_reqJob${rand}").combobox('setValue','');
+							$("#combo_reqJob${rand}").combobox({required:false});
+							$('#combo_reqJob${rand}').combobox('disable');
+							
+						}else{
+							$("#confineUpload${rand}").val("可以");
+							$("#tr7${rand}").hide();
+							$(".scrapWay1").hide();
+							if ($('#reqReason${rand}-2nd').length > 0) {
+								$("#reqReason${rand}-2nd").remove();
+				        	}
+							$("#combo_reqJob${rand}").combobox({required:true});
+							$('#combo_reqJob${rand}').combobox('enable');
+						}
+					}
+				
+				})
+				//同步请求
+				$.ajax({  
+			         type : "post",  
+			         url : "hrFlow/getHrUserInfo.json",  
+			         data : {
+						account:$("#curUserId${rand}").val()
+					 },  
+			         async : false,  
+			         dataType: "json",
+			         success : function(data){  
+			            if (data.success) {
+							$("#reqSystem${rand}").val(data.obj.systemName);
+							//设置TD
+							$("#td_reqSystem${rand}").append(data.obj.systemName);
+						}
+			         }  
+			     }); 
+			     
+			    //init combo
+			    var combo_reqJob = $('#combo_reqJob${rand}');
+			    var hidden_reqJob = $('#hidden_reqJob${rand}');
+				combo_reqJob.combobox({
+						valueField:'id',
+						textField:'text',
+						url:'hrFlow/jonInfoFromDept.json?deptId='+$('#orgId${rand}').val(),
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+	                		hidden_reqJob.val(record.text);
+	            		}
+				});
+
+				$("input[name='fp_updatereqReason']").bind("click",function(){ 
+			        //测试操作代码 
+			        var $selectedvalue = $(this).val(); 
+			        if ($selectedvalue == 1) {
+			        	var trObj = '<tr id="reqReason${rand}-1st">'
+			        		+'<td class="formtable_td_key">被替代者姓名：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox" type="text" name="fp_updatereqReplacePerson" data-options="required:true"/>'
+			        		+'</td>'
+			        		+'<td class="formtable_td_key">岗位：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox"  type="text" name="fp_updatereqStation" data-options="required:true"/>'
+		  	  				+'</td>'
+		  	  				+'<td class="formtable_td_key">离职日期：</td>'
+		  	  				+'<td class="formtable_td_value">'
+		  	  				+'<input id="transferDate${rand}" name="fp_updatetransferDate" readonly="readonly"/>'
+		  	  				+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqReason${rand}-1st').length <= 0) {
+			        		 $("#reqReason${rand}").after(trObj);
+			        	}
+			            
+			            $.parser.parse('#reqReason${rand}-1st');
+			            
+			            $('#transferDate${rand}').my97({
+							width:100,
+							required:true,
+							minDate:'%y-%M-{%d}',
+							width:130,
+							required:true
+						});
+			            
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			            $("#reqReason${rand}-4th").remove();
+			        }else if($selectedvalue == 4){
+			        	
+			        	var trObj = '<tr id="reqReason${rand}-4th">'
+			        		+'<td class="formtable_td_key">被替代者姓名：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox" type="text" name="fp_updatereqReplacePerson4th" data-options="required:true"/>'
+			        		+'</td>'
+			        		+'<td class="formtable_td_key">岗位：</td>'
+			        		+'<td class="formtable_td_value">'
+			        		+'<input class="easyui-validatebox"  type="text" name="fp_updatereqStation4th" data-options="required:true"/>'
+		  	  				+'</td>'
+		  	  				+'<td class="formtable_td_key">调动日期：</td>'
+		  	  				+'<td class="formtable_td_value">'
+		  	  				+'<input id="transferDate4th${rand}" name="fp_updatetransferDate4th" readonly="readonly"/>'
+		  	  				+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqReason${rand}-4th').length <= 0) {
+			        		 $("#reqReason${rand}").after(trObj);
+			        	}
+			            
+			            $.parser.parse('#reqReason${rand}-4th');
+			            
+			            $('#transferDate4th${rand}').my97({
+							width:100,
+							required:true,
+							minDate:'%y-%M-{%d}',
+							width:130,
+							required:true
+						});
+			            $("#reqReason${rand}-1st").remove();
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			        
+			        } else if ($selectedvalue == 2) {
+			        	var trObj = '<tr id="reqReason${rand}-2nd">'
+			        		+ '<td class="formtable_td_key">增设原因：</td>'
+			        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_updatereqReason2nd" class="easyui-validatebox" data-options="required:true"></textarea>'
+			        		+ '</td></tr>';
+			        	
+			        	if ($('#reqReason${rand}-2nd').length <= 0) {
+			        		$("#reqReason${rand}").after(trObj);
+			        	}
+			        	
+			        	$.parser.parse('#reqReason${rand}-2nd');
+			        	
+			            $("#reqReason${rand}-1st").remove();
+			            $("#reqReason${rand}-3rd").remove(); 
+			            $("#reqReason${rand}-4th").remove();
+			        } else if ($selectedvalue == 3) {
+			       		 var trObj = '<tr id="reqReason${rand}-3rd">'
+			        		+ '<td class="formtable_td_key" colspan="">增设原因：</td>'
+			        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_updatereqReason3rd" class="easyui-validatebox" data-options="required:true"></textarea>'
+			        		+ '</td></tr>';
+			        	
+			        	if ($('#reqReason${rand}-3rd').length <= 0) {
+			        		$("#reqReason${rand}").after(trObj);
+			        	}
+			        	$.parser.parse('#reqReason${rand}-3rd');
+			        	
+			            $("#reqReason${rand}-1st").remove();  
+			            $("#reqReason${rand}-2nd").remove();
+			            $("#reqReason${rand}-4th").remove();
+			        }
+		        });
+				
+				var ageFrom = parseInt($("#ageFrom-${rand}").val());
+				var ageTo = $("#ageTo-${rand}").val();
+				//验证需求人员年龄
+				$.extend($.fn.validatebox.defaults.rules, {
+					positiveInteger: {// 验证正整数 
+			       		validator: function (value) {
+			       			var reg=/^[0-9]*[1-9][0-9]*$/;
+			          		return reg.test(value);
+			       		},	
+			       		message: '请输入正整数 '
+			   		},
+			   		ageScopeFrom:{
+			   			validator:function(value){
+			   				return value >= 16;
+			       		},	
+			       		message: '输入的年龄不能小于16周岁'
+			   		},
+			   		ageScopeTo:{
+			   			validator:function(value){
+			   				return value <= 55;
+			       		},	
+			       		message: '输入的年龄不能大于55周岁'
+			       	},
+			       	compareAge:{
+							validator:function(value){
+								var ageFrom = parseInt($("#ageFrom-${rand}").val());
+								return ageFrom <= value ;
+							},
+							message:'起始年龄不能大于截止年龄！'
+					},
+					reqdate:{
+						validator:function(){
+							   var now = new Date().getTime();
+							   var startWorkTime = new Date($("#reaHopeDate${rand}").val()).getTime(); 
+							   var twentydays = 30*24*60*60*1000;
+							   return startWorkTime-now>=twentydays; 
+						},
+						message:'到岗日期必须为1个月之后！'
+					}
+				});
+				
+		        //招聘途径
+		        $("input[name='fp_updatereqChannels']").bind("click",function(){
+			        //测试操作代码 
+			        var $selectedvalue = $(this).val(); 
+			        if ($selectedvalue == 1) {
+			        	//document.getElementById('fp_updatereqChannels2').checked=false;
+			        	var trObj = '<tr id="reqChannels${rand}-1st">'
+			        		+'<td class="formtable_td_key">内招期限：</td>'
+			        		+'<td class="formtable_td_value" colspan="5">'
+			        		+'<input id="startRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_startRecruitTime"/>'
+			        		+'&nbsp;到&nbsp;<input id="endRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_endRecruitTime"/>'
+			        		+'</td>'
+		  	  				+'</tr>';
+			        	
+			        	if ($('#reqChannels${rand}-1st').length <= 0) {
+			        		$("#recruitmentChannels${rand}").after(trObj);
+			        		
+			        		 
+			        		
+			        		 $('#startRecruitTime').my97({
+			        		 	width:200,
+				            	minDate:'%y-%M-{%d}',
+				            	maxDate:'#F{$dp.$D(\'endRecruitTime\')}',
+				            	required:true
+				            });
+				            
+				            $('#endRecruitTime').my97({
+				            	width:200,
+								minDate:'#F{$dp.$D(\'startRecruitTime\')}',
+				            	required:true
+			            	});
+			        	}
+			            $.parser.parse('#reqChannels${rand}-1st');
+			           /* if(document.getElementById('fp_updatereqChannels3').checked==false){
+			            	 $("#reqChannels${rand}-3rd").remove(); 
+			            }*/
+			        } else if ($selectedvalue == 2) {
+			        	//document.getElementById('fp_updatereqChannels').checked=false;
+			        	/*if(document.getElementById('fp_updatereqChannels').checked==false){
+			        		 $("#reqChannels${rand}-1st").remove();
+			        	}
+			            if(document.getElementById('fp_updatereqChannels3').checked==false){
+			            	$("#reqChannels${rand}-3rd").remove(); 
+			            }*/
+			        } else if ($selectedvalue == 3) {
+			        	var trObj = '<tr id="reqChannels${rand}-3rd">'
+					        + '<td class="formtable_td_key" colspan="">启动猎头原因：</td>'
+					        + '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_outReqReason" class="easyui-validatebox" data-options="required:true"></textarea>'
+					        + '</td></tr>';
+			        	if ($('#reqChannels${rand}-3rd').length <= 0) {
+			        		$("#recruitmentChannels${rand}").after(trObj);
+			        	}
+			        	$.parser.parse('#reqChannels${rand}-3rd');
+			        	
+			            /* $("#reqChannels${rand}-1st").remove();   */
+			        }
+			        if(document.getElementById('fp_updatereqChannels').checked==false){
+			        	 $("#reqChannels${rand}-1st").remove();
+			        }
+			        if(document.getElementById('fp_updatereqChannels3').checked==false){
+			        	 $("#reqChannels${rand}-3rd").remove();
+			        }
+		        });
+		        
+		        $("input[name='fp_updatereqChannels']").bind("click",function(){
+		        	document.getElementById("moduleName${rand}").value = "";
+		        	var str="";
+		        	  $("input[name='fp_updatereqChannels']").each(function(){ 
+			                if($(this).prop("checked")){
+			                    str += $(this).val()+",";
+			                    document.getElementById("moduleName${rand}").value = str;
+			                }
+			            })
+		        });
+		        
+		        //初始化需求类型
+		        var radios=$("[name=fp_updatereqType]");
+		        var initradio=$("#initRadio${rand}").val();
+		        for(var i=0;i<radios.length;i++){
+		        	if(radios[i].value==initradio){
+		        		radios[i].checked=true;
+		        	}
+		        }
+		        
+		      //初始化需求原因
+		        var reqReasons=$("[name=fp_updatereqReason]");
+		        var initreqReason=$("#initreqReason${rand}").val();
+		        for(var i=0;i<reqReasons.length;i++){
+		        	if(reqReasons[i].value==initreqReason){
+		        		reqReasons[i].checked=true;
+		        	}
+		        }
+		        if(initreqReason==4){
+		        	var trObj = '<tr id="reqReason${rand}-4th">'
+		        		+'<td class="formtable_td_key">被替代者姓名：</td>'
+		        		+'<td class="formtable_td_value">'
+		        		+'<input class="easyui-validatebox" type="text" name="fp_updatereqReplacePerson4th" data-options="required:true" value="'+$("#updatereqReplacePerson4th${rand}").val()+'"/>'
+		        		+'</td>'
+		        		+'<td class="formtable_td_key">岗位：</td>'
+		        		+'<td class="formtable_td_value">'
+		        		+'<input class="easyui-validatebox"  type="text" name="fp_updatereqStation4th" data-options="required:true" value="'+$("#updatereqStation4th${rand}").val()+'"/>'
+	  	  				+'</td>'
+	  	  				+'<td class="formtable_td_key">调动日期：</td>'
+	  	  				+'<td class="formtable_td_value">'
+	  	  				+'<input id="transferDate4th${rand}" name="fp_updatetransferDate4th" readonly="readonly" value="'+$("#updatetransferDate4th${rand}").val()+'"/>'
+	  	  				+'</td>'
+	  	  				+'</tr>';
+		        	
+		        	if ($('#reqReason${rand}-4th').length <= 0) {
+		        		 $("#reqReason${rand}").after(trObj);
+		        	}
+		            
+		            $.parser.parse('#reqReason${rand}-4th');
+		            
+		            $('#transferDate4th${rand}').my97({
+						width:100,
+						required:true,
+						minDate:'%y-%M-{%d}',
+						width:130,
+						required:true
+					});
+		            $("#reqReason${rand}-1st").remove();
+		            $("#reqReason${rand}-2nd").remove();
+		            $("#reqReason${rand}-3rd").remove(); 
+		        }else if(initreqReason==2){
+		        	var trObj = '<tr id="reqReason${rand}-2nd">'
+		        		+ '<td class="formtable_td_key">增设原因：</td>'
+		        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_updatereqReason2nd" class="easyui-validatebox" data-options="required:true">'+$("#updatereqReason2nd${rand}").text()+'</textarea>'
+		        		+ '</td></tr>';
+		        	
+		        	if ($('#reqReason${rand}-2nd').length <= 0) {
+		        		$("#reqReason${rand}").after(trObj);
+		        	}
+		        	
+		        	$.parser.parse('#reqReason${rand}-2nd');
+		        	
+		            $("#reqReason${rand}-1st").remove();
+		            $("#reqReason${rand}-3rd").remove(); 
+		            $("#reqReason${rand}-4th").remove();
+		        }else if(initreqReason==3){
+		        	var trObj = '<tr id="reqReason${rand}-3rd">'
+		        		+ '<td class="formtable_td_key" colspan="">增设原因：</td>'
+		        		+ '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_updatereqReason3rd" class="easyui-validatebox" data-options="required:true">'+$("#updatereqReason3rd${rand}").text()+'</textarea>'
+		        		+ '</td></tr>';
+		        	
+		        	if ($('#reqReason${rand}-3rd').length <= 0) {
+		        		$("#reqReason${rand}").after(trObj);
+		        	}
+		        	$.parser.parse('#reqReason${rand}-3rd');
+		        	
+		            $("#reqReason${rand}-1st").remove();  
+		            $("#reqReason${rand}-2nd").remove();
+		            $("#reqReason${rand}-4th").remove();
+		        }
+		        
+		        //初始化招聘途径
+		        document.getElementById("moduleName${rand}").value = "";
+		        	var str="";
+		        	  $("input[name='fp_updatereqChannels']").each(function(){ 
+			                if($(this).prop("checked")){
+			                    str += $(this).val()+",";
+			                    document.getElementById("moduleName${rand}").value = str;
+			                }
+			            })
+		        if(document.getElementById('fp_updatereqChannels').checked){
+		        	var trObj = '<tr id="reqChannels${rand}-1st">'
+		        		+'<td class="formtable_td_key">内招期限：</td>'
+		        		+'<td class="formtable_td_value" colspan="5">'
+		        		+'<input id="startRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_startRecruitTime" value="'+$("#startRecruitTime${rand}").val()+'"/>'
+		        		+'&nbsp;到&nbsp;<input id="endRecruitTime" class="easyui-my97" type="text" size="30" readonly="readonly" name="fp_endRecruitTime" value="'+$("#endRecruitTime${rand}").val()+'"/>'
+		        		+'</td>'
+	  	  				+'</tr>';
+		        	
+		        	if ($('#reqChannels${rand}-1st').length <= 0) {
+		        		$("#recruitmentChannels${rand}").after(trObj);
+		        		 if("${startRecruitTime}"){
+		        			  $("#startRecruitTime").val("${startRecruitTime}");
+		        			  $("#endRecruitTime").val("${endRecruitTime}");
+		        		  }
+		        		 $('#startRecruitTime').my97({
+		        		 	width:200,
+			            	minDate:'%y-%M-{%d}',
+			            	maxDate:'#F{$dp.$D(\'endRecruitTime\')}',
+			            	required:true
+			            });
+			            
+			            $('#endRecruitTime').my97({
+			            	width:200,
+							minDate:'#F{$dp.$D(\'startRecruitTime\')}',
+			            	required:true
+		            	});
+		        	}
+		            $.parser.parse('#reqChannels${rand}-1st');
+		        }
+		        if(document.getElementById('fp_updatereqChannels3').checked){
+		        	var trObj = '<tr id="reqChannels${rand}-3rd">'
+				        + '<td class="formtable_td_key" colspan="">启动猎头原因：</td>'
+				        + '<td class="formtable_td_value" colspan="5"><textarea style="width: 780px; height: 120px" name="fp_outReqReason" id=outReqReason class="easyui-validatebox" data-options="required:true">'+$("#outReqReason${rand}").text()+'</textarea>'
+				        + '</td></tr>';
+		        	if ($('#reqChannels${rand}-3rd').length <= 0) {
+		        		$("#recruitmentChannels${rand}").after(trObj);
+		        	}
+		        	if("${outReqReason}"){
+		        		 $("#outReqReason").val("${outReqReason}");
+		        	}
+		        	
+		        	$.parser.parse('#reqChannels${rand}-3rd');
+		        }
+		        
+		       if($("#initreqJob${rand}").val()){
+		    	   $("#combo_reqJob${rand}").val($("#initreqJob${rand}").val())
+		       }
+		       //下载模板
+			   	 $("#downloadTravelExcel${rand}").bind('click',function(){
+			   	 	submitForm("download.newcompile.name");
+			   	 });
+			   	//导入人员名单
+			   	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+			   		 $("#importWin-${rand}").dialog('open');
+			   	 });
+			   	 $("#upfile-${rand}").bind('click',function(){
+					 $.messager.progress();
+					 $("#upform-${rand}").form('submit',{
+							url:'teamActivities/newCompile.html',
+							onSubmit:function(){
+								var validateResult = $(this).form('validate');
+						    	if (!validateResult) {
+						    		$.messager.progress('close');
+									return false;
+						    	} else {
+						    		return true;
+						    	}
+						    },
+							success:function(data){
+								if(typeof(data).toLowerCase()=='string'){
+									data=eval("("+data+")");
+								}
+								if(data.success){
+									if(data.obj == null || data.obj.length == 0){
+										$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+									}else{
+										countIsOffice = 0;
+										var str = "";
+										var str4Hidden = "";
+										if(data.obj.length>0){
+											$('#participantList').val("");
+											str = "<table border=1 cellspace=1 width=100%>";
+											for(var i = 0;i < data.obj.length;i++){
+											    if(i==2||i==4||i==6||i==8){ 
+											      str += "<tr align=center><td><font color=red>"+data.obj[i].content+"</font></td></tr>";
+											    }else{
+											    	 str += "<tr align=center><td>"+data.obj[i].content+"</font></tr>";
+											    }
+											  str4Hidden +="["+data.obj[i].content+"]:";
+											  $.ajaxSetup({async : false});
+											  countIsOffice++;
+											}
+											str+="</table>"
+											document.getElementById("participantList").innerHTML=str;
+											$('#participantList4Hidden').val(str4Hidden);
+											$('#numOfPeople${rand}').val(countIsOffice);
+											$("#joinNumber${rand}").val(data.obj.length)
+									   }
+										//用于获取下一个节点处理人
+										/* $("#curUserId${rand}").val(data.obj[0].account); */
+										document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+										$('#fundsBudget${rand}').val(countIsOffice * 1000);
+										$("#confineUpload${rand}").val("可以");
+										$.messager.alert("提示信息",data.msg);
+									}
+								}else{ 
+									$.messager.alert("提示信息",data.msg);
+								}
+								$("#importWin-${rand}").dialog('close');
+								$.messager.progress('close');
+								if($("#numOfPeople${rand}").val() != null && $("#numOfPeople${rand}").val() != ''){
+									$("#numOfPeople${rand}").removeClass('validatebox-invalid');
+								}else{
+									$("#numOfPeople${rand}").addClass('validatebox-invalid');
+								}
+								if($("#fundsBudget${rand}").val() != null && $("#fundsBudget${rand}").val() != ''){
+									$("#fundsBudget${rand}").removeClass('validatebox-invalid');
+								}else{
+									$("#fundsBudget${rand}").addClass('validatebox-invalid');
+								}
+							
+							}
+						});
+				 });
+			});
+			function check(){
+				   var zlj=$('#assistantNum${rand}').val(); 
+				   var zj=$('#middleLevel${rand}').val();
+				   var gj=$('#highLevel${rand}').val();
+				   
+				   if(!$('#middleLevel${rand}').val()){
+					   zj=0;
+				   }
+				   if(!$('#assistantNum${rand}').val()){
+					   zlj=0;
+				   }
+				   if(!$('#highLevel${rand}').val()){
+					   gj=0;
+				   }
+				   var count =parseInt(zlj)+parseInt(zj)+parseInt(gj);
+				    if(count>parseInt($('#reqCount${rand}').val())){
+				    	$('#middleLevel${rand}').numberbox('setValue','');
+				    	$('#assistantNum${rand}').numberbox('setValue','');
+				    	$('#highLevel${rand}').numberbox('setValue','');
+				    	$.messager.alert('提示','岗位人数不能超过需求人数,请重新输入','warning');
+				    	return ;
+				    }
+				}
+			function submitForm(value){
+				var form = $("<form>");
+				form.attr('style','display:none');
+				form.attr('method','post');
+				form.attr('action','${base}sysprocess/task/download.html');
+				
+				var key = $("<input>");
+				key.attr('type','hidden');
+				key.attr('name','key');
+				key.attr('value',value);
+				
+				$("body").append(form);
+				form.append(key);
+				form.submit();
+				form.remove();
+			}
+			function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input_${rand}');
+			}
+			function addAccessory(){
+				
+				var value=$("#reqParticulars${rand}").combobox('getValue')    
+				
+				
+				var rows = $('#accessoryInfoTb${rand} tbody tr'); 
+				var rowno = rows.length + 1;
+				 var tr='<tr><td width="1"><input type="checkbox" class="tdchk" /></td>'
+				     +'<td width="24" align="center">' + rowno + '</td>'
+				     +'<td width="150" ><input id=reqReplacePerson'+rowno+'${rand} class="easyui-validatebox" type="text" name="fp_reqReplacePerson" onblur="makeAccessory()" /></td>'
+				     +'<td width="150" ><input id=job'+rowno+'${rand} class=easyui-validatebox  type=text name=fp_job onblur="makeAccessory()"/></td>'
+				     +'<td width="150" ><input  id=transferDate'+rowno+'${rand} class="easyui-my97" name="fp_transferDate" readonly="readonly"   onblur="makeAccessory()"/></td>'
+				     if(value==1){
+						  tr+='<td width="24" ><input id=grades'+rowno+'${rand} class=easyui-validatebox  type=text name=fp_grades onblur="makeAccessory()"/></td>'
+					  } 
+				     tr+="</tr>";  
+				     
+				    $('#accessoryInfoTb${rand}').append(tr); 
+				    $.parser.parse($('#accessoryInfoTb${rand}').find("tr").eq(-1));
+				     $("#reqReplacePerson"+rowno+"${rand}").validatebox({required:true });
+				     $("#job"+rowno+"${rand}").validatebox({required:true });
+				     $("#transferDate"+rowno+"${rand}").my97({required:true,
+				    	
+				     });
+				     if(value==1){
+				    	 $("#grades"+rowno+"${rand}").validatebox({required:true });
+				     }
+				     
+			}
+			function removeAccessory() {
+		    	var rows = $('#accessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+	            if (rows.length == 0) {
+	        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+	        		return false;
+	            }
+	            $.each(rows, function () {        
+	                $(this).parent("td").parent("tr").remove();
+	            });
+	         }
+			function makeAccessory() {
+				var rows = $('#accessoryInfoTb${rand} tbody tr');
+				if(rows.length == 0) {		
+					$('#AccessoriesJsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rows = 1;
+	        		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+	        			var reqReplacePerson = $.trim($(this).find('td').eq(2).find("input").val());
+	        			var job = $.trim($(this).find('td').eq(3).find("input").val());
+	        			var transferDate = $.trim($(this).find('td').eq(4).find("input").val());
+	        			var grades = $.trim($(this).find('td').eq(5).find("input").val());
+	        			
+	        			if(grades){
+	        				MFixedAssetsDetraction.accessoryData.push({
+		        				rows:rows,reqReplacePerson:reqReplacePerson,job:job,transferDate:transferDate,grades:grades
+		        			})
+	        			}else{
+	        				MFixedAssetsDetraction.accessoryData.push({
+		        				rows:rows,reqReplacePerson:reqReplacePerson,job:job,transferDate:transferDate
+		        			})
+	        			}
+	        			rows++;
+	        		});
+	        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			}
+			function chuji(){
+				   $("#reqNumber${rand}").attr("disabled",false);
+				   $("#reqNumber${rand}").validatebox({required:true});
+				   $("#reqNumber${rand}").css("background-color","none");
+				   $("#reqNumber3").validatebox({required:false});
+				   $("#reqNumber3").attr("disabled",true);
+				   $("#reqNumber3").css("background-color","smoky gray");
+				   $("#reqNumber3").val("");
+				   $("#reqNumber2${rand}").validatebox({required:false}); 
+				   $("#reqNumber2${rand}").attr("disabled",true);
+				   $("#reqNumber2${rand}").css("background-color","smoky gray");
+				   $("#reqNumber2${rand}").val("");
+			}
+			function zhongji(){
+				   $("#reqNumber2${rand}").attr("disabled",false);
+				   $("#reqNumber2${rand}").validatebox({required:true});
+				   $("#reqNumber2${rand}").css("background-color","none");
+				   $("#reqNumber3").validatebox({required:false});
+				   $("#reqNumber3").attr("disabled",true);
+				   $("#reqNumber3").css("background-color","smoky gray");
+				   $("#reqNumber3").val("");
+				   $("#reqNumber${rand}").validatebox({required:false});
+				   $("#reqNumber${rand}").attr("disabled",true);
+				   $("#reqNumber${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").val("");
+			}
+			function gaoji(){
+				   $("#reqNumber3").attr("disabled",false);
+				   $("#reqNumber3").validatebox({required:true});
+				   $("#reqNumber3").css("background-color","none");
+				   $("#reqNumber2${rand}").validatebox({required:false});
+				   $("#reqNumber2${rand}").attr("disabled",true);
+				   $("#reqNumber2${rand}").val("");
+				   $("#reqNumber2${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").validatebox({required:false});
+				   $("#reqNumber${rand}").attr("disabled",true);
+				   $("#reqNumber${rand}").css("background-color","smoky gray");
+				   $("#reqNumber${rand}").val("");
+			}
+			if("${reqJob}"){
+				$("#combo_reqJob${rand}").val("${reqJob}");
+			}else{
+				$("#combo_reqJob${rand}").combobox({required:false});
+				$('#combo_reqJob${rand}').combobox('disable');
+			}
+			if("${reqParticulars}"){
+				
+				if("${reqParticulars}"==1 ||"${reqParticulars}"==2){
+					if(record.id==1){
+						$("#gradesId${rand}").show();
+					}else{
+						$("#gradesId${rand}").hide();
+					}
+					if ($('#reqReason${rand}-2nd').length > 0) {
+						$("#reqReason${rand}-2nd").remove();
+		        	}
+					$("#confineUpload${rand}").val("可以");
+					$(".scrapWay1").show();
+					$("#tr7${rand}").hide();
+					$("#combo_reqJob${rand}").combobox({required:true});
+					$('#combo_reqJob${rand}').combobox('enable');
+				}else if("${reqParticulars}"==3){
+					$("#confineUpload${rand}").val("");
+					$(".scrapWay1").hide();
+					$("#tr7${rand}").show();
+					var trObj = '<tr id="reqReason${rand}-2nd">'
+		        		+ '<td class="formtable_td_key">增设原因：</td>'
+		        		+ '<td class="formtable_td_value" colspan="5"><textarea id="reqReason2nd${rand}" style="width: 780px; height: 60px" name="fp_reqReason2nd" class="easyui-validatebox" data-options="required:true"></textarea>'
+		        		+ '</td></tr>';
+		        		if ($('#reqReason${rand}-2nd').length <= 0) {
+			        		$("#tr7${rand}").after(trObj);
+			        	}
+		        		$.parser.parse('#reqReason${rand}-2nd');
+		        		if("${reqReason2nd}"){
+		        			$("#reqReason2nd${rand}").val("${reqReason2nd}");
+		        		}
+					$("#combo_reqJob${rand}").combobox('setValue','');
+					$("#combo_reqJob${rand}").combobox({required:false});
+					$('#combo_reqJob${rand}').combobox('disable');
+					
+				}else{
+					$("#confineUpload${rand}").val("可以");
+					$("#tr7${rand}").hide();
+					$(".scrapWay1").hide();
+					if ($('#reqReason${rand}-2nd').length > 0) {
+						$("#reqReason${rand}-2nd").remove();
+		        	}
+					$("#combo_reqJob${rand}").combobox({required:true});
+					$('#combo_reqJob${rand}').combobox('enable');
+				}
+			
+				
+			}
+		</script>
+		</#if>
+	</#if>
+</#if>
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'mb_applyUserConfirmTask'> 
+		<div id="mb_applyUserConfirmTask">
+			<form id="mb_applyUserConfirmTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_applyUserConfirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">发起人确认</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptLeaderName" value="${appuser.name}" mobile="发起人确认"/>
+							${appuser.name}
+						</td>
+							<tr>
+		  	  		 <td class="formtable_td_key">是否结束该流程</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+							<input id="endProcess-${rand}" type="radio" name="fp_endProcessAudi"  value="0" mobile="是否结束该流程_是"/>是
+							<input id="continueProcess-${rand}" type="radio" name="fp_endProcessAudi" checked="checked" value="1" mobile="是否结束该流程_否"/>否
+					</td>
+		  	  	</tr>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								id="deptLeaderAudiAdvice${rand}" name="fp_deptLeaderAudiAdvice" class="formtable_remark" mobile="确认意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptLeaderAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+	$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").val('');
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptManagerAudi${rand}").bind("click",success);
+	$("#fp_deptManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptLeaderAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptLeaderAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+<!-- 部门经理签字 -->
+<#if currentStep?exists && currentStep == 'mb_deptManagerTask'> 
+		<div id="mb_deptManagerTask">
+			<form id="mb_deptManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_deptManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">部门经理审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptLeaderName" value="${appuser.name}" mobile="部门经理审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_deptManagerAudi${rand}" name="fp_deptManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_deptManagerAudi${rand}2" name="fp_deptManagerAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								 id="fp_deptLeaderAudiAdvice${rand}" name="fp_deptLeaderAudiAdvice" class="formtable_remark" mobile="审核意见" makethis_required_field_name="fp_deptManagerAudi"   makethis_required_field_values="1" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptLeaderAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").val('');
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptManagerAudi${rand}").bind("click",success);
+	$("#fp_deptManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptLeaderAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptLeaderAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+<!-- 部门总监签字 -->
+<#if currentStep?exists && currentStep == 'mb_deptMajordomoAudiTask'> 
+
+		<div id="mb_deptMajordomoAudiTask">
+			<form id="mb_deptMajordomoAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_deptMajordomoAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">部门总监审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptMajordomoAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptMajordomoName" value="${appuser.name}" mobile="部门总监审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_deptMajordomoAudi${rand}" name="fp_deptMajordomoAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio"  id="fp_deptMajordomoAudi${rand}2"  name="fp_deptMajordomoAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+							 id="fp_deptMajordomoAudiAdvice${rand}"	name="fp_deptMajordomoAudiAdvice" class="formtable_remark" mobile="审核意见"  makethis_required_field_name="fp_deptMajordomoAudi"   makethis_required_field_values="1" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptMajordomoAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_deptMajordomoAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptMajordomoAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptMajordomoAudiAdvice${rand}").val('');
+		$("#fp_deptMajordomoAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptMajordomoAudi${rand}").bind("click",success);
+	$("#fp_deptMajordomoAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptMajordomoAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptMajordomoAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptMajordomoAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+<!-- 主管副总 -->
+<#if currentStep?exists && currentStep == 'mb_vicePresidentAudiTask'> 
+		<div id="mb_vicePresidentAudiTask">
+			<form id="mb_vicePresidentAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_vicePresidentAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">主管副总审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_directorAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_directorName" value="${appuser.name}" mobile="主管副总审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_vicePresidentAudi${rand}" name="fp_vicePresidentAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio"  id="fp_vicePresidentAudi${rand}2" name="fp_vicePresidentAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+							 id="fp_directorAudiAdvice${rand}"	name="fp_directorAudiAdvice" class="formtable_remark" mobile="审核意见" makethis_required_field_name="fp_vicePresidentAudi"   makethis_required_field_values="1" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5"> 
+							<input type="hidden" name="fp_directorAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_directorAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_directorAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_directorAudiAdvice${rand}").val('');
+		$("#fp_directorAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_vicePresidentAudi${rand}").bind("click",success);
+	$("#fp_vicePresidentAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_vicePresidentAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_directorAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_directorAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+<!-- 招聘人事总监 -->
+<#if currentStep?exists && currentStep == 'mb_recruitmentManagerDirectorTask'> 
+		<div id="mb_recruitmentManagerDirectorTask">
+			<form id="mb_recruitmentManagerDirectorTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_recruitmentManagerDirectorTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">招聘人事总监审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_recruitmentManagerDirectorAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_recruitmentManagerDirectorName" value="${appuser.name}" mobile="招聘人事总监审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_recruitmentManagerDirectorAudi${rand}" name="fp_recruitmentManagerDirectorAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_recruitmentManagerDirectorAudi${rand}2" name="fp_recruitmentManagerDirectorAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								id="fp_recruitmentManagerDirectorAudiAdvice${rand}" name="fp_recruitmentManagerDirectorAudiAdvice" class="formtable_remark" mobile="审核意见"  makethis_required_field_name="fp_recruitmentManagerDirectorAudi"   makethis_required_field_values="1"  onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_recruitmentManagerDirectorAudiTime"  timeEditor="1"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").val('');
+		$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_recruitmentManagerDirectorAudi${rand}").bind("click",success);
+	$("#fp_recruitmentManagerDirectorAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_recruitmentManagerDirectorAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_recruitmentManagerDirectorAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+<!-- HR副总裁 -->
+<#if currentStep?exists && currentStep == 'mb_hrViceChairmanTask'> 
+		<div id="mb_hrViceChairmanTask">
+			<form id="mb_hrViceChairmanTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_hrViceChairmanTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">HR副总裁审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_hrMajordomoAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_hrMajordomoName" value="${appuser.name}" mobile="HR副总裁审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_hrViceChairmanAudi${rand}" name="fp_hrViceChairmanAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_hrViceChairmanAudi${rand}2"  name="fp_hrViceChairmanAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+							 id="fp_hrMajordomoAudiAdvice${rand}" name="fp_hrMajordomoAudiAdvice" class="formtable_remark" mobile="审核意见"  makethis_required_field_name="fp_hrViceChairmanAudi"   makethis_required_field_values="1"  onblur="checkInput1();" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_hrMajordomoAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	$("#fp_hrMajordomoAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_hrMajordomoAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_hrMajordomoAudiAdvice${rand}").val('');
+		$("#fp_hrMajordomoAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_hrViceChairmanAudi${rand}").bind("click",success);
+	$("#fp_hrViceChairmanAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_hrViceChairmanAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_hrMajordomoAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_hrMajordomoAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+<!-- 董事长 -->
+<#if currentStep?exists && currentStep == 'mb_chairmanOfTheBoardTask'> 
+		<div id="mb_chairmanOfTheBoardTask">
+			<form id="mb_chairmanOfTheBoardTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_chairmanOfTheBoardTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">董事长审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_generalManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_generalManagerName" value="${appuser.name}" mobile="董事长审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="chairmanOfTheBoardAudi${rand}" name="fp_chairmanOfTheBoardAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio"  id="chairmanOfTheBoardAudi${rand}2" name="fp_chairmanOfTheBoardAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								id="generalManagerAudiAdvice${rand}" name="fp_generalManagerAudiAdvice" class="formtable_remark" mobile="审核意见"  onblur="checkInput1();" makethis_required_field_name="fp_chairmanOfTheBoardAudi"   makethis_required_field_values="1"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_generalManagerAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+				$("#generalManagerAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#generalManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+				}
+				var failure=function(){
+					$("#generalManagerAudiAdvice${rand}").val('');
+					$("#generalManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+				};
+				$("#chairmanOfTheBoardAudi${rand}").bind("click",success);
+				$("#chairmanOfTheBoardAudi${rand}2").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_chairmanOfTheBoardAudi']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#generalManagerAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#generalManagerAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+	      </script>
+</#if>
+
+<!-- 招聘专员 -->
+<#if currentStep?exists && currentStep == 'mb_recruiterAudiTask'> 
+
+		<div id="mb_recruiterAudiTask">
+			<form id="mb_recruiterAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_recruiterAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">招聘专员审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_recruiterAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_recruiterName" value="${appuser.name}" mobile="招聘专员审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="recruiterAudi${rand}" name="fp_recruiterAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio"  id="recruiterAudi${rand}2" name="fp_recruiterAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+							 id="recruiterAudiAdvice${rand}"	name="fp_recruiterAudiAdvice" class="formtable_remark" mobile="审核意见" makethis_required_field_name="fp_recruiterAudi"   makethis_required_field_values="1" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_recruiterAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		$("#recruiterAudiAdvice${rand}").validatebox({required:false});
+		var success = function(){
+			$("#recruiterAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+		}
+		var failure=function(){
+			$("#recruiterAudiAdvice${rand}").val('');
+			$("#recruiterAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+		};
+		$("#recruiterAudi${rand}").bind("click",success);
+		$("#recruiterAudi${rand}2").bind("click",failure);
+		
+		//用于限制文本框输入全空格
+		function checkInput1(){
+			if($("input[name='fp_recruiterAudi']:checked").val() == '0'){
+				return;
+			}
+			var result=$("#recruiterAudiAdvice${rand}").val();
+			if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+				$("#recruiterAudiAdvice${rand}").val('');
+				$.messager.alert('信息提示:','输入不能为全空格!');
+			}
+		}
+      </script>
+</#if>
+
+
+<!-- 招聘主管 -->
+<#if currentStep?exists && currentStep == 'mb_reZhuGuanTask'> 
+       <#list processSteps as steps>
+			<#if steps.key == 'startevent'> 
+			    <#assign curOrgId=steps.vars["curOrgId"]/>
+			 </#if>
+	    </#list>
+		<div id="mb_reZhuGuanTask">
+			<form id="mb_reZhuGuanTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_reZhuGuanTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">招聘主管审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_reZhuGuanAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_reZhuGuanName" value="${appuser.name}" mobile="招聘主管审批"/>
+							<input type="hidden" id="estabJudge${rand}" name="fp_estabJudge">
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="reZhuGuanAudi${rand}" name="fp_reZhuGuanAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="reZhuGuanAudi${rand}2" name="fp_reZhuGuanAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								 id="reZhuGuanAudiAdvice${rand}" name="fp_reZhuGuanAudiAdvice" class="formtable_remark" mobile="审核意见"  makethis_required_field_name="fp_reZhuGuanAudi"   makethis_required_field_values="1" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_reZhuGuanAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		$.post("hrFlow/getIfOffThreeDepartByIds.json", {
+			orgId : '${curOrgId}',
+			parentIds:'50011894,50033233,10100081'
+		}, function(data) {
+			if (data.success) {
+				$("#estabJudge${rand}").val("1");
+			}else{
+				$("#estabJudge${rand}").val("2");
+			}
+		});
+		
+		
+		
+		$("#reZhuGuanAudiAdvice${rand}").validatebox({required:false});
+		var success = function(){
+			$("#reZhuGuanAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+		}
+		var failure=function(){
+			$("#reZhuGuanAudiAdvice${rand}").val('');
+			$("#reZhuGuanAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+		};
+		$("#reZhuGuanAudi${rand}").bind("click",success);
+		$("#reZhuGuanAudi${rand}2").bind("click",failure);
+		
+		//用于限制文本框输入全空格
+		function checkInput1(){
+			if($("input[name='fp_reZhuGuanAudi']:checked").val() == '0'){
+				return;
+			}
+			var result=$("#reZhuGuanAudiAdvice${rand}").val();
+			if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+				$("#reZhuGuanAudiAdvice${rand}").val('');
+				$.messager.alert('信息提示:','输入不能为全空格!');
+			}
+		}
+        </script>
+</#if>
+
+<#include "/common/foot.html">

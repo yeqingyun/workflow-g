@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <meta name="renderer" content="webkit"/>
+	<meta charset="utf-8"/>
+	<title>工作流平台</title>
+	<link rel="stylesheet" type="text/css" href="${base}css/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="${base}css/themes/default/my97.css">
+	<link rel="stylesheet" type="text/css" href="${base}css/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="${base}css/themes/myicon.css"/>
+	<script type="text/javascript" src="${base}js/jquery.min.js"></script>
+	<script type="text/javascript" src="${base}js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${base}js/locale/easyui-lang-zh_CN.js"></script>
+	
+	<script type="text/javascript" src="${base}js/my97/My97DatePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="${base}js/my97/jquery.my97.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="${base}js/tagsinput/jquery.tagsinput.css"/>
+	<script type="text/javascript" src="${base}js/tagsinput/jquery.tagsinput.min.js"></script>
+	
+	<script type="text/javascript" src="${base}js/json/json2.js"></script>
+	
+	<script type="text/javascript" src="${base}js/ludop/LodopFuncs.js"></script>
+	<div id="btnDiv${rand}" align="center" style="padding:8px;">
+        <a id="printBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-print'">打印</a>
+        <a id="printHelpBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-help'">打印帮助</a>
+        <a id="closeBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+	</div>
+	<script  type="text/javascript"> 
+		//bind
+		$('#printBtn${rand}').bind('click',function(){
+			var btnDiv = $('#btnDiv${rand}').hide();
+			LODOP = getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+			if ( typeof(LODOP) != "undefined" && LODOP != null) {
+				LODOP.PRINT_INITA(10,10,730,1050,"${rand}")
+				LODOP.ADD_PRINT_HTM(10,10,730,1050,"<!DOCTYPE html><html><head><meta name='renderer' content='webkit'/><meta charset='utf-8'/><style>textarea{background-color: #FFF !important;}</style></head>"+$('body').html()+"</html>");
+				LODOP.PREVIEW(); //打印预览  
+			} else {
+				btnDiv.show();
+				$.messager.alert('信息提示','打印控件未安装,请点击打印帮助按钮,详细阅读打开的页面中的内容!','warning');
+			}
+			btnDiv.show();
+		});
+		
+		$('#printHelpBtn${rand}').bind('click',function(){
+			window.open("${base}common/printHelp/printHelp.html", "helpPrint", "");
+		});
+		
+		$('#closeBtn${rand}').bind('click',function(){
+			window.parent.$('#his_PrintWin').window('close')
+		});
+	</script> 
+  </head>
+  <body>
+ 	<script type="text/javascript" src="${base}js/common/common.js"></script>
+  	<style type="text/css">
+		.formtable {
+			font-size: 12px;
+			background-color: #C0C0C0;
+			width: 100%;
+			border-collapse: collapse;
+			border:1px solid #c0c0c0;
+		}
+		.formtable_td_key {
+			height: 20px;
+			padding: 7px;
+			max-width: 120px;
+			font-weight: bold;
+			color: #1D1D1D;
+			font-size: 12x;
+			background-color: #F1F6FF;
+			width: 12%;
+			border-collapse: collapse;
+			border:1px solid #c0c0c0;
+		}
+		
+		.formtable_td_value {
+			background-color: #FAFCFF;
+			font-size: 12x;
+			padding: 7px;
+			border-collapse: collapse;
+			border:1px solid #c0c0c0;
+		}
+		
+		.formtable_remark {
+			width: 95% !important;
+			height: 60px;
+			font-size: 12x;
+			border: 1px solid #C0C0C0;
+		}
+		
+		.span_wordwrap {
+			white-space: pre-wrap;
+			word-wrap: break-word;
+			word-break: break-all;
+		}
+		
+		input.hidden-input {
+			padding: 0px;
+			margin: 0px;
+			width: 0px;
+			height: 0px;
+			border-width: 0px;
+			display: block;
+			float: left;
+		}
+		
+		input.none-input {
+			background-color: #FAFCFF;
+			border: none;
+		}
+		
+		textarea {
+			color: black;
+			width: 95% !important;
+		}
+		textarea.none-input {
+			background-color: #FAFCFF;
+			border: none;
+		}
+		
+		textarea.likedisabled {
+			background-color: #F0F0F0;
+			border: 1px solid #c0c0c0;
+			font-family: inherit;
+			font-size: 12px;
+			width: 95% !important;
+			max-width: 95%;
+			resize: none;
+			overflow-y: hidden;
+			min-height: 60px;
+		}
+		
+		textarea[disabled=disabled] {
+			background-color: #F0F0F0;
+			border: 1px solid #c0c0c0;
+			font-family: inherit;
+			font-size: 12px;
+			width: 95% !important;
+			max-width: 95%;
+			resize: none;
+			overflow-y: hidden;
+			min-height: 60px;
+		}
+		input[type='checkbox']{
+			-moz-appearance: none;
+			width: 13px;
+			height: 13px;
+			vertical-align: middle;
+			-webkit-appearance: none;
+			background-image: url('${base}image/checkbox_unchecked.png');
+			background-position: center;
+		    background-repeat: no-repeat;
+		    background-size: 100%;
+	      	border-radius:2px; 
+		}
+		input[type="checkbox"]:checked {
+		  background-image: url('${base}image/checkbox_checked.png');
+		}
+		input[type='checkbox'][disabled]{
+		  background-color: #F0F0F0
+		}
+		input[type='radio']{
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			width: 16px;
+			height: 16px;
+			vertical-align: middle;
+			background-image: url('${base}image/radio_unchecked.png');
+			background-position: center;
+		    background-repeat: no-repeat;
+		    background-size: 100%;
+		    border-radius:8px; 
+		}
+		input[type="radio"]:checked {
+		  background-image: url('${base}image/radio_checked.png');
+		}
+		input[type='radio'][disabled]{
+		  background-color: #F0F0F0
+		}
+	</style>

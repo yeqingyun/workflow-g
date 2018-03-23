@@ -1,0 +1,413 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:65px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">创建时间：</td>
+		    			<td> 
+		    			 	<input id="startCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap">-</td>
+		   				<td> 
+    			 			<input id="endCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">流程实例编号：</td>
+		   				<td>
+		   				 	<input id="proInstId-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstId" data-options=""></input>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">流程名称：</td>
+		    			<td> 
+		    			 	<input id="processTree-${rand}" class="easyui-combotree" data-options="panelHeight:300,panelWidth:230,lines:true,url:'menus.json',onClick:proTreeNodeClick${rand}" style="width:154px;"/>
+		   					<input id="processDefId-${rand}" type="hidden" value=""/>
+		   					<input id="categoryId-${rand}" type="hidden" value=""/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">实例名称：</td>
+		   				<td>
+		   				 	<input id="proInstName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstId" data-options=""></input>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="runingProcessGrid-${rand}"></div>
+	</div>
+ </div>
+ 
+<!-- Update -->
+<!-- win -->
+<div id="win-${rand}" class="easyui-dialog" title="Dialog" style="width:1010px;height:500px;padding:10px"
+	 data-options="
+	   modal:true,
+	   closed:true,
+	   cache: false,
+	   maximizable:true,
+	   toolbar: [{
+		 text:'提交表单',
+		 handler: commitForm${rand},
+		 iconCls:'icon-save'
+	   },{
+		 text:'添加附件',
+		 handler: addAttache${rand},
+		 iconCls:'icon-add'
+	   }]
+	 ">
+	 <div id="formPanel-${rand}" class="easyui-panel" data-options="border:false,width:965" title="">
+    </div>
+    <br/>
+  	<div id="attchFilePanel-${rand}" class="easyui-panel" data-options="border:false,width:965,closed:true" title="">
+  		<div id="attchFileGrid-${rand}"></div>
+  	</div>
+</div>
+
+<div id="upload-${rand}" class="easyui-dialog" title="上传附件"
+        data-options="iconCls:'icon-save',resizable:true,width:468,height:544,modal:true,closed:true,
+        	buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: closeUploadDiag${rand}
+                }]">
+   <iframe id="upl-${rand}"  style="width:450px;height:470px;" frameborder="0" scrolling="no"></iframe>
+</div>
+
+<script type="text/javascript">
+$('#runingProcessGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'workspace/runingProcess.json',
+  columns:[[
+  	{field:'processInstanceId',title:'流程实例编号',checkbox:false,width:120,align:'center'},
+  	{field:'processInstanceName',title:'实例名称',width:120,align:'center'},
+  	{field:'processDefName',title:'流程名称',width:130,align:'center'},
+	{field:'processDefinitionId',title:'流程定义',hidden:true,width:150},
+	{field:'categoryName',title:'流程所属部门',width:120,hidden:true},
+	{field:'startUserName',title:'负责人',width:80,align:'center'},
+	{field:'processStatus',title:'状态',width:80,align:'center',
+		formatter: function(value,row,index){
+			if(value == 1){
+				return '<span style=\"color:red\">运行中</span>';
+			} else if (value == 2) {
+				return '<span style=\"color:blue\">已完成</span>';
+			} else if (value == 3) {
+				return '<span style=\"color:#005831\">已挂起</span>';
+			} else if (value == 4) {
+				return '<span style=\"color:#c88400\">已激活</span>';
+			} else if (value == 5) {
+				return '<span style=\"color:#840228\">已作废</span>';
+			} else {
+				return '<span style=\"color:#008792\">未知状态</span>';
+			}
+		}
+	},
+	{field:'checkUserId',title:'审批人工号',hidden:true,width:100},
+	{field:'checkUserName',title:'审批人',width:80,align:'center'},
+	{field:'startTime',title:'创建时间',width:150,align:'center'},
+	{field:'endTime',title:'结束时间',hidden:true,width:120,align:'center'},
+	{field:'durationInMillis',title:'截止今日处理耗时(小时)',width:120,align:'center',
+		formatter: function(value,row,index){
+			var value = row.durationInMillis;
+   			var day = value/1000/3600;
+    		return day.toFixed(2);
+		}
+	}
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  rownumbers:true,
+  singleSelect:true,
+  toolbar: [{
+	text : '流转详情',
+	iconCls: 'icon-history',
+	handler: viewHisProcss${rand}
+  },'-',{
+	text:'废止',
+	iconCls: 'icon-stop',
+	handler: obsoleteProcess${rand}
+  }],
+  onDblClickRow:function(rowIndex, rowData){
+	 viewHisProcss${rand}();
+  }
+});
+
+
+	//导出
+	$('#export_btn-${rand}').bind('click', function(){
+		
+		var startCreateTime = $('#startCreateTime-${rand}').val();
+		var endCreateTime = $('#endCreateTime-${rand}').val();
+		var proInstId = $('#proInstId-${rand}').val();
+			
+		var processDefId = $('#processDefId-${rand}').val();
+		var categoryId = $('#categoryId-${rand}').val();
+		
+		var form = $("<form method='post'>");
+	   	form.attr('style', 'display:none');
+	   	form.append($("<input type=hidden name='startCreateTime_d' value='"+startCreateTime+"'>"));
+	   	form.append($("<input type=hidden name='endCreateTime_d' value='"+endCreateTime+"'>"));
+	   	form.append($("<input type=hidden name='proInstId' value='"+proInstId+"'>"));
+	   	form.append($("<input type=hidden name='processDefId' value='"+processDefId+"'>"));
+	   	form.append($("<input type=hidden name='categoryId' value='"+categoryId+"'>"));
+	   	form.appendTo($(document.body));
+	    form.form('submit',{url:'workspace/exportRunningProcessInfo.html'});
+	    form.remove();
+	});
+
+
+//废止流程
+function obsoleteProcess${rand}(){
+  var row = $('#runingProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+  	if (row.processStatus == '1') {
+  		$.get("workspace/isHandleByNextAudi.json",{processInstanceId:row.processInstanceId},function(data){
+  		if(!data.success){
+		  			$.messager.confirm('信息提示', data.msg, function(r){
+			        if (r){
+			           $.post("workspace/obsoleteProcess.json",{processInstanceId:row.processInstanceId},function(data){
+							$.messager.alert('信息提示',data.msg,'info');
+							//reload
+							$('#runingProcessGrid-${rand}').datagrid('reload');
+					  	});
+			        }
+			    });
+  		}else{
+  					$.messager.confirm('信息提示', "您确定废止该流程吗?废止后不再恢复！", function(r){
+			        if (r){
+			           $.post("workspace/obsoleteProcess.json",{processInstanceId:row.processInstanceId},function(data){
+							$.messager.alert('信息提示',data.msg,'info');
+							//reload
+							$('#runingProcessGrid-${rand}').datagrid('reload');
+					  	});
+			        }
+			    });
+  		
+  		}
+					
+					
+			  	});
+  		
+  	} else {
+  		 $.messager.alert('信息提示','非运行中的流程不能废止!','warning');
+  	}
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+//查看历史
+function viewHisProcss${rand}(){
+  var row = $('#runingProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+	viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    //fit:true,
+	    //maximizable:true,
+	    style:"padding:10px",
+	    href: 'workspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+
+//
+function proTreeNodeClick${rand}(node){
+	var processTree = $('#processTree-${rand}');
+	var proDefId = $('#processDefId-${rand}');
+	var categoryId = $('#categoryId-${rand}');
+	
+	//清空
+	proDefId.val('');
+	categoryId.val('');
+	
+	if (node.id == null) {
+		var defArr = node.attributes.processDefId.split(":");
+		proDefId.val(defArr[0]);
+	} else {
+		categoryId.val(node.id);
+	}
+	return true;
+}
+
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var proInstId = $('#proInstId-${rand}').val();
+	var proInstName = $('#proInstName-${rand}').val();
+	var processDefId = $('#processDefId-${rand}').val();
+	var categoryId = $('#categoryId-${rand}').val();
+	
+	$('#runingProcessGrid-${rand}').datagrid('reload',
+		{
+			startCreateTime_d:startCreateTime,
+			endCreateTime_d:endCreateTime,
+			proInstId:proInstId,
+			processDefId:processDefId,
+			categoryId:categoryId,
+			proInstName:proInstName
+		});
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$('#proInstId-${rand}').val('');
+	$('#proInstName-${rand}').val('');
+	$('#processTree-${rand}').combotree('clear');
+	
+	//特殊处理
+	$('#processDefId-${rand}').val('');
+	$('#categoryId-${rand}').val('');
+});
+
+//update
+function modifyProStartEvent${rand}(){
+  var row = $('#runingProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+	$('#win-${rand}').dialog('setTitle', '修改发起表单[' + row.processDefName + ']');
+
+  	$('#win-${rand}').dialog('open');
+  
+  	$('#formPanel-${rand}').panel('refresh', 'sysprocess/start/form.html?procdefId=' + row.processDefinitionId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+
+
+function addAttache${rand}(){
+	var url = '${file_upload_url}' //文件服务器的上传的URl
+ 	         +'?syId=${file_param_syId}'    //系统ID
+ 	         +'&syNm=${file_param_syNm}'  //系统名字
+ 	         +'&usrId=${appuser.userId?c}' //用户ID
+ 	         +'&usrNm=${appuser.name}'//用户名字
+ 	         +'&diyFolder=${file_param_diyFolder}'//文件上传的目录中自定义部分
+ 	         +'&uploadType=${file_parma_uploadType}' //上传的是ProcFile，取值只能是ProcFile或者BaseLib
+          	 +'&fileVersion=${file_param_fileVersion}' //文件版本号，自己在业务逻辑中确定
+          	 +'&iframeUrl=${file_param_iframeUrl}'
+          	 +'&tempParams='
+          	 +'&callBackUrl=';
+	/**RUL后面跟的参数 **/
+	url=encodeURI(url);  //encodeURI
+	$('#upl-${rand}').attr('src', url);
+	$('#upload-${rand}').dialog('open');
+}
+
+$('#attchFileGrid-${rand}').datagrid({
+	columns:[[
+		{field:'fileNo',title:'文件编号',width:100},
+		{field:'fileName',title:'文件名',width:120},
+		{field:'fileSize',title:'文件大小',width:120},
+		{field:'operate',title:'操作',width:120,
+			formatter: function(value,row,index){
+				var returnStr = "<a href='${file_download_url}"+ row.fileNo +"'>下载</a>"
+					+ "&nbsp;&nbsp;<a href='javascript:void(0)' onclick='delAttch("+ index +");'>删除</a>"
+				return returnStr;
+			}
+		}
+	]],
+	title:'附件列表',
+	fitColumns:true,
+ 	rownumbers:true,
+	nowrap: true,       
+	border : true
+});
+
+//上传文件回调
+function afterUpload(fileNo,fileName,fileSize,syId,syNm,usrId,usrNm,diyFolder,callBackUrl,tempParams){
+	$('#attchFilePanel-${rand}').panel('open');
+	//Grid add row
+	$('#attchFileGrid-${rand}').datagrid('appendRow',{
+		fileNo: fileNo,
+		fileName: fileName,
+		fileSize: fileSize
+	});
+}
+
+function delAttch(index){
+	$('#attchFileGrid-${rand}').datagrid('deleteRow',index);
+}
+
+//关闭上传文件框
+function closeUploadDiag${rand}(){
+	$('#upload-${rand}').dialog('close');
+}
+
+//submit
+function commitForm${rand}() {
+  var row = $('#runingProcessGrid-${rand}').datagrid('getSelected');
+  var div = $('#win-${rand}');
+  var startForm = div.find("form[id^='startForm']");
+  $.messager.progress();
+  startForm.form('submit', {
+	url: 'sysprocess/create/modifyProStartEvent.html?processInstId=' + row.processInstanceId,
+	onSubmit: function(param) {
+		var validateResult = $(this).form('enableValidation').form('validate');
+		if (validateResult) {
+			if ($('#attchFileGrid-${rand}').length > 0) {
+				var rows = $('#attchFileGrid-${rand}').datagrid('getRows');
+				$.each(rows, function(i, d){
+					param['attch_' + i] = d.fileNo + "_" + d.fileName
+				});
+			}
+		} else {
+			$.messager.progress('close');
+			return false;
+		}
+	},
+	success: function(data) {
+	  $.messager.progress('close');
+	  var data = eval("(" + data + ")");
+	  $('#win-${rand}').dialog('close');
+	  $.messager.show({
+		title: '信息提示',
+		msg: data.msg
+	  });
+	}
+  });
+}
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,40 @@
+ process(id:"L-Product-Change-Application"){
+	step(id:"startevent1"){
+		field(name:"internalModel",validType:"required",label:"内部型号")
+		
+		field(name:"externalModel",validType:"required",label:"外部型号")
+		
+		field(name:"changeDescriptionJsonStr",validType:"required",label:"变更描述")
+		
+		field(name:"changeReason",validType:"required",label:"变更原因")
+		
+		field(name:"LPDTAssignerAccount",validType:"required",label:"LPDT意见负责人")
+		
+		field(name:"SLPDTAssignerAccount",validType:"required",label:"SLPDT意见负责人")
+		
+		field(name:"UEDAssignerAccount",validType:"required",label:"UED意见负责人")
+		
+		field(name:"productManager",validType:"required",label:"产品经理")
+		
+	}
+	step(id:"mb_LPDTAudiTask"){
+		field(name:"LPDTAudiAdvice",validType:"required",label:"LPDT 意见")
+	}
+	
+	step(id:"mb_SLPDTAudiTask"){
+		field(name:"SLPDTAudiAdvice",validType:"required",label:"SLPDT 意见")
+	}
+	
+	step(id:"mb_UEDAudiTask"){
+		field(name:"SLPDTAudiAdvice",validType:"required",label:"UED 意见")
+		
+	}
+	
+	step(id:"mb_qualityAudiTask"){
+		field(name:"SLPDTAudiAdvice",validType:"required",label:"品质意见")
+	}
+	
+	step(id:"mb_chairmanAudiTask"){
+		field(name:"chairmanAudi",validType:"required",label:"董事长意见")
+	}
+}

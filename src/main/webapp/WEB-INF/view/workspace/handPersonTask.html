@@ -1,0 +1,496 @@
+<#assign title="流程">
+    <#include "/common/head.ftl">
+    <div style="min-width: 1030px;overflow: hidden;min-height:800px;margin: 0 auto;width:54%;border: 1px solid #ccc;box-shadow:2px 2px 2px #666;border-radius:2px;">
+        <div id="tab-${rand}">
+            <div title="处理任务" style="overflow:auto;padding:50px 0px 0px  0px">
+                <div id="formOperatePanel-${rand}" class="easyui-panel" data-options="width:975"
+                     style="padding:5px;z-index:auto;position:fixed;margin-top: -50px">
+                    <a href="javascript:void(0)" id="submitBtn-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save',disabled:true">完成</a>
+                    <a href="javascript:void(0)" id="uploadBtn-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-back',disabled:true">上传附件</a>
+                    <a href="javascript:void(0)" id="turntodoTask-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-turntodo',disabled:true">转办</a>
+                    <a href="javascript:void(0)" id="joinprocessTask-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-joinprocess',disabled:true">签收</a>
+                    <a href="javascript:void(0)" id="retrieveTask-${rand}" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-retrieve',disabled:true">退回任务</a>
+                </div>
+                <div id="loadFormPanel-${rand}" style="overflow:auto;padding:0px 0px 0px 0px;margin-bottom: 50px">
+                </div>
+            </div>
+            <div title="查看历史" style="overflow:auto;padding:5px;">
+            </div>
+        </div>
+     </div>
+        <div id="upload-${rand}" class="easyui-dialog" title="上传附件"
+             data-options="iconCls:'icon-save',resizable:true,width:708,height:544,modal:true,closed:true,
+        	buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: closeUploadDiag${rand}
+                }]
+        ">
+            <div id="uploader${rand}" class="fileUploader">
+                <div id="fileList${rand}" class="uploader-list"></div>
+                <table style="width: 100%;text-align: center;padding-top: 20px;">
+                    <tr>
+                        <td align="right"><div id="filePicker${rand}">选择文件</div></td>
+                        <td align="left"><a id="ctlBtn${rand}" href="javascript:void(0)" class='btn'>开始上传</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- trun to do win -->
+        <div id="truntodoWin-${rand}" class="easyui-dialog" title="转办" style="width:650px;height:250px;padding:5px"
+             data-options="
+	   modal:true,
+	   closed:true,
+	   maximizable:false,
+	   cache: false,
+	   resizable:true,
+       buttons: [{
+       		text:'确定',
+            iconCls:'icon-ok',
+           	handler:truntodoWinSubmit${rand}
+     	},{
+           text:'关闭',
+           iconCls:'icon-cancel',
+           handler:truntodoWinClose${rand}
+       }]">
+            <div>
+                <form id="turntodoForm${rand}" method="post" enctype='multipart/form-data'>
+                    <table id="turntodoFormTable" class="formtable" cellspacing="1" cellpadding="0">
+                        <tr>
+                            <td class="formtable_td_key">任务接收人：</td>
+                            <td class="formtable_td_value">
+                                <input id="accepter${rand}" type="hidden" value="" name="accepter"/>
+                                <input id="accepterName${rand}" class="easyui-validatebox" readonly="readonly" name="accepterName" data-options="required:true">
+                                <a id="openOrgWinBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="formtable_td_key">转办原因：</td>
+                            <td class="formtable_td_value">
+		  	  			<textarea name="turntodoReason" class="formtable_remark easyui-validatebox"
+                                  style="width: 450px; height: 100px"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <!-- select account win -->
+        <div id="orgWin-${rand}" class="easyui-dialog" title="用户选择窗口"
+             style="width: 1000px; height: 500px; padding: 5px"
+             data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserWin
+		              }]">
+            <div class="easyui-layout" data-options="fit:true">
+                <div data-options="region:'north',border:false,minHeight:30," style="padding:5px 0px 5px 0px">
+                    <div style="padding:5px;height:30px;background:#fafafa;border:1px solid #ccc">
+                        <table border="0" >
+                            <tr>
+                                <td align="right" style="white-space:nowrap;padding-left:12px;" >用户编号：</td>
+                                <td width="160px">
+                                    <input id="userAccount-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="account" data-options=""/>
+                                </td>
+                                <td align="right" style="white-space:nowrap; padding-left:12px;">用户姓名：</td>
+                                <td width="160px">
+                                    <input id="userName-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="name" data-options=""/>
+                                </td>
+                                <td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+                                    <a href="javascript:void(0)" id="user_search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+                                    <a href="javascript:void(0)" id="user_reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+                    <div id="userGrid-${rand}"></div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            var search = window.location.search.substring(1);
+            var taskId = search.split("&")[0].split("=")[1],taskDefKey,processInstanceId,assignee;
+            $.getJSON("workspace/getTaskInfoById.json",{taskId:taskId},function(data){
+            	if(data.success){
+            		 var taskInfo = data.attributes;
+                     taskId = taskInfo.taskId;
+                     taskDefKey = taskInfo.taskDefKey;
+                     processInstanceId = taskInfo.processInstanceId;
+                     assignee = taskInfo.assignee;
+                     if(assignee != "${appuser.account}"){
+                    	 $.messager.alert('信息提示','登录者与任务办理者不一致!','info');
+                    	 window.location.href = "index.html";
+                    	 return false;
+                     }
+                     $("#submitBtn-${rand}").linkbutton('enable');     
+                     $("#uploadBtn-${rand}").linkbutton('enable');     
+                     $("#turntodoTask-${rand}").linkbutton('enable');     
+                     $("#joinprocessTask-${rand}").linkbutton('enable');     
+                     $("#retrieveTask-${rand}").linkbutton('enable');     
+            	}
+            })
+            $('#tab-${rand}').tabs({
+                border:false,
+                fit:true,
+                onSelect:function(title){
+                    if (title == '查看历史') {
+                        var tab = $('#tab-${rand}').tabs('getSelected');
+                        $('#tab-${rand}').tabs('update', {
+                            tab: tab,
+                            options: {
+                                href: 'workspace/personalTaskHistory.html?processInstanceId=' + processInstanceId
+                            }
+                        });
+                    }
+                }
+            });
+
+            $('#loadFormPanel-${rand}').panel({
+                border:false,
+                href:'sysprocess/task/form.html?taskId=' + taskId,
+            });
+
+            function commitForm${rand}() {
+                $.messager.progress();
+                var operateForm = $("#loadFormPanel-${rand}").find("form[id^='"+ taskDefKey +"Form']");
+                operateForm.form('submit', {
+                    url: 'sysprocess/complete/'+taskId+".html",
+                    onSubmit: function(param) {
+                        var validateResult = $(this).form('enableValidation').form('validate');
+                        if (validateResult) {
+                            if ($('#attchFileGrid-${rand}').length > 0) {
+                                var rows = $('#attchFileGrid-${rand}').datagrid('getRows');
+                                $.each(rows, function(i, d){
+                                    param['attch_' + i] = d.fileNo + "_" + d.fileName
+                                });
+                            }
+                        } else {
+                            $.messager.progress('close');
+                            return false;
+                        }
+                    },
+                    success: function(data) {
+                        $.messager.progress('close');
+                        var data = JSON.parse(data);
+                    	if(data.attributes && data.attributes.close == false){
+                    	}else{
+	                        $('#win-${rand}').dialog('close');
+                    	}
+                        $.messager.show({
+                            title: '信息提示',
+                            msg: data.msg
+                        });
+                        if(data,success){
+	                        setTimeout(function(){
+		                        window.location.href = "index.html";
+	                        },1000);
+                        }
+                    }
+                });
+            }
+
+            //提交
+            $('#submitBtn-${rand}').bind('click', function(){
+                commitForm${rand}();
+            });
+
+            //上传
+            $('#uploadBtn-${rand}').bind('click', function(){
+                addAttache${rand}();
+            });
+
+            //转办
+            $('#turntodoTask-${rand}').bind('click',function(){
+                $('#truntodoWin-${rand}').dialog('open');
+            });
+			//签收
+			$("#joinprocessTask-${rand}").bind("click",function(){
+				signTask${rand}();
+			})
+			
+			//退回任务
+			$("#retrieveTask-${rand}").bind("click",function(){
+				returnTask${rand}();
+			})
+			//签收任务
+            function signTask${rand}(){
+                 if (assignee == null){
+                     $.messager.confirm('提示信息','您确定要签收任务吗?',function(r){
+                         if (r){
+                             $.messager.progress();
+                             $.post('workspace/signTask.html',{taskId:row.id},function(result){
+                                 $.messager.progress('close');
+                                 $.messager.show({
+                                     title: '信息提示', msg: result.msg
+                                 });
+                                 if (result.success){
+                                     setTimeout(function(){
+             	                        window.location.href = "index.html";
+                                     },1000);
+                                 }
+                             },'json');
+                         }
+                     });
+                 } else {
+                     $.messager.alert('信息提示','该任务已经分配,不需要签收!','info');
+                 }
+            }
+
+            //转办
+            function turntodoTask${rand}(){
+                 if(assignee == null){
+                     $.messager.alert('信息提示','请先签收任务再处理该任务!','info');
+                     return;
+                 } else {
+                     taskId = row.id;
+                     taskDefKey = row.taskDefinitionKey;
+                     processInstanceId = row.processInstanceId;
+                     $('#truntodoWin-${rand}').dialog('open');
+                 }
+            }
+
+            function addAttache${rand}(){
+                $('#upload-${rand}').dialog('open');
+            }
+
+            function delAttch${rand}(fileNo,fileDivId){
+                GnifFileUpload.deleteFile("${oss_code}",fileNo,deleteAttachGrid${rand}(fileDivId));
+            }
+            function deleteAttachGrid${rand}(fileDivId){
+                //删除表单file
+
+                var item = $('#attchFileGrid-${rand}').datagrid('getRows');
+                if (item) {
+                    for (var i = item.length - 1; i >= 0; i--) {
+                        if(item[i]['fileDivId'] == fileDivId) {
+                            var index = $('#attchFileGrid-${rand}').datagrid('getRowIndex',item[i]);
+                            $('#attchFileGrid-${rand}').datagrid('deleteRow', index);
+                        }
+
+                    }
+                }
+
+
+                var grid = $("#fileList${rand}").datagrid('getRows');
+                if (grid) {
+                    for (var i = grid.length - 1; i >= 0; i--) {
+                        if(grid[i]['fileId'] == fileDivId) {
+                            var idx = $("#fileList${rand}").datagrid('getRowIndex',grid[i]);
+                            $("#fileList${rand}").datagrid('deleteRow', idx);
+                        }
+
+                    }
+                }
+
+
+                GnifFileUpload.removeFileFromQueue(uploader${rand},fileDivId);
+
+                //删除控件中的文件显示
+                //$("#fileList${rand}").datagrid('deleteRow', delindex);
+            }
+
+            //关闭上传文件框
+            function closeUploadDiag${rand}(){
+                $('#upload-${rand}').dialog('close');
+            }
+
+
+
+            //弹出窗口
+            $('#openOrgWinBtn${rand}').bind('click', function(){
+                //重新加载用户数据
+                $('#userGrid-${rand}').datagrid('reload',
+                    {
+                        taskId:taskId
+                    });
+                $('#orgWin-${rand}').dialog('open');
+            });
+
+            //转办提交
+            function truntodoWinSubmit${rand}(){
+                if (assignee != null){
+                    $.messager.progress();
+                    $('#turntodoForm${rand}').form('submit', {
+                        url: 'workspace/turntodoTask/'+taskId+".html",
+                        onSubmit: function(param) {
+                            var validateResult = $(this).form('enableValidation').form('validate');
+                            if (!validateResult) {
+                                $.messager.progress('close');
+                                return false;
+                            }
+                        },
+                        success: function(data) {
+                            $.messager.progress('close');
+                            var data = JSON.parse(data);
+                            $('#truntodoWin-${rand}').dialog('close');
+                            $.messager.show({
+                                title: '信息提示',
+                                msg: data.msg
+                            });
+                            //跳转至首页
+                            if(data.success){
+	                            setTimeout(function(){
+	    	                        window.location.href = "index.html";
+	                            },1000);
+                            }
+                        }
+                    });
+                } else {
+                    $.messager.alert('信息提示','该任务未签收,请签收任务后在进行转办操作!','info');
+                }
+            }
+            //转办关闭
+            function truntodoWinClose${rand}(){
+                $('#truntodoWin-${rand}').dialog('close');
+            }
+
+            //init org win
+            $(function(){
+                $('#userGrid-${rand}').datagrid({
+                    fitColumns:true,
+                    url:'hrFlow/queryUserByOrgId.json',
+                    queryParams: {
+                        taskId: taskId
+                    },
+                    columns:[[
+                        {field:'id',hidden:true, checkbox:false},
+                        {field:'account',title:'帐号',width:150},
+                        {field:'name',title:'姓名',width:150},
+                        {field:'orgId',title:'部门ID',hidden:true, width:150},
+                        {field:'orgName',title:'部门名称',width:150}
+                    ]],
+                    nowrap: true,
+                    fit : true,
+                    border : true,
+                    pagination:true,
+                    pageNumber : 1,
+                    pageSize : 20,
+                    rownumbers:true,
+                    singleSelect:true
+                });
+            });
+
+            //按钮绑定事件
+            $('#user_search_btn-${rand}').bind('click', function(){
+                var account = $('#userAccount-${rand}').val();
+                var name = $('#userName-${rand}').val();
+
+                $('#userGrid-${rand}').datagrid('reload',
+                    {
+                        account:account,
+                        name:name,
+                        taskId:taskId
+                    });
+            });
+
+            $('#user_reset_btn-${rand}').bind('click', function(){
+                $('#userAccount-${rand}').val('');
+                $('#userName-${rand}').val('');
+            });
+
+            //选择用户完成事件
+            function selectUserEnd(){
+                var row = $('#userGrid-${rand}').datagrid('getSelected');
+                if (row) {
+                    $('#accepter${rand}').val(row.account);
+                    $('#accepterName${rand}').val(row.name);
+
+                    $('#accepterName${rand}').validatebox('validate');
+
+                    $('#orgWin-${rand}').dialog('close');
+                } else {
+                    $.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+                }
+            }
+
+            function  closeSelectUserWin(){
+                $('#orgWin-${rand}').dialog('close');
+            }
+
+			//退回任务
+            function returnTask${rand}(){
+                $.messager.confirm('提示信息','您确定要退回任务吗?',function(r){
+                    if (r){
+                        $.post('workspace/returnTask.html',{taskInstanceId:processInstanceId},function(result){
+                            $.messager.alert('信息提示', result.msg,'warning');
+                            if(result.success){
+	                            setTimeout(function(){
+	    	                        window.location.href = "index.html";
+	                            },1000);
+                            }
+                        },'json');
+                    }
+                });
+            }
+
+
+            var uploader${rand} = GnifFileUpload.init(
+                    "js/fileupload/Uploader.swf",
+                    "${oss_server}",
+                    "filePicker${rand}",
+                    "fileList${rand}",
+                    "ctlBtn${rand}",
+                    "uploader${rand}",
+                    true,
+                    "${oss_code}",
+                    uploadSuccess${rand},
+                    "attchFileGrid-${rand}",
+                    1
+                );
+            //上传回调
+            function uploadSuccess${rand}(response,file) {
+
+                if($('#attchFileGrid-${rand}').length <= 0){
+                    var $table= $("#" + taskDefKey + "Form");
+                    var div = '<br/><div id="attchFileGrid-${rand}"></div>';
+                    $table.after(div);
+
+                    $('#attchFileGrid-${rand}').datagrid({
+                        columns:[[
+                            {field:'fileNo',title:'文件编号',width:100},
+                            {field:'fileName',title:'文件名',width:120},
+                            {field:'fileSize',title:'文件大小',width:120},
+                            {field:'param',title:'下载参数',width:0,hidden:'true'},
+                            {field:'fileDivId',title:'文件节点id',width:0,hidden:'true'},
+                            {field:'operate',title:'操作',width:120,
+                                formatter: function(value,row,index){
+                                    var returnStr = "<a href='${file_download_url}"+ row.param +"'>下载</a>"
+                                        + "&nbsp;&nbsp;<a href='javascript:void(0)' onclick=delAttch${rand}("+row.fileNo+",'"+row.fileDivId+"');>删除</a>"
+                                    return returnStr;
+                                }
+                            }
+                        ]],
+                        title:'附件列表',
+                        fitColumns:true,
+                        rownumbers:true,
+                        nowrap: true,
+                        border : true
+                    });
+                }
+
+
+
+                var fileAttr = response.attributes;
+                var signatureAttr = JSON.parse(GnifFileUpload.sendRequest("./getSignatureAndPolicy.json?info=",encodeURIComponent("0\\n0\\n"+fileAttr.fileNo)));
+                $('#attchFilePanel-${rand}').panel('open');
+                $('#attchFileGrid-${rand}').datagrid('appendRow',{
+                    fileNo: fileAttr.fileNo,
+                    fileName: fileAttr.fileName,
+                    fileSize: fileAttr.fileSize.formatSize(),
+                    param: "?code=${oss_code}&policy="+signatureAttr.policy+"&signature="+signatureAttr.signature,
+                    fileDivId: file.id
+                });
+            }
+        </script>
+        <#include "/common/foot.ftl">

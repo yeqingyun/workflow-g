@@ -1,0 +1,245 @@
+<#assign title="流程变量管理">
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">流程编号：</td>
+		   				<td> 
+	   			 			<input id="procInstId-${rand}" type="text" class="easyui-textbox" style="width: 260px" name="procInstId" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">流程变量：</td>
+		   				<td width="200">
+		   				 	<input id="name-${rand}" style="width:260px;" class="easyui-textbox" type="text" name="name" ></input>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	 <div data-options="region:'center',border:true,split:true" style="padding:0px 0px 0px 0px;">
+		<table id="processVarGrid-${rand}"></table>
+	 </div>
+
+	<div id="processVarDialog${rand}">
+		<div  style="padding:10px 10px;">
+			<form id="processVariableForm${rand}" method="post">
+				<table class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" >流程编号:</td>
+						<td class="formtable_td_value"><input class="easyui-validatebox" data-options="required:true" type="text" name="procInstId" style="width:200px;"/></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">流程变量名:</td>
+						<td class="formtable_td_value"><input class="easyui-validatebox" data-options="required:true" type="text" name="name" style="width:200px;"></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">版本:</td>
+						<td class="formtable_td_value"><input class="easyui-numberbox" type="text" name="rev" style="width:200px;"></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">流程变量值:</td>
+						<td class="formtable_td_value"><textarea class="easyui-validatebox formtable_remark" data-options="required:true"  name="text"></textarea></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	
+	<div id="processVarViewDialog${rand}">
+		<div  style="padding:10px 10px;">
+			<form id="processVariableViewForm${rand}">
+				<table class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key" >流程编号:</td>
+						<td class="formtable_td_value"><input class="none-input" data-options="required:true" type="text" name="procInstId" style="width:200px;" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >流程定义:</td>
+						<td class="formtable_td_value"><input class="none-input" data-options="required:true" type="text" name="procInstKey" style="width:200px;" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >流程名称:</td>
+						<td class="formtable_td_value"><input class="none-input" data-options="required:true" type="text" name="procInstName" style="width:200px;" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">流程变量名:</td>
+						<td class="formtable_td_value"><input class="none-input" data-options="required:true" type="text" name="name" style="width:200px;" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">版本:</td>
+						<td class="formtable_td_value"><input class="none-input" type="text" name="rev" style="width:200px;" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">之前流程变量值:</td>
+						<td class="formtable_td_value"><textarea class="likedisabled" data-options="required:true"  name="text2" readonly="readonly"></textarea></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">目前流程变量值:</td>
+						<td class="formtable_td_value"><textarea class="likedisabled" data-options="required:true"  name="text" readonly="readonly"></textarea></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+
+<script type="text/javascript">
+$(function(){
+	
+	$('#processVarGrid-${rand}').datagrid({
+		  fitColumns:true,
+		  url:'promanager/processVarLogs.json',
+		  columns:[[
+			{field:'id',title:'ID',checkbox:false,hidden:true},
+			{field:'procInstId',title:'流程实例编号',width:150},
+			{field:'procInstKey',title:'流程定义Key',width:150},
+			{field:'procInstName',title:'流程定义名称',width:150},
+			{field:'name',title:'流程变量名',width:150},
+			{field:'rev',title:'流程变量版本',width:150},
+			{field:'text2',title:'流程变量值（修改前）',width:150},
+			{field:'text',title:'流程变量值（修改后）',width:150,styler:function(rowIndex,rowData){
+				return "color:red;";
+			}},
+			{field:'updateBy',title:'修改人',width:100},
+			{field:'updateTime',title:'修改时间',width:100}
+		  ]],
+		  nowrap: true,
+		  idField:'id',
+		  fit : true,
+		  singleSelect:true,
+		  rownumbers:true,striped:true,
+		  pagination:true,
+		  toolbar: [{
+				text:'变量查看',
+				iconCls: 'icon-more',
+				handler:viewProcessVar
+		  },'-',{
+			text:'变量变更',
+			iconCls: 'icon-edit',
+			handler:updateProcessVar
+		  },'-',{
+			text:'刷新',
+			iconCls: 'icon-reload',
+			handler:function(){
+				$('#processVarGrid-${rand}').datagrid("reload");
+			}
+		  }],
+		  onDblClickRow:function(rowIndex, rowData){
+			  viewProcessVar();
+		  }
+		});
+	//更新
+	function updateProcessVar(){
+		$('#processVariableForm${rand}').form('clear');
+	 	$('#processVarDialog${rand}').dialog({
+	 		title: '修改流程变量值',
+			collapsible:false,
+			width: 700,
+			height: 400,
+			maximizable:true,
+			resizable:true,
+			closed: false,
+			cache: false,
+			modal: true,
+			toolbar:[{
+				text : '保存',    
+				iconCls:'icon-save',    
+				handler:function(){
+					saveProcessVar();
+				}    
+			},'-',{
+				text:'重置',
+				iconCls:'icon-undo',    
+				handler:function(){
+					$('#processVariableForm${rand}').form('clear');
+				}    
+			}],
+			onClose : function(){
+				$('#processVariableForm${rand}').form('clear');
+			}
+		});			
+	}
+	
+	//查看
+	function viewProcessVar(){
+		var row = $("#processVarGrid-${rand}").datagrid("getSelected");
+		if(row){
+			$.getJSON("promanager/viewProcessVariableChangeLog.json",{id:row.id},function(data){
+				$('#processVariableViewForm${rand}').form("load",data);
+			});
+		 	$('#processVarViewDialog${rand}').dialog({
+		 		title: '流程变量详情',
+				collapsible:false,
+				width: 700,
+				height: 500,
+				maximizable:true,
+				resizable:true,
+				closed: false,
+				cache: false,
+				modal: true,
+				onClose : function(){
+					$('#processVariableViewForm${rand}').form('clear');
+				}
+			});			
+		}else{
+            $.messager.show({
+                title: '信息提示',
+                msg: "请选择一条记录。。。"
+            });
+		}
+	}
+	//保存流程变量
+	function saveProcessVar(){
+		url = "promanager/updateProcessVar.html"
+		$("#processVariableForm${rand}").form("submit",{
+			url:url,
+			onSubmit:function(){
+				if($("#processVariableForm${rand}").form("validate")){
+					return true;
+				}else{
+					return false;
+				}
+			},
+			success:function(result){
+		        var result = $.parseJSON(result);
+		        if (!result.success){
+		            $.messager.show({
+		                title: '错误',
+		                msg: result.msg
+		            });
+		        } else {
+					$('#processVarGrid-${rand}').datagrid("reload");
+					$('#processVarDialog${rand}').dialog("close");
+		            $.messager.show({
+		                title: '信息提示',
+		                msg: result.msg
+		            });
+		        }
+			}
+		})
+	}
+	
+	//按钮绑定事件
+	$('#search_btn-${rand}').bind('click', function(){
+		var name = $('#name-${rand}').val();
+		var procInstId = $('#procInstId-${rand}').val();
+		
+		$('#processVarGrid-${rand}').datagrid('reload',
+			{
+				procInstId:procInstId,
+				name:name
+			});
+	});
+	
+	//Search Reset
+	$('#reset_btn-${rand}').bind('click', function(){
+		$('#name-${rand}').val('');
+		$('#procInstId-${rand}').val('');
+	});
+})
+</script>
+<#include "/common/foot.ftl">

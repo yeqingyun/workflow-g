@@ -1,0 +1,467 @@
+<#include "/common/head.html">
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent'>
+		<tr>
+			<td class="formtable_td_key">拟制部门：</td>
+			<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+			<td class="formtable_td_key">文件类型：</td>
+			<td class="formtable_td_value">${(steps.vars["fileType"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">所属公司：</td>
+			<td class="formtable_td_value">${(steps.vars["belongCompany"])!""}</td>
+			<td class="formtable_td_key">文件编号：</td>
+			<td class="formtable_td_value">${(steps.vars["fileNo"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">版本号：</td>
+			<td class="formtable_td_value">${(steps.vars["version"])!""}</td>
+			<td class="formtable_td_key">版本状态：</td>
+			<td class="formtable_td_value">${(steps.vars["versionState"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">拟定人：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["createrName"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">废止原因：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["abolishReason"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 部门领导审核 -->
+<#if steps.key == 'deptLeaderAudiTask'>
+	<tr>
+		<td class="formtable_td_key">部门负责人</td>
+		<td class="formtable_td_value">${(steps.vars["deptLaderName"])!""}</td>
+		<td class="formtable_td_value" colspan="2">
+			<#if steps.vars["deptLeaderAudi"] == '0'>
+				同意 
+			</#if>
+			<#if steps.vars["deptLeaderAudi"] == '1' >
+				不同意
+			</#if>
+		</td> 
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["deptLeaderAudiAdvice"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核日期：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["deptLeaderAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 体系部审核人 -->
+<#if steps.key == 'sysEngineerAudiTask'>
+		<tr>
+			<td class="formtable_td_key">体系工程师审批</td>
+			<td class="formtable_td_value">${(steps.vars["sysEngineerName"])!""}</td>
+			<td class="formtable_td_value" colspan="2">
+				<#if steps.vars["sysEngineerAudi"] == '0'>
+					同意 
+				</#if>
+				<#if steps.vars["sysEngineerAudi"] == '1' >
+					不同意
+				</#if>
+			</td> 
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审核意见：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["sysEngineerAudiAdvice"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审核日期：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["sysEngineerAudiTime"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 体系经理 -->
+<#if steps.key == 'sysManagerAudiTask'>
+		<tr>
+			<td class="formtable_td_key">体系部经理审批</td>
+			<td class="formtable_td_value">${(steps.vars["sysManagerName"])!""}</td>
+			<td class="formtable_td_value" colspan="2">
+				<#if steps.vars["sysManagerAudi"] == '0'>
+					同意 
+				</#if>
+				<#if steps.vars["sysManagerAudi"] == '1' >
+					不同意
+				</#if>
+			</td> 
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审核意见：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["sysManagerAudiAdvice"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审核日期：</td>
+			<td class="formtable_td_value" colspan="3">${(steps.vars["sysManagerAudiTime"])!""}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+		</#if>
+</#if> 
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'startevent'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+				<table id="startFormTable" class="formtable" cellspacing="1"
+					cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">拟制部门：</td>
+						<td class="formtable_td_value">
+						<input type="hidden" name="fp_startUserName" value="${appuser.name}"/>
+						<input type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+						<input id="userOrgId${rand}" type="hidden" name="fp_orgId" />
+							<input id="userOrg${rand}" class="easyui-validatebox" readonly="readonly" name="fp_orgName" 
+								data-options="required:true"/>
+						</td>
+						<td class="formtable_td_key">文件类型：</td>
+						<td class="formtable_td_value">
+							<input id="fileType${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_fileType"
+								data-options="required:true" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">所属公司：</td>
+						<td class="formtable_td_value">
+							<input id="belongCompanyId${rand}" type="hidden" name="fp_belongCompanyId" />
+							<input id="belongCompany${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_belongCompany"
+								data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">文件编号：</td>
+						<td class="formtable_td_value">
+							<input id="fileNo${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_fileNo"
+								data-options="required:true" /></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">版本号：</td>
+						<td class="formtable_td_value">
+							<input id="version${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_version"
+								data-options="required:true" />
+						</td>
+						<td class="formtable_td_key">版本状态：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input id="versionState${rand}" class="easyui-validatebox" readonly="readonly" type="text" name="fp_versionState"
+							data-options="required:true" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">拟定人：</td>
+						<td class="formtable_td_value" colspan="3">
+						<input id="createBy${rand}" type="hidden" name="fp_createBy" />
+						<input id="createrName${rand}" class="easyui-validatebox" readonly="readonly" type="text"
+							name="fp_createrName" value="" data-options="required:true" />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">文件名称：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input id="fileName${rand}" style="width:400px" class="easyui-validatebox" readonly="readonly" type="text" name="fp_fileName"
+								data-options="required:true" />
+							<a id="selectFileBtn${rand}" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选取文件</a>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">废止原因：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 630px; height: 100px"
+								name="fp_abolishReason" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!-- 获取文件信息 -->
+		<div id="selectFileWin-${rand}" class="easyui-dialog" title="废止文件列表"
+				style="width: 900px; height: 400px; padding: 0px"
+				data-options="modal:true, closed:true,iconCls:'icon-process',
+				toolbar: '#dlg-toolbar${rand}',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectFileEnd${rand}
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectFileWin${rand}
+                }]">
+			  <table id="fileGrid${rand}"></table>
+		</div>
+		
+		<div id="dlg-toolbar${rand}" style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc;">
+			<table border="0" >
+			 	<tr>
+			   		<td align="right" style="white-space:nowrap">文件编号：</td>
+			    	<td width="200"> 
+			    		<input id="fileNo-${rand}" style="width:200px;" class="easyui-textbox" type="text" name="fileNo" data-options=""/>
+			   		</td>
+			    	<td align="right" style="white-space:nowrap; padding-left:12px;">文件名称：</td>
+			   		<td width="200">
+			   			<input id="fileName-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="preqItem"/>
+			   		</td>
+			   		<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+			   			<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			   			<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+			   		</td>
+			 	</tr>
+			</table>
+		</div>
+	
+		<script type="text/javascript">
+			var selectFileWin = $('#selectFileWin-${rand}');
+			var fileGrid = $('#fileGrid${rand}');
+			var startForm = $('#startForm');
+			$(function(){
+				$('#selectFileBtn${rand}').bind('click',function(){
+					selectFileWin.dialog('open');
+				});
+				//初始化文件Grid
+				fileGrid.datagrid({
+					 fitColumns:false,
+					 url:'signFile/queryFileForOA.json?orgId=${appuser.orgId?c}',
+					 columns:[[
+						{field:'id',checkbox:true},
+					  	{field:'fileNo',title:'文件编号',width:150},
+					  	{field:'fileName',title:'文件名称',width:300},
+					  	{field:'fileType',title:'文件类型',width:150},
+					  	{field:'fileVersion',title:'版本',width:150},
+					  	{field:'fileVersionState',title:'版本状态',width:150},
+					  	{field:'orgId',title:'公司ID',width:150},
+					  	{field:'orgName',title:'部门名称',width:150},
+					  	{field:'companyId',title:'所属公司ID',width:150},
+					  	{field:'companyName',title:'所属公司',width:150},
+					  	{field:'createBy',title:'拟定人ID',width:150},
+					  	{field:'createrName',title:'拟定人',width:150}
+					 ]],
+					 nowrap: true,       
+					 fit : true,
+					 border : false,
+					 pagination:true,
+					 pageNumber : 1,
+					 pageSize : 20,
+					 rownumbers:true,
+					 singleSelect:true
+				});
+				
+				//事件绑定
+				$('#search_btn-${rand}').bind('click',function(){
+					var fileNo = $('#fileNo-${rand}').val();
+					var fileName = $('#fileName-${rand}').val();
+					fileGrid.datagrid('reload',{fileNo:fileNo,fileName:fileName});
+				});
+				
+				$('#reset_btn-${rand}').bind('click',function(){
+					$('#fileNo-${rand}').val('');
+					$('#fileName-${rand}').val('');
+				});
+			});
+			
+			function selectFileEnd${rand}(){
+				var rows = fileGrid.datagrid('getSelections');
+				if (rows.length > 0) {
+					
+					$.post("signFile/checkSignFileProcess.json",
+						 	{
+						 		operateType:2,
+						 		fileNo:rows[0].fileNo
+						 	},
+						 	function(data,textStatus){
+						 		if(!data.success){
+						 			$.messager.alert('信息提示',data.msg + "请选择其他文件!",'warning');
+						 		} else {
+						 			//set value
+						 			$('#userOrgId${rand}').val(rows[0].orgId);
+									$('#userOrg${rand}').val(rows[0].orgName);
+									$('#fileType${rand}').val(rows[0].fileType);
+									$('#belongCompanyId${rand}').val(rows[0].companyId);
+									$('#belongCompany${rand}').val(rows[0].companyName);
+									$('#fileNo${rand}').val(rows[0].fileNo);
+									$('#version${rand}').val(rows[0].fileVersion);
+									$('#versionState${rand}').val(rows[0].fileVersionState);
+									$('#fileName${rand}').val(rows[0].fileName);
+									$('#createBy${rand}').val(rows[0].createBy);
+									$('#createrName${rand}').val(rows[0].createrName);
+									
+									closeSelectFileWin${rand}();
+									
+									startForm.form('enableValidation').form('validate');
+						 		}
+						 	},
+						 "json");
+				} else {
+					$.messager.alert('信息提示','请选择表格中的一条记录！','warning');
+				}
+			}
+			
+			function closeSelectFileWin${rand}(){
+				selectFileWin.dialog('close');
+			}
+		</script>
+	</#if> 
+</#if>
+
+<!-- 部门负责人 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'deptLeaderAudiTask'>
+		<div id="deptLeaderAudiTask">
+			<form id="deptLeaderAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="deptLeaderAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">部门负责人审批</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_deptLaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptLaderName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value">
+							<input type="radio" name="fp_deptLeaderAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_deptLeaderAudi" value="1" />不同意</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="2">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_deptLeaderAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input type="hidden" name="fp_deptLeaderAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if> 
+</#if>
+
+<!-- 体系工程师 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'sysEngineerAudiTask'>
+		<div id="sysEngineerAudiTask">
+			<form id="sysEngineerAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="sysEngineerAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">体系工程师审批</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_sysEngineerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_sysEngineerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value">
+							<input type="radio" name="fp_sysEngineerAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_sysEngineerAudi" value="1" />不同意</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="2">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_sysEngineerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input type="hidden" name="fp_sysEngineerAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 体系经理 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'sysManagerAudiTask'>
+		<div id="sysManagerAudiTask">
+			<form id="sysManagerAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="sysManagerAudiTaskFormTable" class="formtable"
+					cellspacing="1" cellpadding="0">
+					<tr>
+						<td class="formtable_td_key">体系经理审批</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_sysManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_sysManagerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value">
+							<input type="radio" name="fp_sysManagerAudi" checked="checked" value="0" />同意
+							<input type="radio" name="fp_sysManagerAudi" value="1" />不同意</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="2">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_sysManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input type="hidden" name="fp_sysManagerAudiTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">

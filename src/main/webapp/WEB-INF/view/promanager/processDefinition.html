@@ -1,0 +1,242 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="processDefinitionGrid-${rand}"></div>
+
+<div id="viewProcessDefImageWin-${rand}"></div>
+
+<div id="viewProcessDefInfoWin-${rand}">
+	<div  style="padding:10px 10px;">
+		<form id="editProcessDefInfoForm${rand}" method="post">
+			<table>
+				<tr>
+					<td><input type="hidden" name="id" /></td>
+					<td width="120" align="center">分类名称:</td>
+					<td><input class="easyui-validatebox" data-options="required:true" type="text" name="name" style="width:200px;"/></td>
+					<td width="120" align="center">上级分类:</td>
+					<td><input class="easyui-combotree" name="category" data-options="url:'flowService/processCategoryTree.json',method:'get',lines:true" style="width:200px;"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<div id="deployProcessWin-${rand}">
+	<div  style="padding:10px 10px;">
+		<form id="deployProcessForm${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;支持文件格式：zip、bar、bpmn、bpmn20.xml</td>
+				</tr>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td><input class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/></td>
+					<td><a href="javascript:void(0)" id="upload_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">上传</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+<script type="text/javascript">
+$('#processDefinitionGrid-${rand}').datagrid({
+  url:'promanager/processDefinitions-list.json',
+  columns:[[
+	{field:'id',title:'编号',checkbox:true,width:150},
+	{field:'key',title:'代码',width:150},
+	{field:'name',title:'名称',width:150},
+	{field:'category',title:'分类',width:100,hidden:true},
+	{field:'categoryName',title:'分类',width:100},
+	{field:'version',title:'版本',width:50},
+	{field:'resourceName',title:'XML',width:200},
+	{field:'diagramResourceName',title:'图片',width:200},
+	{field:'suspensionState',title:'状态',width:100,
+		formatter: function(value,row,index){
+			if (row.suspensionState == 1){
+				return "激活";
+			} else if(row.suspensionState == 2){
+				return "挂起";
+			}
+		}
+	},
+	{field:'description',title:'描述',width:200},
+  ]],
+  nowrap: true,
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 50,
+  rownumbers:true,
+  singleSelect:true,
+  toolbar: [{
+	text : '修改',
+	iconCls: 'icon-edit',
+	handler:viewProcessDefInfo${rand}
+  },'-',{
+	text:'流程图',
+	iconCls: 'icon-history',
+	handler:viewProcessImage${rand}
+  },'-',{
+	text:'XML',
+	iconCls: 'icon-history',
+	handler:viewProcessXML${rand}
+  },'-',{
+	text:'部署流程',
+	iconCls: 'icon-deploy',
+	handler:deployProcess${rand}
+  }]
+});
+
+//查看流程定义信息
+function viewProcessDefInfo${rand}(){
+  var row = $('#processDefinitionGrid-${rand}').datagrid('getSelected');
+  if (row){
+	createDialog();
+	$('#editProcessDefInfoForm${rand}').form('load',row);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+//查看流程定义图片
+function viewProcessImage${rand}(){
+  var row = $('#processDefinitionGrid-${rand}').datagrid('getSelected');
+  if (row){
+	$('#viewProcessDefImageWin-${rand}').dialog({
+	    title: '流程图片',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    //fit:true,
+	    //maximizable:true,
+	    style:"padding:10px",
+	    href: 'workspace/showProcessDefImage.html?processDefinitionId=' + row.id,
+	    modal: true,
+	    resizable:true
+	});
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+//查看流程定义XML
+function viewProcessXML${rand}(){
+	  var row = $('#processDefinitionGrid-${rand}').datagrid('getSelected');
+	  if (row){
+		var url = 'promanager/viewProcessXml?processDefinitionId=' + row.id;
+  		window.open(url);
+	  } else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	  }
+}
+
+//部署流程
+function deployProcess${rand}(){
+   $('#deployProcessWin-${rand}').dialog({
+		title: '流程部署',
+		collapsible:false,
+		width: 700,
+		height: 150,
+		maximizable:false,
+		resizable:true,
+		closed: false,
+		cache: false,
+		modal: true
+	});
+}
+
+function createDialog(){
+	var win = $('#viewProcessDefInfoWin-${rand}').dialog({
+		title: '编辑流程分类',
+		collapsible:false,
+		width: 800,
+		height: 500,
+		maximizable:true,
+		resizable:true,
+		closed: false,
+		cache: false,
+		modal: true,
+		toolbar:[{
+			text : '保存',    
+			iconCls:'icon-save',    
+			handler:function(){
+				saveCategory${rand}();
+			}    
+		},'-',{    
+			text:'重置',
+			iconCls:'icon-undo',    
+			handler:function(){
+				$('#addCategoryForm${rand}').form('clear');
+			}    
+		}],
+		onClose : function(){
+			$('#addCategoryForm${rand}').form('clear');
+		}
+	});
+	return win;
+}
+
+function saveCategory${rand}(){
+	$('#editProcessDefInfoForm${rand}').form('submit',{
+			url: "promanager/updateProCategory.json",
+		    onSubmit: function(){
+		        return $(this).form('validate');
+		    },
+		    success: function(result){
+		        var result = eval('('+result+')');
+		        if (!result.success){
+		            $.messager.show({
+		                title: 'Error',
+		                msg: result.msg
+		            });
+		        } else {
+		            $('#viewProcessDefInfoWin-${rand}').dialog('close');
+		            $('#processDefinitionGrid-${rand}').datagrid('reload');
+		            $.messager.show({
+		                title: '信息提示',
+		                msg: result.msg
+		            });
+		        }
+		    }
+	});
+}
+
+//按钮绑定事件
+$('#upload_btn-${rand}').bind('click', function(){
+    $('#deployProcessForm${rand}').form('submit',{
+			url: "promanager/deployPorcess.json",
+		    onSubmit: function(){
+		        return $(this).form('validate');
+		    },
+		    success: function(result){
+		        var result = eval('('+result+')');
+		        if (!result.success){
+		            $.messager.show({
+		                title: 'Error',
+		                msg: result.msg
+		            });
+		        } else {
+		            $('#deployProcessWin-${rand}').dialog('close');
+		            $('#processDefinitionGrid-${rand}').datagrid('reload');
+		            $.messager.show({
+		                title: '信息提示',
+		                msg: result.msg
+		            });
+		        }
+		    }
+	});
+});
+
+</script>
+<#include "/common/foot.ftl">

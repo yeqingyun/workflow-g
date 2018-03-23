@@ -1,0 +1,49 @@
+/* CSS Document */
+.formtable {
+	font-size: 12px;
+	background-color: #C0C0C0;
+	width: 100%;
+}
+
+.formtable_td_key {
+	height: 20px;
+	padding: 7px;
+	max-width: 120px;
+	font-weight: bold;
+	color: #1D1D1D;
+	font-size: 12x;
+	background-color: #F1F6FF;
+	width:12%;
+}
+
+.formtable_td_value {
+	background-color: #FAFCFF;
+	font-size: 12x;
+	padding: 7px;
+}
+
+.formtable_remark {
+	width: 95% !important; 
+	height: 60px;
+	font-size: 12x;
+	border: 1px solid #C0C0C0;
+}
+
+.span_wordwrap {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+textarea{
+	color:black;
+	width: 95% !important; 
+}
+input.hidden-input{
+	 padding:0px;
+	 margin:0px;
+	 width:0px;
+	 height:0px;
+	 border-width:0px;
+	 display: block;
+	 float: left;
+ }

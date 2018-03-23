@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.BpmConfNodeSendDao">
+  
+  <sql id="columns">
+    id, send_type, send_mail_flag, interval_day, conf_template_id, conf_node_id,
+	status, remark, create_by, create_time, update_by, update_time
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.BpmConfNodeSend" id="result">
+	<id property="id" column="id"/>
+	<result property="sendType" column="send_type"/>
+	<result property="sendMailFlag" column="send_mail_flag"/>
+	<result property="intervalDay" column="interval_day"/>
+	<result property="confTemplateId" column="conf_template_id"/>
+	<result property="confNodeId" column="conf_node_id"/>
+	<result property="status" column="status"/>
+	<result property="remark" column="remark"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateBy" column="update_by"/>
+	<result property="updateTime" column="update_time"/>
+  </resultMap>
+  
+   <resultMap type="com.gionee.gniflow.dto.BpmConfNodeSendDto" id="joinResult" extends="result">
+	<result property="nodeCode" column="node_code"/>
+	<result property="nodeAssignee" column="node_assignee"/>
+	<result property="nodeDueDate" column="node_due_date"/>
+	<result property="templateName" column="template_name"/>
+	<result property="templateSubject" column="template_subject"/>
+	<result property="templateContent" column="template_content"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.BpmConfNodeSend">
+    insert into bpm_conf_node_send (<include refid="columns"/>) values (
+    #{nextId},
+    #{sendType},
+    #{sendMailFlag},
+    #{intervalDay},
+    #{confTemplateId},
+    #{confNodeId},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.BpmConfNodeSend">
+    update bpm_conf_node_send
+    <set>
+      <if test="sendType != null">
+        send_type = #{sendType},
+      </if>
+      <if test="sendMailFlag != null">
+        send_mail_flag = #{sendMailFlag},
+      </if>
+      <if test="intervalDay != null">
+        interval_day = #{intervalDay},
+      </if>
+      <if test="confTemplateId != null">
+        conf_template_id = #{confTemplateId},
+      </if>
+      <if test="confNodeId != null">
+        conf_node_id = #{confNodeId},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      update_by = #{currentAccount},
+      update_time = #{currentTime}
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete bpm_conf_node_send where id = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from bpm_conf_node_send
+	<where>
+	  <if test="sendType != null">
+        and send_type = #{sendType}
+	  </if>
+	  <if test="sendMailFlag != null">
+        and send_mail_flag = #{sendMailFlag}
+	  </if>
+	  <if test="intervalDay != null">
+        and interval_day = #{intervalDay}
+	  </if>
+	  <if test="confTemplateId != null">
+        and conf_template_id = #{confTemplateId}
+	  </if>
+	  <if test="confNodeId != null">
+        and conf_node_id = #{confNodeId}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select <include refid="columns"/> from bpm_conf_node_send
+      <where>
+        <if test="sendType != null">
+          and send_type = #{sendType}
+        </if>
+        <if test="sendMailFlag != null">
+          and send_mail_flag = #{sendMailFlag}
+        </if>
+        <if test="intervalDay != null">
+          and interval_day = #{intervalDay}
+        </if>
+        <if test="confTemplateId != null">
+          and conf_template_id = #{confTemplateId}
+        </if>
+        <if test="confNodeId != null">
+          and conf_node_id = #{confNodeId}
+        </if>
+      </where>
+    )RES ) SUB WHERE SUB.rnk &gt;= #{firstRow} AND SUB.rnk &lt; #{lastRow}
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from bpm_conf_node_send
+    <where>
+      <if test="sendType != null">
+        and send_type = #{sendType}
+      </if>
+      <if test="sendMailFlag != null">
+        and send_mail_flag = #{sendMailFlag}
+      </if>
+      <if test="intervalDay != null">
+        and interval_day = #{intervalDay}
+      </if>
+      <if test="confTemplateId != null">
+        and conf_template_id = #{confTemplateId}
+      </if>
+      <if test="confNodeId != null">
+        and conf_node_id = #{confNodeId}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from bpm_conf_node_send
+	where id = #{_parameter}
+  </select>
+  
+  <select id="joinQueryBpmConfNodeSend" parameterType="map" resultMap="joinResult">
+	select send.*,node.code as node_code,node.assignee as node_assignee,
+	node.due_date as node_due_date,temp.name as template_name,
+	temp.subject as template_subject,temp.content as template_content
+	from bpm_conf_node_send send 
+	left join bpm_conf_node node on send.conf_node_id = node.id
+	left join bpm_conf_base base on node.conf_base_id = base.id
+	left join bpm_email_template temp on send.conf_template_id = temp.id
+	<where>
+	  <if test="processDefId != null">
+        and base.process_def_id = #{processDefId}
+	  </if>
+	  <if test="code != null">
+        and node.code = #{code}
+	  </if>
+	  <if test="sendTypes != null and sendTypes != ''">
+			and send.send_type in
+			<foreach collection="sendTypes" index="index" item="item" open="(" separator="," close=")">  
+				#{item}  
+			</foreach>
+	  </if>
+	   <if test="sendMailFlag != null">
+        and send.send_mail_flag = #{sendMailFlag}
+	  </if>
+	  <if test="intervalDay != null">
+        and send.interval_day = #{intervalDay}
+	  </if>
+	  <if test="confTemplateId != null">
+        and send.conf_template_id = #{confTemplateId}
+	  </if>
+	  <if test="confNodeId != null">
+        and send.conf_node_id = #{confNodeId}
+	  </if>
+	</where>
+  </select>
+
+</mapper>

@@ -1,0 +1,27 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+  			<tr><td class="formtable_td_key" >工厂</td>
+			<td><input id="factory${rand}" name="fp_factory"/></td></tr>
+			<tr><td class="formtable_td_key" >成本中心</td>
+			<td><input id="code${rand}"  name="fp_code"/></td></tr>
+			<tr><td class="formtable_td_key" >名称</td>
+			<td><input id="name${rand}"  name="fp_name"/></td></tr>
+			<tr><td colspan="2" align="center"><a id="btn"  class="easyui-linkbutton" data-options="iconCls:'icon-add'">确定</a></td></tr>
+<script type="text/javascript">
+
+ $(function(){
+	 $('#btn').bind('click', function(){
+		  $.post('hrFlow/saveCostCenter.json',
+		    {factory:$("#factory${rand}").val(),
+			 code:$("#code${rand}").val(),
+			name:$('#name${rand}').val()},
+		    function(data){
+				$.messager.alert('提示', data);
+		  },'json');
+		
+	  }); 
+ })
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,1901 @@
+<#include "/common/head.html"> 
+<#assign curUserId=""/>
+
+
+<#assign reqChannels=""/>
+
+<#assign applyUserAccount=""/>
+<#assign userName=""/>
+<#assign orgName=""/>
+<#assign duty=""/>
+<#assign inTransferDate=""/>
+<#assign rpScore=""/>
+<#assign showMoneySum=""/>
+<#assign rewardAndPenaltyDesc=""/>
+<#assign rewardAndPenaltySug=""/>
+
+<#assign maxManage=""/>
+<#assign uploadPreceptAudi=""/>
+<#assign participantList=""/>
+
+<#assign applyId=""/>
+<#assign applyName=""/>
+<#assign applyDepa=""/>
+<style>
+	 table.rewardtable{
+	 	background-color: #C0C0C0;
+	 }
+	 table.rewardtable tr.rewardthead{
+	  	background-color: #F1F6FF;
+	 }
+	  table.rewardtable tr.rewardtbody{
+	  	background-color:#FAFCFF;
+	 }
+</style>
+<#if processSteps??>
+<table class="formtable" cellspacing="1" cellpadding="0">
+<!-- 展示表单 -->
+	<#list processSteps as steps> 
+	<#if steps.key == 'startevent1'>
+	<tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">奖惩申请表</td>
+	</tr>
+	
+	<tr>
+	  <td class="formtable_td_key">选择上传方案：</td>
+	 <td class="formtable_td_value" colspan="3"><#if steps.vars["uploadPreceptAudi"] ==
+			'0'>单个处理</#if> <#if steps.vars["uploadPreceptAudi"] == '1'>多个处理</#if></td>
+	</tr>
+	<#if steps.vars["uploadPreceptAudi"] == '1'>
+	<tr>
+		<td class="formtable_td_key">参加人员名单：</td>
+		<td class="formtable_td_value" colspan="3">${steps.vars["participantList"]!""}</td>
+	</tr>
+	</#if>
+	<#if steps.vars["uploadPreceptAudi"] =='0'>
+	<tr>
+		<td class="formtable_td_key">员工编号：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyUserAccount"])!""}</td>
+		<td class="formtable_td_key">姓名：</td>
+		<td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+	</tr>
+
+	<tr>
+		<td class="formtable_td_key">部门：</td>
+		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+			<td class="formtable_td_key">岗位：</td>
+		<td class="formtable_td_value">${(steps.vars["duty"])!""}</td>
+	</tr>
+	<tr>
+	
+		<td class="formtable_td_key">日期：</td>
+		<td class="formtable_td_value">${(steps.vars["inTransferDate"])!""}</td>
+			<td class="formtable_td_key">申请人员工编号：</td>
+		<td class="formtable_td_value">${(steps.vars["applyId"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">申请人姓名：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyName"])!""}</td>
+		<td class="formtable_td_key">申请人部门：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyDepa"])!""}</td>
+	</tr>
+	
+	<tr>
+		<td class="formtable_td_key">奖惩类别：</td>
+		<td class="formtable_td_value"><#if steps.vars["reqChannels"] ==
+			'1'>奖类</#if> <#if steps.vars["reqChannels"] == '2'>罚类</#if></td>
+		<td class="formtable_td_key">奖惩级别：</td>
+		<td class="formtable_td_value"><#if steps.vars["reqChannels"] ==
+			'1'>15奖金</#if> <#if steps.vars["reqChannels"] == '2'>27罚金</#if></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">奖惩分数：</td>
+		<td class="formtable_td_value">${(steps.vars["rpScore"])!""}</td>
+		<td class="formtable_td_key">奖惩金额：</td>
+		<td class="formtable_td_value">${(steps.vars["showMoneySum"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">奖惩事项或行为描述：</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["rewardAndPenaltyDesc"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value"  colspan="6"> ${(steps.vars["rewardAndPenaltySug"])!""}</td>
+	</tr>
+	</#if>
+          <#if steps.attachments??>
+		  	  		<tr>
+		  	  			<td class="formtable_td_key">附件：</td>
+		  	  			<td class="formtable_td_value" colspan="3">
+		  	  				<#list steps.attachments as attachs>
+		  	  					<a href="${attachs.url}">
+		  	  						${attachs.name}_${attachs.revision}.0
+		  	  					</a><br/>
+		  	  				</#list>
+		  	  			</td>
+		  	  		</tr>
+		  	  	</#if> 
+</#if> 
+
+
+<#if steps.key == 'nmb_updateApp'>
+	<tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">修改申请表</td>
+	</tr>
+	<tr>
+	  <td class="formtable_td_key">选择上传方案：</td>
+	 <td class="formtable_td_value" colspan="3"><#if steps.vars["uploadPreceptAudi"] ==
+			'0'>单个处理</#if> <#if steps.vars["uploadPreceptAudi"] == '1'>多个处理</#if></td>
+	</tr>
+	<#if steps.vars["uploadPreceptAudi"] == '1'>
+	<tr>
+		<td class="formtable_td_key">参加人员名单：</td>
+		<td class="formtable_td_value" colspan="3">${steps.vars["participantList"]!""}</td>
+	</tr>
+	</#if>
+	<#if steps.vars["uploadPreceptAudi"] == '0'>
+	<tr>
+		<td class="formtable_td_key">员工编号：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyUserAccount"])!""}</td>
+		<td class="formtable_td_key">姓名：</td>
+		<td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+	</tr>
+
+	<tr>
+		
+		<td class="formtable_td_key">部门：</td>
+		<td class="formtable_td_value">${(steps.vars["updateOrgName"])!""}</td>
+		<td class="formtable_td_key">岗位：</td>
+		<td class="formtable_td_value">${(steps.vars["duty"])!""}</td>
+	</tr>
+	<tr>
+		
+		<td class="formtable_td_key">日期：</td>
+		<td class="formtable_td_value">${(steps.vars["inTransferDate"])!""}</td>
+		<td class="formtable_td_key">申请人员工编号：</td>
+		<td class="formtable_td_value">${(steps.vars["applyId"])!""}</td>
+	</tr>
+	<tr>
+		
+		<td class="formtable_td_key">申请人姓名：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyName"])!""}</td>
+		<td class="formtable_td_key">申请人部门：</td>
+		<td class="formtable_td_value" >${(steps.vars["applyDepa"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">奖惩类别：</td>
+		<td class="formtable_td_value"><#if steps.vars["updateReqChannels"] ==
+			'1'>奖类</#if> <#if steps.vars["updateReqChannels"] == '2'>罚类</#if></td>
+		<td class="formtable_td_key">奖惩级别：</td>
+		<td class="formtable_td_value"><#if steps.vars["updateReqChannels"] ==
+			'1'>15奖金</#if> <#if steps.vars["updateReqChannels"] == '2'>27罚金</#if></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">奖惩分数：</td>
+		<td class="formtable_td_value">${(steps.vars["updateRpScore"])!""}</td>
+		<td class="formtable_td_key">奖惩金额：</td>
+		<td class="formtable_td_value">${(steps.vars["updateShowMoneySum"])!""}</td>
+	</tr>
+	
+	<tr>
+		<td class="formtable_td_key">奖惩事项或行为描述：</td>
+		<td class="formtable_td_value" colspan="6">${(steps.vars["rewardAndPenaltyDesc"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value"  colspan="6"> ${(steps.vars["rewardAndPenaltySug"])!""}</td>
+	</tr>
+		</#if>
+		<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="3">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if> 
+	
+
+</#if> 
+
+<!-- 部门主管审批 -->
+<#if steps.key == 'mb_deptLeaderAudiTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">部门主管审批：</td>
+	<td class="formtable_td_value">${(steps.vars["deptLeaderName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["deptLeaderSignDate"])!""}</td>
+</tr>
+<#if steps.vars["rpScore"]??>
+<tr>
+		<td class="formtable_td_key">奖惩分数：</td>
+		<td class="formtable_td_value">${(steps.vars["rpScore"])!""}</td>
+		<td class="formtable_td_key">奖惩金额：</td>
+		<td class="formtable_td_value">${(steps.vars["showMoneySum"])!""}</td>
+</tr>
+</#if>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["deptLeaderAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">同意</td> </#if> <#if
+	steps.vars["deptLeaderAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["deptLeaderAdvice"])!""}</td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+
+
+
+<!-- 部门负责人审核-->
+<#if steps.key == 'mb_deptManagerTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">${steps.activityName}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">部门负责人审核：</td>
+	<td class="formtable_td_value">${(steps.vars["deptLeaderName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["deptLeaderAudiTime"])!""}</td>
+</tr>
+<#if steps.vars["rpScore"]??>
+<tr>
+		<td class="formtable_td_key">奖惩分数：</td>
+		<td class="formtable_td_value">${(steps.vars["rpScore"])!""}</td>
+		<td class="formtable_td_key">奖惩金额：</td>
+		<td class="formtable_td_value">${(steps.vars["showMoneySum"])!""}</td>
+</tr>
+</#if>
+<tr>
+	<td class="formtable_td_key">处理结果：</td> <#if
+	steps.vars["deptManagerAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">同意</td> </#if> <#if
+	steps.vars["deptManagerAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不同意</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["deptLeaderAudiAdvice"])!""}</td>
+</tr>
+<!-- <tr>
+	<td class="formtable_td_key">处理结果：</td> 
+	<#if steps.vars["deptManagerAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">同意</td>
+	 </#if> 
+	 <#if steps.vars["deptManagerAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3" >不同意</td>
+	 </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">处理意见：</td>
+	<td class="formtable_td_value" colspan="3">${(steps.vars["deptLeaderAudiAdvice"])!""}</td>
+</tr> -->
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+<!-- 总经理 -->
+ <#if steps.key == 'mb_generalManagerTask'>
+    <tr>
+      <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">${steps.activityName}</td>
+	</tr>
+    <tr>
+		<td class="formtable_td_key">奖惩分数：</td>
+		<td class="formtable_td_value">${(steps.vars["rpScore"])!""}</td>
+		<td class="formtable_td_key">奖惩金额：</td>
+		<td class="formtable_td_value">${(steps.vars["showMoneySum"])!""}</td>
+   </tr>
+
+	<tr>
+		<td class="formtable_td_key">处理结果：</td> <#if
+		steps.vars["generalManagerAudi"] == '0' >
+		<td class="formtable_td_value" colspan="3">同意</td> </#if> <#if
+		steps.vars["generalManagerAudi"] == '1' >
+		<td class="formtable_td_value" colspan="3">不同意</td> </#if>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="3">${(steps.vars["generalManagerAudiAdvice"])!""}</td>
+	</tr>
+
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["deptLeaderSignDate"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>  
+
+
+
+
+<!-- 人力资源部审核 -->
+<#if steps.key == 'wageManagerTask'>
+     <tr>
+      <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">${steps.activityName}</td>
+	</tr>
+	
+	<tr>
+		<td class="formtable_td_key">处理结果：</td> 
+		<#if steps.vars["wageManagerAudi"] == '0' >
+		<td class="formtable_td_value" colspan="3">同意</td>
+		 </#if> 
+		 <#if steps.vars["wageManagerAudi"] == '1' >
+		<td class="formtable_td_value" colspan="3">不同意</td> 
+		</#if>
+	</tr>
+	<#if steps.vars["rpScore"]??>
+	<tr>
+			<td class="formtable_td_key">奖惩分数：</td>
+			<td class="formtable_td_value">${(steps.vars["rpScore"])!""}</td>
+			<td class="formtable_td_key">奖惩金额：</td>
+			<td class="formtable_td_value">${(steps.vars["showMoneySum"])!""}</td>
+	</tr>
+	</#if>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="3">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["wageLeaderAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批时间：</td>
+		<td class="formtable_td_value"  colspan="5">
+			${(steps.vars["wageLeaderAudiTime"])!""}
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="3">
+		<#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> 
+		</#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+	<!-- 流程发起人确认流程是否结束 -->
+	<#if steps.key == 'confirmProcessEndTask'> <#if
+	steps.vars["confirmProcessEndAudi"] == '1'>
+	<tr>
+		<td class="formtable_td_key" rowspan="3">发起人确认流程是否结束</td>
+		<td class="formtable_td_key">是否结束该流程：</td>
+		<td class="formtable_td_value" colspan="4"><#if
+			steps.vars["confirmProcessEndAudi"] == '1'> 是 </#if> <#if
+			steps.vars["confirmProcessEndAudi"] == '0'> 否 </#if></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认意见：</td>
+		<td class="formtable_td_value" colspan="4"><textarea
+				class="easyui-validatebox"
+				style="font-size: 12px; width: 660px; height: 50px;"
+				readonly="readonly" disabled="disabled">${(steps.vars["applyUserAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发起人签字：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["applyUserName"])!""}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="2">
+			${(steps.vars["applyUserAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5"><#list
+			steps.attachments as attachs> <a href="${attachs.url}">${attachs.name}_${attachs.revision}.0
+		</a><br /> </#list>
+		</td>
+	</tr>
+	</#if> </#if> </#if> 
+</#list>
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists> <#if currentStep == 'startevent1'>
+<div id="start">
+	<form id="startForm" method="post" enctype='multipart/form-data'>
+		<table id="startFormTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+			  <td class="formtable_td_key">选择上传方案：</td>
+						<td class="formtable_td_value" colspan="5"><input type="radio" id="uploadPrecept${rand}" name="fp_uploadPreceptAudi" checked="checked" value="0" mobile="处理结果_同意"/>单个处理
+							<input type="radio" id="uploadPrecept2${rand}" name="fp_uploadPreceptAudi" value="1" mobile="处理结果_不同意"/>多个处理</td>
+			</tr>
+			<tr id="tr${rand}">
+				<td class="formtable_td_key">员工编号：</td>
+				<td class="formtable_td_value">
+				<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+				<input id="account${rand}" type="hidden" name="fp_applyUserId"  value="${appuser.account}"/>
+		         <input id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox"    type="text"  data-options="required:true" onblur="loadUserInfo()" />
+		         </td>
+				<td class="formtable_td_key">姓名：</td>
+				<td class="formtable_td_value"><input id="userName${rand}"
+					class="easyui-validatebox" readonly="readonly" required="required"
+					type="text" name="fp_userName" />
+					<input id="maxManage${rand}" type="hidden" name="fp_maxManage" value="">
+				</td>
+				<!-- value="${appuser.name}" -->
+				<td class="formtable_td_key">部门：</td>
+				<td class="formtable_td_value"><input id="orgName${rand}"
+					class="easyui-validatebox" required="required" type="text"
+					name="fp_orgName" /></td>
+
+			</tr>
+			<tr id="tr2${rand}">
+				<td class="formtable_td_key">岗位：</td>
+				<td class="formtable_td_value"><input id="job${rand}"
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_duty" /></td>
+				<td class="formtable_td_key">日期：</td>
+				<td class="formtable_td_value" colspan="3"><input id="inTransferDate${rand}"
+					class="easyui-my97" name="fp_inTransferDate" readonly="readonly"
+					data-options="width:160,required:true" /></td>
+
+			</tr>
+			<tr id="tr3${rand}">
+				<td class="formtable_td_key">申请人员工编号：</td>
+				<td class="formtable_td_value"><!-- <input
+					class="easyui-validatebox" type="hidden" name="fp_signSelf"
+					data-options="required:true" value="${appuser.name}" />${appuser.name} -->
+					  <input id="applyId${rand}" name="fp_applyId" class="easyui-validatebox"    type="text"  data-options="required:true"   onblur="loadApplyInfo()" />
+				</td>
+				<td class="formtable_td_key">申请人姓名：</td>
+				<td class="formtable_td_value">
+					<!-- 							<input  class="easyui-validatebox"  type="text" value="${appuser.orgName}" name="fp_orgName" data-options="required:true" /> -->
+				<!-- 	<input class="easyui-validatebox" type="hidden"
+					name="fp_curOrgName" data-options="required:true"
+					value="${appuser.orgName}" />${appuser.orgName} -->
+					<input id="applyName${rand}" name="fp_applyName" class="easyui-validatebox"    data-options="required:true"  type="text"   />
+				</td>
+				<td class="formtable_td_key">申请人部门：</td>
+				<td class="formtable_td_value">
+					<input id="applyDepa${rand}" name="fp_applyDepa" class="easyui-validatebox"   data-options="required:true"  type="text"   />
+				</td>
+			</tr>
+			<tr id="recruitmentChannels${rand}">
+					<td class="formtable_td_key">奖罚类别：</td>
+				<td class="formtable_td_value" >
+				<input class="easyui-combobox"  type="text" name="fp_reqChannels"  id="rpsort${rand}" 
+				 data-options="required:true,valueField: 'id',textField: 'text',
+				 data:[{id:'',text:''},
+				  {id:'1',text:'0001奖类'},
+				  {id:'2',text:'0002罚类'}]"
+				/>
+				<td class="formtable_td_key">奖罚级别：</td>
+				<td class="formtable_td_value" colspan="3">
+				<input id="showMoney${rand}"
+				 type="hidden" name="fp_showMoney"
+					value="" />
+				<p id='money${rand}'></p></td>
+			</tr>
+			<tr id="tr4${rand}">
+			 <td class="formtable_td_key">奖罚分数：</td>
+				<td class="formtable_td_value">
+					<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_rpScore"
+								data-options="required:true"/>
+					</td>
+			 <td class="formtable_td_key">奖惩金额：</td>
+				<td class="formtable_td_value" colspan="3">
+				<input id='showMoneySum${rand}' type="hidden" name="fp_showMoneySum" value="" />
+				<p id='moneySum${rand}'>
+			   </p></td>
+			</tr>
+			<tr id="tr5${rand}">
+				<td class="formtable_td_key">奖惩事项或行为描述：</td>
+				<td class="formtable_td_value" colspan="6"><textarea id="rewardAndPenaltyDesc${rand}"
+						name="fp_rewardAndPenaltyDesc" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 50px;"
+						data-options="required:true"></textarea></td>
+			</tr>
+			<tr id="tr6${rand}">
+				<td class="formtable_td_key">备注：</td>
+				<td class="formtable_td_value" colspan="6"><textarea id="rewardAndPenaltySug${rand}"
+						name="fp_rewardAndPenaltySug" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 50px;"
+						data-options="" onblur="limitSize();"></textarea></td>
+			</tr>
+			<tr id="tr7${rand}">
+			<td class="formtable_td_key">人员名单</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="partAccount${rand}" type="hidden" name="fp_partList" /> 
+							<input id="participantList_val${rand}" type="hidden" name="fp_participantList" /> 
+							<input id="rapList${rand}" type="hidden" name="fp_rapList" />
+							<input id="participantList4Hidden${rand}" type="hidden" name="fp_participantList4Hidden" /> 
+							<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+									data-options="iconCls:'icon-upload',plain:true">导入奖惩人员名单</a>
+							<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+									data-options="iconCls:'icon-down_load',plain:true">下载EXCEL电子模板</a>
+							<font color="red"> (请上传文件) </font>
+	                        <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox" data-options="required:true" missingMessage="请上传文件" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+							<div id="participantList${rand}" style="font-size: 12px; "></div>
+						</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入奖惩人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td width="120" align="center">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+							<td>
+								<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+		    </div>
+	 </div> 
+<script type="text/javascript">
+$(function(){
+	 
+	 $.post("hrFlow/loadSysDate.json", {
+		}, function(data) {
+			if(data.success){
+					$("#inTransferDate${rand}").my97({
+						minDate:data.msg.split("@")[0],
+						maxDate:data.msg.split("@")[1]
+					})
+			}
+		});
+	 
+	
+	
+	$('#processName${rand}').val(
+			"[" + "${appuser.account}" + ","
+					+ "${appuser.name}" + "]奖惩申请");//流程实例名称
+	//用于获取部门负责人
+	 $.post("lead/maxManage.json", {
+			account : "${appuser.account}"
+		}, function(data) {
+			if (data.success) {
+				$("#maxManage${rand}").val(data.msg);
+			}
+		});
+	
+	$("#tr7${rand}").hide();
+	//选择方案处理结果
+	$("#uploadPrecept2${rand}").bind('click',function(){
+		$("#curUserId${rand}").validatebox({required:false});
+		$("#userName${rand}").validatebox({required:false});
+		$("#orgName${rand}").validatebox({required:false});
+		$("#rpsort${rand}").combobox({required:false});
+		$("#rpScore${rand}").numberbox({required:false});
+		$("#applyId${rand}").validatebox({required:false});
+		$("#applyName${rand}").validatebox({required:false});
+		$("#applyDepa${rand}").validatebox({required:false});
+		$("#rewardAndPenaltyDesc${rand}").validatebox({required:false});
+		$("#inTransferDate${rand}").my97({required:false});
+		$("#tr${rand}").hide();
+		$("#tr2${rand}").hide();
+		$("#tr3${rand}").hide();
+		$("#tr4${rand}").hide();
+		$("#tr5${rand}").hide();
+		$("#tr6${rand}").hide();
+		$("#recruitmentChannels${rand}").hide();
+		
+		$("#tr7${rand}").show();
+	})
+	$("#uploadPrecept${rand}").bind('click',function(){
+		$("#inTransferDate${rand}").my97({required:true});
+		$("#curUserId${rand}").validatebox({required:true});
+		$("#userName${rand}").validatebox({required:true});
+		$("#orgName${rand}").validatebox({required:true});
+		$("#rpsort${rand}").combobox({required:true});
+		$("#rpScore${rand}").numberbox({required:true});
+		$("#applyId${rand}").validatebox({required:true});
+		$("#applyName${rand}").validatebox({required:true});
+		$("#applyDepa${rand}").validatebox({required:true});
+		$("#rewardAndPenaltyDesc${rand}").validatebox({required:true});
+		$("#tr${rand}").show();
+		$("#tr2${rand}").show();
+		$("#tr3${rand}").show();
+		$("#tr4${rand}").show();
+		$("#tr5${rand}").show();
+		$("#tr6${rand}").show();
+		$("#tr7${rand}").hide();
+		$("#recruitmentChannels${rand}").show();
+	})
+	var MFixedAssetsDetraction = { rapList:[] };
+	//下载模板
+	 $("#downloadTravelExcel${rand}").bind('click',function(){
+	 	submitForm("download.rewardandpunish.name");
+	 });
+	//导入人员名单
+	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+		 $("#importWin-${rand}").dialog('open');
+	 });
+	 $("#upfile-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform-${rand}").form('submit',{
+				url:'teamActivities/rewardandpunishUpload.html',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						if(data.obj == null || data.obj.length == 0){
+							$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+						}else{
+							countIsOffice = 0;
+							var str = "";
+							var str4Hidden = "";
+							if(data.obj.length>0){
+								$('#participantList${rand}').text("");
+								$("#participantList_val${rand}").val("");
+								str = "<table class='rewardtable' cellspacing='1' cellpadding='0' width='100%'><tr align=center class='rewardthead'><td width=7%>序号</td><td width=7%>员工编号</td><td width=7%>姓名</td><td width=7%>部门</td><td width=7%>岗位</td><td width=10%>奖惩日期</td><td width=7%>申请人员编号</td><td width=7%>申请人员姓名</td><td width=7%>部门</td><td width=5%>奖惩类别</td><td width=5%>奖惩级别</td><td width=10%>奖惩原因</td><td width=5%>奖惩分数</td><td width=5%>奖惩金额</td><td width=10%>备注</td></tr>";
+								for(var i = 0;i < data.obj.length;i++){
+								  str += "<tr align=center class='rewardtbody'><td>"+data.obj[i].number+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].department+"</td><td>"+data.obj[i].job+"</td><td>"+data.obj[i].rapDate+"</td><td>"+data.obj[i].applyAccount+"</td><td>"+data.obj[i].applyName+"</td><td>"+data.obj[i].applyDepa+"</td><td>"+data.obj[i].sort+"</td><td>"+data.obj[i].rank+"</td><td>"+data.obj[i].cause+"</td><td>"+data.obj[i].score+"</td><td>"+data.obj[i].money+"</td><td>"+data.obj[i].remarks+"</td></tr>"
+								  str4Hidden +="["+data.obj[i].number+","+data.obj[i].department+","+data.obj[i].account+","+data.obj[i].job+","+data.obj[i].rapDate+","+data.obj[i].applyAccount+","+data.obj[i].applyName+","+data.obj[i].applyDepa+","+data.obj[i].sort+","+data.obj[i].rank+","+data.obj[i].cause+","+data.obj[i].score+","+data.obj[i].money+","+data.obj[i].remarks+"]:"
+								  MFixedAssetsDetraction.rapList.push({I_PERNR:data.obj[i].account,I_BEGDA:data.obj[i].rapDate,I_ENDDA:data.obj[i].rapDate,I_ZJCLB:data.obj[i].sort,I_ZJCJC:data.obj[i].rank,I_ZJCYY:data.obj[i].cause,I_ZJCYY:data.obj[i].cause,I_ZJCBM:data.obj[i].department,I_ZJCFS:data.obj[i].score,I_ZJCBZ:data.obj[i].remarks,I_ZJCJE:data.obj[i].money,I_INDEX:data.obj[i].number});
+								  $.ajaxSetup({async : false});
+								  countIsOffice++;
+								}
+								str+="</table>"
+								document.getElementById("participantList${rand}").innerHTML=str;
+								$("#rapList${rand}").val(JSON.stringify(MFixedAssetsDetraction));
+								$('#participantList4Hidden${rand}').val(str4Hidden);
+								$('#numOfPeople${rand}').val(countIsOffice);
+								$("#joinNumber${rand}").val(data.obj.length)
+						  }
+							//用于获取下一个节点处理人
+							/* $("#curUserId${rand}").val(data.obj[0].account);
+							//用于获取部门负责人
+							 $.post("lead/maxManage.json", {
+									account : data.obj[0].account  
+								}, function(data) {
+									if (data.success) {
+										$("#maxManage${rand}").val(data.msg);
+									}
+								});  */
+							document.getElementById('participantList_val${rand}').value=document.getElementById("participantList${rand}").innerHTML;
+							$('#fundsBudget${rand}').val(countIsOffice * 1000);
+							$("#moduleName${rand}").val("可以");
+							$.messager.alert("提示信息",data.msg);
+						}
+					}else{ 
+						$.messager.alert("提示信息",data.msg);
+					}
+					$("#importWin-${rand}").dialog('close');
+					$.messager.progress('close');
+					if($("#numOfPeople${rand}").val() != null && $("#numOfPeople${rand}").val() != ''){
+						$("#numOfPeople${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#numOfPeople${rand}").addClass('validatebox-invalid');
+					}
+					if($("#fundsBudget${rand}").val() != null && $("#fundsBudget${rand}").val() != ''){
+						$("#fundsBudget${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#fundsBudget${rand}").addClass('validatebox-invalid');
+					}
+				
+				}
+			});
+	 });
+})
+function submitForm(value){
+	var form = $("<form>");
+	form.attr('style','display:none');
+	form.attr('method','post');
+	form.attr('action','${base}sysprocess/task/mDownload.html');
+	
+	var key = $("<input>");
+	key.attr('type','hidden');
+	key.attr('name','key');
+	key.attr('value',value);
+	
+	$("body").append(form);
+	form.append(key);
+	form.submit();
+	form.remove();
+}
+function clearInputFile${rand}(){
+	//清空文件框
+	$("#upload_file-${rand}").remove(); //移除原来的
+    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+   	$('#td_input_${rand}').html(newFileInput); //添加新的
+    $.parser.parse('#td_input_${rand}');
+}
+	function loadUserInfo() {
+		$("#moduleName${rand}").val("可以");
+		//界面通过接口加载个人信息
+		if($("#curUserId${rand}").val()){
+			$.post("hrFlow/getHrUserInfoById.json", {
+				account : $("#curUserId${rand}").val()
+			}, function(data) {
+				if (data.success) {
+					$("#userName${rand}").val(data.obj[0].name);//姓名
+					$("#job${rand}").val(data.obj[0].job);//职位
+					$("#major${rand}").val(data.obj[0].major);//专业
+					$("#orgName${rand}").val(data.obj[0].orgName);//部门
+				}
+			});
+	   
+			 $.post("lead/maxManage.json", {
+				account :"${appuser.account}"
+			}, function(data) {
+				if (data.success) {
+					$("#maxManage${rand}").val(data.msg);
+				}
+			}); 
+		}
+	}
+	function loadApplyInfo(){
+		//界面通过接口加载个人信息
+		if($("#applyId${rand}").val()){
+			$.post("hrFlow/getHrUserInfoById.json", {
+				account : $("#applyId${rand}").val()
+			}, function(data) {
+				if (data.success) {
+					$("#applyName${rand}").val(data.obj[0].name);//姓名
+					$("#applyDepa${rand}").val(data.obj[0].orgName);//部门
+				}
+			});
+		}
+	}
+	$(function(){
+		$("#rpsort${rand}").combobox({
+			onChange : function(n,o){
+				$('#moneySum${rand}').text("");
+				$("#rpScore${rand}").numberbox('setValue','');
+				if(n==1){
+					$("#money${rand}").text(15+"奖金");
+					$("#showMoney${rand}").val(15+"奖金");
+					
+				}else{
+					$("#money${rand}").text(27+"罚款");
+					$("#showMoney${rand}").val(27+"罚款");
+				}
+			}
+		})
+		$("#rpScore${rand}").bind('change',function(){
+			if($("#rpsort${rand}").combobox('getValue')){
+				if($("#rpsort${rand}").combobox('getValue')==1){
+					var sum=parseInt($('#rpScore${rand}').val())*5;
+					$('#moneySum${rand}').text(sum);
+					$('#showMoneySum${rand}').val(sum);
+				}else{
+					var sum=parseInt($('#rpScore${rand}').val())*5;
+					$('#moneySum${rand}').text(sum);
+					$('#showMoneySum${rand}').val(sum);
+				}
+				
+			}else{
+				$.messager.alert('提示','请选择奖罚的类别');
+				$("#rpScore${rand}").numberbox('setValue','');
+			}
+		})
+	})
+	function limitSize(){
+		if($("#rewardAndPenaltySug${rand}").val().length>40){
+			$.messager.alert('提示','字体不能超过40');
+			$("#rewardAndPenaltySug${rand}").val("");
+			$("#rewardAndPenaltySug${rand}").validatebox({required:true});
+		}
+	}
+</script>
+</#if></#if>
+
+
+<!-- 修改申请 -->
+<#if currentStep?exists> 
+	<#if processSteps??> 
+	<#if currentStep == 'nmb_updateApp'>
+	  <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	    <#if steps.vars["reqChannels"]??>
+      	    <#assign reqChannels=steps.vars["reqChannels"]/>
+      	    </#if>
+      	    <#assign uploadPreceptAudi=steps.vars["uploadPreceptAudi"]/>
+      	    <#if steps.vars["participantList"]??>
+             <#assign participantList=steps.vars["participantList"]/>
+            </#if>
+             <#if steps.vars["applyId"]??>
+		           <#assign applyId=steps.vars["applyId"]/>
+		    </#if>
+		    <#if steps.vars["applyName"]??>
+		           <#assign applyName=steps.vars["applyName"]/>
+		    </#if>
+		    <#if steps.vars["applyDapa"]??>
+		           <#assign applyDapa=steps.vars["applyDapa"]/>
+		    </#if>
+ <div id="nmb_updateApp">
+	<form id="nmb_updateAppForm" method="post" enctype='multipart/form-data'>
+		<table id="nmb_updateAppFormTable" class="formtable" cellspacing="1"
+			cellpadding="0">
+			<tr>
+			<td colspan="6"  style="font-size: 16px; height: 25px;"  class="formtable_td_key" align="center">修改奖惩申请表</td>
+			</tr>
+			<tr>
+			  <td class="formtable_td_key">选择上传方案：</td>
+						<td class="formtable_td_value" colspan="5"><input type="radio" id="uploadPrecept${rand}" name="fp_uploadPreceptAudi" checked="checked" value="0" mobile="处理结果_同意"/>单个处理
+							<input type="radio" id="uploadPrecept2${rand}" name="fp_uploadPreceptAudi" value="1" mobile="处理结果_不同意"/>多个处理</td>
+			</tr>
+			<tr id="tr${rand}">
+				<td class="formtable_td_key">员工编号：</td>
+				<td class="formtable_td_value"><input id="processName${rand}"
+					type="hidden" name="fp_processName" readonly="readonly"
+					style="width: 180px" /> <input id="account${rand}" type="hidden"
+					name="fp_applyUserId" value="${appuser.account}" /> <input
+					id="curUserId${rand}" name="fp_applyUserAccount"
+					class="easyui-validatebox" type="text" data-options="required:true"
+					onblur="loadUserInfo()"  value="${(steps.vars["applyUserAccount"])!""}"/></td>
+				<td class="formtable_td_key">姓名：</td>
+				<td class="formtable_td_value"><input id="userName${rand}"
+					class="easyui-validatebox" readonly="readonly" required="required"
+					type="text" name="fp_userName" value="${(steps.vars["userName"])!""}"/></td>
+				<td class="formtable_td_key">部门：</td>   
+				<td class="formtable_td_value"><input id="orgName${rand}"
+					class="easyui-validatebox" required="required" type="text"
+					name="fp_updateOrgName" value="${(steps.vars["orgName"])!""}"/>
+					<input id="maxManage${rand}" type="hidden" name="fp_maxManage" value="${(steps.vars["maxManage"])!""}">
+					</td>
+
+			</tr>
+			<tr id="tr2${rand}">
+				<td class="formtable_td_key">岗位：</td>
+				<td class="formtable_td_value"><input id="job${rand}"
+					class="easyui-validatebox" readonly="readonly" type="text"
+					name="fp_duty" value="${(steps.vars["duty"])!""}"/></td>
+				<td class="formtable_td_key">日期：</td>
+				<td class="formtable_td_value" colspan="3"><input id="inTransferDate${rand}"
+					class="easyui-my97" name="fp_inTransferDate" readonly="readonly"
+					data-options="width:160,required:true" value="${(steps.vars["inTransferDate"])!""}"/></td>
+
+			</tr>
+			<tr id="tr3${rand}">
+				<td class="formtable_td_key">申请人员工编号：</td>
+				<td class="formtable_td_value"><!-- <input
+					class="easyui-validatebox" type="hidden" name="fp_signSelf"
+					data-options="required:true" value="${appuser.name}" />${appuser.name} -->
+					  <input id="applyId${rand}" name="fp_applyId" class="easyui-validatebox"   data-options="required:true"  type="text"   onblur="loadApplyInfo()"  value="${(steps.vars["applyId"])!""}"/>
+				</td>
+				<td class="formtable_td_key">申请人姓名：</td>
+				<td class="formtable_td_value">
+					<!-- 							<input  class="easyui-validatebox"  type="text" value="${appuser.orgName}" name="fp_orgName" data-options="required:true" /> -->
+				<!-- 	<input class="easyui-validatebox" type="hidden"
+					name="fp_curOrgName" data-options="required:true"
+					value="${appuser.orgName}" />${appuser.orgName} -->
+					<input id="applyName${rand}" name="fp_applyName" class="easyui-validatebox"   data-options="required:true"  type="text"   value="${(steps.vars["applyName"])!""}"/>
+				</td>
+				<td class="formtable_td_key">申请人部门：</td>
+				<td class="formtable_td_value">
+					<input id="applyDepa${rand}" name="fp_applyDepa" class="easyui-validatebox"  data-options="required:true"   type="text"   value="${(steps.vars["applyDepa"])!""}"/>
+				</td>
+			</tr>
+			<tr id="recruitmentChannels${rand}">
+					<td class="formtable_td_key">奖罚类别：</td>
+				<td class="formtable_td_value" >
+				<input class="easyui-combobox"  type="text" name="fp_updateReqChannels"  id="rpsort${rand}" 
+				 data-options="required:true,valueField: 'id',textField: 'text',
+				 data:[{id:'',text:''},
+				  {id:'1',text:'0001奖类'},           
+				  {id:'2',text:'0002罚类'}]"
+				 value=""/>
+				<td class="formtable_td_key">奖罚级别：</td>
+				<td class="formtable_td_value" colspan="3">
+				<input id="showMoney${rand}"
+				 type="hidden" name="fp_updateShowMoney"
+					value="" />
+				<p id='money${rand}'></p></td>
+			</tr>
+			<tr id="tr4${rand}">
+			 <td class="formtable_td_key">奖罚分数：</td>
+				<td class="formtable_td_value">
+					<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_updateRpScore"
+								data-options="required:true" value="${(steps.vars["rpScore"])!""}"/>
+					</td>
+			 <td class="formtable_td_key">奖惩金额：</td>
+				<td class="formtable_td_value" colspan="3">
+				<input id='showMoneySum${rand}' type="hidden" name="fp_updateShowMoneySum" value="${(steps.vars["showMoneySum"])!""}" />
+				<p id='moneySum${rand}'>${(steps.vars["showMoneySum"])!""}</p></td>
+			</tr>
+			
+			<tr id="tr5${rand}">
+				<td class="formtable_td_key">奖惩事项或行为描述：</td>
+				<td class="formtable_td_value" colspan="6"><textarea id="rewardAndPenaltyDesc${rand}"
+						name="fp_rewardAndPenaltyDesc" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 50px;"
+						data-options="required:true" >${(steps.vars["rewardAndPenaltyDesc"])!""}</textarea></td>
+			</tr>
+			<tr id="tr6${rand}">
+				<td class="formtable_td_key">备注：</td>
+				<td class="formtable_td_value" colspan="6"><textarea id="rewardAndPenaltySug${rand}"
+						name="fp_rewardAndPenaltySug" class="easyui-validatebox"
+						style="font-size: 12px; width: 660px; height: 50px;"
+						 onblur="limitSize();">${(steps.vars["rewardAndPenaltySug"])!""}</textarea></td>
+			</tr>
+			<tr id="tr7${rand}">
+			<td class="formtable_td_key">人员名单</td>
+						<td class="formtable_td_value" colspan="5">
+							<input id="partAccount${rand}" type="hidden" name="fp_partList" /> 
+							<input id="participantList_val${rand}" type="hidden" name="fp_participantList" /> 
+							<input id="rapList${rand}" type="hidden" name="fp_rapList" />
+							<input id="participantList4Hidden${rand}" type="hidden" name="fp_participantList4Hidden" /> 
+							<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+									data-options="iconCls:'icon-upload',plain:true">导入奖惩人员名单</a>
+							<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+									data-options="iconCls:'icon-down_load',plain:true">下载EXCEL电子模板</a>
+							<font color="red"> (请上传文件) </font>
+	                        <input id="moduleName${rand}" name="fp_moduleName" class="easyui-validatebox" data-options="required:true" missingMessage="请上传文件" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+							<div id="participantList${rand}" style="font-size: 12px; "></div>
+						</td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div id="importWin-${rand}" class="easyui-dialog"
+			data-options="modal:true, title:'导入奖惩人员名单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td width="120" align="center">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+							<td>
+								<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+		    </div>
+	 </div> 
+	    </#if> 
+  <#if steps.key == 'nmb_updateApp'>
+      <#if steps.vars["uploadPreceptAudi"]=="0">
+          <#if steps.vars["updateReqChannels"]??>
+	           <#assign reqChannels=steps.vars["updateReqChannels"]/>
+	      </#if>
+	       <#if steps.vars["applyUserAccount"]??>
+	            <#assign applyUserAccount=steps.vars["applyUserAccount"]/>
+	      </#if>
+	      <#if steps.vars["userName"]??>
+	            <#assign userName=steps.vars["userName"]/>
+	     </#if>
+	     <#if steps.vars["updateOrgName"]??>
+	     
+	            <#assign orgName=steps.vars["updateOrgName"]/>
+	      </#if>  
+	      <#if steps.vars["duty"]??>
+	           <#assign duty=steps.vars["duty"]/>
+	      </#if>
+	      <#if steps.vars["inTransferDate"]??>
+	           <#assign inTransferDate=steps.vars["inTransferDate"]/>
+	      </#if>
+	     <#if steps.vars["updateRpScore"]??>
+	             <#assign rpScore=steps.vars["updateRpScore"]/>
+	     </#if>        
+	     <#if steps.vars["updateShowMoneySum"]??>
+	     		<#assign showMoneySum=steps.vars["updateShowMoneySum"]/>
+	     </#if>
+         <#if steps.vars["rewardAndPenaltyDesc"]??>
+     			<#assign rewardAndPenaltyDesc=steps.vars["rewardAndPenaltyDesc"]/>
+        </#if>
+	    <#if steps.vars["rewardAndPenaltySug"]??>
+	           <#assign rewardAndPenaltySug=steps.vars["rewardAndPenaltySug"]/>
+	    </#if>
+	    <#if steps.vars["applyId"]??>
+	           <#assign applyId=steps.vars["applyId"]/>
+	         
+	    </#if>
+	    <#if steps.vars["applyName"]??>
+	           <#assign applyName=steps.vars["applyName"]/>
+	    </#if>
+	    <#if steps.vars["applyDepa"]??>
+	          
+	           <#assign applyDepa=steps.vars["applyDepa"]/>
+	    </#if>
+     </#if>
+        <#assign maxManage=steps.vars["maxManage"]/>
+         <#assign uploadPreceptAudi=steps.vars["uploadPreceptAudi"]/>
+      <#if steps.vars["participantList"]??>
+        <#assign participantList=steps.vars["participantList"]/>
+      </#if>
+  </#if>
+ </#list>
+<script type="text/javascript">
+	$.post("hrFlow/loadSysDate.json", {
+	}, function(data) {
+		if(data.success){
+				$("#inTransferDate${rand}").my97({
+					minDate:data.msg.split("@")[0],
+					maxDate:data.msg.split("@")[1]
+				})
+		}
+	});
+
+function loadUserInfo() {
+	   if($("#curUserId${rand}").val()){
+		//界面通过接口加载个人信息
+		$.post("hrFlow/getHrUserInfoById.json", {
+			account : $("#curUserId${rand}").val()
+		}, function(data) {
+			if (data.success) {
+				$("#userName${rand}").val(data.obj[0].name);//姓名
+				$("#job${rand}").val(data.obj[0].job);//职位
+				$("#education${rand}").val(data.obj[0].education);//学历
+				$("#major${rand}").val(data.obj[0].major);//专业
+				$("#gender${rand}").val(data.obj[0].sex);//性别
+				$("#age${rand}").val(data.obj[0].age);//年龄
+				$("#school${rand}").val(data.obj[0].school);//毕业学校
+				$("#email${rand}").val(data.obj[0].email);//邮箱
+				$("#entryTime${rand}").val(data.obj[0].entryDate);//入职日期
+				$("#orgName${rand}").val(data.obj[0].orgName);//部门
+				$("#telephone${rand}").val(data.obj[0].tel);//电话
+				$('#processName${rand}').val(
+						"[" + $("#curUserId${rand}").val() + ","
+								+ data.obj[0].name + "]奖惩申请");//流程实例名称
+			}
+		});
+		 //用于获取部门负责人
+		 $.post("lead/maxManage.json", {
+				account : "${appuser.account}"
+			}, function(data) {
+				if (data.success) {
+					$("#maxManage${rand}").val(data.msg);
+				}
+			}); 
+	   }
+	  //用于获取部门负责人
+		  $.post("lead/maxManage.json", {
+				account : "${appuser.account}" 
+			}, function(data) {
+				if (data.success) {
+					$("#maxManage${rand}").val(data.msg);
+				}
+			});  
+	}
+	function loadApplyInfo(){
+		//界面通过接口加载个人信息
+		if($("#applyId${rand}").val()){
+			$.post("hrFlow/getHrUserInfoById.json", {
+				account : $("#applyId${rand}").val()
+			}, function(data) {
+				if (data.success) {
+					$("#applyName${rand}").val(data.obj[0].name);//姓名
+					$("#applyDepa${rand}").val(data.obj[0].orgName);//部门
+				}
+			});
+		}
+	}
+$(function(){
+	
+	
+	//选择方案处理结果
+	$("#uploadPrecept2${rand}").bind('click',function(){
+		$("#moduleName${rand}").val("");
+		$("#curUserId${rand}").validatebox({required:false});
+		$("#userName${rand}").validatebox({required:false});
+		$("#orgName${rand}").validatebox({required:false});
+		$("#rpsort${rand}").combobox({required:false});
+		$("#rpScore${rand}").numberbox({required:false});
+		$("#applyId${rand}").validatebox({required:false});
+		$("#applyName${rand}").validatebox({required:false});
+		$("#applyDepa${rand}").validatebox({required:false});
+		$("#rewardAndPenaltyDesc${rand}").validatebox({required:false});
+		$("#inTransferDate${rand}").my97({required:false});
+		 $("#tr${rand}").hide();
+		$("#tr2${rand}").hide();
+		$("#tr3${rand}").hide();
+		$("#tr4${rand}").hide();
+		$("#tr5${rand}").hide();
+		$("#tr6${rand}").hide();
+		$("#recruitmentChannels${rand}").hide();
+		$("#tr7${rand}").show(); 
+		
+	})
+	$("#uploadPrecept${rand}").bind('click',function(){
+		$("#moduleName${rand}").val("可以");
+		$("#curUserId${rand}").validatebox({required:true});
+		$("#userName${rand}").validatebox({required:true});
+		$("#orgName${rand}").validatebox({required:true});
+		$("#rpsort${rand}").combobox({required:true});
+		$("#rpScore${rand}").numberbox({required:true});
+		$("#applyId${rand}").validatebox({required:true});
+		$("#applyName${rand}").validatebox({required:true});
+		$("#applyDepa${rand}").validatebox({required:true});
+		$("#rewardAndPenaltyDesc${rand}").validatebox({required:true});
+		$("#inTransferDate${rand}").my97({required:true});
+		$("#tr${rand}").show();
+		$("#tr2${rand}").show();
+		$("#tr3${rand}").show();
+		$("#tr4${rand}").show();
+		$("#tr5${rand}").show();
+		$("#tr6${rand}").show();
+		$("#tr7${rand}").hide();
+		$("#recruitmentChannels${rand}").show();
+	})
+	var MFixedAssetsDetraction = { rapList:[] };
+	//下载模板
+	 $("#downloadTravelExcel${rand}").bind('click',function(){
+	 	submitForm("download.rewardandpunish.name");
+	 });
+	//导入人员名单
+	 $("#openImportPersonBtn-${rand}").bind('click',function(){
+		 $("#importWin-${rand}").dialog('open');
+	 });
+	 $("#upfile-${rand}").bind('click',function(){
+		 $.messager.progress();
+		 $("#upform-${rand}").form('submit',{
+				url:'teamActivities/rewardandpunishUpload.html',
+				onSubmit:function(){
+					var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+				success:function(data){
+					if(typeof(data).toLowerCase()=='string'){
+						data=eval("("+data+")");
+					}
+					if(data.success){
+						if(data.obj == null || data.obj.length == 0){
+							$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+						}else{
+							countIsOffice = 0;
+							var str = "";
+							var str4Hidden = "";
+							if(data.obj.length>0){
+								$('#participantList${rand}').text("");
+								$("#participantList_val${rand}").val("");
+								str = "<table class='rewardtable' cellspacing='1' cellpadding='0' width='100%'><tr class='rewardthead' align=center><td width=7%>序号</td><td width=7%>员工编号</td><td width=7%>姓名</td><td width=7%>部门</td><td width=7%>岗位</td><td width=10%>奖惩日期</td><td width=7%>申请人员编号</td><td width=7%>申请人员姓名</td><td width=7%>部门</td><td width=5%>奖惩类别</td><td width=5%>奖惩级别</td><td width=10%>奖惩原因</td><td width=5%>奖惩分数</td><td width=5%>奖惩金额</td><td width=10%>备注</td></tr>";
+								for(var i = 0;i < data.obj.length;i++){
+								  str += "<tr class='rewardtbody' align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].account+"</td><td>"+data.obj[i].name+"</td><td>"+data.obj[i].department+"</td><td>"+data.obj[i].job+"</td><td>"+data.obj[i].rapDate+"</td><td>"+data.obj[i].applyAccount+"</td><td>"+data.obj[i].applyName+"</td><td>"+data.obj[i].applyDepa+"</td><td>"+data.obj[i].sort+"</td><td>"+data.obj[i].rank+"</td><td>"+data.obj[i].cause+"</td><td>"+data.obj[i].score+"</td><td>"+data.obj[i].money+"</td><td>"+data.obj[i].remarks+"</td></tr>"
+								  str4Hidden +="["+data.obj[i].number+","+data.obj[i].department+","+data.obj[i].account+","+data.obj[i].job+","+data.obj[i].rapDate+","+data.obj[i].applyAccount+","+data.obj[i].applyName+","+data.obj[i].applyDepa+","+data.obj[i].sort+","+data.obj[i].rank+","+data.obj[i].cause+","+data.obj[i].score+","+data.obj[i].money+","+data.obj[i].remarks+"]:"
+								  MFixedAssetsDetraction.rapList.push({I_PERNR:data.obj[i].account,I_BEGDA:data.obj[i].rapDate,I_ENDDA:data.obj[i].rapDate,I_ZJCLB:data.obj[i].sort,I_ZJCJC:data.obj[i].rank,I_ZJCYY:data.obj[i].cause,I_ZJCYY:data.obj[i].cause,I_ZJCBM:data.obj[i].department,I_ZJCFS:data.obj[i].score,I_ZJCBZ:data.obj[i].remarks,I_ZJCJE:data.obj[i].money});
+								  $.ajaxSetup({async : false});
+								  countIsOffice++;
+								}
+								str+="</table>"
+								document.getElementById("participantList${rand}").innerHTML=str;
+								$("#rapList${rand}").val(JSON.stringify(MFixedAssetsDetraction));
+								$('#participantList4Hidden${rand}').val(str4Hidden);
+								$('#numOfPeople${rand}').val(countIsOffice);
+								$("#joinNumber${rand}").val(data.obj.length)
+						  }
+							//用于获取下一个节点处理人
+							/* $("#curUserId${rand}").val(data.obj[0].account); */
+							
+						
+							document.getElementById('participantList_val${rand}').value=document.getElementById("participantList${rand}").innerHTML;
+							$('#fundsBudget${rand}').val(countIsOffice * 1000);
+							$("#moduleName${rand}").val('可以');
+							$.parser.parse('#moduleName${rand}');
+							$.messager.alert("提示信息",data.msg);
+						}
+					}else{ 
+						$.messager.alert("提示信息",data.msg);
+					}
+					$("#importWin-${rand}").dialog('close');
+					$.messager.progress('close');
+					if($("#numOfPeople${rand}").val() != null && $("#numOfPeople${rand}").val() != ''){
+						$("#numOfPeople${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#numOfPeople${rand}").addClass('validatebox-invalid');
+					}
+					if($("#fundsBudget${rand}").val() != null && $("#fundsBudget${rand}").val() != ''){
+						$("#fundsBudget${rand}").removeClass('validatebox-invalid');
+					}else{
+						$("#fundsBudget${rand}").addClass('validatebox-invalid');
+					}
+				
+				}
+			});
+	 });
+	 
+	 if("${uploadPreceptAudi}"=="1"){
+		    $("#moduleName${rand}").val("");
+			$("#curUserId${rand}").validatebox({required:false});
+			$("#userName${rand}").validatebox({required:false});
+			$("#orgName${rand}").validatebox({required:false});
+			$("#rpsort${rand}").combobox({required:false});
+			$("#rpScore${rand}").numberbox({required:false});
+			$("#rewardAndPenaltyDesc${rand}").validatebox({required:false});
+			$("#applyId${rand}").validatebox({required:false});
+			$("#applyName${rand}").validatebox({required:false});
+			$("#applyDepa${rand}").validatebox({required:false});
+			$("#inTransferDate${rand}").my97({required:false});
+			
+			$("#tr${rand}").hide();
+			$("#tr2${rand}").hide();
+			$("#tr3${rand}").hide();
+			$("#tr4${rand}").hide();
+			$("#tr5${rand}").hide();
+			$("#tr6${rand}").hide();
+			$("#recruitmentChannels${rand}").hide(); 
+			$("#tr7${rand}").show();
+			$("input[name='fp_uploadPreceptAudi']").get(1).checked=true;
+	 }else{
+		 $("#moduleName${rand}").val("可以");
+		 $("#tr7${rand}").hide();
+			$("input[name='fp_uploadPreceptAudi']").get(0).checked=true;
+		if("${reqChannels}"=="2"){
+			$("#rpsort${rand}").val("${reqChannels}");
+			$("#showMoney${rand}").val("27罚金");
+			$("#money${rand}").text("27罚金");
+		}else{
+			$("#rpsort${rand}").val("${reqChannels}");
+			$("#showMoney${rand}").val("15奖金");
+			$("#money${rand}").text("15奖金");
+		}
+		if("${applyUserAccount}"){
+			$("#curUserId${rand}").val("${applyUserAccount}");
+		}
+		if("${userName}"){
+			$("#userName${rand}").val("${userName}");
+		}
+		if("${duty}"){
+			$("#job${rand}").val("${duty}");
+		}
+		if("${inTransferDate}"){
+			$("#inTransferDate${rand}").val("${inTransferDate}");
+		}
+		if("${rpScore}"){
+			$("#rpScore${rand}").val("${rpScore}");
+		}
+		if("${showMoneySum}"){
+			$("#showMoneySum${rand}").val("${showMoneySum}");
+			$("#moneySum${rand}").text("${showMoneySum}");
+		}
+		if("${rewardAndPenaltyDesc}"){
+			$("#rewardAndPenaltyDesc${rand}").text("${rewardAndPenaltyDesc}");
+		}
+		if("${rewardAndPenaltySug}"){
+			$("#rewardAndPenaltySug${rand}").text("${rewardAndPenaltySug}");
+		}
+		if("${maxManage}"){
+			$("#maxManage${rand}").val("${maxManage}");
+		}
+		if("${applyId}"){
+			$("#applyId${rand}").val("${applyId}");
+		}
+		if("${applyName}"){
+			$("#applyName${rand}").val("${applyName}");
+		}
+		if("${applyDepa}"){
+			$("#applyDepa${rand}").val("${applyDepa}");
+		}
+		if("${orgName}"){
+			$("#orgName${rand}").val("${orgName}")
+		}
+		
+	}
+	 $("#rpsort${rand}").combobox({
+			onChange : function(n,o){
+				$('#moneySum${rand}').text("");
+				$("#rpScore${rand}").numberbox('setValue','');
+				if(n==1){
+					$("#money${rand}").text(15+"奖金");
+					$("#showMoney${rand}").val(15+"奖金");
+					
+				}else{
+					$("#money${rand}").text(27+"罚款");
+					$("#showMoney${rand}").val(27+"罚款");
+				}
+			}
+		})
+	$("#rpScore${rand}").bind('change',function(){
+		if($("#rpsort${rand}").combobox('getValue')){
+			if($("#rpsort${rand}").combobox('getValue')==1){
+				var sum=parseInt($('#rpScore${rand}').val())*5;
+				$('#moneySum${rand}').text(sum);
+				$('#showMoneySum${rand}').val(sum);
+			}else{
+				var sum=parseInt($('#rpScore${rand}').val())*5;
+				$('#moneySum${rand}').text(sum);
+				$('#showMoneySum${rand}').val(sum);
+			}
+			
+		}else{
+			$.messager.alert('提示','请选择奖罚的类别');
+			$("#rpScore${rand}").numberbox('setValue','');
+		}
+	})
+})
+function limitSize(){
+	if($("#rewardAndPenaltySug${rand}").val().length>40){
+		$.messager.alert('提示','字体不能超过40');
+		$("#rewardAndPenaltySug${rand}").val("");
+		$("#rewardAndPenaltySug${rand}").validatebox({required:true});
+	}
+}
+function clearInputFile${rand}(){
+	//清空文件框
+	$("#upload_file-${rand}").remove(); //移除原来的
+    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+   	$('#td_input_${rand}').html(newFileInput); //添加新的
+    $.parser.parse('#td_input_${rand}');
+}
+
+function submitForm(value){
+	var form = $("<form>");
+	form.attr('style','display:none');
+	form.attr('method','post');
+	form.attr('action','${base}sysprocess/task/mDownload.html');
+	
+	var key = $("<input>");
+	key.attr('type','hidden');
+	key.attr('name','key');
+	key.attr('value',value);
+	
+	$("body").append(form);
+	form.append(key);
+	form.submit();
+	form.remove();
+}
+</script> 
+	 </#if>
+	</#if>  
+</#if>
+
+
+
+
+<!-- 部门主管审批 -->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_deptLeaderAudiTask'>
+     <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+      	      <#if steps.vars["rpScore"]??>
+    			  <#assign rpScore=steps.vars["rpScore"]/>
+      		</#if>
+             <#if steps.vars["showMoneySum"]??>
+              <#assign showMoneySum=steps.vars["showMoneySum"]/>
+             </#if>
+      	</#if>
+      	<#if steps.key == 'nmb_updateApp'>
+       <#if steps.vars["updateRpScore"]??>
+      <#assign rpScore=steps.vars["updateRpScore"]/>
+      </#if>
+       <#if steps.vars["updateShowMoneySum"]??>
+      <#assign showMoneySum=steps.vars["updateShowMoneySum"]/>
+       </#if>
+</#if>
+</#list>
+<div id="mb_deptLeaderAudiTask">
+	<form id="mb_deptLeaderAudiTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_deptLeaderAudiTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">部门主管审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门主管审批：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_deptLeaderName" value="${appuser.name}"
+					mobile="部门主管审批" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderSignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr id="tr${rand}">
+			 <td class="formtable_td_key">奖罚分数：</td>
+				<td class="formtable_td_value">
+					<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_rpScore"
+								data-options="required:true" value="${(steps.vars["rpScore"])!""}"/>
+					</td>
+			 <td class="formtable_td_key">奖惩金额：</td>
+				<td class="formtable_td_value" colspan="3">
+				<input id='showMoneySum${rand}' type="hidden" name="fp_showMoneySum" value="${(steps.vars["showMoneySum"])!""}" />
+				<p id='moneySum${rand}'>${(steps.vars["showMoneySum"])!""}</p></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">处理结果：</td>
+				<td class="formtable_td_value" colspan="3"><input id="deptLeaderAudi${rand}"
+					name="fp_deptLeaderAudi" type="radio" value="0" checked="checked"
+					mobile="处理结果_同意" />同意 <input id="deptLeaderAudi2${rand}" name="fp_deptLeaderAudi" type="radio"
+					value="1" mobile="处理结果_不同意" />不同意</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">处理意见：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="deptLeaderAdvice${rand}"
+						name="fp_deptLeaderAdvice" class="formtable_remark" mobile="处理意见" onblur="checkInput1();"></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+  <script type="text/javascript">
+   $(function(){
+	   if("${rpScore}"){
+	    	  $("#rpScore${rand}").val("${rpScore}");
+	      }else{
+	    	  $("#tr${rand}").hide();
+	    	  $("#rpScore${rand}").numberbox({required:false});
+	      }
+	      if("${showMoneySum}"){
+	    	  $("#showMoneySum${rand}").val("${showMoneySum}");
+	    	  $("#moneySum${rand}").text("${showMoneySum}");
+	      }
+	   $("#rpScore${rand}").bind('change',function(){
+				var sum=parseInt($('#rpScore${rand}').val())*5;
+				$('#moneySum${rand}').text(sum);
+				$('#showMoneySum${rand}').val(sum);
+		})
+		 $("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});
+			$("#deptLeaderAudi${rand}").bind("click",function(){
+				$("#deptLeaderAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			});
+			$("#deptLeaderAudi2${rand}").bind("click",function(){
+				$("#deptLeaderAdvice${rand}").val('');
+				$("#deptLeaderAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			});
+   })
+  
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptLeaderAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#deptLeaderAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#deptLeaderAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+
+</#if> </#if> 
+<!-- 部门负责人审批 -->
+<#if currentStep?exists && currentStep == 'mb_deptManagerTask'> 
+    <#list processSteps as steps> 
+        <#if steps.key == 'startevent1'>
+                 <#if steps.vars["rpScore"]??>
+      	        <#assign rpScore=steps.vars["rpScore"]/>
+      	        </#if>
+      	         <#if steps.vars["showMoneySum"]??>
+      	        <#assign showMoneySum=steps.vars["showMoneySum"]/>
+      	         </#if>
+      	</#if>
+      	<#if steps.key == 'mb_deptLeaderAudiTask'>
+      	        <#if steps.vars["rpScore"]??>
+      	        <#assign rpScore=steps.vars["rpScore"]/>
+      	        </#if>
+      	        <#if steps.vars["showMoneySum"]??>
+      	        <#assign showMoneySum=steps.vars["showMoneySum"]/>
+      	        </#if>
+      	</#if>
+      </#list>
+		<div id="mb_deptManagerTask">
+			<form id="mb_deptManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_deptManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">部门负责人审批</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">部门负责人审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_deptLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_deptLeaderName" value="${appuser.name}" mobile="部门负责人审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"><input type="hidden"
+							name="fp_deptLeaderSignDate" timeEditor="1"
+							value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+					</tr>
+					<tr id="tr${rand}">
+					 <td class="formtable_td_key">奖罚分数：</td>
+						<td class="formtable_td_value">
+							<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_rpScore"
+										data-options="required:true" value="${(steps.vars["rpScore"])!""}"/>
+							</td>
+					 <td class="formtable_td_key">奖惩金额：</td>
+						<td class="formtable_td_value" colspan="3">
+						<input id='showMoneySum${rand}' type="hidden" name="fp_showMoneySum" value="${(steps.vars["showMoneySum"])!""}" />
+						<p id='moneySum${rand}'>${(steps.vars["showMoneySum"])!""}</p></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理结果：</td>
+						<td class="formtable_td_value" colspan="5"><input type="radio" id="fp_deptManagerAudi${rand}" name="fp_deptManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_deptManagerAudi${rand}2" name="fp_deptManagerAudi" value="1" mobile="处理结果_不同意"/>不同意</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea id="fp_deptLeaderAudiAdvice${rand}"
+						name="fp_deptLeaderAudiAdvice" class="formtable_remark" mobile="处理意见"  onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_deptLeaderAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+      
+      if("${rpScore}"){
+    	  $("#rpScore${rand}").val("${rpScore}");
+      }else{
+    	  $("#tr${rand}").hide();
+    	  $("#rpScore${rand}").numberbox({required:false});
+      }
+      if("${showMoneySum}"){
+    	  $("#showMoneySum${rand}").val("${showMoneySum}");
+    	  $("#moneySum${rand}").text("${showMoneySum}");
+      }
+      
+	$("#rpScore${rand}").bind('change',function(){
+		var sum=parseInt($('#rpScore${rand}').val())*5;
+		$('#moneySum${rand}').text(sum);
+		$('#showMoneySum${rand}').val(sum);
+	})
+	$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_deptLeaderAudiAdvice${rand}").val('');
+		$("#fp_deptLeaderAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_deptManagerAudi${rand}").bind("click",success);
+	$("#fp_deptManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_deptManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_deptLeaderAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_deptLeaderAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+
+<!-- 总经理审核 -->
+<#if currentStep?exists && currentStep == 'mb_generalManagerTask'> 
+   <#list processSteps as steps> 
+      	<#if steps.key == 'mb_deptManagerTask'>
+      	     <#if steps.vars["rpScore"]??>
+      	        <#assign rpScore=steps.vars["rpScore"]/>
+      	        </#if>
+      	         <#if steps.vars["showMoneySum"]??>
+      	        <#assign showMoneySum=steps.vars["showMoneySum"]/>
+      	         </#if>
+      	   </#if>
+	</#list>
+		<div id="mb_generalManagerTask">
+			<form id="mb_generalManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_generalManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">总经理审批</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">总经理审批</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_generalManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_generalManagerName" value="${appuser.name}" mobile="总经理审批"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"><input type="hidden"
+							name="fp_deptLeaderSignDate" timeEditor="1"
+							value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+					</tr>
+					<tr id="tr${rand}">
+					 <td class="formtable_td_key">奖罚分数：</td>
+						<td class="formtable_td_value">
+							<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_rpScore"
+										data-options="required:true" value="${(steps.vars["rpScore"])!""}"/>
+							</td>
+					 <td class="formtable_td_key">奖惩金额：</td>
+						<td class="formtable_td_value" colspan="3">
+						<input id='showMoneySum${rand}' type="hidden" name="fp_showMoneySum" value="${(steps.vars["showMoneySum"])!""}" />
+						<p id='moneySum${rand}'>${(steps.vars["showMoneySum"])!""}</p></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理结果：</td>
+						<td class="formtable_td_value" colspan="5"><input type="radio" id="fp_generalManagerAudi${rand}" name="fp_generalManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_generalManagerAudi${rand}2" name="fp_generalManagerAudi" value="1" mobile="处理结果_不同意"/>不同意</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						 <textarea id="fp_generalManagerAudiAdvice${rand}"
+						name="fp_generalManagerAudiAdvice" class="formtable_remark" mobile="处理意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_generalManagerAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		
+		
+<script type="text/javascript">
+	if("${rpScore}"){
+		  $("#rpScore${rand}").val("${rpScore}");
+	}else{
+		  $("#tr${rand}").hide();
+		  $("#rpScore${rand}").numberbox({required:false});
+	}
+	if("${showMoneySum}"){
+		  $("#showMoneySum${rand}").val("${showMoneySum}");
+		  $("#moneySum${rand}").text("${showMoneySum}");
+	}
+	$("#rpScore${rand}").bind('change',function(){
+		var sum=parseInt($('#rpScore${rand}').val())*5;
+		$('#moneySum${rand}').text(sum);
+		$('#showMoneySum${rand}').val(sum);
+	})
+	$("#fp_generalManagerAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_generalManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_generalManagerAudiAdvice${rand}").val('');
+		$("#fp_generalManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_generalManagerAudi${rand}").bind("click",success);
+	$("#fp_generalManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_generalManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_generalManagerAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_generalManagerAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+
+<!-- 薪酬绩效主管签字 -->
+<#if currentStep?exists && currentStep == 'wageManagerTask'> 
+       <#list processSteps as steps> 
+      	   <#if steps.key == 'mb_deptManagerTask'>
+      	     <#if steps.vars["rpScore"]??>
+      	        <#assign rpScore=steps.vars["rpScore"]/>
+      	        </#if>
+      	         <#if steps.vars["showMoneySum"]??>
+      	        <#assign showMoneySum=steps.vars["showMoneySum"]/>
+      	         </#if>
+      	   </#if>
+      	   <#if steps.key == 'mb_generalManagerTask'>
+      	     <#if steps.vars["rpScore"]??>
+      	        <#assign rpScore=steps.vars["rpScore"]/>
+      	        </#if>
+      	         <#if steps.vars["showMoneySum"]??>
+      	        <#assign showMoneySum=steps.vars["showMoneySum"]/>
+      	         </#if>
+      	   </#if>
+	  </#list>
+		<div id="wageManagerTask">
+			<form id="wageManagerTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="wageManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+				     <td colspan="6" style="font-size: 16px; height: 25px;"   class="formtable_td_key" align="center">人力资源部审核</td>
+			          </tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部审核</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="hidden" name="fp_wageLeaderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_wageLeaderName" value="${appuser.name}" mobile="人力资源部审核"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="radio" id="fp_wageManagerAudi${rand}" name="fp_wageManagerAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意
+							<input type="radio" id="fp_wageManagerAudi${rand}2" name="fp_wageManagerAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+					</tr>
+					<tr id="tr${rand}">
+					 <td class="formtable_td_key">奖罚分数：</td>
+						<td class="formtable_td_value">
+							<input id="rpScore${rand}" class="easyui-numberbox"  type="text" name="fp_rpScore"
+										data-options="required:true" value="${(steps.vars["rpScore"])!""}"/>
+							</td>
+					 <td class="formtable_td_key">奖惩金额：</td>
+						<td class="formtable_td_value" colspan="3">
+						<input id='showMoneySum${rand}' type="hidden" name="fp_showMoneySum" value="${(steps.vars["showMoneySum"])!""}" />
+						<p id='moneySum${rand}'>${(steps.vars["showMoneySum"])!""}</p></td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+						 <textarea id="fp_wageLeaderAudiAdvice${rand}"
+						name="fp_wageLeaderAudiAdvice" class="formtable_remark" mobile="处理意见" onblur="checkInput1();"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_wageLeaderAudiTime" timeEditor="1" 
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+<script type="text/javascript">
+	if("${rpScore}"){
+		  $("#rpScore${rand}").val("${rpScore}");
+	}else{
+		  $("#tr${rand}").hide();
+		  $("#rpScore${rand}").numberbox({required:false});
+	}
+	if("${showMoneySum}"){
+		  $("#showMoneySum${rand}").val("${showMoneySum}");
+		  $("#moneySum${rand}").text("${showMoneySum}");
+	}
+	$("#rpScore${rand}").bind('change',function(){
+		var sum=parseInt($('#rpScore${rand}').val())*5;
+		$('#moneySum${rand}').text(sum);
+		$('#showMoneySum${rand}').val(sum);
+	})
+	$("#fp_wageLeaderAudiAdvice${rand}").validatebox({required:false});
+	var success = function(){
+		$("#fp_wageLeaderAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+	}
+	var failure=function(){
+		$("#fp_wageLeaderAudiAdvice${rand}").val('');
+		$("#fp_wageLeaderAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+	};
+	$("#fp_wageManagerAudi${rand}").bind("click",success);
+	$("#fp_wageManagerAudi${rand}2").bind("click",failure);
+	
+	//用于限制文本框输入全空格
+	function checkInput1(){
+		if($("input[name='fp_wageManagerAudi']:checked").val() == '0'){
+			return;
+		}
+		var result=$("#fp_wageLeaderAudiAdvice${rand}").val();
+		if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+			$("#fp_wageLeaderAudiAdvice${rand}").val('');
+			$.messager.alert('信息提示:','输入不能为全空格!');
+		}
+	}
+</script>
+</#if>
+
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'confirmProcessEndTask'>
+<div id="confirmProcessEndTask">
+	<form id="confirmProcessEndTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="confirmProcessEndTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+
+			<tr>
+				<td class="formtable_td_key" rowspan="3">发起人确认</td>
+				<td class="formtable_td_key">是否结束该流程</td>
+				<td class="formtable_td_value" colspan="5"><input
+					id="endProcess-${rand}" type="radio"
+					name="fp_confirmProcessEndAudi" value="1" mobile="是否结束该流程_是" />是 <input
+					id="continueProcess-${rand}" type="radio"
+					name="fp_confirmProcessEndAudi" checked="checked" value="0"
+					mobile="是否结束该流程_否" />否</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">确认意见：</td>
+				<td class="formtable_td_value" colspan="5"><textarea
+						style="width: 660px; height: 100px" id="applyUserAudiAdvice${rand}"
+						name="fp_applyUserAudiAdvice" class="easyui-validatebox"
+						mobile="确认意见"></textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">确认人</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_applyUserAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_applyUserName" value="${appuser.name}"
+					mobile="确认人" /> ${appuser.name}</td>
+				<td class="formtable_td_key">确认时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_applyUserAudiTime" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="确认时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+		</table>
+	</form>
+</div>
+	<script type="text/javascript">
+			$("#applyUserAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#applyUserAudiAdvice${rand}").validatebox({required:false});//是否结束意见为非必填项
+			}
+			var failure=function(){
+				$("#applyUserAudiAdvice${rand}").val('');
+				$("#applyUserAudiAdvice${rand}").validatebox({required:true});//是否结束意见为必填项
+			};
+			$("#continueProcess-${rand}").bind("click",success);
+			$("#endProcess-${rand}").bind("click",failure);
+	</script>
+</#if>
+<#include "/common/foot.html">

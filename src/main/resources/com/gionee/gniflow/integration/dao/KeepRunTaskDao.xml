@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.KeepRunTaskDao">
+	<resultMap type="com.gionee.gniflow.biz.model.KeepRunTask" id="result">
+		<id property="taskId" column="task_id"/>
+		<result property="runTime" column="run_time"/>
+  	</resultMap>
+  	
+  	<resultMap type="com.gionee.gniflow.biz.model.Candidate" id="candidate">
+  		<id property="id" column="id"/>
+  		<result property="procDefId" column="procDefId"/>
+  		<result property="type" column="type"/>
+  		<result property="empIds" column="empIds"/>
+  	</resultMap>
+  	
+  	<resultMap type="com.gionee.gniflow.biz.model.SaveEmpAndTeacherInfEntity" id="resultEmail">
+		<result property="empId" column="emp_id"/>
+		<result property="empName" column="emp_name"/>
+		<result property="entryTime" column="entry_time"/>
+		<result property="teaEmail" column="tea_email"/>
+		<result property="teacherName" column="teaName"/>
+  	</resultMap>
+  	
+  	<resultMap type="com.gionee.gniflow.biz.model.ActRuTask" id="actRuTaskMap">
+  		<id property="id" column="ID_"/>
+		<result property="rev" column="REV_"/>
+		<result property="executionId" column="EXECUTION_ID_"/>
+		<result property="procInstId" column="PROC_INST_ID_"/>
+		<result property="procDefId" column="PROC_DEF_ID_"/>
+		<result property="name" column="NAME_"/>
+		<result property="parentTaskId" column="PARENT_TASK_ID_"/>
+		<result property="description" column="DESCRIPTION_"/>
+		<result property="taskDefKey" column="TASK_DEF_KEY_"/>
+		<result property="owner" column="OWNER_"/>
+		<result property="assignee" column="ASSIGNEE_"/>
+		<result property="delegation" column="DELEGATION_"/>
+		<result property="priority" column="PRIORITY_"/>
+		<result property="createTime" column="CREATE_TIME_"/>
+		<result property="dueDate" column="DUE_DATE_"/>
+		<result property="suspensionState" column="SUSPENSION_STATE_"/>
+  	</resultMap>
+  	
+  	<resultMap type="com.gionee.gniflow.biz.model.InterviewEntity" id="interviewEntityResult">
+  	<result property="applyTime" column="APPLY_TIME"/>
+	<result property="appliName" column="APPLI_NAME"/>
+	<result property="inSysName" column="IN_SYS_NAME"/>
+	<result property="inOrgName" column="IN_ORG_NAME"/>
+	<result property="rank" column="RANK"/>
+	<result property="inJob" column="IN_JOB"/>
+	<result property="age" column="AGE"/>
+	<result property="education" column="EDUCATION"/>
+	<result property="specialty" column="SPECIALTY"/>
+	<result property="workYear" column="WORK_YEAR"/>
+	<result property="hrTotalEval" column="HR_TOTAL_EVAL"/>
+	<result property="depTotalEval" column="DEP_TOTAL_EVAL"/>
+	<result property="teacherName" column="TEACHER_NAME"/>
+	<result property="salaryLevel" column="SALARY_LEVEL"/>
+	<result property="alaryProbation" column="ALARY_PROBATION"/>
+	<result property="salaryPositive" column="SALARY_POSITIVE"/>
+  </resultMap>
+  
+  <resultMap type="com.gionee.gniflow.biz.model.LeaveProcessInstanceEntity" id="LeaveProcessInstanceEntityResultMap">
+     <result property="id" column="ID_" jdbcType="VARCHAR" />
+    <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
+    <result property="businessKey" column="BUSINESS_KEY_" jdbcType="VARCHAR"/>
+    <result property="processDefinitionId" column="PROC_DEF_ID_" jdbcType="VARCHAR" />
+    <result property="startTime" column="START_TIME_" jdbcType="TIMESTAMP" />
+    <result property="endTime" column="END_TIME_" jdbcType="TIMESTAMP" />
+    <result property="durationInMillis" column="DURATION_" jdbcType="BIGINT" />
+    <result property="startUserId" column="START_USER_ID_" jdbcType="VARCHAR" />
+    <result property="startActivityId" column="START_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="endActivityId" column="END_ACT_ID_" jdbcType="VARCHAR" />
+    <result property="superProcessInstanceId" column="SUPER_PROCESS_INSTANCE_ID_" jdbcType="VARCHAR" />
+    <result property="deleteReason" column="DELETE_REASON_" jdbcType="VARCHAR" />
+    <result property="tenantId" column="TENANT_ID_" jdbcType="VARCHAR" />
+    <result property="processDefName" column="PROCESS_DEFNAME_" jdbcType="VARCHAR" />
+    <result property="categoryName" column="CATEGORY_NAME_" jdbcType="VARCHAR" />
+    <result property="startUserName" column="START_USER_NAME_" jdbcType="VARCHAR" />
+    <result property="processStatus" column="PROCESS_STATUS_" jdbcType="VARCHAR" />
+    <result property="processInstanceName" column="PROCESS_INST_NAME" jdbcType="VARCHAR" />
+    
+    <result property="checkUserName" column="CHECKUSERNAME" jdbcType="VARCHAR" />
+    <result property="changeId" column="CHANGEID" jdbcType="VARCHAR" />
+   	<result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+    <result property="actName" column="ACT_NAME_" jdbcType="VARCHAR" />
+    
+    <result property="leaveResion" column="LEAVE_RESION" jdbcType="VARCHAR"/>
+    <result property="detailResion" column="DETAIL_RESION" jdbcType="VARCHAR"/>
+    <result property="empId" column="EMP_ID" jdbcType="VARCHAR"/>
+    <result property="endAudi" column="END_AUDI" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+	<insert id="addRunTaskInf" parameterType="com.gionee.gniflow.biz.model.KeepRunTask">
+		insert into keep_task_inf (task_id,run_time) values (#{taskId},#{runTime})
+	</insert>
+	
+	<delete id="delTaskInf" parameterType="java.lang.String">
+		delete from keep_task_inf where task_id=#{id}
+	</delete>
+	
+	<select id="getRunTaskId" parameterType="java.lang.String" resultType="java.lang.String">
+		select TASK_ID from keep_task_inf where RUN_TIME &lt;= #{curTime}
+	</select>
+	
+	<select id="getRunTask" parameterType="java.lang.String" resultMap="actRuTaskMap">
+		select * from act_ru_task where PROC_INST_ID_=#{id} order by ID_ desc
+	</select>
+	
+	<delete id="delActRuTask" parameterType="java.lang.String">
+		delete from act_ru_task where ID_=#{id}
+	</delete>
+	
+	<update id="updateStatus" parameterType="java.lang.String">
+		update bpm_process_run set STATUS=2 where PROCESS_DEF_KEY=#{id}
+	</update>
+	
+	<insert id="addEmpAndTeaInf" parameterType="com.gionee.gniflow.biz.model.SaveEmpAndTeacherInfEntity">
+		insert into save_empAndTeacher_inf (proc_id,emp_id,emp_name,entry_time,tea_email,teaName) values (#{procId},#{empId},#{empName},#{entryTime},#{teaEmail},#{teacherName})
+	</insert>
+	
+	<select id="getEmailByCurTime" parameterType="java.lang.String" resultMap="resultEmail">
+		select * from save_empAndTeacher_inf where entry_time &lt;=#{curTime}
+	</select>
+	
+	<delete id="delEmpAndTeaInf" parameterType="java.lang.String">
+		delete from save_empAndTeacher_inf where emp_id=#{empId}
+	</delete>
+	
+	<delete id="delEmpAndTeaInfByProcId" parameterType="string">
+		delete from save_empAndTeacher_inf where proc_id=#{procId}
+	</delete>
+	
+	<update id="updateSendEmailTime" parameterType="map">
+		update save_empAndTeacher_inf set entry_time=#{entryTime} where emp_id=#{empId}
+	</update>
+	
+	<select id="getApplyAccountByPro" parameterType="string" resultType="string">
+		select dbms_lob.substr(TEXT_,4000) from ACT_HI_VARINST where proc_inst_id_=#{proceId} and name_='applyUserAccount'
+	</select>
+	
+	<insert id="saveProofNo" parameterType="map">
+		insert into save_nonproduc_proofno (process_id,proof_no) values (#{processId},#{proofNo})
+	</insert>
+	
+	<select id="getProofNoByProcessId" parameterType="string" resultType="string">
+		select proof_no from save_nonproduc_proofno where process_id=#{processId}
+	</select>
+	
+	<delete id="delProofNoByProcessId" parameterType="string">
+		delete from save_nonproduc_proofno where process_id=#{processId}
+	</delete>
+	
+	<select id="getCostCenterByFactory" parameterType="string" resultType="com.gionee.gniflow.biz.model.CostCenter">
+		select code,name from cost_center where factory=#{factory}
+	</select>
+	
+	<select id="getAllCostCenter" parameterType="map" resultType="com.gionee.gniflow.biz.model.CostCenter">
+		select sub.* from(
+			select res.*, row_number () OVER (ORDER BY res.factory) rnk from (
+				select * from cost_center)res )sub
+				<![CDATA[
+	    	where sub.rnk >= #{firstRow} AND sub.rnk < #{lastRow}   
+	    	]]>
+	</select>
+	
+	<select id="getTotalCount" resultType="Integer">
+		select count(*) from cost_center
+	</select>
+	
+	<insert id="saveCostCenter" parameterType="map">
+		insert into cost_center (factory,code,name) values (#{factory},#{code},#{name})
+	</insert>
+	
+	<insert id="updateCostCenter" parameterType="map">
+		update cost_center set factory = #{factory},name = #{name} where code = #{code}
+	</insert>
+	
+	<delete id="deleteCostCenter" parameterType="map">
+		delete from cost_center where code in 
+		<foreach item="item" index="index" collection="codes" open="(" separator="," close=")">
+		   #{item}
+	    </foreach>
+	</delete>
+	
+	<!-- 从录用流程获取试用期薪级、薪资 -->
+	<select id="getSararyAndGroupFromIter" parameterType="map" resultMap="interviewEntityResult">
+		select DISTINCT dbms_lob.substr(a.TEXT_,4000) as SALARY_LEVEL,dbms_lob.substr(b.TEXT_,4000) as ALARY_PROBATION,
+		dbms_lob.substr(c.TEXT_,4000) as SALARY_POSITIVE from 
+		ACT_HI_DETAIL a inner join act_hi_procinst act on a.proc_inst_id_=act.proc_inst_id_
+		left join ACT_HI_DETAIL b on a.proc_inst_id_=b.proc_inst_id_
+		left join ACT_HI_DETAIL c on b.proc_inst_id_=c.proc_inst_id_
+		left join ACT_HI_DETAIL d on c.proc_inst_id_=d.proc_inst_id_
+		left join ACT_HI_DETAIL e on d.proc_inst_id_=e.proc_inst_id_
+		left join ACT_HI_DETAIL f on e.proc_inst_id_=f.proc_inst_id_
+		where substr(act.proc_def_id_,0,INSTR(act.proc_def_id_,':')-1)='L-Interview-Assessment'
+		and a.name_='salaryGroup' 
+		and b.name_='probationSalary'
+		and c.name_='workerSalary'
+		and d.name_='applicanter'
+		and e.name_='inOrgName'
+		and f.name_='inJob'
+		and dbms_lob.substr(d.TEXT_,4000)=#{empName}
+		and dbms_lob.substr(e.TEXT_,4000)=#{orgName}
+		and substr(dbms_lob.substr(f.TEXT_,4000),INSTR(dbms_lob.substr(f.TEXT_,4000),'-')+1,length(dbms_lob.substr(f.TEXT_,4000))-1)=#{empJob}
+	</select>
+	
+	<!-- 判断该职员的试用期是否在申请中 -->
+	<select id="getEmpIdProbationApply" parameterType="string" resultType="string">
+		select DISTINCT dbms_lob.substr(a.TEXT_,4000) from 
+			ACT_HI_DETAIL a inner join BPM_PROCESS_RUN run
+			on a.proc_inst_id_=run.process_inst_id 
+			where
+			substr(run.process_def_key,0,instr(run.process_def_key,':')-1)='L-Probation-Exam'
+			and run.status='1'
+			and a.name_='applyUserAccount' and dbms_lob.substr(a.TEXT_,4000)=#{empId}
+	</select>
+	
+	<!-- 获取季度申请月份 -->
+	<select id="getJTeamMonth" resultType="Integer">
+		select apply_month from J_TAC_MLIMIT
+	</select>
+	
+	<!-- 获取季度活动月份控制表的所有数据 -->
+	<select id="getAllJTeamMonth" resultType="com.gionee.gniflow.biz.model.JTeamMonth">
+		select * from J_TAC_MLIMIT
+	</select>
+	
+	<!-- 修改季度活动申请月份 -->
+	<select id="updateJTeamMonth" parameterType="map">
+		update J_TAC_MLIMIT set apply_month = #{month} where name = #{name}
+	</select>
+	
+	<!-- 监控离职报表 -->
+	<select id="getAllLeaveProcess" parameterType="map" resultMap="LeaveProcessInstanceEntityResultMap">
+	SELECT SUB.* FROM(
+			SELECT RES.*, row_number () OVER (ORDER BY RES.START_TIME_ DESC) rnk
+				FROM (
+					SELECT DISTINCT
+ 							   RES.*,
+                               DEF.NAME_ as PROCESS_DEFNAME_,
+                               u.name as START_USER_NAME_,
+                               run.status as PROCESS_STATUS_,
+                               run.PROCESS_INST_NAME,
+                               checkUser.NAME as CHECKUSERNAME,
+                               ruart.id_ as changeId,
+                               ruart.name_ as act_name_,
+                               ruart.assignee_,
+						decode(dbms_lob.substr(var1.TEXT_,4000),'1','薪酬福利','2','公司层面','3','主管上级','4','工作环境','5','个人发展','6','工作内容',
+						'7','家庭/身体等因素','8','试用期不合格','9','业绩不达标','10','解聘','11','协商解除','12','自动离职','13','体系调动',dbms_lob.substr(var1.TEXT_,4000))
+						as LEAVE_RESION,
+						dbms_lob.substr(var2.TEXT_,4000) as DETAIL_RESION,
+						dbms_lob.substr(var3.TEXT_,4000) as EMP_ID,
+						dbms_lob.substr(var4.TEXT_,4000) as END_AUDI
+                      from ACT_HI_PROCINST RES
+                       INNER JOIN ACT_RE_PROCDEF DEF
+                          ON RES.PROC_DEF_ID_ = DEF.ID_
+                        LEFT JOIN auth_user u
+                          on RES.START_USER_ID_ = u.account
+                        LEFT JOIN bpm_process_run run
+                          on RES.PROC_INST_ID_ = run.process_inst_id
+                        LEFT JOIN ACT_RU_EXECUTION rutask on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_ and rutask.is_active_ = 1   and rutask.is_scope_ = 1
+                        left join act_ru_task ruart
+                          on rutask.id_ = ruart.execution_id_
+                        LEFT JOIN auth_user checkUser
+                   		  on ruart.assignee_ = checkUser.account  
+	                left join ACT_HI_VARINST  var1 on RES.PROC_INST_ID_ = var1.proc_inst_id_ and var1.name_ in ('leaveResionByHr','leaveResion','leaveResionHr') 
+	                left join ACT_HI_VARINST  var2 on RES.PROC_INST_ID_ = var2.proc_inst_id_ and var2.name_ in ('detailResionByHr','detailResion','detailResionHr')
+	                left join ACT_HI_VARINST  var3 on RES.PROC_INST_ID_ = var3.proc_inst_id_ and var3.name_='userAccount'
+	                left join ACT_HI_VARINST  var4 on RES.PROC_INST_ID_ = var4.proc_inst_id_ and var4.name_='endTheProcessAudi'
+					<where>
+						 AND RES.PROC_DEF_ID_ like 'L-Leave-Application%'
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN 
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[ 
+							AND RES.START_TIME_ >=  #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="proInstApplyEmpId != null and proInstApplyEmpId !=''">
+							AND dbms_lob.substr(var3.TEXT_,4000)  = #{proInstApplyEmpId}
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name like '%'|| #{proInstApply}||'%'
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<if test="processStatus != 6">
+								<![CDATA[
+								AND run.status = #{processStatus}
+								]]>
+							</if>
+							<if test="processStatus == 6">
+								<![CDATA[
+									AND ( run.status = #{processStatus}
+								]]>
+								<![CDATA[
+									or run.status = 2  AND dbms_lob.substr(var4.TEXT_,4000)  = '0' )
+								]]>
+								
+							</if>
+						</if>
+						<if test="assigneeUser != null ">
+							AND checkUser.name = #{assigneeUser}
+						</if>
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+					
+				) RES
+		) SUB
+	<![CDATA[
+    	WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}   
+    ]]>
+  </select>
+  
+  <select id="getLeaveCount" parameterType="map" resultType="Integer">
+  		select count(*) from (
+			SELECT DISTINCT RES.*,
+			                DEF.NAME_ as PROCESS_DEFNAME_,
+			                u.name as START_USER_NAME_,
+			                run.status as PROCESS_STATUS_,
+			                run.PROCESS_INST_NAME,
+			                checkUser.NAME as CHECKUSERNAME,
+			                ruart.id_ as changeId,
+			                ruart.name_ as act_name_,
+			                ruart.assignee_,
+			                decode(dbms_lob.substr(var1.TEXT_, 4000),
+			                       '1','薪酬福利','2','公司层面','3','主管上级','4','工作环境','5','个人发展','6','工作内容', '7','家庭/身体等因素','8','试用期不合格','9',
+			                       '业绩不达标','10','解聘','11', '协商解除','12','自动离职','13','体系调动',
+			                dbms_lob.substr(var1.TEXT_, 4000)) as LEAVE_RESION,
+			                dbms_lob.substr(var2.TEXT_, 4000) as DETAIL_RESION,
+			                dbms_lob.substr(var3.TEXT_, 4000) as EMP_ID
+			  from ACT_HI_PROCINST RES
+			 INNER JOIN ACT_RE_PROCDEF DEF
+			    ON RES.PROC_DEF_ID_ = DEF.ID_
+			  LEFT JOIN auth_user u
+			    on RES.START_USER_ID_ = u.account
+			  LEFT JOIN bpm_process_run run
+			    on RES.PROC_INST_ID_ = run.process_inst_id
+			  LEFT JOIN ACT_RU_EXECUTION rutask
+			    on RES.PROC_INST_ID_ = rutask.PROC_INST_ID_
+			   and rutask.is_active_ = 1
+			   and rutask.is_scope_ = 1
+			  left join act_ru_task ruart
+			    on rutask.id_ = ruart.execution_id_
+			  LEFT JOIN auth_user checkUser
+			    on ruart.assignee_ = checkUser.account
+			  left join ACT_HI_VARINST  var1 on RES.PROC_INST_ID_ = var1.proc_inst_id_ and var1.name_ in ('leaveResionByHr','leaveResion','leaveResionHr') 
+	          left join ACT_HI_VARINST  var2 on RES.PROC_INST_ID_ = var2.proc_inst_id_ and var2.name_ in ('detailResionByHr','detailResion','detailResionHr')
+			  left join ACT_HI_VARINST var3  on RES.PROC_INST_ID_ = var3.proc_inst_id_ and var3.name_='userAccount'
+			  left join ACT_HI_VARINST  var4 on RES.PROC_INST_ID_ = var4.proc_inst_id_ and var4.name_='endTheProcessAudi'
+					<where>
+						 AND RES.PROC_DEF_ID_ like 'L-Leave-Application%'
+						<if test="sapProcessIds != null and sapProcessIds !=''">
+							AND DEF.KEY_ NOT IN 
+							<foreach collection="sapProcessIds" index="index" item="item" open="(" separator="," close=")">  
+					        	#{item}  
+					    	</foreach>
+						</if>
+						<if test="startCreateTime != null and startCreateTime !=''">
+							<![CDATA[ 
+							AND RES.START_TIME_ >=  #{startCreateTime}
+							]]>
+						</if>
+						<if test="endCreateTime != null and endCreateTime !=''">
+							<![CDATA[
+							AND RES.START_TIME_ <= #{endCreateTime}
+							]]>
+						</if>
+						<if test="startFinishTime != null and startFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ >= #{startFinishTime}
+							]]>
+						</if>
+						<if test="endFinishTime != null and endFinishTime !=''">
+							<![CDATA[
+							AND RES.END_TIME_ <= #{endFinishTime}
+							]]>
+						</if>
+						<if test="proInstId != null and proInstId !=''">
+							<![CDATA[
+							AND RES.PROC_INST_ID_ = #{proInstId}
+							]]>
+						</if>
+						<if test="proInstApplyEmpId != null and proInstApplyEmpId !=''">
+							AND dbms_lob.substr(var3.TEXT_,4000)  = #{proInstApplyEmpId}
+						</if>
+						<if test="proInstApply!= null and proInstApply!=''">
+							<![CDATA[
+							AND  u.name like '%'|| #{proInstApply}||'%'
+							]]>
+						</if>
+						<if test="finished != null and finished == 'false'">
+							AND RES.END_TIME_ IS NULL
+						</if>
+						<if test="finished != null and finished == 'true'">
+							AND RES.END_TIME_ IS NOT NULL
+						</if>
+						<if test="processStatus != null and processStatus !=''">
+							<if test="processStatus != 6">
+								<![CDATA[
+								AND run.status = #{processStatus}
+								]]>
+							</if>
+							<if test="processStatus == 6">
+								<![CDATA[
+									AND ( run.status = #{processStatus}
+								]]>
+								<![CDATA[
+									or run.status = 2  AND dbms_lob.substr(var4.TEXT_,4000)  = '0' )
+								]]>
+								
+							</if>
+						</if>
+						<if test="assigneeUser != null ">
+							AND checkUser.name = #{assigneeUser}
+						</if>
+						AND (
+							EXISTS (
+								SELECT
+									LINK.USER_ID_
+								FROM
+									ACT_HI_IDENTITYLINK LINK
+								<where>
+									<if test="assignee != null">
+										AND USER_ID_ = #{assignee}
+									</if>
+									AND LINK.PROC_INST_ID_ = RES.ID_
+								</where>
+							)
+						)
+					</where>
+  		)
+  </select>
+  
+  <!-- 获取历史的流程定义 -->
+  <select id="getProcessDefineId" parameterType="String" resultType="String">
+  		select proc_def_id_ from act_hi_procinst where proc_inst_id_ = #{procId}
+  </select>
+  
+  <!-- 根据流程定义ID及类型查找相应的节点候选人 -->
+  <select id="getCandidateEmpIds" parameterType="map" resultType="String">
+  	select empIds from candidate_user where procDefId=#{procDefId} and type=#{type}
+  </select>
+  
+  <!-- 查询所有候选人 -->
+  <select id="getAllCandidateUser" resultMap="candidate">
+  	select * from candidate_user
+  </select>
+  <select id="getAllCandidateCount" resultType="Integer">
+  	select count(*) from candidate_user
+  </select>
+  
+  <!-- 根据id更新候选人信息 -->
+  <update id="editCandidateInfoById" parameterType="map">
+  	update candidate_user set procDefId = #{procDefId},type = #{type},empIds = #{empIds} where id = #{id}
+  </update>
+  
+  <!-- 添加候选人信息 -->
+  <insert id="addCandidateInfo" parameterType="map">
+  	insert into candidate_user (procDefId,type,empIds) values (#{procDefId},#{type},#{empIds})
+  </insert>
+  
+  <!-- 根据id删除候选人信息 -->
+  <delete id="delCandidateInfoById" parameterType="map">
+  	delete from candidate_user where id in 
+		<foreach collection="ids" index="index" item="item" open="(" separator="," close=")">  
+			#{item}  
+		</foreach>
+  </delete>
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.TypeDetailDao">
+  
+  <sql id="columns">
+    ID,TYPE_NAME, NAME, DESCRIPTION,
+	STATUS, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.TypeDetail" id="result">
+	<id property="id" column="ID"/>
+	<result property="typeName" column="TYPE_NAME"/>
+	<result property="name" column="NAME"/>
+	<result property="description" column="DESCRIPTION"/>
+	<result property="status" column="STATUS"/>
+	<result property="remark" column="REMARK"/>
+	<result property="createBy" column="CREATE_BY"/>
+	<result property="createTime" column="CREATE_TIME"/>
+	<result property="updateBy" column="UPDATE_BY"/>
+	<result property="updateTime" column="UPDATE_TIME"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.TypeDetail">
+    insert into TYPE_DETAIL (<include refid="columns"/>) values (
+    #{nextId},
+    #{typeName},
+    #{name},
+    #{description},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.TypeDetail">
+    update TYPE_DETAIL
+    <set>
+      <if test="typeName != null">
+        TYPE_NAME = #{typeName},
+      </if>
+      <if test="name != null">
+        NAME = #{name},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description},
+      </if>
+      <if test="status != null">
+        STATUS = #{status},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark},
+      </if>
+      UPDATE_BY = #{currentAccount},
+      UPDATE_TIME = #{currentTime}
+    </set>
+    where ID = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete TYPE_DETAIL where ID = #{_parameter}
+  </delete>
+
+  <select id="getAllById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from TYPE_DETAIL
+	where ID = #{_parameter}
+  </select>
+
+  <select id="getPageById" parameterType="Integer" resultMap="result">
+    select * from ( select a.*, ROWNUM rnum from (
+      select <include refid="columns"/> from TYPE_DETAIL
+      where ID = #{_parameter}
+    ) a where ROWNUM &lt; #{lastRow}) where rnum  &gt;= #{firstRow}
+  </select>
+  
+  <select id="getPageCountById" parameterType="Integer" resultType="int">
+    select count(*) from TYPE_DETAIL
+    where ID = #{_parameter}
+  </select>  
+
+	
+	
+	 <select id="getPage" parameterType="map" resultMap="result">
+    	select * from ( select detail.*, ROWNUM rnum from (
+      	select <include refid="columns"/> from TYPE_DETAIL  
+      <where> 
+      		and  1=1
+      	<if test="typeName != null">
+			and	TYPE_NAME like  '%'|| #{typeName}|| '%'
+      	</if>
+		<if test="name != null">
+			and	NAME like  '%'|| #{name}|| '%'
+      	</if>
+      	<if test="description != null">
+        	and DESCRIPTION like  '%'|| #{description}||'%'
+      	</if>
+      </where>
+    ) detail left join hardware_type type on type.TYPE_NAME=detail.TYPE_NAME 
+    where ROWNUM &lt; #{lastRow}) where rnum  &gt;= #{firstRow}
+  </select>
+  
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from TYPE_DETAIL detail left join hardware_type type on type.TYPE_NAME=detail.TYPE_NAME
+    <where>
+    	and 1=1
+    	<if test="typeName != null">
+			and	detail.TYPE_NAME like  '%'|| #{typeName}|| '%'
+      	</if>
+		<if test="name != null">
+			and	detail.NAME like  '%'|| #{name} || '%'
+      	</if>
+      	<if test="description != null">
+        	and detail.DESCRIPTION like  '%'|| #{description} || '%'
+      	</if>
+      </where>
+  </select>  
+	
+
+  <select id="getById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from TYPE_DETAIL
+	where ID = #{_parameter}
+  </select>
+
+</mapper>

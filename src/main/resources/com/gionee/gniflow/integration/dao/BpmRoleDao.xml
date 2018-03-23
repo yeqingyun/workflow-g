@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.BpmRoleDao">
+  
+  <sql id="columns">
+    ID, NAME, DESCRIPTION,
+	STATUS, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.BpmRole" id="result">
+	<id property="id" column="ID"/>
+	<result property="name" column="NAME"/>
+	<result property="description" column="DESCRIPTION"/>
+	<result property="status" column="STATUS"/>
+	<result property="remark" column="REMARK"/>
+	<result property="createBy" column="CREATE_BY"/>
+	<result property="createTime" column="CREATE_TIME"/>
+	<result property="updateBy" column="UPDATE_BY"/>
+	<result property="updateTime" column="UPDATE_TIME"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.BpmRole">
+    insert into BPM_ROLE (<include refid="columns"/>) values (
+    #{nextId},
+    #{name},
+    #{description},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.BpmRole">
+    update BPM_ROLE
+    <set>
+      <if test="name != null">
+        NAME = #{name},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description},
+      </if>
+      <if test="status != null">
+        STATUS = #{status},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark},
+      </if>
+      UPDATE_BY = #{currentAccount},
+      UPDATE_TIME = #{currentTime}
+    </set>
+    where ID = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete from BPM_ROLE  where ID = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from BPM_ROLE
+	<where>
+        <if test="name != null">
+          and name like '%'|| #{name}||'%'
+        </if>
+        <if test="description != null">
+       	 and DESCRIPTION like '%'|| #{description}||'%'
+	  	</if>
+	</where>
+  </select>
+  
+    <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select <include refid="columns"/> from BPM_ROLE
+      <where>
+        <if test="name != null">
+          and name like '%'|| #{name}||'%'
+        </if>
+        <if test="description != null">
+       	 and DESCRIPTION like '%'|| #{description}||'%'
+	  	</if>
+      </where>
+    )RES ) SUB WHERE SUB.rnk &gt;= #{firstRow} AND SUB.rnk &lt; #{lastRow}
+  </select>
+  
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from BPM_ROLE
+    <where>
+        <if test="name != null">
+          and name like '%'|| #{name}||'%'
+        </if>
+        <if test="description != null">
+       	 and DESCRIPTION like '%'|| #{description}||'%'
+	  	</if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from BPM_ROLE
+	where id = #{_parameter}
+  </select>
+  
+  <select id="getUserRoles" parameterType="Integer" resultMap="result">
+	select b.* from bpm_user_role a left join bpm_role b on a.role_id = b.id
+	where a.user_id = #{_parameter} and b.status > -1
+  </select>
+  <select id="getReportUserRoles" parameterType="Integer" resultMap="result">
+	select b.* from report_user_role a left join report_role b on a.role_id = b.id
+	where a.user_id = #{_parameter} and b.status > -1
+  </select>
+
+  <select id="getByRoleName" parameterType="String" resultMap="result">
+	select <include refid="columns"/> from BPM_ROLE
+	where NAME = #{roleName}
+  </select>
+
+</mapper>

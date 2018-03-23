@@ -1,0 +1,129 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="viewProcessImage-${rand}" data-options="" align='center' style="cursor: pointer;" class="easyui-panel" title="流程图">
+	<image class="img" src='workspace/graphProcessDefinition?processInstanceId=${RequestParameters.processInstanceId}&randId=${rand}'  style="max-width:97%"/>
+	<image class="img" src='${base}image/instructions.jpg' align="center"/>
+	<div>&nbsp;&nbsp;&nbsp;</div>
+	<input type="hidden" id="processDefineId"/>
+</div>
+<br/>
+
+<div id="viewHisTaskGrid-${rand}"></div>
+<br/>
+
+<div id="viewTruntodo-${rand}">
+<div>
+	<table id="truntodoTable" class="formtable" cellspacing="1" cellpadding="0">
+		<tr>
+			<td class="formtable_td_key">任务编号</td>
+			<td class="formtable_td_key">节点名称</td>
+			<td class="formtable_td_key">转办人 </td>
+			<td class="formtable_td_key">转办原因 </td>
+			<td class="formtable_td_key">转办日期</td>
+		</tr>
+		<tbody id="truntodoTbody"></tbody>
+	</table>
+</div>
+</div>
+
+  <div id="viewHisFormContent-${rand}" class="easyui-panel" title="流程表单" style="padding:10px;"></div>
+<br/>
+
+<script type="text/javascript">
+$('#viewProcessImage-${rand}').bind('click',function(){
+	if($('#processDefineId').val() == '"L-Project-Human-Input-Account"'){
+		if($('.img').is(":hidden")){
+			$('.img').show();
+		}else{
+			$('.img').hide();
+		}
+	}
+});
+//默认隐藏流程文档会签的历史流程图
+$.post("onlineFlow/isOffSign.josn",{
+	pocessId:${RequestParameters.processInstanceId}
+},function(data){
+	$('#processDefineId').val(data);
+	if('"L-Project-Human-Input-Account"' == data){
+		$('.img').hide();
+	}
+});
+
+$('#viewHisTaskGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'workspace/viewHistoryTask.json?processInstanceId=' + ${RequestParameters.processInstanceId},
+  columns:[[
+	{field:'processInstanceId',title:'流程实例编号',width:80,hidden:true},
+	{field:'processInstanceName',title:'实例名称',width:100},
+	{field:'proStep',title:'流程步骤',width:80},
+	{field:'taskId',title:'任务编号',width:180},
+	{field:'id',title:'编号',checkbox:false,hidden:false},
+	{field:'processDefinitionId',title:'流程定义',hidden:true,width:200},
+	{field:'activityName',title:'节点名称',width:150},
+	{field:'userAccount',title:'账号',width:120},
+	{field:'userName',title:'处理人',width:80},
+	{field:'startTime',title:'审批开始时间',width:200},
+	{field:'endTime',title:'审批结束时间',width:200},
+	{field:'durationInMillis',title:'处理周期(小时)',width:100,
+		formatter: function(value,row,index){
+			var value = row.durationInMillis;
+   			var day = value/1000/3600;
+    		return day.toFixed(2);
+		}
+	},
+	{field:'operate',title:'操作',width:120,
+		formatter: function(value,row,index){
+			if (row.endTime == null && row.userAccount != '${appuser.account}'){
+				return "&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='remindersTask${rand}(\""+ row.id+"\");'>催办</a>";
+			}
+		}
+	}
+  ]],
+  title:'列表',
+  nowrap: true,       
+  border : true,
+  pagination:false,
+  pageNumber : 1,
+  pageSize : 20,
+  onLoadSuccess : graphTrace${rand}
+});
+
+//获取转办记录
+$(function(){
+		$("#viewTruntodo-${rand}" ).css("display", "none");
+		$.post("workspace/getTruntodoInf.json",{
+			processInstanceId:${RequestParameters.processInstanceId}
+		},
+		function(data){
+			if(data!=null&&data.length>0){
+				$("#viewTruntodo-${rand}" ).css("display", "block");
+				$("#truntodoTbody").empty();
+				$("#viewTruntodo-${rand}" ).append("<br/>");
+				for(var i=0;i<data.length;i++){
+					$("#truntodoTbody").append("<tr><td class='formtable_td_value'>"+data[i].taskId+"</td><td class='formtable_td_value'>"+data[i].taskName+"</td><td class='formtable_td_value'>"+data[i].ownerName+"("+data[i].owner+")"+"</td><td class='formtable_td_value'>"+data[i].suggestion+"</td><td class='formtable_td_value'>"+data[i].createTime+"</td></tr>");
+				}
+			}
+		});
+});
+
+function graphTrace${rand}(){
+	$('#viewProcessImage-${rand}').panel('refresh');
+	$('#viewHisFormContent-${rand}').panel('refresh','sysprocess/task/viewHisform.html?processInstanceId=' + ${RequestParameters.processInstanceId});
+}
+
+function remindersTask${rand}(id){
+	$.messager.confirm('信息提示', '您确定需要催办吗?', function(r){
+		$.getJSON("workspace/remindersTask.html", {
+	        taskId: id
+	    },
+	    function(data) {
+	        $.messager.alert('提示', '<font size=\"2\" color=\"#666666\"><strong>' + data.msg + '</strong></font>', 'infoSunnyIcon', function() {
+	            //alert('点击确定按钮才关闭');//
+	        });
+	    });
+	});
+}
+
+</script>
+<#include "/common/foot.ftl">

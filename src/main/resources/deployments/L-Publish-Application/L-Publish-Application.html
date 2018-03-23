@@ -1,0 +1,650 @@
+<#include "/common/head.html">
+<!-- 展示表单 -->
+<#if processSteps??>
+    <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+				  	
+				  	<tr>
+		  	  		<td class="formtable_td_key">项目名：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			${(steps.vars["ProgramName"])!""}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">版本号：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			${(steps.vars["ProgramVersion"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">开发代码提交：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input type="radio"     <#if steps.vars["isCommit"] == '2'>checked</#if>  disabled  />否
+	                    <input type="radio"     <#if steps.vars["isCommit"] == '1'>checked</#if>  disabled  />是
+		  	  		</td>
+		  	  		
+		  	  	<td class="formtable_td_key" colspan="1">负责人</td>
+				<td class="formtable_td_value" colspan="3">
+				 ${(steps.vars["developerSign"])!""}
+				</td>
+		  	  		
+		  	  	</tr>
+		  	  	
+		  	  <tr>
+		  	  	<td class="formtable_td_key"  colspan="8">更新目的，功能描述</td>
+		  	  	</tr>
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="8">
+				<span class="span_wordwrap">${(steps.vars["pubDescribe"])!""}</span>
+				</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key" colspan="8">部署说明（如配置信息修改，数据库修改信息，增量文件路径等）</td>
+		  	  	</tr>
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="8">
+				<span class="span_wordwrap">${(steps.vars["fileDescribe"])!""}</span>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	
+				  	  	
+		
+		               <#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="7">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	 
+	   </#if>
+	   <!--测试总结 -->
+	   
+	   	    <#if steps.key == 'testSummary'>
+				  	
+			 <tr>
+		  	  	<td class="formtable_td_key" rowspan="3">测试总结</td>
+				<td class="formtable_td_key" >Build号路径</td>
+				<td class="formtable_td_value" colspan="6">
+				${(steps.vars["bulidUrl"])!""}
+				
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	
+		  	  	
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="7">
+				<span class="span_wordwrap">${(steps.vars["testDesc"])!""}</span>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">测试是否通过：</td>
+		  	  		<td class="formtable_td_value"  colspan="2">
+		  	  			<input type="radio"        <#if steps.vars["isPass"] == '2'>checked</#if>  disabled  />否
+	                    <input type="radio"        <#if steps.vars["isPass"] == '1'>checked</#if>  disabled  />是
+		  	  		</td>
+		  	  		
+		  	  	<td class="formtable_td_key" colspan="1">负责人</td>
+				<td class="formtable_td_value" colspan="3">
+				${(steps.vars["testSign"])!""}
+				</td>
+		  	  	</tr>
+		  	  	
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="6">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	 
+	   </#if>
+
+ <!--部门经理审核-->	   
+<#if steps.key == 'deptLeaderMultiInstTask'>
+		   
+		    <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+         
+         
+          <tr>
+		  	  	<td class="formtable_td_key" rowspan="2">经理/主管审核</td>
+				 <td class="formtable_td_key">是否同意：</td>
+		 <td class="formtable_td_value"  colspan="1">
+		  	  			<input type="radio"    <#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"]	 == '1'>checked</#if>  disabled />否
+	                    <input type="radio"    <#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"]	 == '0'>checked</#if>  disabled />是
+		 </td>
+		 <td class="formtable_td_key" colspan="1" align="centre">审核人（经理）:</td>
+		 <td class="formtable_td_value" colspan="1" align="centre">
+		  ${muliSteps.vars["${muliSteps.assignee}checkName"]!""}
+		 </td> 
+		  <td class="formtable_td_key" colspan="1" align="centre">审核时间:</td>
+		 <td class="formtable_td_value" colspan="2" align="centre">
+          ${muliSteps.vars["${muliSteps.assignee}checkTime"]!""}		
+           </td> 
+		 </tr>
+		
+		
+		<tr>
+				<td class="formtable_td_value" colspan="7">
+				<span class="span_wordwrap">${muliSteps.vars["${muliSteps.assignee}deptLeaderAdvice"]!""}</span>
+				</td>
+		 </tr>
+		 
+		 <#if muliSteps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="6">
+				  	  				<#list muliSteps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+				  	  	
+		  	  	</#list> 
+         </#if> 
+ 			  	  	
+				  	 
+				  	  	
+</#if>
+	   <!--运维工程师发布 -->
+	     <#if steps.key == 'productDeployeeMultiInstTask'>
+         
+           <#if steps.multiInstances??>
+         <#list steps.multiInstances as muliSteps>
+	        <tr>
+		  	  	<td class="formtable_td_key" rowspan="2">版本发布</td>
+				
+				<td class="formtable_td_key">线上项目时间</td>
+				<td class="formtable_td_value" colspan="1">
+				${muliSteps.vars["${muliSteps.assignee}deployeeTime"]!""}
+				</td>
+				
+				<td class="formtable_td_key">可回滚项目时间</td>
+				<td class="formtable_td_value" colspan="1">
+				${muliSteps.vars["${muliSteps.assignee}lastDeployeeTime"]!""}
+				</td>
+				
+				<td class="formtable_td_key">责任人</td>
+				<td class="formtable_td_value" colspan="1">
+				${muliSteps.vars["${muliSteps.assignee}deployeeSign"]!""}
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="7">
+				<span class="span_wordwrap">${muliSteps.vars["${muliSteps.assignee}deployeeDesc"]!""}</span>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	  <#if muliSteps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="6">
+				  	  				<#list muliSteps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+				  	  	
+		  	  	</#list> 
+         </#if> 
+         
+		  	
+				  	 
+				  	 	
+		  	  	
+
+	</#if>
+
+	</#list>
+	</table>	
+</#if>
+
+
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" value="[${appuser.account},${appuser.name}]代码发布申请流程"/>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  <tr>
+		  	  		<td class="formtable_td_key">项目名：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input    class="easyui-validatebox" type="text"  name="fp_ProgramName" data-options="required:true"  /> 
+		  	  		</td>
+		  	  		<td class="formtable_td_key">版本号：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input    class="easyui-validatebox" type="text"  name="fp_ProgramVersion" data-options="required:true"  /> 
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">开发代码提交：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input id="account${rand}" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	  			<input   type="hidden" name="fp_assignee" value="jiangzl,00000010"/> 
+		  	  			
+		  	  			<input type="radio"   name="fp_isCommit" value="2" />否
+	                    <input type="radio"   name="fp_isCommit" value="1"  checked="checked" />是
+		  	  		</td>
+		  	  		
+		  	  		<td class="formtable_td_key" colspan="1">负责人</td>
+				<td class="formtable_td_value" colspan="3">
+				 <input class='easyui-validatebox' type='text'  name='fp_developerSign' style="width:80px" data-options="required:true" value="${appuser.name}" readonly="readonly"/>
+				</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key"  colspan="8">更新目的，功能描述</td>
+		  	  	</tr>
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="8">
+				<textarea
+						 name="fp_pubDescribe" class="easyui-validatebox"   
+						style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+				</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key" colspan="8">部署说明（如配置信息修改，数据库修改信息，增量文件路径等）</td>
+		  	  	</tr>
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="8">
+				
+					<textarea
+						 name="fp_fileDescribe" class="easyui-validatebox"   
+						style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+				
+				</td>
+		  	  	</tr>
+		
+			<tr>
+		  	        <td class="formtable_td_key">测试工程师：
+				  	<td class="formtable_td_value" colspan="7">
+				  		 <input id="accepterTrainner${rand}" type="hidden" value="" name="fp_testassignee" style="width:80px"/>
+				  		 <input id="accepterNameTrainner${rand}" class="easyui-validatebox" name="fp_accepterNameTrainner" data-options="required:true"     readonly="readonly"/>
+				  		 <a id="openOrgWinTrainnerBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+				  	</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+</div>
+		
+<!--  选择测试人员-->
+<div id="orgWinTrainner-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserTrainnerEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserTrainnerWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersTrainner${rand}"></table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">	
+//选择测试人员
+//弹出选择选择测试人员窗口
+$('#openOrgWinTrainnerBtn${rand}').bind('click', function(){
+	$('#orgWinTrainner-${rand}').dialog('open');	
+});
+
+
+//init org win
+$(function(){
+
+   //init UserGrid 
+     $('#usersTrainner${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:57742
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  rownumbers:true
+	 
+	
+
+	});
+	//init UserGrid 
+	  
+	  
+});
+
+//选择用户完成事件
+function selectUserTrainnerEnd(){
+	var row = $('#usersTrainner${rand}').datagrid('getSelected');
+	if (row) {
+	    $('#accepterTrainner${rand}').val(row.account);
+	    $('#accepterNameTrainner${rand}').val(row.name);
+	       		
+	    $('#accepterNameTrainner${rand}').validatebox('validate');
+	       		
+	    $('#orgWinTrainner-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+function  closeSelectUserTrainnerWin(){
+	$('#orgWinTrainner-${rand}').dialog('close');	
+}
+
+</script>	
+
+
+
+	</#if>
+
+<!--测试总结 -->
+
+	<#if currentStep == 'testSummary'>
+		<div id="testSummary">
+		  <form id="testSummaryForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="testSummaryFormTable" class="formtable" cellspacing="1" cellpadding="0">
+	        <tr>
+		  	  	<td class="formtable_td_key" rowspan="4">测试总结</td>
+				<td class="formtable_td_key" >Build号路径</td>
+				<td class="formtable_td_value" colspan="6">
+				<input    class="easyui-validatebox" type="text"   style="width:600px"   name="fp_bulidUrl" data-options="required:true"    mobile="Build号路径" /> 
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  
+		  	  	
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="7">
+				<textarea
+						 name="fp_testDesc" class="easyui-validatebox"   
+						style="font-size: 12px; width: 700px; height: 50px;" data-options="required:true"    mobile="总结" ></textarea>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  	
+		  	  	<td class="formtable_td_key">测试是否通过：</td>
+		  	  		<td class="formtable_td_value"  colspan="2">
+		  	  			<input type="radio"   name="fp_isPass" value="2"    mobile="测试是否通过_否" />否
+	                    <input type="radio"   name="fp_isPass" value="1"  checked="checked"   mobile="测试是否通过_是" />是
+		  	  		</td>
+		  	  		
+		  	  		
+		  	  	<td class="formtable_td_key" colspan="1">负责人</td>
+				<td class="formtable_td_value" colspan="3">
+				 <input class='easyui-validatebox' type='text'  name='fp_testSign' style="width:80px" data-options="required:true" value="${appuser.name}" readonly="readonly"   mobile="负责人" />
+				</td>
+				
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  	 <td class="formtable_td_key">版本发布：
+				  	<td class="formtable_td_value" colspan="6">
+				  		 <input id="accepterDeployee${rand}" type="hidden" value="" name="fp_deployeeassignee" style="width:80px"/>
+				  		 <input id="accepterNameDeployee${rand}" class="easyui-validatebox" name="fp_accepterNameDeployee" data-options="required:true"    readonly="readonly"    selectUserUrl="bpmRole/users.json?id=57742"  nextAssigneeAttrName="fp_deployeeassignee"    mobile="版本发布" />
+				  		 <a id="openOrgWinDeployeeBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+				  	</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+		</div>
+
+<!--  选择版本发布人员-->
+<div id="orgWinDeployee-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserDeployeeEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserDeployeeWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersDeployee${rand}"></table>
+		</div>
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">	
+//选择版本发布人员
+//弹出选择版本发布窗口
+$('#openOrgWinDeployeeBtn${rand}').bind('click', function(){
+	$('#orgWinDeployee-${rand}').dialog('open');	
+});
+
+
+//init org win
+$(function(){
+
+   //init UserGrid 
+     $('#usersDeployee${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:57742
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:false,
+	  rownumbers:true
+	 
+	
+
+	});
+	//init UserGrid 
+	  
+	  
+});
+
+//选择用户完成事件
+function selectUserDeployeeEnd(){
+	var rowDeployee = $('#usersDeployee${rand}').datagrid('getSelections');
+	if (rowDeployee!=null&&rowDeployee.length>0) {
+	var names="";
+	var accounts="";
+	for(var i=0;i<rowDeployee.length;i++){
+	       names+=rowDeployee[i].name+",";
+	       accounts+=rowDeployee[i].account+",";
+	    }
+	    
+	     if ( names != null&&names.length > 0 ) {
+       		names = names.substring(0,names.length-1);
+          }
+	    
+	     if ( accounts != null&&accounts.length > 0 ) {
+       		accounts = accounts.substring(0,accounts.length-1);
+          }
+          
+	    $('#accepterDeployee${rand}').val(accounts);
+	    $('#accepterNameDeployee${rand}').val(names);
+	       		
+	    $('#accepterNameDeployee${rand}').validatebox('validate');
+	       		
+	    $('#orgWinDeployee-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+   
+function  closeSelectUserDeployeeWin(){
+	$('#orgWinDeployee-${rand}').dialog('close');	
+}
+
+</script>	
+
+	</#if>
+
+<!--部门经理审核 -->
+		 <#if currentStep == 'deptLeaderMultiInstTask'>
+		<div id="deptLeaderMultiInstTask">
+			<form id="deptLeaderMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+			
+		<table id="deptLeaderMultiInstTaskTable" class="formtable" cellspacing="1" cellpadding="0">
+		 <tr>
+		  	  	<td class="formtable_td_key" rowspan="2">经理/主管审核</td>
+				 <td class="formtable_td_key">是否同意：</td>
+		 <td class="formtable_td_value"  colspan="1">
+		  	  			<input type="radio" mobile="是否同意_否"  name="fp_${appuser.account}relevantdepartmentsSignAudi" value="1" />否
+	                    <input type="radio"   mobile="是否同意_是"  name="fp_${appuser.account}relevantdepartmentsSignAudi" value="0"  checked="checked" />是
+		 </td>
+		 <td class="formtable_td_key" colspan="1" align="centre">审核人（经理）:</td>
+		 <td class="formtable_td_key" colspan="1" align="centre">
+		  <input class="easyui-validatebox" type="text"   mobile="审核人"  name="fp_${appuser.account}checkName"  style="width:80px" data-options="required:true"     readonly="readonly"  value="${appuser.name}"/>
+		 </td> 
+		  <td class="formtable_td_key" colspan="1" align="centre">审核时间:</td>
+		 <td class="formtable_td_key" colspan="2" align="centre">
+		  <input class="easyui-validatebox" type="text" id="curdate${rand}" timeEditor="1" mobile="审核时间"  name='fp_${appuser.account}checkTime' style="width:150" data-options="required:true"     readonly="readonly"/>
+		 </td> 
+		 </tr>
+		
+		
+		<tr>
+		
+				<td class="formtable_td_value" colspan="7">
+				<textarea
+						 name="fp_${appuser.account}deptLeaderAdvice" class="easyui-validatebox"   mobile="意见" 
+						style="font-size: 12px; width: 700px; height: 30px;" ></textarea>
+				</td>
+		 </tr>
+		  	  	
+	        </table>
+		        
+			</form>
+			
+			<script type="text/javascript">
+	function current(){ 
+    var d=new Date();
+    str=''; 
+    str +=d.getFullYear()+'-'; //获取当前年份 
+    str +=d.getMonth()+1+'-'; //获取当前日期（0——11） 
+    str +=d.getDate(); 
+    str +=' '; 
+    str +=d.getHours()+':'; 
+    str +=d.getMinutes(); 
+    return str; 
+    }  
+ 
+$(function(){
+$("#curdate${rand}").val(current()) ;
+});
+	
+
+</script>
+		</div>
+
+	</#if>
+	
+	<!--运维工程师发布 -->
+		<#if currentStep == 'productDeployeeMultiInstTask'>
+		<div id="productDeployeeMultiInstTask">
+		  <form id="productDeployeeMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="productDeployeeMultiInstTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+	        <tr>
+		  	  	<td class="formtable_td_key" rowspan="2">版本发布</td>
+				
+				<td class="formtable_td_key">线上项目时间</td>
+				<td class="formtable_td_value" colspan="1">
+				<input  class="easyui-validatebox"   mobile="线上项目时间" timeEditor="4" type="text" name="fp_${appuser.account}deployeeTime" data-options="required:true"/>
+				</td>
+				
+				<td class="formtable_td_key">可回滚项目时间</td>
+				<td class="formtable_td_value" colspan="1">
+				<input  class="easyui-validatebox"   type="text" timeEditor="4" mobile="可回滚项目时间" name="fp_${appuser.account}lastDeployeeTime"/>
+				</td>
+				
+				<td class="formtable_td_key">责任人</td>
+				<td class="formtable_td_value" colspan="2">
+				 <input class='easyui-validatebox' type='text'  mobile="责任人"  name='fp_${appuser.account}deployeeSign' style="width:80px" data-options="required:true" readonly="readonly"    value="${appuser.name}"/>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  	
+		  	  	
+		  	  	<tr>
+				<td class="formtable_td_value" colspan="7">
+				<textarea
+						 name="fp_${appuser.account}deployeeDesc" class="easyui-validatebox"    mobile="意见"
+						style="font-size: 12px; width: 600px; height: 50px;" ></textarea>
+				</td>
+		  	  	</tr>
+		  	  	
+		  	  </table>
+			</form>
+		</div>
+
+	</#if>
+
+</#if>
+
+<#include "/common/foot.html">
+
+
+  
+

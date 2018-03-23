@@ -1,0 +1,266 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap">项目名称：</td>
+		   				<td> 
+    			 			<input id="projectName-${rand}" style="width:150px;" class="easyui-textbox"  name="projectName" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">负责人编号：</td>
+		    			<td> 
+							<input id="userId-${rand}" style="width:150px;" class="easyui-textbox"  name="userId" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">负责人：</td>
+		   				<td>   
+    			 			<input id="userName-${rand}" style="width:150px;" class="easyui-textbox"  name="userName" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">状态：</td>
+		   				<td> 
+    			 			<select id="status-${rand}" style="width:150px;" class="easyui-combobox"  name="status">
+    			 				<option value="">请选择</option>
+    			 				<option value="0">启用</option>
+    			 				<option value="-1">停用</option>
+    			 			</select>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="projectGrid-${rand}"></div>
+	</div>
+ </div>
+
+<div id="ProjectDialog${rand}" class="easyui-dialog" data-options="closed:true">
+	<div  style="padding:10px 10px;">
+		<form id="addProjectForm${rand}" method="post">
+			<table>
+				<tr>
+					<td width="120" align="center">项目名称:</td>
+					<td><input id="input_projectName_${rand}" class="easyui-validatebox"  data-options="required:true" name="projectName" style="width:200px;"></td>
+					<td width="120" align="center">状态:</td>
+					<td><input id="input_status_${rand}" style="width:150px;" class="easyui-combobox"  name="status" data-options="required:true,valueField: 'value',textField: 'text',
+									data:[{text:'',value:''},
+										{text:'启用',value:'0'},
+										{text:'停用',value:'-1'}] "/>
+    			 				
+    			 </td>
+				</tr>
+				<tr>
+					<td width="120" align="center">负责人编号:</td>
+					<td>
+						<input id="input_id_${rand}" type="hidden" name="id" />
+						<input id="user_id_${rand}" class="easyui-validatebox"  data-options="required:true" name="userId" style="width:150px;">
+					</td>
+					<td width="120" align="center">负责人:</td>
+					<td><input id="input_name_${rand}" class="easyui-validatebox"  data-options="required:true"  name="userName" style="width:150px;"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+$(function(){
+	
+	$('#projectGrid-${rand}').datagrid({
+	  fitColumns:true,
+	  url:'project/queryPage.json',
+	  columns:[[
+		{field:'id',title:'编号',checkbox:true,width:150},
+		{field:'projectName',title:'项目名称',width:100},
+		{field:'userId',title:'负责人编号',width:100},
+		{field:'userName',title:'负责人',width:100},
+		{field:'status',title:'状态',width:100, formatter: function(value, row, index){
+			if(value == 0)
+	    		return '启用';
+	    	else 
+	    		return '<span style="color:red;">停用</sapn>'; 
+		}},
+		{field:'createBy',title:'创建人',width:100},
+		{field:'createTime',title:'创建时间',width:120},
+		{field:'updateBy',title:'更新人',width:100},
+		{field:'updateTime',title:'更新时间',width:120}
+	  ]],
+	  nowrap: true,
+	  pagination:true,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  border : true,
+	  rownumbers:true,
+	  toolbar: [{
+		text:'新增',
+		iconCls: 'icon-add',
+		handler:add${rand}
+	  },'-',{
+		text:'编辑',
+		iconCls: 'icon-edit',
+		handler:edit${rand}
+	  },'-',{
+		text:'删除',
+		iconCls: 'icon-remove',
+		handler:delete${rand}
+	  }]
+	});
+	
+	$("#user_id_${rand}").bind('change',function(){
+		 $.post("hrFlow/getHrUserInfoById.json", {
+			account : $("#user_id_${rand}").val()
+		}, function(data) {
+			if (data.success) {
+				$("#input_name_${rand}").val(data.obj[0].name);//姓名
+			}
+		}); 
+	})
+	//edit
+	function edit${rand}(){
+		var row = $('#projectGrid-${rand}').datagrid('getSelected');
+	  if (row){
+		createDialog();
+		$('#input_id_${rand}').val(row.id);
+		$('#input_projectName_${rand}').val(row.projectName);
+		$('#user_id_${rand}').val(row.userId);
+		$('#input_name_${rand}').val(row.userName);
+		//valiadate
+		$("#addProjectForm${rand}").form('validate');
+		//set title
+		$('#ProjectDialog${rand}').dialog('setTitle', '编辑项目');
+	  } else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	  }
+	}
+	
+	//delete
+	function delete${rand}(){
+		var row = $('#projectGrid-${rand}').datagrid('getSelected');
+		 if (row){
+			$.messager.confirm('删除提示','您确定要删除该条记录吗?',function(r){
+				if (r){
+					$.post('project/del.json',{id:row.id},function(result){
+						$.messager.show({
+							title: '信息提示', msg: result.message
+				        });
+						if (result.success){
+							ProjectGridRefresh();
+						} 
+				  	},'json');
+				}
+			});
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	
+	//refresh
+	function ProjectGridRefresh(){
+		$('#projectGrid-${rand}').datagrid('reload');
+	}
+	
+	//add
+	function add${rand}(){
+		createDialog();
+	}
+	
+	function createDialog(){
+		var win = $('#ProjectDialog${rand}').dialog({
+			title: '新增项目',
+			collapsible:false,
+			width: 600,
+			height: 300,
+			maximizable:true,
+			resizable:true,
+			closed: false,
+			cache: false,
+			modal: true,
+			buttons:[{
+				text : '保存',    
+				iconCls:'icon-save',    
+				handler:function(){
+					save${rand}();
+				}    
+			},{    
+				text:'重置',
+				iconCls:'icon-undo',    
+				handler:function(){
+					$('#addProjectForm${rand}').form('clear');
+				}    
+			}],
+			onClose : function(){
+				$('#addProjectForm${rand}').form('clear');
+			}
+		});
+		return win;
+	}
+	
+	//save
+	function save${rand}(){
+		var result = $("#addProjectForm${rand}").form('validate');
+		if (result) {
+			var projectName =  $('#input_projectName_${rand}').val();
+			var userName =  $('#input_name_${rand}').val();
+			var userId =  $('#user_id_${rand}').val();
+			var status =  $('#input_status_${rand}').combobox('getValue');
+			$.post('project/sav.json',
+				{
+				    id:$('#input_id_${rand}').val(),
+					projectName:projectName,
+					userId:userId,
+					userName:userName,
+					status:status
+				},
+				function(result){
+					$.messager.show({
+						title: '信息提示', msg: result.message
+					});
+					if (result.success){
+						$('#ProjectDialog${rand}').dialog('close');
+			           	ProjectGridRefresh();
+					} 
+			},'json');
+		}
+	}
+	
+	//按钮绑定事件
+	$('#search_btn-${rand}').bind('click', function(){
+	    var projectName = $('#projectName-${rand}').val();
+		var userId = $('#userId-${rand}').val();
+		var userName = $('#userName-${rand}').val();
+		var status = $('#status-${rand}').combobox('getValue');
+		
+	
+		$('#projectGrid-${rand}').datagrid('reload',
+			{
+				projectName:projectName,
+				userId:userId,
+				userName:userName,
+				status:status
+			});
+	});
+	
+	$('#reset_btn-${rand}').bind('click', function(){
+	    $('#projectName-${rand}').val('');
+		$('#userId-${rand}').val('');
+		$('#userName-${rand}').val('');
+		$('#status-${rand}').combobox('setValue','');
+	});
+	
+});
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"> 
+    window.onload = function () {
+         fileNo = getParam("fileNo");
+         fileName = decodeURI(getParam("fileName"));
+         fileSize = getParam("fileSize");
+         syId = getParam("syId");
+         syNm = decodeURI(getParam("syNm"));
+         usrId = getParam("usrId");
+         usrNm = decodeURI(getParam("usrNm"));
+         diyFolder = getParam("diyFolder");
+         callBackUrl = getParam("callBackUrl");
+         tempParams = getParam("tempParams");
+        
+		 parent.parent.afterUpload(fileNo,fileName,fileSize,syId,syNm,usrId,usrNm,diyFolder,callBackUrl,tempParams); 
+    }
+
+	function getParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return (r[2]); return "";
+    }
+</script>  
+
+</head>
+<body>
+
+</body>
+</html>

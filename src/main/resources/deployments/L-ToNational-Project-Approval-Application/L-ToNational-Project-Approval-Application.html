@@ -1,0 +1,786 @@
+<#include "/common/head.html">
+<style>
+ div.form_title{
+	 font-size: 16pt;
+	 text-align: center;
+	 font-weight: normal;
+ }
+  div.form_sub_title{
+	 font-size: 14pt;
+	 text-align: center;
+	 font-weight: 500;
+	 padding-top:7px;
+	 padding-bottom: 7px;
+ }
+</style>
+<#if processSteps??>
+<#list processSteps as steps> 
+	<#if steps.key == 'startevent1'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;" >
+		<div  class="form_title">金  立  通  信  设  备  有  限  公  司</div>
+		<div  class="form_sub_title">转国家项目立项申请表</div>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >申请部门：</td>							
+						<td  class="formtable_td_value" width="100">
+							${steps.vars["applyOrgName"]}
+						</td>
+						<td class="formtable_td_key" >客户经理：</td>							
+						<td  class="formtable_td_value"  width="100">
+							${steps.vars["clientManager"]}
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>							
+						<td  class="formtable_td_value"  width="100">
+							${steps.vars["applicationDate"]}
+						</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >源生项目型号：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["sourceProjecModel"]}
+						</td>
+						<td class="formtable_td_key" >源生项目宣传型号：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["sourceProjectConductModel"]}
+						</td>
+						<td class="formtable_td_key" >源生项目状态：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["sourceProjectState"]}
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" colspan="6" align="center">派生项目基本信息</td>	
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >派生项目型号：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["derivedProjecModel"]}
+						</td>
+						<td class="formtable_td_key" >销售区域/国家：</td>							
+						<td  class="formtable_td_value" colspan="3">
+							${steps.vars["salesArea"]}
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >预估销量：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["forecastSales"]}
+						</td>
+						<td class="formtable_td_key" >首单出货量：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["firstShipmentSales"]}
+						</td>
+						<td class="formtable_td_key" >首单出货时间：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["firstShipmentTime"]}
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >价格定位：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["pricePosition"]}
+						</td>
+						<td class="formtable_td_key" >出货方式：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["deliveryMode"]}
+						</td>
+						<td class="formtable_td_key" >产品生命周期：</td>							
+						<td  class="formtable_td_value" >
+							${steps.vars["productLifeCycle"]}
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">主要功能/卖点：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea  class="likedisabled">${steps.vars["sellingPoints"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+		</table>
+	</#if>
+	<#if steps.key == 'nmb_deptManagerAudiTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:-4px;table-layout: fixed;">
+		<tr height="0">
+		  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+				<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+				</td>
+				<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+				<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+				</td>
+				<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+				<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+				</td>
+		</tr>
+  	  	<tr>
+  	  			<td class="formtable_td_key" >拟制：</td>							
+				<td  class="formtable_td_value" colspan="2">
+					${proHisVar.vars["clientManager"]}
+				</td>
+				<td class="formtable_td_key" >审核：</td>							
+				<td  class="formtable_td_value" colspan="2">
+					${steps.vars["deptManagerSignature"]}
+				</td>
+  	  	</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+	
+	<#if steps.key == 'mb_LPDTReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >LPDT 意见：</td>
+			<td class="formtable_td_value" colspan="5" >
+				<textarea  class="likedisabled">${steps.vars["LPDTAdvice"]}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >签名：</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["LPDTSignature"]}</td>
+			<td class="formtable_td_key" >日期</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["LPDTSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+	<#if steps.key == 'mb_SLPDTReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >SLPDT 意见：</td>
+			<td class="formtable_td_value"  colspan="5" >
+				<textarea  class="likedisabled">${steps.vars["SLPDTAdvice"]}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >签名：</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["SLPDTSignature"]}</td>
+			<td class="formtable_td_key" >日期</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["SLPDTSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+
+	<#if steps.key == 'mb_productCenterReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >海外产品中心总监意见：</td>
+			<td class="formtable_td_value"  colspan="5" >
+				<textarea  class="likedisabled">${steps.vars["productCenterAdvice"]}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >签名：</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["productCenterSignature"]}</td>
+			<td class="formtable_td_key" >日期</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["productCenterSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+	<#if steps.key == 'mb_chairmanAudiTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >公司意见：</td>
+			<td class="formtable_td_value" colspan="5">
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 0>checked="checked"</#if> />同意立项
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 1>checked="checked"</#if> />不同意立项
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 2>checked="checked"</#if> />其他
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >备注：</td>
+			<td class="formtable_td_value"  colspan="5" >
+				<textarea  class="likedisabled">${steps.vars["chairmanRemark"]}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >签名：</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["chairmanSignature"]}</td>
+			<td class="formtable_td_key" >日期</td>
+			<td class="formtable_td_value" colspan="2" width="100">${steps.vars["chairmanSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+</#list>
+</table>
+</#if>
+<#if currentStep?exists>
+	<!-- 开始表单 -->
+	<#if currentStep == 'startevent1'>
+	<div id="start">
+		<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input type="hidden" name="fp_startAccount"  value="${appuser.account}" data-options="required:true"  readonly="readonly"/>
+			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" value="[${appuser.account},${appuser.name}]转换国家项目立项申请流程"/>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >申请部门：</td>							
+						<td  class="formtable_td_value" >
+							<input  name="fp_applyOrgName" class="none-input"  type="text" value="${appuser.orgName}" readonly="readonly"/>
+						</td>
+						<td class="formtable_td_key" >客户经理：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_clientManager" class="none-input"  type="text" value="${appuser.name}" readonly="readonly"/>
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_applicationDate" class="none-input" value="${.now?string('yyyy-MM-dd')}" readonly="readonly" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >源生项目型号：</td>							
+						<td  class="formtable_td_value" >
+							<input  name="fp_sourceProjecModel" class="easyui-validatebox" data-options="required:true"  type="text" />
+						</td>
+						<td class="formtable_td_key" >源生项目宣传型号：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_sourceProjectConductModel" class="easyui-validatebox" data-options="required:true"  type="text" />
+						</td>
+						<td class="formtable_td_key" >源生项目状态：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_sourceProjectState" class="easyui-validatebox" data-options="required:true" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" colspan="6" align="center">派生项目基本信息</td>	
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >派生项目型号：</td>							
+						<td  class="formtable_td_value" >
+							<input  name="fp_derivedProjecModel" class="easyui-validatebox" data-options="required:true"  type="text" />
+						</td>
+						<td class="formtable_td_key" >销售区域/国家：</td>							
+						<td  class="formtable_td_value" colspan="3">
+							<input name="fp_salesArea" class="easyui-validatebox" data-options="required:true"  type="text" style="width: 90%"/>
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >预估销量：</td>							
+						<td  class="formtable_td_value" >
+							<input  name="fp_forecastSales" class="easyui-numberbox" data-options="required:true" type="text" />
+						</td>
+						<td class="formtable_td_key" >首单出货量：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_firstShipmentSales" class="easyui-numberbox" data-options="required:true"  type="text" />
+						</td>
+						<td class="formtable_td_key" >首单出货时间：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_firstShipmentTime" class="easyui-my97 easyui-validatebox" data-options="dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',required:true" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" >价格定位：</td>							
+						<td  class="formtable_td_value" >
+							<input  name="fp_pricePosition" class="easyui-numberbox"  data-options="required:true"type="text" />
+						</td>
+						<td class="formtable_td_key" >出货方式：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_deliveryMode" class="easyui-validatebox" data-options="required:true"  type="text" />
+						</td>
+						<td class="formtable_td_key" >产品生命周期：</td>							
+						<td  class="formtable_td_value" >
+							<input type="text" name="fp_productLifeCycle" class="easyui-numberbox" data-options="required:true" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">主要功能/卖点：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_sellingPoints"   class="easyui-validatebox formtable_remark" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+	  	 </form>
+	  	 </div>
+	</#if>
+	<#if currentStep == 'nmb_deptManagerAudiTask'>
+	<div id="nmb_deptManagerAudiTask" style="margin-top: 5px;">
+		<form id="nmb_deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+			<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >部门负责人审核</td>
+				</tr>
+			</table>
+			<table id="nmb_deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+				<tr height="0">
+			  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+					<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+					</td>
+					<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+					<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+					</td>
+					<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+					<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+					</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_key">审核结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+						<input type="radio"  checked="checked" name="fp_deptManagerAudi" value="0" style="margin-left: 10px"/>同意
+						<input type="radio" name="fp_deptManagerAudi"  value="1" style="margin-left: 10px"/>不同意		  	  	
+					</td>
+		  	  	</tr>
+		  	  	<tr id="assigner1tr${rand}">
+		  	  		<td class="formtable_td_key" rowspan="2">意见负责人：</td>
+		  	  		<td class="formtable_td_key">LPDT意见负责人：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+  	  					<input id="LPDTAssignerAccount${rand}" name="fp_LPDTAssignerAccount" type="text" class="easyui-validatebox hidden-input"  readonly="readonly"/>
+  	  					<input id="LPDTAssignerName${rand}" name="fp_LPDTAssignerName" type="text"  class="easyui-validatebox"  readonly="readonly"/>
+  	  					<a id="addLPDTButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr id="assigner2tr${rand}">
+		  	  		<td class="formtable_td_key" >SLPDT意见负责人：</td>
+		  	  		<td colspan="4" class="formtable_td_value">
+  	  				  	<input id="SLPDTAssignerAccount${rand}" name="fp_SLPDTAssignerAccount" type="text" class="easyui-validatebox hidden-input"  readonly="readonly"/>
+  	  					<input id="SLPDTAssignerName${rand}" name="fp_SLPDTAssignerName" type="text"  class="easyui-validatebox" readonly="readonly"/>
+  	  					<a id="addSLPDTButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  class="easyui-validatebox formtable_remark" id="deptManagerRemark${rand}"  name="fp_deptManagerRemark" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key" >签字：</td>
+					<td class="formtable_td_value">
+						<input  type="text" class="none-input" readonly="readonly" name="fp_deptManagerSignature"  value="${appuser.name}"/>
+					</td>
+					<td class="formtable_td_key">日期：</td>
+				  	<td class="formtable_td_value" >
+				  		<input  type="text" class="none-input" readonly="readonly" name="fp_deptManagerSignatureTime" value="${.now?string('yyyy-MM-dd')}"/>
+				  	</td>
+				</tr>
+			</table>
+		</form>
+		<script type="text/javascript">
+			$(function(){
+				$("input[name='fp_deptManagerAudi']").on("change",function(){
+					$("input[name='fp_deptManagerAudi']").each(function(){
+						if(this.checked){
+							var audi = this.value;
+							if(audi == "0"){
+								$("#deptManagerRemark${rand}").validatebox({required:false});
+								$("#assigner1tr${rand}").show();
+								$("#assigner2tr${rand}").show();
+								$("#LPDTAssignerAccount${rand}").validatebox({required:true});
+								$("#LPDTAssignerName${rand}").validatebox({required:true});
+								
+								$("#SLPDTAssignerAccount${rand}").validatebox({required:true});
+								$("#SLPDTAssignerName${rand}").validatebox({required:true});
+							}else{
+								$("#deptManagerRemark${rand}").validatebox({required:true});
+								$("#assigner1tr${rand}").hide();
+								$("#assigner2tr${rand}").hide();
+								$("#LPDTAssignerAccount${rand}").validatebox({required:false});
+								$("#LPDTAssignerName${rand}").validatebox({required:false});
+								
+								$("#SLPDTAssignerAccount${rand}").validatebox({required:false});
+								$("#SLPDTAssignerName${rand}").validatebox({required:false});
+							}
+						}
+					})
+				});
+				
+	  			var orgWin = $('#orgWin-${rand}');
+	  			var orgs = $('#orgs${rand}');
+	  			var users = $('#users${rand}');
+	  			
+	  		//意见负责人选择事件
+	  			$("#addLPDTButton${rand}").on("click",function(){
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("LPDT"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				});
+  				//意见负责人选择事件
+  				$("#addSLPDTButton${rand}").on("click",function(){
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("SLPDT"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				});
+	  		
+	  		//初始化负责人选择窗口中的组织架构树
+	  			orgs.tree({
+	  			    url: 'hrFlow/auth/orgs.json',
+	  			    method:'get',
+	  			    required:true,
+	  			    lines:true,
+	  				panelWidth:300,
+	  				panelHeight:280,
+	  		        onClick:function(node){
+	  		        		$.post("hrFlow/isThirdAndLeaf.json",{
+	  		        			orgId:node.id
+	  		        		},function(data){
+	  		        			if(data.success){
+	  		        				$('#users${rand}').datagrid('reload',{id:node.id});
+	  		        			}
+	  		        		});
+	  				}
+	  			});
+	  		    //初始化负责人选择窗口中的人员列表 
+	  		     $('#users${rand}').datagrid({
+	  					  fit:true,
+	  					  fitColumns:false,
+	  					  url:'bpmRole/users.json',
+	  					  queryParams:{
+	  							id:"${appuser.orgId}".replace(/,/,"")
+	  						},
+	  					  columns:[[
+	  						{field:'id',checkbox:true},
+	  						{field:'account',title:'帐号',width:100},
+	  						{field:'name',title:'姓名',width:100},
+	  						{field:'orgName',title:'部门',width:100}
+	  					  ]],
+	  					  border:false,
+	  					  nowrap: true,
+	  					  pagination:false,
+	  					  pageNumber:1,
+	  					  pageSize:20,
+	  					  fit : true,
+	  					  singleSelect:true,
+	  					  rownumbers:true,
+	  			});
+	  		    //查询用户
+	  			$('#userGridSearchBtn${rand}').bind('click', function(){
+	  				var userAccount = $('#userAccount${rand}').val();
+	  				var userName = $('#searchName${rand}').val();
+	  				if(!userAccount && !userName){
+	  					$.messager.alert('提示','请输入信息','warning');
+	  					return;
+	  				}
+	  				$('#users${rand}').datagrid('reload',
+	  					{
+	  						userAccount:userAccount,
+	  						userName:userName
+	  					});
+	  		         $("#users${rand}").datagrid({ singleSelect: false });
+	  			});
+	  		   //选择用户完成事件
+	  		    function selectUserEnd(assigner){
+	  			   var row = $('#users${rand}').datagrid('getSelected');
+	  				if (row) {
+	  					console.log(assigner+"AssignerAccount${rand}")
+	  				    $("#"+assigner+"AssignerAccount${rand}").val(row.account);
+	  				    $("#"+assigner+"AssignerName${rand}").val(row.name);
+	  				    orgWin.dialog('close');	
+	  				} else {
+	  					$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+	  				}
+	  		  	 }
+	  		   //关闭组织架构窗口
+	  		   function  closeSelectUserWin(){
+	  		   	 	orgWin.dialog('close');	
+	  		  	}
+			})
+		</script>
+		 <div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px" data-options="modal:true,closed:true,iconCls:'icon-process'">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+					style="padding: 5px 0px 5px 0px">
+					<ul id="orgs${rand}" />
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 0px 0px 0px 0px;">
+					<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+						员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="users${rand}"></table>
+				</div>
+			</div>
+		 </div>
+	</div>
+	</#if>
+	
+	<#if currentStep == 'mb_LPDTReviewTask'>
+		<div id="mb_LPDTReviewTask" style="margin-top: 5px">
+			<form id="mb_LPDTReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >LPDT意见</td>
+					</tr>
+				</table>
+				<table id="mb_LPDTReviewTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="LPDTAdvice${rand}" name="fp_LPDTAdvice"  required="required" mobile="意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden" name="fp_LPDTSignature"  value="${appuser.name}"  mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_LPDTSignatureTime" value="${.now?string('yyyy-MM-dd')}"  mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	
+	
+	<#if currentStep == 'mb_SLPDTReviewTask'>
+		<div id="mb_SLPDTReviewTask"   style="margin-top: 5px">
+			<form id="mb_SLPDTReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >LPDT意见</td>
+					</tr>
+				</table>
+				<table id="mb_SLPDTReviewTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="SLPDTAdvice${rand}" name="fp_SLPDTAdvice"  required="required" mobile="意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden"  name="fp_SLPDTSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_SLPDTSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	
+	<#if currentStep == 'mb_productCenterReviewTask'>
+		<div id="mb_productCenterReviewTask"   style="margin-top: 5px">
+			<form id="mb_productCenterReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >海外产品中心总监意见</td>
+					</tr>
+				</table>
+				<table id="mb_productCenterReviewFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="productCenterAdvice${rand}" name="fp_productCenterAdvice"  required="required"  mobile="意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden"  name="fp_productCenterSignature"  value="${appuser.name}"  mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_productCenterSignatureTime" value="${.now?string('yyyy-MM-dd')}"  mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	
+	<#if currentStep == 'mb_chairmanAudiTask'>
+		<div id="mb_chairmanAudiTask"  style="margin-top: 5px">
+			<form id="mb_chairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >公司意见</td>
+					</tr>
+				</table>
+				<table id="mb_chairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value"  width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+							<input type="radio"  checked="checked" name="fp_chairmanAudi" value="0" mobile="同意立项"/>同意立项
+							<input type="radio" name="fp_chairmanAudi"  value="1" mobile="不同意立项"/>不同意立项
+							<input type="radio" name="fp_chairmanAudi"  value="2" mobile="其他"/>其他			  	  	
+						</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">备注：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="chairmanRemark${rand}"  name="fp_chairmanRemark" mobile="备注" makethis_required_field_name="fp_chairmanAudi" makethis_required_field_values="1" ></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2"><#if appuser.name>刘立荣</#if>
+							<input  type="hidden" name="fp_chairmanSignature"  value="<#if appuser.name>刘立荣</#if>" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden" name="fp_chairmanSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name='fp_chairmanAudi']").on("change",function(){
+					$("input[name='fp_chairmanAudi']").each(function(){
+						if(this.checked){
+							var audi = this.value;
+							if(audi == "0"){
+								$("#chairmanRemark${rand}").validatebox({required:false});
+							}else{
+								$("#chairmanRemark${rand}").validatebox({required:true});
+							}
+						}
+					})
+				})
+			})
+		</script>
+	</#if>
+</#if>
+<#include "/common/foot.html">

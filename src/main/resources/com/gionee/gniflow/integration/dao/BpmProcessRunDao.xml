@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.BpmProcessRunDao">
+  
+  <sql id="columns">
+    id, process_def_key, process_inst_id, reason, start_user_account, start_user_name, start_time, end_time,
+	status, remark, create_by, create_time, update_by, update_time,process_inst_name
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.BpmProcessRun" id="result">
+	<id property="id" column="id"/>
+	<result property="processDefKey" column="process_def_key"/>
+	<result property="processInstId" column="process_inst_id"/>
+	<result property="reason" column="reason"/>
+	<result property="startUserAccount" column="start_user_account"/>
+	<result property="startUserName" column="start_user_name"/>
+	<result property="startTime" column="start_time"/>
+	<result property="endTime" column="end_time"/>
+	<result property="status" column="status"/>
+	<result property="remark" column="remark"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateBy" column="update_by"/>
+	<result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.BpmProcessRun">
+    insert into bpm_process_run (<include refid="columns"/>) values (
+    #{nextId},
+    #{processDefKey},
+    #{processInstId},
+    #{reason},
+    #{startUserAccount},
+    #{startUserName},
+    #{startTime},
+    #{endTime},
+	#{status},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime},
+	#{processInstName}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.BpmProcessRun">
+    update bpm_process_run
+    <set>
+      <if test="processDefKey != null">
+        process_def_key = #{processDefKey},
+      </if>
+      <if test="reason != null">
+        reason = #{reason},
+      </if>
+      <if test="startUserAccount != null">
+        start_user_account = #{startUserAccount},
+      </if>
+      <if test="startUserName != null">
+        start_user_name = #{startUserName},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      update_by = #{currentAccount},
+      update_time = #{currentTime}
+    </set>
+    where process_inst_id = #{processInstId}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete bpm_process_run where id = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from bpm_process_run
+	<where>
+	  <if test="processDefKey != null">
+        and process_def_key = #{processDefKey}
+	  </if>
+	  <if test="processInstId != null">
+        and process_inst_id = #{processInstId}
+	  </if>
+	  <if test="reason != null">
+        and reason = #{reason}
+	  </if>
+	  <if test="startUserAccount != null">
+        and start_user_account = #{startUserAccount}
+	  </if>
+	  <if test="startUserName != null">
+        and start_user_name = #{startUserName}
+	  </if>
+	  <if test="startTime != null">
+        and start_time = #{startTime}
+	  </if>
+	  <if test="endTime != null">
+        and end_time = #{endTime}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select <include refid="columns"/> from bpm_process_run
+      <where>
+        <if test="processDefKey != null">
+          and process_def_key = #{processDefKey}
+        </if>
+        <if test="processInstId != null">
+          and process_inst_id = #{processInstId}
+        </if>
+        <if test="reason != null">
+          and reason = #{reason}
+        </if>
+        <if test="startUserAccount != null">
+          and start_user_account = #{startUserAccount}
+        </if>
+        <if test="startUserName != null">
+          and start_user_name = #{startUserName}
+        </if>
+        <if test="startTime != null">
+          and start_time = #{startTime}
+        </if>
+        <if test="endTime != null">
+          and end_time = #{endTime}
+        </if>
+      </where>
+    )RES ) SUB WHERE SUB.rnk &gt;= #{firstRow} AND SUB.rnk &lt; #{lastRow}
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from bpm_process_run
+    <where>
+      <if test="processDefKey != null">
+        and process_def_key = #{processDefKey}
+      </if>
+      <if test="processInstId != null">
+        and process_inst_id = #{processInstId}
+      </if>
+      <if test="reason != null">
+        and reason = #{reason}
+      </if>
+      <if test="startUserAccount != null">
+        and start_user_account = #{startUserAccount}
+      </if>
+      <if test="startUserName != null">
+        and start_user_name = #{startUserName}
+      </if>
+      <if test="startTime != null">
+        and start_time = #{startTime}
+      </if>
+      <if test="endTime != null">
+        and end_time = #{endTime}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="String" resultMap="result">
+	select <include refid="columns"/> from bpm_process_run
+	where process_inst_id = #{_parameter}
+  </select>
+
+</mapper>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.CategoryDao">
+
+  <insert id="add" parameterType="com.gionee.gniflow.biz.model.Category">
+    insert into category (id, pid, code, name, status, remark, create_by, create_time, update_by, update_time) 
+    values (
+	    #{nextId},
+	    #{pid},
+	    #{code},
+	    #{name},
+		#{normalStatus},
+		#{remark,jdbcType=VARCHAR},
+		#{currentAccount},
+		#{currentTime},
+		#{currentAccount},
+		#{currentTime}
+	)
+  </insert>
+
+  <update id="modify" parameterType="Category">
+	update category
+    <set>
+    <if test="pid != null">
+       pid = #{pid},
+	</if>
+    <if test="code != null">
+       code = #{code},
+	</if>
+    <if test="name != null">
+       name = #{name},
+	</if>
+       update_by = #{update_by},
+       update_time = #{update_time}
+	</set>
+	where
+       id = #{id}
+  </update>
+
+  <delete id="remove" parameterType="List">
+    delete from category where id in
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+  </delete>
+
+  <sql id="columns">
+	id, pid, code, name, status, remark, create_by, create_time, update_by, update_time
+  </sql>
+
+  <select id="get" parameterType="Long" resultType="Category">
+	select <include refid="columns"/> from category where id = #{param}
+  </select>
+  
+  <select id="find" parameterType="Map" resultType="Category">
+	select top ${pageRow} <include refid="columns"/> from "category"
+	<where>
+    <if test="pid != null">
+      and pid = #{pid},
+	</if>
+    <if test="code != null">
+      and code = #{code}
+	</if>
+    <if test="name != null">
+      and name = #{name}
+	</if>
+      and id not in ( select top ${rowFrom} id from "category"
+	  <where>
+    <if test="pid != null">
+      and pid = #{pid},
+	</if>
+    <if test="code != null">
+      and code = #{code}
+	</if>
+    <if test="name != null">
+      and name = #{name}
+	</if>
+      </where>
+	  )
+	</where>
+  </select>
+  
+  <select id="count" parameterType="Map" resultType="Long">
+	select count(*) from category
+	<where>
+    <if test="pid != null">
+      and pid = #{pid},
+	</if>
+    <if test="code != null">
+      and code = #{code}
+	</if>
+    <if test="name != null">
+      and name = #{name}
+	</if>
+	</where>
+  </select>
+
+  <select id="getFlat" resultType="com.gionee.gnif.dto.FlatDto">
+	select id, name as text from category
+  </select>
+
+  <select id="getChildren" parameterType="Long" resultType="Category">
+	select <include refid="columns"/> from category where pid = #{param}
+  </select>
+  
+  <select id="findAll" parameterType="Map" resultType="Category">
+	select <include refid="columns"/>
+	  from category
+	  <where>
+    <if test="pid != null">
+      and pid = #{pid},
+	</if>
+    <if test="code != null">
+      and code = #{code}
+	</if>
+    <if test="name != null">
+      and name = #{name}
+	</if>
+      </where>
+  </select>
+  
+  <select id="getTree" parameterType="Long" resultType="com.gionee.gnif.dto.TreeDto">
+	select id, pid, name as text from category where pid = #{param}
+  </select>
+  
+   <select id="query4Pid" parameterType="Long" resultType="Category">
+	select <include refid="columns"/> from category where pid = #{pid}
+  </select>
+  
+  <!-- 获取节点下的所有子节点 -->
+  <select id="querySubCategory" parameterType="Long" resultType="Category">
+	 WITH SubsCTE AS  
+	( SELECT *
+	  FROM Category  
+	  WHERE id = #{id}
+	  UNION ALL  
+	 SELECT C.*
+	 FROM SubsCTE AS P  
+	    JOIN Category AS C ON C.pid = P.id
+	) SELECT <include refid="columns"/>
+    FROM SubsCTE
+  </select>
+
+</mapper>

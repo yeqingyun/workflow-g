@@ -1,0 +1,1571 @@
+<#include "/common/head.html">
+
+<#assign softwareName=""/>
+<#assign versionNumber=""/>
+<#assign AppUpgradeManage=""/>
+<#assign AppUpgradeManageNumber=""/>
+<#assign equipmentType=""/>
+<#assign expectDate=""/>
+<#assign equipmentPlatform=""/>
+<#assign equipmentDitch=""/>
+<#assign equipmentVGA=""/>
+<#assign androidVersion=""/>
+<#assign modulesValidate=""/>
+<#assign dbValidate=""/>
+<#assign oldVersionValidate=""/>
+<#assign testType=""/>
+<#assign testResult=""/>
+<#assign risk=""/>
+<#assign functionalChange=""/>
+<#assign modifyExplain=""/>
+<#assign newIssue=""/>
+<#assign leaveBehindIssue=""/>
+<#assign remark=""/>
+<#assign applyReason=""/>
+
+
+<#if processSteps??>
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps>
+
+<!-- 展示表单 -->
+
+
+<#if steps.key == 'startevent1'>
+
+    <tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">自升级申请表</td>
+	</tr>
+    <tr>
+		<td class="formtable_td_key">软件名称：</td>
+		<td class="formtable_td_value" >${(steps.vars["softwareName"])!""}</td>
+		<td class="formtable_td_key">应用版本号：</td>
+		<td class="formtable_td_value">${(steps.vars["versionNumber"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">应用升级管理方式：</td>
+		<td class="formtable_td_value" ><#if steps.vars["AppUpgradeManage"] == '0'>无</#if>
+		<#if steps.vars["AppUpgradeManage"] ==
+			'1'>APK发布</#if> <#if steps.vars["AppUpgradeManage"] == '2'>推荐升级</#if>
+			<#if steps.vars["AppUpgradeManage"] == '3'>强制升级（静默安装升级）</#if></td>
+		<td class="formtable_td_key">应用升级管理编号：</td>
+		<td class="formtable_td_value">${(steps.vars["AppUpgradeManageNumber"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配机型：</td>
+		<td class="formtable_td_value" >${(steps.vars["equipmentType"])!""}</td>
+		<td class="formtable_td_key">预上线时间点：</td>
+		<td class="formtable_td_value">${(steps.vars["expectDate"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配平台：</td>
+		<td class="formtable_td_value" >${(steps.vars["equipmentPlatform"])!""}</td>
+		<td class="formtable_td_key">适配渠道：</td>
+		<td class="formtable_td_value">${(steps.vars["equipmentDitch"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配过的分辨率：</td>
+		<td class="formtable_td_value" >${(steps.vars["equipmentVGA"])!""}</td>
+		<td class="formtable_td_key">适配过的Android版本：</td>
+		<td class="formtable_td_value">${(steps.vars["androidVersion"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">关联耦合模块功能的验证情况：</td>
+		<td class="formtable_td_value" ><span class="span_wordwrap">${(steps.vars["modulesValidate"])!""}</span></td>
+		<td class="formtable_td_key">数据库上下兼容的验证情况：</td>
+		<td class="formtable_td_value"><span class="span_wordwrap">${(steps.vars["dbValidate"])!""}</span></td>
+     </tr>
+      <tr>
+			<td class="formtable_td_key">跨旧版本升级的验证情况：</td>
+		<td class="formtable_td_value"><span class="span_wordwrap">${(steps.vars["oldVersionValidate"])!""}</span></td>
+		<td class="formtable_td_key">申请自升级原因：</td>
+		<td class="formtable_td_value">
+			<#if steps.vars["applyReason"] == '1'>《运营需求》</#if>
+			<#if steps.vars["applyReason"] == '2'>《Debug迭代》</#if>
+			<#if steps.vars["applyReason"] == '3'>《维护迭代》</#if>
+		</td>
+     </tr>
+     <tr>
+     <td class="formtable_td_key">测试类型：</td>
+		<td class="formtable_td_value"><#if steps.vars["testType"] ==
+			'1'>基本功能测试</#if> <#if steps.vars["testType"] == '2'>全面测试</#if></td>
+		<td class="formtable_td_key">测试结果：</td>
+		<td class="formtable_td_value" ><#if steps.vars["testResult"] ==
+			'1'>通过</#if> <#if steps.vars["testResult"] == '2'>不通过</#if></td>
+     </tr>
+    
+      <tr>
+		<td class="formtable_td_key">风险：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["risk"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">功能变更说明：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["functionalChange"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">修改问题说明：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["modifyExplain"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">新增问题：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["newIssue"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">遗留问题：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["leaveBehindIssue"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["remark"])!""}</span></td>
+     </tr>
+     
+     
+     <#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+	</#if> 
+</#if>
+
+<!-- 修改表单 -->
+<#if steps.key == 'nmb_updateAppTask'>
+
+    <tr>
+		<td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">修改表单</td>
+	</tr>
+    <tr>
+		<td class="formtable_td_key">软件名称：</td>
+		<td class="formtable_td_value" >${(steps.vars["updateSoftwareName"])!""}</td>
+		<td class="formtable_td_key">应用版本号：</td>
+		<td class="formtable_td_value">${(steps.vars["updateVersionNumber"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">应用升级管理方式：</td>
+		<td class="formtable_td_value" ><#if steps.vars["updateAppUpgradeManage"] == '0'>无</#if>
+		<#if steps.vars["updateAppUpgradeManage"] ==
+			'1'>APK发布</#if> <#if steps.vars["updateAppUpgradeManage"] == '2'>推荐升级</#if>
+			<#if steps.vars["updateAppUpgradeManage"] == '3'>强制升级（静默安装升级）</#if></td>
+		<td class="formtable_td_key">应用升级管理编号：</td>
+		<td class="formtable_td_value">${(steps.vars["updateAppUpgradeManageNumber"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配机型：</td>
+		<td class="formtable_td_value" >${(steps.vars["updateEquipmentType"])!""}</td>
+		<td class="formtable_td_key">预上线时间点：</td>
+		<td class="formtable_td_value">${(steps.vars["updateExpectDate"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配平台：</td>
+		<td class="formtable_td_value" >${(steps.vars["updateEquipmentPlatform"])!""}</td>
+		<td class="formtable_td_key">适配渠道：</td>
+		<td class="formtable_td_value">${(steps.vars["updateEquipmentDitch"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">适配过的分辨率：</td>
+		<td class="formtable_td_value" >${(steps.vars["updateEquipmentVGA"])!""}</td>
+		<td class="formtable_td_key">适配过的Android版本：</td>
+		<td class="formtable_td_value">${(steps.vars["updateAndroidVersion"])!""}</td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">关联耦合模块功能的验证情况：</td>
+		<td class="formtable_td_value" ><span class="span_wordwrap">${(steps.vars["updateModulesValidate"])!""}</span></td>
+		<td class="formtable_td_key">数据库上下兼容的验证情况：</td>
+		<td class="formtable_td_value"><span class="span_wordwrap">${(steps.vars["updateDbValidate"])!""}</span></td>
+     </tr>
+      <tr>
+		<td class="formtable_td_key">跨旧版本升级的验证情况：</td>
+		<td class="formtable_td_value"><span class="span_wordwrap">${(steps.vars["updateOldVersionValidate"])!""}</span></td>
+		<td class="formtable_td_key">申请自升级原因：</td>
+		<td class="formtable_td_value">
+			<#if steps.vars["updateApplyReason"] == '1'>《运营需求》</#if>
+			<#if steps.vars["updateApplyReason"] == '2'>《Debug迭代》</#if>
+			<#if steps.vars["updateApplyReason"] == '3'>《维护迭代》</#if>
+		</td>
+     </tr>
+     <tr>
+     <td class="formtable_td_key">测试类型：</td>
+		<td class="formtable_td_value"><#if steps.vars["updateTestType"] ==
+			'1'>基本功能测试</#if> <#if steps.vars["updateTestType"] == '2'>全面测试</#if></td>
+     <td class="formtable_td_key">测试结果：</td>
+		<td class="formtable_td_value" ><#if steps.vars["updateTestResult"] ==
+			'1'>通过</#if> <#if steps.vars["updateTestResult"] == '2'>不通过</#if></td>
+     </tr>
+    
+      <tr>
+		<td class="formtable_td_key">风险：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateRisk"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">功能变更说明：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateFunctionalChange"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">修改问题说明：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateModifyExplain"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">新增问题：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateNewIssue"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">遗留问题：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateLeaveBehindIssue"])!""}</span></td>
+     </tr>
+     <tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["updateRemark"])!""}</span></td>
+     </tr>
+     
+     
+     <#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3"><#list
+				steps.attachments as attachs> <a href="${attachs.url}">
+					${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+	</#if> 
+</#if>
+
+
+<!-- SQA评审 -->
+<#if steps.key == 'mb_ApkAppraisal'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">预发布SQA评审结果</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">审核人：</td>
+	<td class="formtable_td_value">${(steps.vars["SQAName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["SQASignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">评审结果：</td> 
+	<#if steps.vars["SqaAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">通过</td> 
+	</#if> 
+	<#if steps.vars["SqaAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不通过</td> 
+	</#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">备注：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["SqaAdvice"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+
+
+<!-- 预发布运营经理审核 -->
+<#if steps.key == 'mb_OperationManager'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">预发布运营评审结果</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">审核人：</td>
+	<td class="formtable_td_value">${(steps.vars["OperationManagerName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["OperationManagerSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">评审结果：</td> <#if
+	steps.vars["operationManagerAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">通过</td> </#if> <#if
+	steps.vars["operationManagerAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不通过</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">备注：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["operationManagerAdvice"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+
+
+<!-- 预发布用户反馈专员 -->
+<#if steps.key == 'mb_feedbackAudiTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">预发布用户反馈专员结果确认</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">反馈人：</td>
+	<td class="formtable_td_value">${(steps.vars["feedbackAudiName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["feedbackAudiSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">用户反馈系统：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["userFeedbackAudiAdvice"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">售后：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["afterService"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">论坛：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["feedbackAudiAdvice"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">报错：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["error"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+<!-- 正式发布SQA评审结果 -->
+<#if steps.key == 'mb_SqaAffirmTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">正式发布SQA评审结果</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">审核人：</td>
+	<td class="formtable_td_value">${(steps.vars["SqaAffirmName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["SqaAffirmSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">评审结果：</td> <#if
+	steps.vars["SqaAffirmAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">通过</td> </#if> <#if
+	steps.vars["SqaAffirmAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不通过</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">备注：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["SqaAffirmAdvice"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+
+<!-- 正式发布运营评审结果-->
+<#if steps.key == 'mb_OperationManagerTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">正式发布运营评审结果</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">审核人：</td>
+	<td class="formtable_td_value">${(steps.vars["OperationManagerTwoName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["OperationManagerTwoSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">评审结果：</td> <#if
+	steps.vars["operationManagerTwoAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">通过</td> </#if> <#if
+	steps.vars["operationManagerTwoAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不通过</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">备注：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["operationManagerTwoAdvice"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+
+<!-- 正式发布用户反馈专员结果确认 -->
+<#if steps.key == 'mb_feedbackAudiAffirmTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">正式发布用户反馈专员结果确认</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">反馈人：</td>
+	<td class="formtable_td_value">${(steps.vars["feedbackAudiTwoName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["feedbackAudiTwoSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">用户反馈系统：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["userFeedbackTwoAudiAdvice"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">售后：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["afterTwoService"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">论坛：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["feedbackAudiTwoAdvice"])!""}</span></td>
+</tr>
+<tr>
+	<td class="formtable_td_key">报错：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["errorTwo"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+  <!-- SQA评审正式发布是否正常 -->
+<#if steps.key == 'mb_SqaDismassAffirmTask'>
+<tr>
+
+   <td style="font-size: 16px; height: 25px;" align="center" colspan="4"
+			class="formtable_td_key">SQA评审正式发布是否正常</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">审核人：</td>
+	<td class="formtable_td_value">${(steps.vars["SqaDismassAffirmName"])!""}</td>
+	<td class="formtable_td_key">审批时间：</td>
+	<td class="formtable_td_value">${(steps.vars["SqaDismassAffirmSignDate"])!""}</td>
+</tr>
+<tr>
+	<td class="formtable_td_key">评审结果：</td> <#if
+	steps.vars["SqaDismassAffirmAudi"] == '0' >
+	<td class="formtable_td_value" colspan="3">正常</td> </#if> <#if
+	steps.vars["SqaDismassAffirmAudi"] == '1' >
+	<td class="formtable_td_value" colspan="3">不正常</td> </#if>
+</tr>
+<tr>
+	<td class="formtable_td_key">备注：</td>
+	<td class="formtable_td_value" colspan="3"><span class="span_wordwrap">${(steps.vars["SqaDismassAffirmAdvice"])!""}</span></td>
+</tr>
+<#if steps.attachments??>
+<tr>
+	<td class="formtable_td_key">附件：</td>
+	<td class="formtable_td_value" colspan="3"><#list
+		steps.attachments as attachs> <a href="${attachs.url}">
+			${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+	</td>
+</tr>
+</#if> 
+</#if>
+
+</#list>
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists> <#if currentStep == 'startevent1'>
+<div id="start">
+	<form id="startForm" method="post" enctype='multipart/form-data'>
+		<table id="startFormTable" class="formtable" cellspacing="1" 
+			cellpadding="0">
+			<tr>
+			<td class="formtable_td_key">软件名称：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="text" id="softwareName${rand}" placeholder="不超过20字" name="fp_softwareName" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">应用版本号：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="text" id="versionNumber${rand}" placeholder="不超过40字" name="fp_versionNumber" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+		  	  		</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">应用升级管理方式：</td>
+					<td class="formtable_td_value" >
+					<input class="easyui-combobox"  type="text" name="fp_AppUpgradeManage"  
+					 data-options="required:true,valueField: 'id',textField: 'text', editable:false,
+					 data:[{id:'',text:''},
+					  {id:'0',text:'无'},
+					  {id:'1',text:'APK发布'},
+					  {id:'2',text:'推荐升级'},
+					  {id:'3',text:'强制升级（静默安装升级）'}]"
+					style="width: 250px" />
+		  	  		<td class="formtable_td_key">应用升级管理编号：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="text"  name="fp_AppUpgradeManageNumber"
+							class="easyui-numberbox"	placeholder="最多5位"  maxLength="5" data-options="required:true" style="width: 250px"/>
+		  	  		</td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">适配机型：</td>
+					<td class="formtable_td_value">
+		  	  			<input type="text" id="equipmentType${rand}" placeholder="不超过40字" name="fp_equipmentType" class="easyui-validatebox" data-options="required:true" style="width: 250px"  onblur="limit40(this);"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">预上线时间点：</td>
+		  	  			<td class="formtable_td_value"><input 
+							class="easyui-my97" name="fp_expectDate" readonly="readonly"
+							data-options="width:160,required:true,minDate:'%y-%M-%d'" style="width: 230px"/></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">适配平台：</td>
+					<td class="formtable_td_value">
+		  	  			<input type="text" id="equipmentPlatform${rand}" placeholder="不超过20字" name="fp_equipmentPlatform" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">适配渠道：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="text" id="equipmentDitch${rand}"  placeholder="不超过20字" name="fp_equipmentDitch" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">适配过的分辨率：</td>
+					<td class="formtable_td_value">
+		  	  			<input type="text" id="equipmentVGA${rand}" placeholder="不超过20字" name="fp_equipmentVGA" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">适配过的Android版本：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="text" id="androidVersion${rand}" placeholder="不超过20字"  name="fp_androidVersion" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">关联耦合模块功能的验证情况：</td>
+					<td class="formtable_td_value">
+		  	  			<input type="text" id="modulesValidate${rand}" placeholder="不超过40字" name="fp_modulesValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">数据库上下兼容的验证情况：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="text" id="dbValidate${rand}"  placeholder="不超过40字" name="fp_dbValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/></td>
+			</tr>
+				<tr>
+	  	  		 <td class="formtable_td_key">跨旧版本升级的验证情况：</td>
+				<td class="formtable_td_value">
+	  	  			<input type="text" id="oldVersionValidate${rand}" placeholder="不超过40字" name="fp_oldVersionValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+	  	  		</td>
+	  	  		<td class="formtable_td_key">申请自升级原因：</td>
+	  	  		<td class="formtable_td_value">
+	  	  			<input class="easyui-combobox" name="fp_applyReason" 
+	  	  				data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+					 	data:[{id:'',text:''},
+					  {id:'1',text:'《运营需求》'},
+					  {id:'2',text:'《Debug迭代》'},
+					  {id:'3',text:'《维护迭代》'}]" style="width:250px;"/>
+	  	  		</td>
+			</tr>
+			<tr>
+			
+			       <td class="formtable_td_key">测试类型：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input class="easyui-combobox"  type="text" name="fp_testType"  
+					 data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+					 data:[{id:'',text:''},
+					  {id:'1',text:'基本功能测试'},
+					  {id:'2',text:'全面测试'}]"
+					style="width: 250px"/></td>
+		  	  		<td class="formtable_td_key">测试结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input class="easyui-combobox"  type="text" name="fp_testResult"  
+					 data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+					 data:[{id:'',text:''},
+					  {id:'1',text:'通过'},
+					  {id:'2',text:'失败'}]"
+					style="width: 250px"/></td>
+		  	  		
+			</tr>
+      		<tr >
+				<td class="formtable_td_key">风险：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+					 id="risk${rand}"	name="fp_risk" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						data-options="required:true"  placeholder="上过哪些项目，现阶段是否稳定，是否有风险" onblur="limit800(this);"></textarea></td>
+			</tr> 
+			<tr >
+				<td class="formtable_td_key">功能变更说明：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+						id="functionalChange${rand}" name="fp_functionalChange" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);"></textarea></td>
+			</tr>
+			<tr >
+				<td class="formtable_td_key">修改问题说明：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+						id="modifyExplain${rand}" name="fp_modifyExplain" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);"></textarea></td>
+			</tr>
+			<tr >
+				<td class="formtable_td_key">新增问题：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+					 id="newIssue${rand}"	name="fp_newIssue" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);"></textarea></td>
+			</tr>
+			<tr >
+				<td class="formtable_td_key">遗留问题：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+						 id="leaveBehindIssue${rand}" name="fp_leaveBehindIssue" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);"></textarea></td>
+			</tr>
+			<tr >
+				<td class="formtable_td_key">备注：</td>
+				<td class="formtable_td_value" colspan="3"><textarea 
+						 id="remark${rand}" name="fp_remark" class="easyui-validatebox"
+						style="width: 720px; height: 50px"
+						 placeholder="不超过800字" onblur="limit800(this);"></textarea></td>
+			</tr>
+			<tr>
+			<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value">
+		  	  		<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  		<input id="account${rand}" type="hidden" name="fp_applyUserId"  value="${appuser.account}"/>
+		  	  		 
+		  	  			<input type="hidden" name="fp_applyUserName" value="${appuser.name}" />
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+
+    <script type="text/javascript"> 
+	    $('#processName${rand}').val(
+				"[" + "${appuser.account}" + ","
+						+ "${appuser.name}" + "]自升级申请流程");//流程实例名称
+						
+		 function limit20(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>20){
+	      			$.messager.alert('提示','字数不能超过20！');
+	      			Jid.val("");
+	      			Jid.validatebox({required:true});
+	      		}  
+	      	}
+		 function limit40(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>40){
+	      			$.messager.alert('提示','字数不能超过40！');
+	      			Jid.val("");
+	      			Jid.validatebox({required:true});
+	      		}  
+	      	}
+		 function limit800(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>800){
+	      			$.messager.alert('提示','字数不能超过800！');
+	      			Jid.val("");
+	      			Jid.validatebox({required:true});
+	      		}  
+	      	}
+		 function limit800(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>800){
+	      			$.messager.alert('提示','字数不能超过800！');
+	      			Jid.val("");
+	      		}  
+	      	}
+    </script>
+</#if>
+</#if>
+
+
+
+<!-- 修改表单 -->
+<#if currentStep?exists> <#if currentStep == 'nmb_updateAppTask'>
+	  <#list processSteps?reverse as steps> 
+      	<#if steps.key == 'nmb_updateAppTask'>
+      	    <#assign softwareName=steps.vars["updateSoftwareName"]/>
+			<#assign versionNumber=steps.vars["updateVersionNumber"]/>
+			<#assign AppUpgradeManage=steps.vars["updateAppUpgradeManage"]/>
+			<#assign AppUpgradeManageNumber=steps.vars["updateAppUpgradeManageNumber"]/>
+			<#assign equipmentType=steps.vars["updateEquipmentType"]/>
+			<#assign expectDate=steps.vars["updateExpectDate"]/>
+			<#assign equipmentPlatform=steps.vars["updateEquipmentPlatform"]/>
+			<#assign equipmentDitch=steps.vars["updateEquipmentDitch"]/>
+			<#assign equipmentVGA=steps.vars["updateEquipmentVGA"]/>
+			<#assign androidVersion=steps.vars["updateAndroidVersion"]/>
+			<#assign modulesValidate=steps.vars["updateModulesValidate"]/>
+			<#assign dbValidate=steps.vars["updateDbValidate"]/>
+			<#assign oldVersionValidate=steps.vars["updateOldVersionValidate"]/>
+			<#assign testType=steps.vars["updateTestType"]/>
+			<#assign testResult=steps.vars["updateTestResult"]/>
+			<#assign risk=steps.vars["updateRisk"]/>
+			<#assign functionalChange=steps.vars["updateFunctionalChange"]/>
+			<#assign modifyExplain=steps.vars["updateModifyExplain"]/>
+			<#assign newIssue=steps.vars["updateNewIssue"]/>
+			<#assign leaveBehindIssue=steps.vars["updateLeaveBehindIssue"]/>
+			<#if   steps.vars["updateRemark"]??>
+			      <#assign remark=steps.vars["updateRemark"]/>
+			</#if>
+      		
+			   <div id="nmb_updateAppTask">
+				<form id="nmb_updateAppTaskForm" method="post" enctype='multipart/form-data'>
+					<table  id="nmb_updateAppTaskFormTable" class="formtable" cellspacing="1"
+						cellpadding="0" >
+						<tr>
+							<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">修改表单</td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">软件名称：</td>
+					  	  		<td class="formtable_td_value">
+					  	  			<input type="text" id="softwareName${rand}" placeholder="不超过20字" name="fp_updateSoftwareName" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+					  	  		</td>
+					  	  		<td class="formtable_td_key">应用版本号：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="text" id="versionNumber${rand}" placeholder="不超过40字" name="fp_updateVersionNumber" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+					  	  		</td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">应用升级管理方式：</td>
+								<td class="formtable_td_value" >
+								<input class="easyui-combobox"  type="text" name="fp_updateAppUpgradeManage"  
+								 id="AppUpgradeManage${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+								 data:[{id:'',text:''},
+								  {id:'0',text:'无'},
+								  {id:'1',text:'APK发布'},
+								  {id:'2',text:'推荐升级'},
+								  {id:'3',text:'强制升级（静默安装升级）'}]"
+								style="width: 250px"/>
+					  	  		<td class="formtable_td_key">应用升级管理编号：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="text"  name="fp_updateAppUpgradeManageNumber"
+										 id="AppUpgradeManageNumber${rand}" class="easyui-numberbox"	placeholder="最多5位"  maxLength="5" data-options="required:true" style="width: 250px"/>
+					  	  		</td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">适配机型：</td>
+								<td class="formtable_td_value">
+					  	  			<input type="text" id="equipmentType${rand}" placeholder="不超过40字" name="fp_updateEquipmentType" class="easyui-validatebox" data-options="required:true" style="width: 250px"  onblur="limit40(this);"/>
+					  	  		</td>
+					  	  		<td class="formtable_td_key">预上线时间点：</td>
+					  	  			<td class="formtable_td_value"><input 
+										id="expectDate${rand}" class="easyui-my97" name="fp_updateExpectDate" readonly="readonly"
+										data-options="width:160,required:true" style="width: 230px"/></td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">适配平台：</td>
+								<td class="formtable_td_value">
+					  	  			<input type="text" id="equipmentPlatform${rand}" placeholder="不超过20字" name="fp_updateEquipmentPlatform" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+					  	  		</td>
+					  	  		<td class="formtable_td_key">适配渠道：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="text" id="equipmentDitch${rand}"  placeholder="不超过20字" name="fp_updateEquipmentDitch" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">适配过的分辨率：</td>
+								<td class="formtable_td_value">
+					  	  			<input type="text" id="equipmentVGA${rand}" placeholder="不超过20字" name="fp_updateEquipmentVGA" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+					  	  		</td>
+					  	  		<td class="formtable_td_key">适配过的Android版本：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="text" id="androidVersion${rand}" placeholder="不超过20字"  name="fp_updateAndroidVersion" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">关联耦合模块功能的验证情况：</td>
+								<td class="formtable_td_value">
+								
+					  	  			<input type="text" id="modulesValidate${rand}" placeholder="不超过40字" name="fp_updateModulesValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+					  	  		</td>
+					  	  		<td class="formtable_td_key">数据库上下兼容的验证情况：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="text" id="dbValidate${rand}"  placeholder="不超过40字" name="fp_updateDbValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/></td>
+						</tr>
+						<tr>
+				  	  		<td class="formtable_td_key">跨旧版本升级的验证情况：</td>
+							<td class="formtable_td_value">
+				  	  			<input type="text" id="oldVersionValidate${rand}" placeholder="不超过40字" name="fp_updateOldVersionValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">申请自升级原因：</td>
+				  	  		<td class="formtable_td_value">
+				  	  			<input class="easyui-combobox" name="fp_updateApplyReason" id="updateApplyReason"
+				  	  				data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+								 	data:[{id:'',text:''},
+								  {id:'1',text:'《运营需求》'},
+								  {id:'2',text:'《Debug迭代》'},
+								  {id:'3',text:'《维护迭代》'}]" style="width:250px;"/>
+				  	  		</td>
+						</tr>
+						<tr>
+						        <td class="formtable_td_key">测试结果：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input class="easyui-combobox"  type="text" name="fp_updateTestResult"  
+								 id="testResult${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+								 data:[{id:'',text:''},
+								  {id:'1',text:'通过'},
+								  {id:'2',text:'失败'}]"
+								style="width: 250px"/></td>
+					  	  		<td class="formtable_td_key">测试类型：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input class="easyui-combobox"  type="text" name="fp_updateTestType"  
+								  id="testType${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+								 data:[{id:'',text:''},
+								  {id:'1',text:'基本功能测试'},
+								  {id:'2',text:'全面测试'}]"
+								style="width: 250px"/></td>
+								
+						</tr>
+			      		<tr >
+							<td class="formtable_td_key">风险：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+								 id="risk${rand}"	name="fp_updateRisk" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									data-options="required:true"  placeholder="上过哪些项目，现阶段是否稳定，是否有风险" onblur="limit800(this);">${(steps.vars["risk"])!""}</textarea></td>
+						</tr> 
+						<tr >
+							<td class="formtable_td_key">功能变更说明：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+									id="functionalChange${rand}" name="fp_updateFunctionalChange" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["functionalChange"])!""}</textarea></td>
+						</tr>
+						<tr >
+							<td class="formtable_td_key">修改问题说明：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+									id="modifyExplain${rand}" name="fp_updateModifyExplain" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["modifyExplain"])!""}</textarea></td>
+						</tr>
+						<tr >
+							<td class="formtable_td_key">新增问题：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+								 id="newIssue${rand}"	name="fp_updateNewIssue" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["newIssue"])!""}</textarea></td>
+						</tr>
+						<tr >
+							<td class="formtable_td_key">遗留问题：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+									 id="leaveBehindIssue${rand}" name="fp_updateLeaveBehindIssue" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["leaveBehindIssue"])!""}</textarea></td>
+						</tr>
+						<tr >
+							<td class="formtable_td_key">备注：</td>
+							<td class="formtable_td_value" colspan="3"><textarea 
+									 id="remark${rand}" name="fp_updateRemark" class="easyui-validatebox"
+									style="width: 720px; height: 50px"
+									 placeholder="不超过800字" onblur="limit800(this);">${(steps.vars["remark"])!""}</textarea></td>
+						</tr>
+						<tr>
+						<td class="formtable_td_key">申请人：</td>
+					  	  		<td class="formtable_td_value">
+					  	  		<input id="account${rand}" type="hidden" name="fp_applyUserId"  value="${appuser.account}"/>
+					  	  			<input type="hidden" name="fp_updateApplyUserName" value="${appuser.name}" />
+					  	  			${appuser.name}
+					  	  		</td>
+					  	  		<td class="formtable_td_key">申请时间：</td>
+					  	  		<td class="formtable_td_value" >
+					  	  			<input type="hidden" name="fp_updateApplyDate"
+												value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+										${.now?string('yyyy-MM-dd HH:mm:ss')}
+					  	  		</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		 <#break/>
+      <#elseif steps.key == 'startevent1'>
+      		<#assign softwareName=steps.vars["softwareName"]/>
+			<#assign versionNumber=steps.vars["versionNumber"]/>
+			<#assign AppUpgradeManage=steps.vars["AppUpgradeManage"]/>
+			<#assign AppUpgradeManageNumber=steps.vars["AppUpgradeManageNumber"]/>
+			<#assign equipmentType=steps.vars["equipmentType"]/>
+			<#assign expectDate=steps.vars["expectDate"]/>
+			<#assign equipmentPlatform=steps.vars["equipmentPlatform"]/>
+			<#assign equipmentDitch=steps.vars["equipmentDitch"]/>
+			<#assign equipmentVGA=steps.vars["equipmentVGA"]/>
+			<#assign androidVersion=steps.vars["androidVersion"]/>
+			<#assign modulesValidate=steps.vars["modulesValidate"]/>
+			<#assign dbValidate=steps.vars["dbValidate"]/>
+			<#assign oldVersionValidate=steps.vars["oldVersionValidate"]/>
+			<#assign testType=steps.vars["testType"]/>
+			<#assign testResult=steps.vars["testResult"]/>
+			<#assign risk=steps.vars["risk"]/>
+			<#assign functionalChange=steps.vars["functionalChange"]/>
+			<#assign modifyExplain=steps.vars["modifyExplain"]/>
+			<#assign newIssue=steps.vars["newIssue"]/>
+			<#assign leaveBehindIssue=steps.vars["leaveBehindIssue"]/>
+			<#if   steps.vars["remark"]??>
+			      <#assign remark=steps.vars["remark"]/>
+			</#if>
+      		<#assign applyReason=steps.vars["applyReason"]/>
+		<div id="nmb_updateAppTask">
+			<form id="nmb_updateAppTaskForm" method="post" enctype='multipart/form-data'>
+				<table  id="nmb_updateAppTaskFormTable" class="formtable" cellspacing="1"
+					cellpadding="0" >
+					<tr>
+						<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">修改表单</td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">软件名称：</td>
+				  	  		<td class="formtable_td_value">
+				  	  			<input type="text" id="softwareName${rand}" placeholder="不超过20字" name="fp_updateSoftwareName" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">应用版本号：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="text" id="versionNumber${rand}" placeholder="不超过40字" name="fp_updateVersionNumber" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+				  	  		</td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">应用升级管理方式：</td>
+							<td class="formtable_td_value" >
+							<input class="easyui-combobox"  type="text" name="fp_updateAppUpgradeManage"  
+							 id="AppUpgradeManage${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+							 data:[{id:'',text:''},
+							  {id:'0',text:'无'},
+							  {id:'1',text:'APK发布'},
+							  {id:'2',text:'推荐升级'},
+							  {id:'3',text:'强制升级（静默安装升级）'}]"
+							style="width: 250px"/>
+				  	  		<td class="formtable_td_key">应用升级管理编号：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="text"  name="fp_updateAppUpgradeManageNumber"
+									 id="AppUpgradeManageNumber${rand}" class="easyui-numberbox"	placeholder="最多5位"  maxLength="5" data-options="required:true" style="width: 250px"/>
+				  	  		</td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">适配机型：</td>
+							<td class="formtable_td_value">
+				  	  			<input type="text" id="equipmentType${rand}" placeholder="不超过40字" name="fp_updateEquipmentType" class="easyui-validatebox" data-options="required:true" style="width: 250px"  onblur="limit40(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">预上线时间点：</td>
+				  	  			<td class="formtable_td_value"><input 
+									id="expectDate${rand}" class="easyui-my97" name="fp_updateExpectDate" readonly="readonly"
+									data-options="width:160,required:true" style="width: 230px"/></td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">适配平台：</td>
+							<td class="formtable_td_value">
+				  	  			<input type="text" id="equipmentPlatform${rand}" placeholder="不超过20字" name="fp_updateEquipmentPlatform" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">适配渠道：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="text" id="equipmentDitch${rand}"  placeholder="不超过20字" name="fp_updateEquipmentDitch" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">适配过的分辨率：</td>
+							<td class="formtable_td_value">
+				  	  			<input type="text" id="equipmentVGA${rand}" placeholder="不超过20字" name="fp_updateEquipmentVGA" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">适配过的Android版本：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="text" id="androidVersion${rand}" placeholder="不超过20字"  name="fp_updateAndroidVersion" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit20(this);"/></td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">关联耦合模块功能的验证情况：</td>
+							<td class="formtable_td_value">
+							
+				  	  			<input type="text" id="modulesValidate${rand}" placeholder="不超过40字" name="fp_updateModulesValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+				  	  		</td>
+				  	  		<td class="formtable_td_key">数据库上下兼容的验证情况：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="text" id="dbValidate${rand}"  placeholder="不超过40字" name="fp_updateDbValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/></td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key">跨旧版本升级的验证情况：</td>
+						<td class="formtable_td_value">
+			  	  			<input type="text" id="oldVersionValidate${rand}" placeholder="不超过40字" name="fp_updateOldVersionValidate" class="easyui-validatebox" data-options="required:true" style="width: 250px" onblur="limit40(this);"/>
+			  	  		</td>
+			  	  		<td class="formtable_td_key">申请自升级原因：</td>
+			  	  		<td class="formtable_td_value">
+			  	  			<input class="easyui-combobox" name="fp_updateApplyReason" id="updateApplyReason"
+			  	  				data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+							 	data:[{id:'',text:''},
+							  {id:'1',text:'《运营需求》'},
+							  {id:'2',text:'《Debug迭代》'},
+							  {id:'3',text:'《维护迭代》'}]" style="width:250px;"/>
+			  	  		</td>
+					</tr>
+					<tr>
+					        <td class="formtable_td_key">测试结果：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input class="easyui-combobox"  type="text" name="fp_updateTestResult"  
+							 id="testResult${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+							 data:[{id:'',text:''},
+							  {id:'1',text:'通过'},
+							  {id:'2',text:'失败'}]"
+							style="width: 250px"/></td>
+				  	  		<td class="formtable_td_key">测试类型：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input class="easyui-combobox"  type="text" name="fp_updateTestType"  
+							  id="testType${rand}" data-options="required:true,valueField: 'id',textField: 'text',editable:false,
+							 data:[{id:'',text:''},
+							  {id:'1',text:'基本功能测试'},
+							  {id:'2',text:'全面测试'}]"
+							style="width: 250px"/></td>
+							
+					</tr>
+		      		<tr >
+						<td class="formtable_td_key">风险：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+							 id="risk${rand}"	name="fp_updateRisk" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								data-options="required:true"  placeholder="上过哪些项目，现阶段是否稳定，是否有风险" onblur="limit800(this);">${(steps.vars["risk"])!""}</textarea></td>
+					</tr> 
+					<tr >
+						<td class="formtable_td_key">功能变更说明：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+								id="functionalChange${rand}" name="fp_updateFunctionalChange" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["functionalChange"])!""}</textarea></td>
+					</tr>
+					<tr >
+						<td class="formtable_td_key">修改问题说明：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+								id="modifyExplain${rand}" name="fp_updateModifyExplain" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["modifyExplain"])!""}</textarea></td>
+					</tr>
+					<tr >
+						<td class="formtable_td_key">新增问题：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+							 id="newIssue${rand}"	name="fp_updateNewIssue" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["newIssue"])!""}</textarea></td>
+					</tr>
+					<tr >
+						<td class="formtable_td_key">遗留问题：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+								 id="leaveBehindIssue${rand}" name="fp_updateLeaveBehindIssue" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								data-options="required:true" placeholder="不超过800字"  onblur="limit800(this);">${(steps.vars["leaveBehindIssue"])!""}</textarea></td>
+					</tr>
+					<tr >
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3"><textarea 
+								 id="remark${rand}" name="fp_updateRemark" class="easyui-validatebox"
+								style="width: 720px; height: 50px"
+								 placeholder="不超过800字" onblur="limit800(this);">${(steps.vars["remark"])!""}</textarea></td>
+					</tr>
+					<tr>
+					<td class="formtable_td_key">申请人：</td>
+				  	  		<td class="formtable_td_value">
+				  	  		<input id="account${rand}" type="hidden" name="fp_applyUserId"  value="${appuser.account}"/>
+				  	  			<input type="hidden" name="fp_updateApplyUserName" value="${appuser.name}" />
+				  	  			${appuser.name}
+				  	  		</td>
+				  	  		<td class="formtable_td_key">申请时间：</td>
+				  	  		<td class="formtable_td_value" >
+				  	  			<input type="hidden" name="fp_updateApplyDate"
+											value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+									${.now?string('yyyy-MM-dd HH:mm:ss')}
+				  	  		</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+   </#list>
+    <script type="text/javascript">
+	    $("#softwareName${rand}").val("${softwareName}");
+	    $("#versionNumber${rand}").val("${versionNumber}");
+	    $("#AppUpgradeManage${rand}").val("${AppUpgradeManage}");
+	    $("#AppUpgradeManageNumber${rand}").val("${AppUpgradeManageNumber}");
+	    $("#equipmentType${rand}").val("${equipmentType}");
+	    $("#expectDate${rand}").val("${expectDate}");
+	    $("#equipmentPlatform${rand}").val("${equipmentPlatform}");
+	    $("#equipmentDitch${rand}").val("${equipmentDitch}");
+	    $("#equipmentVGA${rand}").val("${equipmentVGA}");
+	    $("#androidVersion${rand}").val("${androidVersion}");
+	    $("#modulesValidate${rand}").val("${modulesValidate}");
+	    $("#dbValidate${rand}").val("${dbValidate}");
+	    $("#oldVersionValidate${rand}").val("${oldVersionValidate}");
+	    $("#testType${rand}").val("${testType}");
+	    $("#testResult${rand}").val("${testResult}");
+	    /*$("#risk${rand}").val("${risk}");
+	    $("#functionalChange${rand}").val("${functionalChange}");
+	    $("#modifyExplain${rand}").val("${modifyExplain}");
+	    $("#newIssue${rand}").val("${newIssue}");
+	    $("#leaveBehindIssue${rand}").val("${leaveBehindIssue}");
+	    if("${remark}"){
+	    	$("#remark${rand}").val("${remark}");
+	    }*/
+	    $("#updateApplyReason").val('${applyReason}');
+	    function limit20(obj){
+			var Jid=$(obj);
+      		  if(Jid.val().length>20){
+      			$.messager.alert('提示','字数不能超过20！');
+      			Jid.val("");
+      			Jid.validatebox({required:true});
+      		}  
+      	}
+	 function limit40(obj){
+			var Jid=$(obj);
+      		  if(Jid.val().length>40){
+      			$.messager.alert('提示','字数不能超过40！');
+      			Jid.val("");
+      			Jid.validatebox({required:true});
+      		}  
+      	}
+	 function limit800(obj){
+			var Jid=$(obj);
+      		  if(Jid.val().length>800){
+      			$.messager.alert('提示','字数不能超过800！');
+      			Jid.val("");
+      			Jid.validatebox({required:true});
+      		}  
+      	}
+	 function limit800(obj){
+			var Jid=$(obj);
+      		  if(Jid.val().length>800){
+      			$.messager.alert('提示','字数不能超过800！');
+      			Jid.val("");
+      		}  
+      	}
+	</script>
+</#if>
+</#if>
+
+
+
+<!-- SQA评审 -->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_ApkAppraisal'>
+   <div id="mb_ApkAppraisal">
+	<form id="mb_ApkAppraisalForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_ApkAppraisalFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">预发布SQA评审结果</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核人：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_SQAName" value="${appuser.name}"
+					mobile="SQA审核" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_SQASignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">评审结果：</td>
+				<td class="formtable_td_value" colspan="3"><input id="deptLeaderAudi${rand}"
+					name="fp_SqaAudi" type="radio" value="0" checked="checked"
+					mobile="处理结果_通过" />通过 <input id="ApkAudi2${rand}" name="fp_SqaAudi" type="radio"
+					value="1" mobile="处理结果_不通过" />不通过</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">备注：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="SqaAdvice${rand}"
+						name="fp_SqaAdvice" class="easyui-validatebox" data-options="required:true"   style="width: 720px; height: 50px" mobile="处理意见" placeholder="字数不能超过800" onblur="limit800(this);" ></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+  <script type="text/javascript">
+  function limit800(obj){
+		var Jid=$(obj);
+		  if(Jid.val().length>800){
+			$.messager.alert('提示','字数不能超过800！');
+			Jid.val("");
+			Jid.validatebox({required:true});
+		}  
+	}
+  </script>
+</#if>
+</#if>
+
+
+
+
+<!-- 运营经理审核 -->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_OperationManager'>
+   <div id="mb_OperationManager">
+	<form id="mb_OperationManagerForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_OperationManagerFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">预发布运营评审结果</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核人：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_OperationManagerName" value="${appuser.name}"
+					mobile="部门主管审批" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_OperationManagerSignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">评审结果：</td>
+				<td class="formtable_td_value" colspan="3"><input id="deptLeaderAudi${rand}"
+					name="fp_operationManagerAudi" type="radio" value="0" checked="checked"
+					mobile="处理结果_通过" />通过 <input id="ApkAudi2${rand}" name="fp_operationManagerAudi" type="radio"
+					value="1" mobile="处理结果_不通过" />不通过</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">备注：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="SqaAdvice${rand}"
+						name="fp_operationManagerAdvice" class="easyui-validatebox" data-options="required:true" style="width: 720px; height: 50px" mobile="处理意见" placeholder="字数不能超过800" onblur="limit800(this);" ></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+  function limit800(obj){
+		var Jid=$(obj);
+		  if(Jid.val().length>800){
+			$.messager.alert('提示','字数不能超过800！');
+			Jid.val("");
+			Jid.validatebox({required:true});
+		}  
+	}
+  </script>
+</#if>
+</#if>
+
+
+
+
+<!-- 预发布用户反馈专员结果确认-->
+ <#if currentStep?exists>
+	<#if currentStep == 'mb_feedbackAudiTask'>
+		<div id="mb_feedbackAudiTask">
+			<form id="mb_feedbackAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_feedbackAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	 <tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">预发布用户反馈专员结果确认</td>
+			   </tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">反馈人：</td>
+		  	  		<td width="185px" class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_feedbackAudiName" value="${appuser.name}" mobile="反馈人"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">反馈时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiSignDate"  timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="反馈时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">用户反馈系统：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_userFeedbackAudiAdvice" class="easyui-validatebox" data-options="required:true" style="width: 720px; height: 50px" placeholder="字数不能超过100" mobile="用户反馈系统" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">售后：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_afterService" class="easyui-validatebox" data-options="required:true"  style="width: 720px; height: 50px" mobile="售后" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">论坛：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_feedbackAudiAdvice" class="easyui-validatebox" data-options="required:true"   style="width: 720px; height: 50px" mobile="论坛" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">报错：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_error" class="easyui-validatebox" data-options="required:true"  style="width: 720px; height: 50px" mobile="报错" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		 function limit100(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>100){
+	      			$.messager.alert('提示','字数不能超过100！');
+	      			Jid.val("");
+	      			Jid.validatebox({required:true});
+	      		}  
+	      	}
+       </script>
+	</#if>
+</#if>
+
+
+
+<!-- 正式发布SQA评审确认 -->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_SqaAffirmTask'>
+   <div id="mb_SqaAffirmTask">
+	<form id="mb_SqaAffirmTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_SqaAffirmTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">正式发布SQA评审结果</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核人：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_SqaAffirmName" value="${appuser.name}"
+					mobile="SQA审核" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_SqaAffirmSignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">评审结果：</td>
+				<td class="formtable_td_value" colspan="3"><input id="deptLeaderAudi${rand}"
+					name="fp_SqaAffirmAudi" type="radio" value="0" checked="checked"
+					mobile="处理结果_通过" />通过 <input id="ApkAudi2${rand}" name="fp_SqaAffirmAudi" type="radio"
+					value="1" mobile="处理结果_不通过" />不通过</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">备注：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="SqaAdvice${rand}"
+						name="fp_SqaAffirmAdvice" class="easyui-validatebox" data-options="required:true"   style="width: 720px; height: 50px" mobile="处理意见"  placeholder="字数不能超过800" onblur="limit800(this);" ></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+  function limit800(obj){
+		var Jid=$(obj);
+		  if(Jid.val().length>800){
+			$.messager.alert('提示','字数不能超过800！');
+			Jid.val("");
+			Jid.validatebox({required:true});
+		}  
+	}
+  </script>
+</#if>
+</#if>
+
+
+
+
+<!-- 正式发布运营经理审核 -->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_OperationManagerTask'>
+   <div id="mb_OperationManagerTask">
+	<form id="mb_OperationManagerTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_OperationManagerTaskTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">正式发布运营评审结果</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核人：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_OperationManagerTwoName" value="${appuser.name}"
+					mobile="部门主管审批" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_OperationManagerTwoSignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">评审结果：</td>
+				<td class="formtable_td_value" colspan="3"><input id="deptLeaderAudi${rand}"
+					name="fp_operationManagerTwoAudi" type="radio" value="0" checked="checked"
+					mobile="处理结果_通过" />通过 <input id="ApkAudi2${rand}" name="fp_operationManagerTwoAudi" type="radio"
+					value="1" mobile="处理结果_不通过" />不通过</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">备注：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="SqaAdvice${rand}"
+						name="fp_operationManagerTwoAdvice" class="easyui-validatebox" data-options="required:true" style="width: 720px; height: 50px" mobile="处理意见"  placeholder="字数不能超过800" onblur="limit800(this);"></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+  function limit800(obj){
+		var Jid=$(obj);
+		  if(Jid.val().length>800){
+			$.messager.alert('提示','字数不能超过800！');
+			Jid.val("");
+			Jid.validatebox({required:true});
+		}  
+	}
+  </script>
+</#if>
+</#if>
+
+
+
+
+<!-- 正式发布用户反馈专员确认结果 -->
+ <#if currentStep?exists>
+	<#if currentStep == 'mb_feedbackAudiAffirmTask'>
+		<div id="mb_feedbackAudiAffirmTask">
+			<form id="mb_feedbackAudiAffirmTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_feedbackAudiAffirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				 <tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">正式发布用户反馈专员确认结果</td>
+			   </tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">反馈人：</td>
+		  	  		<td width="185px" class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiAccount"  value="${appuser.account}"/>
+		  	  			<input type="hidden" name="fp_feedbackAudiTwoName" value="${appuser.name}" mobile="反馈人"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">反馈时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_feedbackAudiTwoSignDate"  timeEditor="1" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="反馈时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">用户反馈系统：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_userFeedbackTwoAudiAdvice" class="easyui-validatebox" data-options="required:true" style="width: 720px; height: 50px" mobile="用户反馈系统" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">售后：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_afterTwoService" class="easyui-validatebox" data-options="required:true"  style="width: 720px; height: 50px" mobile="售后" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr> 
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">论坛：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_feedbackAudiTwoAdvice" class="easyui-validatebox" data-options="required:true"   style="width: 720px; height: 50px" mobile="论坛" placeholder="字数不能超过100"  onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">报错：</td>
+		  	  		<td  colspan="3" class="formtable_td_value">
+		  	  			<textarea name="fp_errorTwo" class="easyui-validatebox" data-options="required:true"  style="width: 720px; height: 50px" mobile="报错" placeholder="字数不能超过100" onblur="limit100(this);"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		 function limit100(obj){
+				var Jid=$(obj);
+	      		  if(Jid.val().length>100){
+	      			$.messager.alert('提示','字数不能超过100！');
+	      			Jid.val("");
+	      			Jid.validatebox({required:true});
+	      		}  
+	      	}
+       </script>
+	</#if>
+</#if>
+
+
+
+
+
+<!-- SQA评审正式发布是否正常-->
+<#if currentStep?exists> 
+<#if currentStep == 'mb_SqaDismassAffirmTask'>
+   <div id="mb_SqaDismassAffirmTask">
+	<form id="mb_SqaDismassAffirmTaskForm" method="post"
+		enctype='multipart/form-data'>
+		<table id="mb_SqaDismassAffirmTaskFormTable" class="formtable"
+			cellspacing="1" cellpadding="0">
+			<tr>
+				<td colspan="6"   style="font-size: 16px; height: 25px;" class="formtable_td_key" align="center">SQA评审正式发布是否正常</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">审核人：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_deptLeaderAccount" value="${appuser.account}" /> <input
+					type="hidden" name="fp_SqaDismassAffirmName" value="${appuser.name}"
+					mobile="SQA审核" /> ${appuser.name}</td>
+				<td class="formtable_td_key">审批时间：</td>
+				<td class="formtable_td_value"><input type="hidden"
+					name="fp_SqaDismassAffirmSignDate" timeEditor="1"
+					value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="审批时间" />
+					${.now?string('yyyy-MM-dd HH:mm:ss')}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">评审结果：</td>
+				<td class="formtable_td_value" colspan="3">
+				     <input id="deptLeaderAudi${rand}" name="fp_SqaDismassAffirmAudi" type="radio" value="0" checked="checked" mobile="处理结果_正常" />正常
+					 <input id="ApkAudi2${rand}" name="fp_SqaDismassAffirmAudi" type="radio" value="1" mobile="处理结果_不正常" />不正常</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">备注：</td>
+				<td colspan="3" class="formtable_td_value"><textarea id="SqaAdvice${rand}"
+						name="fp_SqaDismassAffirmAdvice" class="easyui-validatebox" data-options="required:true"   style="width: 720px; height: 50px" mobile="处理意见"  placeholder="字数不能超过800" onblur="limit800(this);"></textarea>
+				</td>
+			</tr>
+
+		</table>
+	</form>
+</div>
+<script type="text/javascript">
+  function limit800(obj){
+		var Jid=$(obj);
+		  if(Jid.val().length>800){
+			$.messager.alert('提示','字数不能超过800！');
+			Jid.val("");
+			Jid.validatebox({required:true});
+		}  
+	}
+  </script>
+</#if>
+</#if>
+
+
+
+<#include "/common/foot.html">

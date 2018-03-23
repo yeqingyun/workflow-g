@@ -1,0 +1,3765 @@
+<#include "/common/head.html">
+<#assign applyUserId=""/>
+<#assign assigneeList=""/>
+<#assign befordirectorAccount=""/>
+<#assign beforManagementAccount=""/>
+<#assign recruitmentPersionAccount=""/>
+<#assign officeWorkerAccount=""/>
+<#assign recruitmentdirectorAccount=""/>
+<#assign curLoginNo=appuser.account/>
+
+<#assign hrleaderCheckenableTime=""/>
+
+<#assign companyCodevalue=""/>
+<#assign companyCodetext=""/>
+
+<#assign hrScopevalue=""/>
+<#assign hrScopetext=""/>
+
+<#assign childhrScopevalue=""/>
+<#assign childhrScopetext=""/>
+
+<#assign employeeGroupvalue=""/>
+<#assign employeeGrouptext=""/>
+
+<#assign childemployeeGroupvalue=""/>
+<#assign childemployeeGrouptext=""/>
+
+<#assign saleScopevalue=""/>
+<#assign saleScopetext=""/>
+
+<#assign jobAgreementvalue=""/>  
+<#assign jobAgreementtext=""/>
+
+<#assign oprationTypevalue=""/>
+<#assign oprationTypetext=""/>
+
+<#assign oprationReasionvalue=""/>
+<#assign oprationReasiontext=""/>
+
+<#assign hrleaderCheckenableTime=""/>
+
+
+<#assign account=""/>
+<!-- 展示表单 -->
+<#if processSteps??>
+    <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+	   <#assign applyUserId=steps.vars["applyUserId"]/>
+	   <#assign assigneeList=steps.vars["assigneeList"]/>
+	   <#assign recruitmentPersionAccount=steps.vars["recruitmentPersionAccount"]/>
+	   <#assign officeWorkerAccount=steps.vars["officeWorkerAccount"]/>
+	   <#assign recruitmentdirectorAccount=steps.vars["recruitmentdirectorAccount"]/>
+				 <tr>
+				  	<td class="formtable_td_key">编号：</td>
+				  	<td class="formtable_td_value">${(steps.vars["account"])!""}</td>
+				  	<td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value">${(steps.vars["name"])!""}</td>
+				  	<td class="formtable_td_key">职务：</td>
+				  	<td class="formtable_td_value">${(steps.vars["job"])!""}</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				  	<td class="formtable_td_key">入职日期：</td>
+				  	<td class="formtable_td_value">${(steps.vars["entryDate"])!""}</td>
+				  	<td class="formtable_td_key">拟定生效日期：</td>
+				  	<td class="formtable_td_value" >${(steps.vars["activeDate"])!""}</td>
+				<tr>
+		  	  		<td class="formtable_td_key" rowspan="2">异动情况：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+			  	  		<#if steps.vars["changeInfo"] == '1' > 降级</#if>
+			  	  		<#if steps.vars["changeInfo"] == '2' > 平调</#if>
+			  	  		<#if steps.vars["changeInfo"] == '3' > 晋升</#if>
+			  	  		<#if steps.vars["changeInfo"] == '4' > 晋级</#if>
+		  	  		</td>
+		  	  	</tr>	
+		  	  	<tr>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			由(${(steps.vars["companyName"])!""})&nbsp;${(steps.vars["orgName"])!""}&nbsp;部&nbsp;${(steps.vars["job"])!""}&nbsp;
+		  	  			(原职位)转调至(${(steps.vars["showcomname"])!""})&nbsp;${(steps.vars["accepterOrgname"])!""}&nbsp;部&nbsp;${(steps.vars["job4"])!""}&nbsp;(新岗位)
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">公司代码：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["companyCodeText"])!""}</td>
+		  	  		<td class="formtable_td_key">人事范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["hrScopeText"])!""}</td>
+		  	  		<td class="formtable_td_key">人事子范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childhrScopeText"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">员工组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["employeeGroupText"])!""}</td>
+		  	  		<td class="formtable_td_key">员工子组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childemployeeGroupText"])!""}</td>
+		  	  		<td class="formtable_td_key">工资范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["saleScopeText"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作合同：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["jobAgreementText"])!""}</td>
+		  	  		<td class="formtable_td_key">操作类型：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationText"])!""}</td>
+		  	  		<td class="formtable_td_key">操作原因：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationReasionText"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">成本类型：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<#if steps.vars["costType"] == "1">成本导入</#if>
+		  	  			<#if steps.vars["costType"] == "2">纯加工制造</#if>
+		  	  			<#if steps.vars["costType"] == "3">售后服务支持</#if>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">评审委员会人员：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["assigneePersons"])!""}</td>
+				</tr>
+			    <tr>
+				  	<td class="formtable_td_key">本人签字：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["signBySelf"])!""}</td>
+		  	  		<td class="formtable_td_key">填表日期：</td>
+				  	<td class="formtable_td_value" colspan="3" >${(steps.vars["fillDate"])!""}</td>	
+			  </tr>
+			<#if steps.attachments??>
+				<tr>
+				  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  		<#list steps.attachments as attachs>
+				  	  			<a href="${attachs.url}">
+				  	  				${attachs.name}_${attachs.revision}.0
+				  	  			</a><br/>
+				  	  		</#list>
+				  	  	</td>
+				 </tr>
+		</#if>
+	   </#if>
+	 
+ <!--岗位异动评审委员会面试-->	   
+	   <#if steps.key == 'relevantdepartmentsMultiInstTask'>
+	   		<#if steps.multiInstances??>
+ 				<#list steps.multiInstances as muliSteps>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">岗位异动评审委员会面试</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">面试说明：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		${(muliSteps.vars["${muliSteps.assignee}committeeAudiAdvice"])!""} 
+			  		</td>
+			  	</tr>
+		  	  	<tr>	
+			  		<td class="formtable_td_key" >面试结论：</td>
+		  	  		<td class="formtable_td_value" > 
+		  	  			<#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if muliSteps.vars["${muliSteps.assignee}relevantdepartmentsSignAudi"] == '1' >
+		  	  				不同意
+						</#if>
+			  		</td>
+			  		<td class="formtable_td_key" >评审委员会成员签字：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  		 ${(muliSteps.vars["${muliSteps.assignee}committeeAudiName"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" colspan="5">
+					${(muliSteps.vars["${muliSteps.assignee}committeeAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<#if muliSteps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value"  colspan="5">
+				  	  	<#list muliSteps.attachments as muliAttachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${muliAttachs.name}_${muliAttachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+				  </#list>	
+			 </#if>		 
+	   </#if>
+	   <!--原部门主管意见-->	   
+	   <#if steps.key == 'befordirectorAudi'>
+	   	<#assign befordirectorAccount=steps.vars["befordirectorAccount"]/>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_key" align="center">原部门主管意见</td>
+			  	</tr>
+		  	  	<tr>
+		  	 	 	<td class="formtable_td_key">原部门主管签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["befordirectorAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["befordirectorAudiTime"])!""}
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["befordirectorAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["befordirectorAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["befordirectorAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	    <!--原部门经理-->	   
+	   <#if steps.key == 'beforManagementAudi'>
+	   	<#assign beforManagementAccount=steps.vars["beforManagementAccount"]/>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_key" align="center">原部门经理意见</td>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原部门经理签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["beforManagementAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["beforManagementAudiTime"])!""}
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["beforManagementAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["beforManagementAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["beforManagementAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	     <!--原部门总监审批-->	   
+	   <#if steps.key == 'beforeChiefinSpectorAudi'>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_key" align="center">原部门总监意见</td>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原部门总监签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["beforeChiefinSpectorAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			${(steps.vars["beforeChiefinSpectorAudiTime"])!""}
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["beforeChiefinSpectorAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["beforeChiefinSpectorAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["beforeChiefinSpectorAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	      <!--接收部门主管意见-->	   
+	   <#if steps.key == 'recciveDeptAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">接收部门（或科室）意见</td>
+		  	  	</tr>
+		  	  	
+		  	  <tr>
+		  	  		<td class="formtable_td_key">是否调整薪资：</td>
+		  	  		<td class="formtable_td_value" colspan="5"> 
+		  	  		<#if steps.vars["changeWage"] == '1' >
+		  	  				是
+		  	  				<#if (assigneeList?contains(curLoginNo)||curLoginNo==applyUserId||curLoginNo==befordirectorAccount||curLoginNo==beforManagementAccount)&&curLoginNo!=recruitmentPersionAccount&&curLoginNo!=officeWorkerAccount&&curLoginNo!=recruitmentdirectorAccount>
+		  	  				<#else>
+		  	  				由 薪资等级:
+						<u>${(steps.vars["curSalaryGroup"])!""}---${(steps.vars["curSalary1"])!""}</u>
+							 调整至  
+			    			薪资等级: 
+						<u>${(steps.vars["fuSalaryGroup"])!""}---${(steps.vars["fuSalary1"])!""}</u>
+							&nbsp;&nbsp;&nbsp;&nbsp; 调整幅度:
+			 			<u> ${(steps.vars["addScope"])!""}</u>
+			 			</#if>
+					</#if>
+					<#if steps.vars["changeWage"] == '2' >
+		  	  				三个月考核期过后再调薪
+					</#if>
+					<#if steps.vars["changeWage"] == '3' >
+		  	  				否
+					</#if>
+			  		</td>
+			  	</tr>
+		  	  	<tr>
+			  		<td class="formtable_td_key">签字：</td>
+			  		<td class="formtable_td_value"> 
+			  		${(steps.vars["recciveDeptAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" >
+		  	  			<#if steps.vars["recciveDeptAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["recciveDeptAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  		<td class="formtable_td_key">审批日期：</td>
+					<td class="formtable_td_value" >${(steps.vars["recciveDeptAudiTime"])!""}
+			  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	       <!--部门经理审核-->	  
+	   <#if steps.key == 'departManagerAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">接受部门经理审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["departManagerAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" >
+		  	  			<#if steps.vars["departManagerAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["departManagerAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >
+					 ${(steps.vars["departManagerAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["financedirectorAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	        <!--接受部门总监审核-->	  
+	   <#if steps.key == 'nowChiefInspectorAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">接受部门总监审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["nowChiefInspectorAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" >
+		  	  			<#if steps.vars["nowChiefInspectorAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["nowChiefInspectorAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >
+					 ${(steps.vars["nowChiefInspectorAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["nowChiefInspectorAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	   	        <!--招聘专员审核-->	  
+	   <#if steps.key == 'recruitmentPersionAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘专员审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["recruitmentPersionAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" >
+		  	  			<#if steps.vars["recruitmentPersionAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["recruitmentPersionAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >
+					 ${(steps.vars["recruitmentPersionAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["recruitmentPersionAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	    	        <!--职员招聘专员审核-->	  
+	   <#if steps.key == 'officeWorkerAudiTask'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘专员审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["officeWorkerAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" >
+		  	  			<#if steps.vars["officeWorkerAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["officeWorkerAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >
+					 ${(steps.vars["officeWorkerAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["officeWorkerAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	   	        <!--招聘主管审核-->	  
+	   <#if steps.key == 'recruitmentdirectorAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘主管审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["recruitmentdirectorAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+					<td class="formtable_td_value" colspan="3">
+		  	  			<#if steps.vars["recruitmentdirectorAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["recruitmentdirectorAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+				</tr>
+				<tr>	
+					<td class="formtable_td_key">批准生效月份：</td>
+					<td  class="formtable_td_value" > ${(steps.vars["hrCheckenableTime"])!""} </td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" colspan="3">
+					 ${(steps.vars["recruitmentdirectorAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["recruitmentdirectorAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	   <!--薪资管理审核-->
+	   <#if steps.key == 'hrcheckWageAudiTask'>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_key" align="center">薪资管理审核</td>
+			  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">薪资专员签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			  ${(steps.vars["hrcheckWageAudiName"])!""}
+					</td>
+					<td class="formtable_td_key">审批日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			  ${(steps.vars["hrcheckWageAudiTime"])!""}
+					</td>
+		  	  		<td class="formtable_td_key">审核结果：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<#if steps.vars["hrcheckWageAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["hrcheckWageAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${(steps.vars["hrcheckWageAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+	         <!--人力资源部审核-->	   
+	   <#if steps.key == 'hrCheckAudi'>
+		  	  	 <tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力资源部查核建议</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" >   ${(steps.vars["hrCheckAudiName"])!""} 
+			  		</td>
+			  		<td class="formtable_td_key">审核结果：</td>
+			  		<td class="formtable_td_value"  colspan="3">
+		  	  			<#if steps.vars["hrCheckAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["hrCheckAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">批准生效月份：</td>
+					<td  class="formtable_td_value" > ${(steps.vars["hrleaderCheckenableTime"])!""} </td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" colspan="3">
+					     ${(steps.vars["hrCheckAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">查核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		 ${(steps.vars["hrCheckAudiAdvice"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   
+
+	   
+	      <!--总经理审核-->	  
+	   <#if steps.key == 'generalManagerAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">总经理审核</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value"> 
+					 ${(steps.vars["generalManagerAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审核结果：</td>
+			  		<td class="formtable_td_value"  >
+		  	  			<#if steps.vars["generalManagerAudi"] == '0' >
+		  	  				同意
+						</#if>
+						<#if steps.vars["generalManagerAudi"] == '1' >
+		  	  				不同意
+						</#if>
+					</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >
+					 ${(steps.vars["generalManagerAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		   ${(steps.vars["generalManagerAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="6">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	   <!--人力专员确认-->	
+	   <#if steps.key == 'hrpersonalCheckAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力专员确认</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key" >温馨提示：</td>
+		  	  	<td class="formtable_td_value" colspan="5">
+		  	  		<span style="font-size: 13pt;  font-family:黑体;color: red" >务必核实该员工上述信息！无误后可点击完成按钮将调整信息写入SAP系统，谨慎操作！</span></td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  	  	<td class="formtable_td_key">是否修改岗位信息：</td>
+					 <td class="formtable_td_value" >
+					  	<#if steps.vars["updateJobInfo"] == '0' >是</#if>
+						<#if steps.vars["updateJobInfo"] == '1' >否</#if>
+					</td>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" > 
+		  	  		 ${(steps.vars["hrpersonalCheckAudiName"])!""}
+			  		</td>
+			  		<td class="formtable_td_key">审核日期：</td>
+					 <td class="formtable_td_value" colspan="3">
+					  ${(steps.vars["hrpersonalCheckAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<#if steps.vars["updateJobInfo"] == '0' >
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">新岗位确认：</td>
+		  	  		<td class="formtable_td_value" colspan="5"> 
+		  	  			公司：${(steps.vars["updateCompanyNameStaff"])!""}&nbsp;&nbsp;部门：${(steps.vars["updateOrgNameStaff"])!""}&nbsp;&nbsp;新岗位：${(steps.vars["updateJobNameStaff"])!""}
+			  		</td>
+		  	  	</tr>
+		  	  	</#if>
+		  	  		<tr>
+		  	  	  <td class="formtable_td_key">是否传入SAP：</td>
+					 <td class="formtable_td_value" >
+					  	<#if steps.vars["isUploadSap"] == '0' >是</#if>
+						<#if steps.vars["isUploadSap"] == '1' >否</#if>
+				  </td>
+				  <td class="formtable_td_key">是否修改数据：</td>
+					 <td class="formtable_td_value"  colspan="3">
+					  	<#if steps.vars["isUpdate"] == '0' >是</#if>
+						<#if steps.vars["isUpdate"] == '1' >否</#if>
+				  </td>
+		  	  	</tr>
+		  	  	<#if steps.vars["isUpdate"] == '0' >
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">公司代码：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["companyCodeTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">人事范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["hrScopeTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">人事子范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childhrScopeTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">员工组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["employeeGroupTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">员工子组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childemployeeGroupTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">工资范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["saleScopeTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作合同：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["jobAgreementTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">操作类型：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">操作原因：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationReasionTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	</#if>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">确认意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		  ${(steps.vars["hrpersonalCheckAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	     <!--招聘专员确认-->	
+	   <#if steps.key == 'hrOfficeWorkerCheckAudi'>
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力专员确认</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key" >温馨提示：</td>
+		  	  	<td class="formtable_td_value" colspan="5">
+		  	  		<span style="font-size: 13pt;  font-family:黑体;color: red" >务必核实该员工上述信息！无误后可点击完成按钮将调整信息写入SAP系统，谨慎操作！</span></td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  	  	<td class="formtable_td_key">是否修改岗位信息：</td>
+					 <td class="formtable_td_value" >
+					  	<#if steps.vars["updateJobInfo"] == '0' >是</#if>
+						<#if steps.vars["updateJobInfo"] == '1' >否</#if>
+					</td>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" > 
+		  	  		 ${(steps.vars["hrOfficeWorkerCheckAudiName"])!""}
+			  		</td>
+					<td class="formtable_td_key">审核日期：</td>
+					 <td class="formtable_td_value" colspan="3">
+					  ${(steps.vars["hrOfficeWorkerCheckAudiTime"])!""}
+					</td>
+		  	  	</tr>
+		  	  	<#if steps.vars["updateJobInfo"] == '0' >
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">新岗位确认：</td>
+		  	  		<td class="formtable_td_value" colspan="5"> 
+		  	  			公司：${(steps.vars["updateCompanyNameOfficeWorker"])!""}&nbsp;&nbsp;部门：${(steps.vars["updateOrgNameOfficeWorker"])!""}&nbsp;&nbsp;新岗位：${(steps.vars["updateJobNameOfficeWorker"])!""}
+			  		</td>
+		  	  	</tr>
+		  	  	</#if>
+		  	  	<tr>
+		  	  	  <td class="formtable_td_key">是否传入SAP：</td>
+					 <td class="formtable_td_value" >
+					  	<#if steps.vars["isUploadSap"] == '0' >是</#if>
+						<#if steps.vars["isUploadSap"] == '1' >否</#if>
+				  </td>
+				  <td class="formtable_td_key">是否修改数据：</td>
+					 <td class="formtable_td_value"  colspan="3">
+					  	<#if steps.vars["isUpdate"] == '0' >是</#if>
+						<#if steps.vars["isUpdate"] == '1' >否</#if>
+				  </td>
+		  	  	</tr>
+		  	  	<#if steps.vars["isUpdate"] == '0' >
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">公司代码：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["companyCodeTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">人事范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["hrScopeTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">人事子范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childhrScopeTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">员工组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["employeeGroupTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">员工子组：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["childemployeeGroupTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">工资范围：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["saleScopeTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">工作合同：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["jobAgreementTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">操作类型：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationTextTo"])!""}</td>
+		  	  		<td class="formtable_td_key">操作原因：</td>
+		  	  		<td class="formtable_td_value" >${(steps.vars["oprationReasionTextTo"])!""}</td>
+		  	  	</tr>
+		  	  	</#if>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">确认意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  		  ${(steps.vars["hrOfficeWorkerCheckAudiAdvice"])!""}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+				  	 <tr>
+				  	  	<td class="formtable_td_key">附件：</td>
+				  	  	<td class="formtable_td_value" colspan="5">
+				  	  	<#list steps.attachments as attachs>
+				  	  		<a href="${attachs.url}">
+				  	  			${attachs.name}_${attachs.revision}.0
+				  	  		</a><br/>
+				  	  	</#list>
+				  	  	</td>
+				  	 </tr>
+				 </#if>
+	   </#if>
+	</#list>
+	</table>	
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  	<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  	<td class="formtable_td_key">编号：</td>
+						  	<td class="formtable_td_value">
+						  		<input id="account" class="easyui-validatebox textbox" onblur="initData(this)" data-options="required:true" type="text" name="fp_account" />
+						  		<input id="loginNo" type="hidden" name="fp_loginNo" class="easyui-validatebox" data-options="required:true"/>
+						  	</td>
+		  	  		<td class="formtable_td_key">姓名：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" id="isOffDireOrManager${rand}" name="fp_isOffDireOrManager"/>
+		  	  			<input type="hidden" id="applyUserId${rand}" name="fp_applyUserId" value="${appuser.account}"/>
+		  	  			<input id="name${rand}" class='easyui-validatebox none-input' type='text' readonly="readonly"  name='fp_name' />
+		  	  		</td>
+		  	  		<td class="formtable_td_key">职位：</td>
+						  	<td class="formtable_td_value">
+						  		<input id="job" class="easyui-validatebox none-input" readonly="readonly"   name="fp_job" type="text" />
+						  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="orgName${rand}" class="easyui-validatebox none-input"  readonly="readonly" type="text" name="fp_orgName" /></td>
+						<input id="systemName${rand}" type="hidden"/>
+						<input id="hrOfficeWorker${rand}" type="hidden" name="fp_hrOfficeWorkerAccount"/>
+					<td class="formtable_td_key">入职日期：</td>
+		  	  		<td class="formtable_td_value"  >
+		  	  			<input id="entryTime" readonly="readonly" class="easyui-validatebox none-input"   name="fp_entryDate"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">拟定生效日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="effectiveDate${rand}" type="text" class="easyui-my97" required="required"  readonly="readonly" name="fp_activeDate"
+	    						data-options="dateFmt:'yyyy-MM',width:120,required:true"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" rowspan="2">异动情况：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<input type="radio" name="fp_changeInfo"  value="1" onclick="checkOption()">降级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  	       		<input type="radio" name="fp_changeInfo" value="2" checked="checked" onclick="checkOption()">平调&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  	       		<input type="radio" name="fp_changeInfo" value="4" checked="checked" onclick="checkOption()">晋级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" name="fp_changeInfo" value="3" onclick="checkOption()">晋升&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		  	  		</td>
+		  	  	</tr>	
+		  	  	<tr>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<div>由<input id="companyName${rand}" class="easyui-validatebox none-input" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px;width: 200px" name="fp_companyName" readonly="readonly" type="text" />
+		  	  			<input id="orgName2${rand}" class="easyui-validatebox none-input" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" readonly="readonly" type="text" />
+		  	  			<input id="job2" class="easyui-validatebox none-input" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" readonly="readonly" name="fp_job2" type="text" />(原职位)</div>
+		  	  			<div style="padding: 5px 0px">转调至</div>
+						<div><span style="margin-right: 4px">(</span><input id="accepterComId${rand}" class="easyui-validatebox  textbox" style="width: 200px;" type="text" name="fp_acceptercompanyId" /><span style="margin-left: 10px;margin-right: 10px">)</span>
+							<input id="incompanyId${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_incompanyId" />
+							<input id="showcomname${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_showcomname" />
+						
+		  	  			<input id="accepterOrgId${rand}" type="hidden"  name="fp_accepterOrgId" /><!-- value=${appuser.orgId?c} -->
+		  	  			<input id="acceptorgName${rand}" type="hidden" value="" name="fp_accepterOrgname"/>
+		  	  			<input id="accepterOrgName${rand}" class="easyui-combotree" style="width: 120px;"  name="fp_accepterOrgname1" data-options="required:true">
+		  	  			<span style="margin-left: 10px;padding-right: 10px">部</span><input id="combo_inJobName${rand}" class="easyui-combotree" style="width: 120px;"  data-options="required:true"/>
+		  	  			 <input id="hidden_newjobvalue${rand}" type="hidden" name="fp_newjobvalue"  />
+						 <input id="hidden_inJobName${rand}" type="hidden" name="fp_job4"  /><span style="margin-left: 10px;padding-right: 10px">(新岗位)</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  				<td class="formtable_td_key">公司代码：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="companyCodevalue${rand}"  type='hidden' name="fp_companyCodevalue" />
+						  		<input id="companyCode${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="companyCodeText${rand}"  type='hidden' name="fp_companyCodeText" />
+						  	</td>
+		  	  				<td class="formtable_td_key">人事范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="hrScopevalue${rand}"  type='hidden' name="fp_hrScopevalue" />
+						  		<input id="hrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="hrScopeText${rand}"  type='hidden' name="fp_hrScopeText" />
+						  	</td>
+						  	<td class="formtable_td_key">人事子范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childhrScopevalue${rand}"  type='hidden' name="fp_childhrScopevalue" />
+						  		<input id="childhrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childhrScopeText${rand}"  type='hidden' name="fp_childhrScopeText" />
+						  	</td>
+						  	
+				</tr>
+				<tr>	
+							<td class="formtable_td_key">员工组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="employeeGroupvalue${rand}"  type='hidden' name="fp_employeeGroupvalue" />
+						  		<input id="employeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="employeeGroupText${rand}"  type='hidden' name="fp_employeeGroupText" />
+						  	</td>	  	
+						  	<td class="formtable_td_key">员工子组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childemployeeGroupvalue${rand}"  type='hidden' name="fp_childemployeeGroupvalue" />
+						  		<input id="childemployeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childemployeeGroupText${rand}"  type='hidden' name="fp_childemployeeGroupText" />
+						  	</td>
+						  	<td class="formtable_td_key">工资范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="saleScopevalue${rand}"  type='hidden' name="fp_saleScopevalue" />
+						  		<input id="saleScope${rand}" class='easyui-combobox' type='text' />
+						  		<input id="saleScopeText${rand}"  type='hidden' name="fp_saleScopeText" />
+						  	</td>
+						  	
+		  	  	</tr>
+		  	  	<tr>
+		  	  				<td class="formtable_td_key">工作合同：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="jobAgreementvalue${rand}"  type='hidden' name="fp_jobAgreementvalue" />
+						  		<input id="jobAgreement${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="jobAgreementText${rand}"  type='hidden' name="fp_jobAgreementText" />
+						  	</td>
+						  	<td class="formtable_td_key">操作类型：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationvalue${rand}"  type="hidden" name="fp_oprationTypevalue"   />
+						  		<input id="opration${rand}" class="easyui-combobox" type="text" />
+						  		<input id="oprationText${rand}"  type="hidden" name="fp_oprationText"   />
+						  	</td>
+		  	  				<td class="formtable_td_key">操作原因：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationReasionvalue${rand}" type="hidden" name="fp_oprationReasionvalue"   />
+						  		<input id="oprationReasion${rand}" class="easyui-combobox" type="text"   />
+						  		<input id="oprationReasionText${rand}" type="hidden" name="fp_oprationReasionText"   />
+						  	</td>
+		  	  				
+				</tr>
+		  	  	<tr>
+		  	  				<td class="formtable_td_key">成本类型：</td>
+						  	<td class="formtable_td_value" colspan="5">
+						  		<select name="fp_costType" class="easyui-combobox" style="width: 143px" data-options="{
+						  			data:[{id:1,text:'1产品导入'},{id:2,text:'2纯加工制造'},{id:3,text:'3售后服务支持'}],
+						  			valueField:'id',
+						  			textField:'text'
+						  		}">
+						  		</select>
+						  	</td>
+		  	  				
+				</tr>
+				<tr>		  	
+		  	  		<td class="formtable_td_key">评审委员会人员：</td>
+		  	  		<td class="formtable_td_value"  colspan="5">
+		  	  			<input
+							id="assigneeAccount" type="hidden" name="fp_assigneeList" /> <textarea  data-options="required:true"
+							id="assigneePersons" name="fp_assigneePersons" readonly="readonly" class="easyui-validatebox"
+						style="font-size: 12px; width: 600px; height: 80px;"></textarea>
+						<a id="openSelectPersonBtn" href="javascript:void(0);"
+					class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择评审人员</a>
+		  	  		</td>
+		  	  	</tr>
+				<tr>		  	
+		  	  		<td class="formtable_td_key">本人签字：</td>
+		  	  		<td class="formtable_td_value"  colspan="2">
+		  	  			<input id="signByself" class="easyui-validatebox textbox none-input" readonly="readonly" name="fp_signBySelf" type="text" />
+		  	  		</td>
+		  	  		<td class="formtable_td_key">填表日期：</td>
+		  	  		<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+		  	  			<input   name="fp_fillDate" type="hidden" value="${.now?string('yyyy-MM-dd')}"/>
+		  	  			<!-- 获取人力招聘专员、职员招聘专员、招聘主管的账号，以对薪资做相应的隐藏 -->
+		  	  			<input type="hidden" id="recruitmentPersionAccount${rand}" name="fp_recruitmentPersionAccount"/>
+		  	  			<input type="hidden" id="officeWorkerAccount${rand}" name="fp_officeWorkerAccount"/>
+		  	  			<input type="hidden" id="recruitmentdirectorAccount${rand}" name="fp_recruitmentdirectorAccount"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 700px; height: 500px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+                    text:'完成',
+                    iconCls:'icon-ok',
+                    handler: selectUserEnd
+                },{
+                    text:'关闭',
+                    iconCls:'icon-cancel',
+                    handler: closeSelectUserWin
+                }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			
+			<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+				员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+				<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+			</div>
+			<table id="users${rand}"></table>
+		</div>
+
+		<div
+			data-options="region:'south',iconCls:'icon-sapstartprocess',title:'选择的用户',border:true,split:true,height:100"
+			style="padding: 0px 0px 0px 0px;">
+			<input name="tags" id="tags${rand}" value="" />
+		</div>
+	</div>
+</div>
+		
+	<script type="text/javascript">
+			var orgWin = $('#orgWin-${rand}');
+			var addUserList = new Array();
+		    var addNameList = new Array();
+		    var addOrgNameList = new Array();
+		    
+		    var combo_inJobName = $('#combo_inJobName${rand}');
+			var hidden_inJobName = $('#hidden_inJobName${rand}');
+			
+			
+			//弹出窗口
+	$('#openSelectPersonBtn').bind('click', function(){
+		//获取会签人与部门，如果为空，则清空全局变量addUserList,addNameList,addOrgNameList
+		
+		var assigneePersons = $('#assigneePersons').val();
+		if (assigneePersons == null || assigneePersons.length <= 0){
+			$('#tags${rand}').importTags('');
+			addUserList = [];
+			addNameList = [];
+			addOrgNameList = [];
+		}
+	    orgWin.dialog('open');	
+	});
+			
+	$.post("engineer/getUserRecruiterAccount.json",{
+		roleName:'人力招聘专员,职员招聘专员,人力招聘主管',
+		processDefKey:'M-PostAdjustment-App'
+	},function(data){
+		var strs=data.split(',');
+		$("#recruitmentPersionAccount${rand}").val(strs[0]);
+		$("#officeWorkerAccount${rand}").val(strs[1]);
+		$("#recruitmentdirectorAccount${rand}").val(strs[2]);
+	});
+			
+	//选择用户完成事件
+    function selectUserEnd(){
+    	//设置值，并关闭窗口
+        if(addUserList.length<2){
+           $.messager.alert('信息提示','选择两个人以上!','info');
+           return;
+        }
+       //设置值，并关闭窗口
+       $('#assigneePersons').val($('#tags${rand}').val());
+       //处理人员Account
+       var assigneeAccounts="";
+       for(var i=0;i<addUserList.length;i++){
+       		assigneeAccounts += addUserList[i]+","
+       }
+       if (assigneeAccounts.length > 0 && assigneeAccounts != null) {
+       		assigneeAccounts = assigneeAccounts.substring(0,assigneeAccounts.length-1);
+       }
+       $('#assigneeAccount').val(assigneeAccounts);
+       orgWin.dialog('close');
+       var startForm = $('#startForm');
+	   startForm.form('enableValidation').form('validate');	
+  	 }
+   
+   function  closeSelectUserWin(){
+   	 orgWin.dialog('close');	
+  	 }
+			$(function(){
+			
+			var orgs = $('#orgs${rand}');
+			var users = $('#users${rand}');
+			var currentOrgId = 0;
+		//init tree
+		orgs.tree({
+		    url: 'hrFlow/auth/orgs.json',
+		    method:'get',
+		    required:true,
+		    lines:true,
+			panelWidth:300,
+			panelHeight:280,
+	        onClick:function(node){
+                currentOrgId = node.id;		
+				$('#users${rand}').datagrid('reload',{id:currentOrgId});
+			}
+		});
+		//init Tags 
+		$('#tags${rand}').tagsInput({
+               width: 'auto',
+               height: '100px',
+               onRemoveTag: function (tag) {
+                   var i = addNameList.indexOf(tag);
+	               var id = addUserList[i];
+	               var name = addNameList[i];
+	               var orgName = addOrgNameList[i];
+                   if (i != -1) {
+                   /* 	var id = addUserList[i];
+                   	var name = addNameList[i];
+                   	var orgName = addOrgNameList[i];
+                   	
+                   	removeUser(id, name, orgName); */
+                  	addUserList.splice(i,1);
+	                addNameList.splice(i,1);
+	                addOrgNameList.splice(i,1);//splice删除指定位置的用户
+	                $('#tags${rand}').removeTag(tag + "[" + orgName + "]"); 
+                   }
+               },
+               interactive: false
+        });
+        
+        function addUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) == -1) {
+                addUserList.push(id);
+                addNameList.push(name + "[" + orgName + "]");
+                addOrgNameList.push(orgName);
+                $('#tags${rand}').addTag(name + "[" + orgName + "]");
+            }
+        }
+        
+        function removeUser(id, name, orgName) {
+            if ($.inArray(id, addUserList) != -1) {
+             	addUserList.pop(id);
+                addNameList.pop(name);//pop是从最后开始删除的
+                addOrgNameList.pop(orgName); 
+                $('#tags${rand}').removeTag(name);
+            }
+       }
+   
+      //user search
+    	$('#userGridSearchBtn${rand}').bind('click', function(){
+    		var userAccount = $('#userAccount${rand}').val();
+    		var userName = $('#searchName${rand}').val();
+    		$('#users${rand}').datagrid('reload',
+    			{
+    				userAccount:userAccount,
+    				userName:userName
+    			});
+    	});
+		
+    //user search
+	$('#userGridSearchBtn${rand}').bind('click', function(){
+		var userAccount = $('#userAccount${rand}').val();
+		var userName = $('#searchName${rand}').val();
+		$('#users${rand}').datagrid('reload',
+			{
+				userAccount:userAccount,
+				userName:userName
+			});
+	});
+ //user search
+    //init UserGrid 
+     $('#users${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:currentOrgId
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:false,
+	  rownumbers:true,
+	  toolbar: [{
+				  		text:'完成选择',
+						iconCls: 'icon-edit',
+						handler: function(){
+							//获取选中的树节点
+							var node = orgs.tree('getSelected');
+							var orgName;
+							var row = users.datagrid('getSelections');
+							
+				          if (row.length > 0) {
+								for (var i=0;i<row.length;i++) {
+								
+						orgName="";
+						if(	row[i].orgName!=undefined&&row[i].orgName!=null&&row[i].orgName!=''){
+						    orgName=row[i].orgName;
+							}else{
+							if(node!=null&&node.text!=undefined&&node.text!=null&&node.text!=''){
+							orgName = node.text;
+							}
+							}
+								
+					
+							
+									addUser(row[i].account, row[i].name, orgName);
+								}
+							} else {
+								$.messager.alert('信息提示','请选择用户!','info');
+							}
+						  }
+					},'-',{
+						text:'清空',
+						iconCls: 'icon-tip',
+						handler: function(){
+							users.datagrid("clearSelections");
+						}
+					}],onSelect:function(rows,data){
+						var node = orgs.tree('getSelected');
+						addUser(data.account, data.name, node.text);
+					}
+	});
+	//init UserGrid 
+
+
+
+
+
+			//var selectuser = $('#selectuser${rand}');
+			//selectuser.combobox();
+			//selectuser.combobox('setValue', $('#account').val());
+			//selectuser.next().find('.combo-text').bind('keyup',function(){
+			//		 	if(this.value != ''){
+			//			 	var url = 'processRole/allUser.json?account='+this.value;
+			//				selectuser.combobox('reload', url);
+			//				selectuser.combobox('setValue', this.value);
+			//				$("#account").val(this.value);
+			//	 		}
+			//});	
+			//init combobox
+			
+			var testTree = null;	
+			$('#accepterComId${rand}').combobox({
+					valueField: 'id',
+			        textField: 'name',
+				    url: 'hrFlow/auth/getCom.json',
+				    required:true,
+					editable:false,
+					onSelect:function(record){
+					$('#incompanyId${rand}').val(record.id);
+					$('#showcomname${rand}').val(record.name);
+					$('#accepterOrgName${rand}').combotree("reload","hrFlow/auth/orgs.json?id=" + record.id);
+					$('#accepterOrgName${rand}').combotree("tree").tree("options").url =  "hrFlow/auth/orgs.json";
+					}
+				   
+				});
+				
+				//组织架构初始化
+				$('#accepterOrgName${rand}').combotree({
+				    url: 'hrFlow/auth/orgs.json',
+				    method:'get',
+				    //required:true,
+				    //onBeforeExpand:function(node) {  $('#accepterOrgName${rand}').combotree("tree").tree("options").url = "hrFlow/auth/orgs.json?id=" +node.id;},
+				    lines:true,
+					panelWidth:300,
+					panelHeight:280,
+				    onClick:function(node){
+						 $('#accepterOrgId${rand}').val(node.id);
+					  	 $('#acceptorgName${rand}').val(node.text);
+					  	  //转换部门ID
+							  	$.get('hrFlow/transOrgIdToSap.json',
+								{deptId:node.id
+							   },
+								function(record){
+									
+									   if(record==null){
+									   return;
+									   }
+									   //初始化职位树
+									   if($("#effectiveDate${rand}").val() == ""){
+										   $.messager.alert('信息提示','请选择生效日期!','info');
+										   return;
+									   }
+									  $.get('hrFlow/getSapOptions4Job.json',
+										{functionName:'ZHR_OA02',vars:'P_OBJID_VALUE_'+record+'_NEXT_P_KEYDATE_VALUE_'+$("#effectiveDate${rand}").val()+"-01",
+									    exportTableName:'T_POSITION',code:'PLANS',describe:'PLANS_T'},
+										function(data){
+											combo_inJobName.combobox("clear").combobox('loadData',data);
+										},'json'); 
+									
+								},'json');
+								
+						
+					}  
+				});
+				//选择赋值		
+				combo_inJobName.combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+                		hidden_inJobName.val(record.text);
+                		$('#hidden_newjobvalue${rand}').val(record.id);
+            		}
+				});
+				//操作类型初始化
+				 $.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA06',
+					vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+					exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+					function(data){
+						var i = new Array();
+						i[0] = data[3];
+						i[1] = data[4];
+						i[2] = data[5];
+						data = i;
+					$('#opration${rand}').combobox("clear").combobox('loadData',data);
+					},
+					'json'); 
+		
+				//操作类型赋值		
+				$('#opration${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#oprationvalue${rand}').val(record.id);
+                		$('#oprationText${rand}').val(record.text);
+                		if(record.id!=null){
+                		//操作原因初始化
+                		$.get('hrFlow/getSapOptions.json',
+							{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+record.id+'_NEXT_P_MASSG_VALUE_'+' ',
+							exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+							function(data){
+							$('#oprationReasion${rand}').combobox("clear").combobox('loadData',data);
+							},
+							'json');
+                		}
+            		}
+				});
+					//操作原因赋值		
+				$('#oprationReasion${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#oprationReasionvalue${rand}').val(record.id);
+                		$('#oprationReasionText${rand}').val(record.text);
+            		}
+				});
+				//公司代码赋值
+				$('#companyCode${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#companyCodevalue${rand}').val(record.id);
+                		$('#companyCodeText${rand}').val(record.text);
+                		$('#childhrScope${rand}').combobox("clear");
+                	//初始化人事范围
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:'P_BUKRS_VALUE_'+record.id,
+					exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+					function(data){
+					$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+					},
+					'json');
+					
+            		}
+				});
+				//人事范围赋值
+				$('#hrScope${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#hrScopevalue${rand}').val(record.id);
+                		$('#hrScopeText${rand}').val(record.text);
+                		$('#childhrScope${rand}').combobox.DataSource=null;
+                		//初始化子人事范围
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:'P_BUKRS_VALUE_'+$("#companyCodevalue${rand}").val()+'_NEXT_P_WERKS_VALUE_'+record.id,
+					exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+					function(data){
+					$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+					},
+					'json');
+					
+            		}
+				});
+				//人事子范围赋值
+				$('#childhrScope${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#childhrScopevalue${rand}').val(record.id);
+                		$('#childhrScopeText${rand}').val(record.text);
+            		}
+				});
+				//员工组赋值
+				$('#employeeGroup${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#employeeGroupvalue${rand}').val(record.id);
+                		$('#employeeGroupText${rand}').val(record.text);
+            		}
+				});
+				//员工子赋值
+				$('#childemployeeGroup${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#childemployeeGroupvalue${rand}').val(record.id);
+                		$('#childemployeeGroupText${rand}').val(record.text);
+                		//当选择员工子组时，获取相应的招聘专员审核人
+    					if(jsondata.PERSK!='40'){
+    						$.post("engineer/getLoginNo.json",{
+    							engineerId:'01058659'//吴志强
+    						},function(data){
+    							$("#hrOfficeWorker${rand}").val(data);
+    						});
+    					}
+            		}
+				});
+				//工资范围赋值
+				$('#saleScope${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					required:true,
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#saleScopevalue${rand}').val(record.id);
+                		$('#saleScopeText${rand}').val(record.text);
+            		}
+				});
+				//工作合同赋值
+				$('#jobAgreement${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#jobAgreementvalue${rand}').val(record.id);
+                		$('#jobAgreementText${rand}').val(record.text);
+            		}
+				});
+					
+			});
+			
+	
+			//输入编号后加载相关信息
+			function initData(text){
+			//界面通过接口加载个人信息
+			if(text.value==""||text.value==null||text.value==" "){
+			return;
+			}
+			//判断调岗人员是否是主管或经理
+			$.post("hrFlow/isOffDireOrManager.json",{
+				account:$("#account").val()
+			},function(data){
+				$("#isOffDireOrManager${rand}").val(data);
+			});
+			
+			/*$.post("hrFlow/getHrUserInfoById.json",
+				{
+					account:$("#account").val()
+				},
+				function(data){
+					if (data.success) {
+						if(data.obj==null){
+						return;
+						}
+						$("#entryTime").val(data.obj[0].entryDate);
+						$("#job").val(data.obj[0].job);
+						$("#job2").val(data.obj[0].job); 
+						$("#name${rand}").val(data.obj[0].name);
+						$("#orgName${rand}").val(data.obj[0].orgName);
+						$("#orgName2${rand}").val(data.obj[0].orgName);
+						$("#signByself").val(data.obj[0].name);
+						$("#companyName${rand}").val(data.obj[0].companyName);
+						$("#systemName${rand}").val(data.obj[0].systemName);
+						$('#processName${rand}').val("[编码："+$("#account").val()+",姓名："+data.obj[0].name+"]岗位调整");//流程实例名称	
+						var startForm = $('#startForm');
+			    		startForm.form('enableValidation').form('validate');	 
+					}
+				});*/
+				//var systemName='';
+				$.ajax({
+			           type: "post",
+			           url: "hrFlow/getHrUserInfoById.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {account:$("#account").val()},
+			           success: function (data) {
+			        	   if (data.success) {
+								if(data.obj==null){
+								return;
+								}
+								$("#entryTime").val(data.obj[0].entryDate);
+								$("#job").val(data.obj[0].job);
+								$("#job2").val(data.obj[0].job); 
+								$("#name${rand}").val(data.obj[0].name);
+								$("#orgName${rand}").val(data.obj[0].orgName);
+								$("#orgName2${rand}").val(data.obj[0].orgName);
+								$("#signByself").val(data.obj[0].name);
+								$("#companyName${rand}").val(data.obj[0].companyName);
+								$("#systemName${rand}").val(data.obj[0].systemName);
+								$('#processName${rand}').val("[编码："+$("#account").val()+",姓名："+data.obj[0].name+"]岗位调整");//流程实例名称	
+								var startForm = $('#startForm');
+					    		startForm.form('enableValidation').form('validate');	
+			        	   }
+			            }
+			          });
+				
+				//根据编号获取调岗人员的账号
+				$.post("engineer/getLoginNo.json",{
+					engineerId:$("#account").val()
+				},function(data){
+					$("#loginNo").val(data);
+					if(data == null || data == ''){
+						$("#entryTime").val('');
+						$("#job").val('');
+						$("#job2").val(''); 
+						$("#name${rand}").val('');
+						$("#orgName${rand}").val('');
+						$("#orgName2${rand}").val('');
+						$("#signByself").val('');
+						$("#companyName${rand}").val('');
+						$("#systemName${rand}").val('');
+						$.messager.alert("提示信息","您好，此员工已离职，不可申请岗位调整流程!");
+						return;
+					}
+				});
+				
+				//获取SAP个人信息
+				$.get('hrFlow/getSapEmpInfoForJson.json',
+					{functionName:'ZHR_OA0001',vars:'P_PERNR_VALUE_'+$("#account").val()+'_NEXT_P_DATUM_VALUE_'+getNowFormatDate(),exportTableName:'T_0001',
+					exportlist:'BUKRS_NEXT_WERKS_NEXT_BTRTL_NEXT_PERSG_NEXT_PERSK_NEXT_ABKRS_NEXT_ANSVH'},
+					function(data){
+					 var jsondata=eval("("+data+")");
+					$("#companyCodevalue${rand}").val(jsondata.BUKRS);//公司代码
+					$("#hrScopevalue${rand}").val(jsondata.WERKS);//人事范围
+					$("#childhrScopevalue${rand}").val(jsondata.BTRTL);//人事子范围
+					$("#employeeGroupvalue${rand}").val(jsondata.PERSG);//员工组 
+					$("#childemployeeGroupvalue${rand}").val(jsondata.PERSK);//员工子组 
+					$("#saleScopevalue${rand}").val(jsondata.ABKRS);//工资范围
+					$("#jobAgreementvalue${rand}").val(jsondata.ANSVH);//工作合同
+					//根据系统获取相应的招聘专员
+					if(jsondata.PERSK!='40'){
+						$.post("engineer/getLoginNo.json",{
+							engineerId:'01058659'//吴志强
+						},function(data){
+							$("#hrOfficeWorker${rand}").val(data);
+						});
+					}
+					//初始化公司代码
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:'P_BUKRS_VALUE_'+$("#companyCode${rand}").val(),
+					exportTableName:'T_BUKRS',code:'BUKRS',describe:'BUTXT'},
+					function(data){
+					$('#companyCode${rand}').combobox("clear").combobox('loadData',data);
+					$('#companyCode${rand}').combobox('setValue', jsondata.BUKRS);
+					$("#companyCodeText${rand}").val($("#companyCode${rand}").combobox("getText"));
+					},
+					'json');
+					//初始化人事范围
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:'P_BUKRS_VALUE_'+$("#companyCodevalue${rand}").val(),
+					exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+					function(data){
+					$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+					$('#hrScope${rand}').combobox('setValue', jsondata.WERKS);
+					$("#hrScopeText${rand}").val($("#hrScope${rand}").combobox("getText"));
+					},
+					'json');
+					
+					//初始化子人事范围
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:'P_BUKRS_VALUE_'+$("#companyCodevalue${rand}").val()+'_NEXT_P_WERKS_VALUE_'+$("#hrScopevalue${rand}").val(),
+					exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+					function(data){
+					 console.log(data);
+					$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+					$('#childhrScope${rand}').combobox('setValue', jsondata.BTRTL);
+					$("#childhrScopeText${rand}").val($("#childhrScope${rand}").combobox("getText"));
+					},
+					'json');
+					
+					//初始化员工组
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:' ',
+					exportTableName:'T_PERSG',code:'PERSG',describe:'PTEXT'},
+					function(data){
+					 console.log(data);
+					$('#employeeGroup${rand}').combobox("clear").combobox('loadData',data);
+					$('#employeeGroup${rand}').combobox('setValue', jsondata.PERSG);
+					$("#employeeGroupText${rand}").val($("#employeeGroup${rand}").combobox("getText"));
+					},
+					'json');
+					//初始化员工子组
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:' ',
+					exportTableName:'T_PERSK',code:'PERSK',describe:'PTEXT'},
+					function(data){
+					$('#childemployeeGroup${rand}').combobox("clear").combobox('loadData',data);
+					$('#childemployeeGroup${rand}').combobox('setValue', jsondata.PERSK);
+					$("#childemployeeGroupText${rand}").val($("#childemployeeGroup${rand}").combobox("getText"));
+					},
+					'json');
+					//初始化工资范围
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:' ',
+					exportTableName:'T_ABKRS',code:'ABKRS',describe:'ATEXT'},
+					function(data){
+					 console.log(data);
+					$('#saleScope${rand}').combobox("clear").combobox('loadData',data);
+					$('#saleScope${rand}').combobox('setValue', jsondata.ABKRS);
+					$("#saleScopeText${rand}").val($("#saleScope${rand}").combobox("getText"));
+					},
+					'json');
+					//初始化工作合同
+					$.get('hrFlow/getSapOptions.json',
+					{functionName:'ZHR_OA07',
+					vars:' ',
+					exportTableName:'T_ANSVH',code:'ANSVH',describe:'ATX'},
+					function(data){
+					 console.log(data);
+					$('#jobAgreement${rand}').combobox("clear").combobox('loadData',data);
+					$('#jobAgreement${rand}').combobox('setValue', jsondata.ANSVH);
+					$("#jobAgreementText${rand}").val($("#jobAgreement${rand}").combobox("getText"));
+					},
+					'json');
+					
+					
+					},
+			'json');
+				
+			
+			}
+//格式化日期	yyyy-MM-dd
+function getNowFormatDate(){ 
+	var day = new Date(); 
+	var Year = 0; 
+	var Month = 0; 
+	var Day = 0; 
+	var CurrentDate = ""; 
+	Year= day.getFullYear();//ie火狐下都可以 
+	Month= day.getMonth()+1; 
+	Day = day.getDate(); 
+	CurrentDate += Year + "-"; 
+	if (Month >= 10 ) 
+	{ 
+	CurrentDate += Month + "-"; 
+	} 
+	else 
+	{ 
+	CurrentDate += "0" + Month + "-"; 
+	} 
+	if (Day >= 10 ) 
+	{ 
+	CurrentDate += Day ; 
+	} 
+	else 
+	{ 
+	CurrentDate += "0" + Day ; 
+	} 
+	return CurrentDate; 
+} 
+
+
+	</script>
+	</#if>
+</#if>
+
+ 
+<!--异动委员会面试-->
+<#if currentStep?exists>
+	<#if currentStep == 'relevantdepartmentsMultiInstTask'>
+		<div id="relevantdepartmentsMultiInstTask">
+			<form id="relevantdepartmentsMultiInstTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="relevantdepartmentsMultiInstTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="4" class="formtable_td_key" align="center">岗位异动评审委员会面试</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">面试说明：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  		<textarea name="fp_${appuser.account}committeeAudiAdvice" class="formtable_remark"></textarea>
+			  		</td>
+			  	</tr>
+		  	  	<tr>	
+			  		<td class="formtable_td_key">面试结论：</td>
+		  	  		<td class="formtable_td_value" style="width: 190px"> 
+					<input type="radio" name="fp_${appuser.account}relevantdepartmentsSignAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_${appuser.account}relevantdepartmentsSignAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">评审委员会成员签字：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  		<input type="hidden" name="fp_${appuser.account}committeeAudiName" value="${appuser.name}" />
+					${appuser.name}</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		
+			    	
+					<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" colspan="3">${.now?string('yyyy-MM-dd')}
+					 <input type="hidden" name="fp_${appuser.account}committeeAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!--原部门主管意见-->
+<#if currentStep?exists>
+	<#if currentStep == 'befordirectorAudi'>
+		<div id="befordirectorAudi">
+			<form id="befordirectorAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="befordirectorAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">原部门主管意见</td>
+		  	  	</tr>
+		  	  	<tr>
+		  		  	<td class="formtable_td_key">原部门主管签名：</td>
+		  	  		<td class="formtable_td_value" > 
+		  	  		<input type="hidden" name="fp_befordirectorAccount"  value="${appuser.account}"/>
+					<input type="hidden" name="fp_befordirectorAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_befordirectorAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					  	<input type="radio" name="fp_befordirectorAudi" checked="checked" value="0" />同意
+						<input type="radio" name="fp_befordirectorAudi" value="1" />不同意
+			  		</td>
+			  		
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea 
+		  	  		 name="fp_befordirectorAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  		
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--原部门经理意见-->
+<#if currentStep?exists>
+	<#if currentStep == 'beforManagementAudi'>
+		<div id="beforManagementAudi">
+			<form id="beforManagementAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="beforManagementAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">原部门经理意见</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原部门经理签名：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  		<input type="hidden" name="fp_beforManagementAccount"  value="${appuser.account}"/> 
+					<input type="hidden" name="fp_beforManagementAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_beforManagementAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_beforManagementAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_beforManagementAudi" value="1" />不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_beforManagementAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--原部门总监意见-->
+<#if currentStep?exists>
+	<#if currentStep == 'beforeChiefinSpectorAudi'>
+		<div id="beforeChiefinSpectorAudi">
+			<form id="beforeChiefinSpectorAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="beforeChiefinSpectorAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">原部门总监意见</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原部门总监签名：</td>
+		  	  		<td class="formtable_td_value" > 
+					<input type="hidden" name="fp_beforeChiefinSpectorAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_beforeChiefinSpectorAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_beforeChiefinSpectorAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_beforeChiefinSpectorAudi" value="1" />不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_beforeChiefinSpectorAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!--接受部门科室意见-->
+<#if currentStep?exists>
+	<#if currentStep == 'recciveDeptAudi'>
+	<#if processSteps??> 
+	 <#list processSteps as steps>
+	<#if steps.key == 'startevent1'>
+		<div id="recciveDeptAudi">
+			<form id="recciveDeptAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="recciveDeptAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">接收部门（或科室）意见</td>
+		  	  	</tr>
+		  	  	<!-- <tr id="changeOptions${rand}">
+		  	  		<td class="formtable_td_key"> 更改原因：</td>
+		  	  		<td class="formtable_td_value"> 
+		  	  			 <input type='hidden'  id='empUserId'  value='${steps.vars["account"]}' />
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='changeReasonValue${rand}'    name='fp_changeReasonValue'   />
+		  	  		    <input type='text' class="easyui-combobox"   id='changeReason${rand}' />
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='changeReasonText${rand}'    name='fp_changeReasonText'   />
+			  		</td>
+			  		<td class="formtable_td_key"> 类型：</td>
+		  	  		<td class="formtable_td_value"> 
+		  	  			
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='typeValue${rand}'    name='fp_typeValue'   />
+		  	  		    <input type='text' class="easyui-combobox"   id='type${rand}' />
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='typeText${rand}'    name='fp_typeText'   />
+			  		</td>
+			  		<td class="formtable_td_key"> 区域：</td>
+		  	  		<td class="formtable_td_value"> 
+		  	  			
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='areaValue${rand}'    name='fp_areaValue'   />
+		  	  		    <input type='text' class="easyui-combobox"   id='area${rand}' />
+		  	  		    <input class='easyui-validatebox' type='hidden'  id='areaText${rand}'    name='fp_areaText'   />
+			  		</td>
+			  	</tr> -->
+		  	  <tr>
+		  	  		<td class="formtable_td_key"  rowspan="3">是否调整薪资：</td>
+		  	  		<td class="formtable_td_value" colspan="5"> 
+		  	  		<input id="changeValue1${rand}" type="radio" name="fp_changeWage" checked="checked" value="1" />
+						 是 由  
+						(薪资等级组
+						<input class='easyui-validatebox' type='text'  id='curSalaryGroup${rand}'  name='fp_curSalaryGroup' style="width:80px" data-options="required:true" />
+						金额
+						<input class='easyui-numberbox' type='text'  id='curSalary1${rand}'  name='fp_curSalary1' style="width:80px" data-options="required:true" />
+						 调整至  
+						 (薪资等级组
+						<input class='easyui-validatebox' type='text'  id='fuSalaryGroup${rand}'  name='fp_fuSalaryGroup' style="width:80px" data-options="required:true" />
+						金额
+						<input class='easyui-numberbox' type='text'  id='fuSalary1${rand}'  name='fp_fuSalary1' style="width:80px" data-options="required:true" />)
+						调整幅度<input class='easyui-validatebox' type='text'  id='addScope${rand}'  name='fp_addScope' style="width:80px"   data-options="required:true" readonly="readonly"/>
+					</td>
+					</tr>
+		  	  		 <!-- 是由  
+					 <input class='easyui-validatebox' type='hidden'  id='curSalaryGroup'  name='fp_curSalaryGroup' />
+					 <input class='easyui-validatebox' type='hidden'  id='curSalaryLevel'  name='fp_curSalaryLevel' />
+					 <input class='easyui-validatebox' type='hidden'  id='curSalaryOpt1'  name='fp_curSalaryOpt' />
+					 <input class='easyui-validatebox' type='hidden'  id='curSalary1'  name='fp_curSalary' />
+					 <input class='easyui-validatebox' type='hidden'  id='curSalaryOpt2'  name='fp_curSalaryOpt' />
+					 <input class='easyui-validatebox' type='hidden'  id='curSalary2'  name='fp_curSalary' />
+					 （薪资等级
+					 <input class='easyui-validatebox' type='text' readonly="readonly" id='curSalaryLevelText'  name='fp_curSalaryLevelText'  style="width:200px"/>）
+					 调整至  
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalaryGroup'  name='fp_fuSalaryGroup' />
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalaryLevel'  name='fp_fuSalaryLevel' />
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalaryOpt1'  name='fp_fuSalaryOpt1' />
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalary1'  name='fp_fuSalary1' />
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalaryOpt2'  name='fp_fuSalaryOpt2' />
+					 <input class='easyui-validatebox' type='hidden'  id='fuSalary2'  name='fp_fuSalary2' />
+					    （薪资等级 
+					   <input class='easyui-validatebox' type='hidden'  id='fuSalaryLevelvalue'   name='fp_fuSalaryLevelText'  />
+					  <input class='easyui-validatebox' type='text'  id='fuSalaryLevelText'     style="width:300px"/>）<br> -->
+				<tr ><td class="formtable_td_value" colspan="5"><input id="changeValue2${rand}" type="radio" name="fp_changeWage" value="2" />三个月考核期过后再调薪</td></tr>
+				<tr ><td class="formtable_td_value" colspan="5"><input id="changeValue3${rand}" type="radio" name="fp_changeWage" value="3" />否</td></tr>
+					
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_recciveDeptAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_recciveDeptAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">签字：</td>
+			  		<td class="formtable_td_value">
+			  		<input id="accepterOrgId${rand}" type="hidden" value="${(steps.vars["accepterOrgId"])!""}"/>
+			  		<input id="isManagerOrGeneral${rand}" type="hidden" name="fp_isManagerOrGeneral"/>
+			  		<input id="recciveDeptAccount${rand}" type="hidden" name="fp_recciveDeptAccount" value="${appuser.account}"/> 
+					<input type="hidden" name="fp_recciveDeptAudiName" value="${appuser.name}" />
+					${appuser.name}
+					</td>
+		  	  		<td class="formtable_td_key">审批时间：</td>
+					<td class="formtable_td_value" >${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_recciveDeptAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+			  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+<script type="text/javascript">
+$(function(){
+	$.post("hrFlow/isManagerOrGeneral.json",{
+		orgId:$("#accepterOrgId${rand}").val(),
+		account:$("#recciveDeptAccount${rand}").val()
+	},function(data){
+		$("#isManagerOrGeneral${rand}").val(data);
+	});
+
+	$("#changeValue1${rand}").bind("click",function() {
+			$("#curSalaryGroup${rand}").show();
+			$("#curSalary1${rand}").show();
+			$("#fuSalaryGroup${rand}").show();
+			$("#fuSalary1${rand}").show();
+			$("#addScope${rand}").show();
+			$("#curSalaryGroup${rand}").validatebox({required:true});
+			$("#curSalary1${rand}").validatebox({required:true});
+			$("#fuSalaryGroup${rand}").validatebox({required:true});
+			$("#fuSalary1${rand}").validatebox({required:true});
+			$("#addScope${rand}").validatebox({required:true});
+	});
+	var f=function() {
+		$("#curSalaryGroup${rand}").hide();
+		$("#curSalary1${rand}").hide();
+		$("#fuSalaryGroup${rand}").hide();
+		$("#fuSalary1${rand}").hide();
+		$("#addScope${rand}").hide();
+		$("#curSalaryGroup${rand}").validatebox({required:false});
+		$("#curSalary1${rand}").validatebox({required:false});
+		$("#fuSalaryGroup${rand}").validatebox({required:false});
+		$("#fuSalary1${rand}").validatebox({required:false});
+		$("#addScope${rand}").validatebox({required:false});
+	};
+	$("#changeValue2${rand}").bind("click",f);
+	$("#changeValue3${rand}").bind("click",f);
+		
+	
+	//计算调整幅度
+	function countScope(){
+	$('#fuSalary1${rand}').bind('blur', function(){
+	    var var1 =document.getElementById('curSalary1${rand}');
+	    var var2 =document.getElementById('fuSalary1${rand}');
+		var diff=0;
+		if ((var1 != null || var1.length > 0)&&(var2 != null ||var2.length > 0)){
+		diff=parseFloat(var2.value)-parseFloat(var1.value);
+		diff=Math.round(diff*10)/10;
+		}
+		$('#addScope${rand}').val(diff);
+	});
+	}
+	
+	countScope();
+    // 为body元素绑定click事件
+    $("body").bind("click",function(){
+    countScope();
+    });	
+});   
+	//更改原因
+	/*$.get('hrFlow/getSapOptions.json',
+	{functionName:'ZHR_OA24',vars:'P_TRFAR_VALUE_ _NEXT_P_TRFGB_VALUE_ ',exportTableName:'ZT530F',code:'PREAS',describe:'RTEXT'},
+	function(data){
+	$('#changeReason${rand}').combobox("clear").combobox('loadData',data);
+	},
+	'json');
+		
+					//选择赋值		
+				$('#changeReason${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value 
+						$('#changeReasonValue${rand}').val(record.id);
+                		$('#changeReasonText${rand}').val(record.text);
+            		}
+				});
+	//更改类型
+	$.get('hrFlow/getSapOptions.json',
+	{functionName:'ZHR_OA24',vars:'P_TRFAR_VALUE_ _NEXT_P_TRFGB_VALUE_ ',exportTableName:'ZT510A',code:'TRFAR',describe:'TARTX'},
+	function(data){
+	$('#type${rand}').combobox("clear").combobox('loadData',data);
+	},
+	'json');
+		
+					//选择赋值		
+				$('#type${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#typeValue${rand}').val(record.id);
+                		$('#typeText${rand}').val(record.text);
+                	//类型和区域，带出后面的等级组
+                	if($('#areaValue${rand}').val()!=null||$('#areaValue${rand}').val()!=' '){
+                		$.get('hrFlow/getSapInfoArray.json',
+	                    {functionName:'ZHR_OA24',vars:'P_TRFAR_VALUE_'+record.id+'_NEXT_P_TRFGB_VALUE_'+$('#areaValue${rand}').val(),exportTableName:'OUT',exportlist:'TRFGR_NEXT_TRFST_NEXT_LGART_NEXT_BETRG_NEXT_LGART2_NEXT_BETRG2'},
+	                       function(data){
+	                       $('#fuSalaryLevelText').combobox("clear").combobox('loadData',data);
+	                          },
+	                        'json');
+	                        }	
+            		}
+				});	
+	//区域
+	$.get('hrFlow/getSapOptions.json',
+	{functionName:'ZHR_OA24',vars:'P_TRFAR_VALUE_ _NEXT_P_TRFGB_VALUE_ ',exportTableName:'ZT510G',code:'TRFGB',describe:'TGBTX'},
+	function(data){
+	$('#area${rand}').combobox("clear").combobox('loadData',data);
+	},
+	'json');
+		
+					//选择赋值		
+				$('#area${rand}').combobox({
+					valueField:'id',
+					textField:'text',
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+						$('#areaValue${rand}').val(record.id);
+                		$('#areaText${rand}').val(record.text);
+                //类型和区域，带出后面的等级组
+                	if($('#typeValue${rand}').val()!=null||$('#typeValue${rand}').val()!=''){
+                		$.get('hrFlow/getSapInfoArray.json',
+	                    {functionName:'ZHR_OA24',vars:'P_TRFAR_VALUE_'+$('#typeValue${rand}').val()+'_NEXT_P_TRFGB_VALUE_'+record.id,exportTableName:'OUT',exportlist:'TRFGR_NEXT_TRFST_NEXT_LGART_NEXT_BETRG_NEXT_LGART2_NEXT_BETRG2'},
+	                       function(data){
+	                       $('#fuSalaryLevelText').combobox("clear").combobox('loadData',data);
+	                          },
+	                        'json');
+	                        }
+            		}
+				});	
+	 //加载个人目前工资项
+	$.get('hrFlow/getSapEmpInfoForJson.json',
+	{functionName:'ZHR_OA26',vars:'P_PERNR_VALUE_'+$('#empUserId').val(),exportTableName:'IT_0008',exportlist:'PERNR_NEXT_PREAS_NEXT_TRFAR_NEXT_TRFGB_NEXT_TRFGR_NEXT_TRFST_NEXT_LGA01_NEXT_BET01_NEXT_LGA02_NEXT_BET02'},
+	function(data){
+	var jsondata=eval("("+data+")");
+	$('#curSalaryLevelText').val(jsondata.TRFGR+"---"+jsondata.BET01);
+						$('#curSalaryGroup').val(jsondata.TRFGR);//级别 
+					    $('#curSalaryLevel').val(jsondata.TRFST);//档次
+					    $('#curSalaryOpt1').val(jsondata.LGA01);//工资项
+					    $('#curSalary1').val(jsondata.BET01);//工资项
+					    $('#curSalaryOpt2').val(jsondata.LGA02);//支付的工资项金额
+					    $('#curSalary2').val(jsondata.BET02);//支付的工资项金额
+	},
+	'json');
+	//工资等级选择后赋值		
+	$('#fuSalaryLevelText').combobox({
+					valueField:'text',
+					textField:'text',
+					editable:false,
+					onSelect:function(record){
+						//set cur hidden value
+                		$('#fuSalaryLevelvalue').val(record.text);
+                		var strs=record.text.split("---");
+                		$('#fuSalaryGroup').val(strs[0]);//级别
+                		$('#fuSalaryLevel').val(strs[1]);//档次
+                		$('#fuSalaryOpt1').val(strs[2]);//工资项
+                		$('#fuSalary1').val(strs[3]);//工资项
+                		$('#fuSalaryOpt2').val(strs[4]);//支付的工资项金额
+                		$('#fuSalary2').val(strs[5]);//支付的工资项金额
+            		}
+				});
+												
+}); 
+//单选按钮事件绑定
+function hiddenOption(value)	{
+	var number=value;
+	if(number==1){
+		$('#changeOptions${rand}').show();
+		//$('#fuSalaryLevelText').combobox("enable")
+	}else{
+		$('#changeOptions${rand}').hide();
+		//$('#fuSalaryLevelText').combobox("disable")
+	}
+	
+	}*/
+</script>		</#if>
+			</#list>
+		</#if>	
+	</#if>
+</#if>
+<!--部门经理审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'departManagerAudi'>
+		<div id="departManagerAudi">
+			<form id="departManagerAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="departManagerAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">部门经理审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_departManagerAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_departManagerAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_departManagerAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_departManagerAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_financedirectorAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--接受部门总监审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'nowChiefInspectorAudi'>
+		<div id="nowChiefInspectorAudi">
+			<form id="nowChiefInspectorAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nowChiefInspectorAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">部门总监审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_nowChiefInspectorAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_nowChiefInspectorAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_nowChiefInspectorAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_nowChiefInspectorAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_nowChiefInspectorAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--人力招聘专员审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'recruitmentPersionAudi'>
+		<div id="recruitmentPersionAudi">
+			<form id="recruitmentPersionAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="recruitmentPersionAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘专员审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_recruitmentPersionAudiName" value="${appuser.name}" />
+					${appuser.name}
+					<input type="hidden" name="fp_recruitmentPersionAccount" value="${appuser.account}"/>
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_recruitmentPersionAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_recruitmentPersionAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_recruitmentPersionAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_recruitmentPersionAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!--职员招聘专员审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'officeWorkerAudiTask'>
+		<div id="officeWorkerAudiTask">
+			<form id="officeWorkerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="officeWorkerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘专员审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_officeWorkerAudiName" value="${appuser.name}" />
+					${appuser.name}
+					<input type="hidden" name="fp_officeWorkerAccount" value="${appuser.account}"/>
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value"> 
+					<input type="radio" name="fp_officeWorkerAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_officeWorkerAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_officeWorkerAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_officeWorkerAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!--人力招聘主管审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'recruitmentdirectorAudi'>
+		<#if processSteps??> 
+     		<#list processSteps as steps> 
+      			<#if steps.key == 'startevent1'>
+		<div id="recruitmentdirectorAudi">
+			<form id="recruitmentdirectorAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="recruitmentdirectorAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力招聘主管审批</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_recruitmentdirectorAudiName" value="${appuser.name}" />
+					${appuser.name}
+					<input type="hidden" name="fp_recruitmentdirectorAccount" value="${appuser.account}"/>
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+					<input type="radio" name="fp_recruitmentdirectorAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_recruitmentdirectorAudi" value="1" />不同意
+			  		</td>
+			  	</tr>	
+			  	<tr>	
+			  		<td class="formtable_td_key">批准生效月份：</td>
+					 <td class="formtable_td_value" >
+					 <input id="startTime-${rand}" type="text" class="easyui-my97" required="required" value="${steps.vars["activeDate"]}" readonly="readonly" name="fp_hrCheckenableTime"
+    						data-options="dateFmt:'yyyy-MM',width:120,required:true,minDate:'${.now?string('yyyy-MM')}'"/>
+					</td>
+					<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" colspan="3">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_recruitmentdirectorAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_recruitmentdirectorAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+				</#if>
+			</#list>
+		</#if>	
+	</#if>
+</#if>
+
+<!--薪资专员审核-->
+<#if currentStep?exists>
+	<#if currentStep == 'hrcheckWageAudiTask'>
+		<div id="hrcheckWageAudiTask">
+			<form id="hrcheckWageAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="hrcheckWageAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">薪资专员审核</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">薪资专员审核签名：</td>
+		  	  		<td class="formtable_td_value" > 
+					<input type="hidden" name="fp_hrcheckWageAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审核结果：</td>
+		  	  		<td class="formtable_td_value" > 
+					<input type="radio" name="fp_hrcheckWageAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_hrcheckWageAudi" value="1" />不同意
+			  		</td>
+					<td class="formtable_td_key">审核日期：</td>
+					 <td class="formtable_td_value" >${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_hrcheckWageAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  		
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_hrcheckWageAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--人力资源部查核建议-->
+<#if currentStep?exists>
+	<#if currentStep == 'hrCheckAudi'>
+		<#if processSteps??> 
+     		<#list processSteps as steps> 
+      			<#if steps.key == 'recruitmentdirectorAudi'>
+		<div id="hrCheckAudi">
+			<form id="hrCheckAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="hrCheckAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力资源部查核建议</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_hrCheckAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+					<input type="radio" name="fp_hrCheckAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_hrCheckAudi" value="1" />不同意
+			  		</td>
+			  	</tr>
+			  	<tr>	
+			  		<td class="formtable_td_key">批准生效月份：</td>
+					<td class="formtable_td_value" >
+					 <input id="startTime-${rand}" type="text" class="easyui-my97" required="required" value="${steps.vars["hrCheckenableTime"]}" readonly="readonly" name="fp_hrleaderCheckenableTime"
+    				data-options="dateFmt:'yyyy-MM',width:120,required:true,minDate:'${.now?string('yyyy-MM')}'"/>
+					</td>
+			  		<td class="formtable_td_key">审核日期：</td>
+					 <td class="formtable_td_value" colspan="3">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_hrCheckAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">查核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_hrCheckAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+				</#if>
+			</#list>
+		</#if>	
+	</#if>
+</#if>
+<!--总经理审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'generalManagerAudi'>
+		<div id="generalManagerAudi">
+			<form id="generalManagerAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="generalManagerAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">总经理意见</td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_generalManagerAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">审批结果：</td>
+		  	  		<td class="formtable_td_value" > 
+					<input type="radio" name="fp_generalManagerAudi" checked="checked" value="0" />同意
+					<input type="radio" name="fp_generalManagerAudi" value="1" />不同意
+			  		</td>
+			  		<td class="formtable_td_key">审批日期：</td>
+					 <td class="formtable_td_value" >${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_generalManagerAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_generalManagerAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!--人力专员审批-->
+<#if currentStep?exists>
+	<#if currentStep == 'hrpersonalCheckAudi'>
+		<#if processSteps??> 
+     		<#list processSteps as steps>
+      			<#if steps.key == 'hrCheckAudi'>
+      			
+      			 <#assign hrleaderCheckenableTime=steps.vars["hrleaderCheckenableTime"]!''/>
+      			</#if>
+      			<#if steps.key == 'startevent1'>
+      			     <#assign account=steps.vars["account"]!''/>
+      			     
+      			     
+      			     <#assign companyCodevalue=steps.vars["companyCodevalue"]!''/>
+      			     <#assign companyCodetext=steps.vars["companyCodeText"]!''/>
+      			     
+      			     <#assign hrScopevalue=steps.vars["hrScopevalue"]!''/>
+      			     <#assign hrScopetext=steps.vars["hrScopeText"]!''/>
+      			     
+      			     <#assign childhrScopevalue=steps.vars["childhrScopevalue"]!''/>
+      			     <#assign childhrScopetext=steps.vars["childhrScopeText"]!''/>
+      			     
+      			     <#assign employeeGroupvalue=steps.vars["employeeGroupvalue"]!''/>
+      			     <#assign employeeGrouptext=steps.vars["employeeGroupText"]!''/>
+      			               
+      			     <#assign childemployeeGroupvalue=steps.vars["childemployeeGroupvalue"]!''/>
+      			     <#assign childemployeeGrouptext=steps.vars["childemployeeGroupText"]!''/>
+      			     
+      			     <#assign saleScopevalue=steps.vars["saleScopevalue"]!''/>
+      			     <#assign saleScopetext=steps.vars["saleScopeText"]!''/>
+      			     
+      			     <#assign jobAgreementvalue=steps.vars["jobAgreementvalue"]!''/>
+      			     <#assign jobAgreementtext=steps.vars["jobAgreementText"]!''/>
+      			     
+      			     <#assign oprationTypevalue=steps.vars["oprationTypevalue"]!''/>
+      			     <#assign oprationTypetext=steps.vars["oprationText"]!''/>
+      			     
+      			     <#assign oprationReasionvalue=steps.vars["oprationReasionvalue"]!''/>
+      			     <#assign oprationReasiontext=steps.vars["oprationReasionText"]!''/>
+      			</#if>
+	       </#list>
+		<div id="hrpersonalCheckAudi">
+			<form id="hrpersonalCheckAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="hrpersonalCheckAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力专员确认信息</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key" >温馨提示：</td>
+		  	  	<td class="formtable_td_value" colspan="5">
+		  	  		<span style="font-size: 13pt;  font-family:黑体;color: red" >务必核实该员工上述信息！无误后可点击完成按钮将调整信息写入SAP系统，谨慎操作！</span></td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  	  	<td class="formtable_td_key">是否修改岗位信息：</td>
+			  		<td class="formtable_td_value" > 
+					<input id="checkResult0${rand}" type="radio" name="fp_updateJobInfo"  value="0" />是
+					<input id="checkResult1${rand}" type="radio" name="fp_updateJobInfo" checked="checked" value="1" />否
+			  		</td>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_hrpersonalCheckAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">查核日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_hrpersonalCheckAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr id="newJobConfirm${rand}">
+		  	  		<td class="formtable_td_key">新岗位确认：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+			  	  		公司：
+			  	  		<input id="accepterCompanyStaff${rand}" class="easyui-validatebox  textbox" style="width: 160px;" type="text" name="fp_accepterCompanyStaff" />
+						<input id="updateCompanyIdStaff${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_updateCompanyIdStaff" />
+						<input id="updateCompanyNameStaff${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_updateCompanyNameStaff" />
+						部门：
+						<input id="accepterOrgStaff${rand}" class="easyui-combotree" style="width: 120px;"  name="fp_accepterOrgStaff" data-options="required:true">
+		  	  			<input id="updateOrgIdStaff${rand}" type="hidden"  name="fp_updateOrgIdStaff" />
+		  	  			<input id="updateOrgNameStaff${rand}" type="hidden" value="" name="fp_updateOrgNameStaff"/>
+		  	  			新岗位：
+		  	  			<input id="accepterJobStaff${rand}" class="easyui-combotree" style="width: 120px;"  name="fp_accepterJobStaff" data-options="required:true"/>
+		  	  			<input id="updateJobIdStaff${rand}" type="hidden" name="fp_updateJobIdStaff"  />
+						<input id="updateJobNameStaff${rand}" type="hidden" name="fp_updateJobNameStaff"  />
+						<input id="startDate${rand}" type="hidden" value='${hrleaderCheckenableTime}'/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	  	<td class="formtable_td_key">是否传入SAP：</td>
+			  		<td class="formtable_td_value" > 
+					<input id="checkResult0${rand}" type="radio" name="fp_isUploadSap" checked="checked" value="0" />是
+					<input id="checkResult1${rand}" type="radio" name="fp_isUploadSap" value="1" />否
+			  		</td>
+			  		<td class="formtable_td_key">是否修改数据：</td>
+			  		<td class="formtable_td_value"  colspan="3"> 
+					<input id="checkResult0${rand}" type="radio" name="fp_isUpdate"  value="0" onclick="succeed();"/>是
+					<input id="checkResult1${rand}" type="radio" name="fp_isUpdate" checked="checked" value="1" onclick=" failure();" />否
+			  		</td>
+		  	  	</tr>
+		  	  	<tr id="tr${rand}">
+		  	  				<td class="formtable_td_key">公司代码：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="companyCodevalue${rand}"  type='hidden' name="fp_companyCodevalueTo" value="${companyCodevalue}"/>
+						  		<input id="companyCode${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="companyCodeText${rand}"  type='hidden' name="fp_companyCodeTextTo"  value="${companyCodetext}" />
+						  	</td>
+		  	  				<td class="formtable_td_key">人事范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="hrScopevalue${rand}"  type='hidden' name="fp_hrScopevalueTo" value="${hrScopevalue}"/>
+						  		<input id="hrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="hrScopeText${rand}"  type='hidden' name="fp_hrScopeTextTo" value="${hrScopetext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">人事子范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childhrScopevalue${rand}"  type='hidden' name="fp_childhrScopevalueTo" value="${childhrScopevalue}"/>
+						  		<input id="childhrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childhrScopeText${rand}"  type='hidden' name="fp_childhrScopeTextTo" value="${childhrScopetext}"/>
+						  	</td>
+						  	
+				</tr>
+				<tr id="tr2${rand}">	
+							<td class="formtable_td_key">员工组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="employeeGroupvalue${rand}"  type='hidden' name="fp_employeeGroupvalueTo" value="${employeeGroupvalue}"/>
+						  		<input id="employeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="employeeGroupText${rand}"  type='hidden' name="fp_employeeGroupTextTo" value="${employeeGrouptext}"/>
+						  	</td>	  	
+						  	<td class="formtable_td_key">员工子组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childemployeeGroupvalue${rand}"  type='hidden' name="fp_childemployeeGroupvalueTo" value="${childemployeeGroupvalue}"/>
+						  		<input id="childemployeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childemployeeGroupText${rand}"  type='hidden' name="fp_childemployeeGroupTextTo" value="${childemployeeGrouptext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">工资范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="saleScopevalue${rand}"  type='hidden' name="fp_saleScopevalueTo" value="${saleScopevalue}"/>
+						  		<input id="saleScope${rand}" class='easyui-combobox' type='text' />
+						  		<input id="saleScopeText${rand}"  type='hidden' name="fp_saleScopeTextTo" value="${saleScopetext}"/>
+						  	</td>
+						  	
+		  	  	</tr>
+		  	  	<tr  id="tr3${rand}">
+		  	  				<td class="formtable_td_key">工作合同：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="jobAgreementvalue${rand}"  type='hidden' name="fp_jobAgreementvalueTo" value="${jobAgreementvalue}"/>
+						  		<input id="jobAgreement${rand}" class='easyui-combobox' type='text' />
+						  		<input id="jobAgreementText${rand}"  type='hidden' name="fp_jobAgreementTextTo" value="${jobAgreementtext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">操作类型：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationvalue${rand}"  type="hidden" name="fp_oprationTypevalueTo"   value="${oprationTypevalue}"/>
+						  		<input id="opration${rand}" class="easyui-combobox" type="text" />
+						  		<input id="oprationText${rand}"  type="hidden" name="fp_oprationTextTo"   value="${oprationTypetext}"/>
+						  	</td>
+		  	  				<td class="formtable_td_key">操作原因：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationReasionvalue${rand}" type="hidden" name="fp_oprationReasionvalueTo"   value="${oprationReasionvalue}"/>
+						  		<input id="oprationReasion${rand}" class="easyui-combobox" type="text"   />
+						  		<input id="oprationReasionText${rand}" type="hidden" name="fp_oprationReasionTextTo" value="${oprationReasiontext}" />
+						  	</td>
+		  	  				
+				</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">确认意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_hrpersonalCheckAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+	
+		    var accepterJobStaffName = $('#accepterJobStaff${rand}');
+			var updateJobName = $('#updateJobNameStaff${rand}');
+			
+			$(function(){
+				$("#tr${rand}").hide();
+		    	$("#tr2${rand}").hide();
+		    	$("#tr3${rand}").hide();
+				
+				$("#newJobConfirm${rand}").hide();
+				$("#accepterJobStaff${rand}").combotree({required:false});
+				$("#accepterOrgStaff${rand}").combotree({required:false});
+				$("#accepterCompanyStaff${rand}").combotree({required:false});
+			 	$("#checkResult0${rand}").bind("click",function(){
+					$("#newJobConfirm${rand}").show();
+					$("#accepterJobStaff${rand}").combotree({required:true});
+					$("#accepterOrgStaff${rand}").combotree({required:true});
+					$("#accepterCompanyStaff${rand}").combotree({required:true});
+					
+				});
+				var f=function(){
+				 	$("#newJobConfirm${rand}").hide();
+					$("#accepterJobStaff${rand}").combotree({required:false});
+					$("#accepterOrgStaff${rand}").combotree({required:false});
+					$("#accepterCompanyStaff${rand}").combotree({required:false});
+				};
+				$("#checkResult1${rand}").bind("click",f);
+				
+				var testTree = null;	
+				$('#accepterCompanyStaff${rand}').combobox({
+						valueField: 'id',
+				        textField: 'name',
+					    url: 'hrFlow/auth/getCom.json',
+						editable:false,
+						onSelect:function(record){
+						$('#updateCompanyIdStaff${rand}').val(record.id);
+						$('#updateCompanyNameStaff${rand}').val(record.name);
+						$('#accepterOrgStaff${rand}').combotree("reload","hrFlow/auth/orgs.json?id=" + record.id);
+						$('#accepterOrgStaff${rand}').combotree("tree").tree("options").url =  "hrFlow/auth/orgs.json";
+						}
+					   
+					});
+					
+					//组织架构初始化
+					$('#accepterOrgStaff${rand}').combotree({
+					    url: 'hrFlow/auth/orgs.json',
+					    method:'get',
+					    //required:true,
+					    //onBeforeExpand:function(node) {  $('#accepterOrgName${rand}').combotree("tree").tree("options").url = "hrFlow/auth/orgs.json?id=" +node.id;},
+					    lines:true,
+						panelWidth:300,
+						panelHeight:280,
+					    onClick:function(node){
+							 $('#updateOrgIdStaff${rand}').val(node.id);
+						  	 $('#updateOrgNameStaff${rand}').val(node.text);
+						  	  //转换部门ID
+								  	$.get('hrFlow/transOrgIdToSap.json',
+									{deptId:node.id
+								   },
+									function(record){
+										
+										   if(record==null){
+										   return;
+										   }
+										   //初始化职位树
+										  $.get('hrFlow/getSapOptions4Job.json',
+											{functionName:'ZHR_OA02',vars:'P_OBJID_VALUE_'+record+'_NEXT_P_KEYDATE_VALUE_'+$("#startDate${rand}").val()+"-01",
+										    exportTableName:'T_POSITION',code:'PLANS',describe:'PLANS_T'},
+											function(data){
+												accepterJobStaffName.combobox("clear").combobox('loadData',data);
+											},'json'); 
+										
+									},'json');
+									
+							
+						}  
+					});
+					//选择赋值		
+					accepterJobStaffName.combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+	                		updateJobName.val(record.text);
+	                		$('#updateJobIdStaff${rand}').val(record.id);
+	            		}
+					});
+					
+					//获取SAP个人信息
+					$.get('hrFlow/getSapEmpInfoForJson.json',
+						{functionName:'ZHR_OA0001',vars:'P_PERNR_VALUE_'+'${account}'+'_NEXT_P_DATUM_VALUE_'+getNowFormatDate(),exportTableName:'T_0001',
+						exportlist:'BUKRS_NEXT_WERKS_NEXT_BTRTL_NEXT_PERSG_NEXT_PERSK_NEXT_ABKRS_NEXT_ANSVH'},
+						function(data){
+						 var jsondata=eval("("+data+")");
+						$("#companyCodevalue${rand}").val(jsondata.BUKRS);//公司代码
+						$("#hrScopevalue${rand}").val(jsondata.WERKS);//人事范围
+						$("#childhrScopevalue${rand}").val(jsondata.BTRTL);//人事子范围
+						$("#employeeGroupvalue${rand}").val(jsondata.PERSG);//员工组 
+						$("#childemployeeGroupvalue${rand}").val(jsondata.PERSK);//员工子组 
+						$("#saleScopevalue${rand}").val(jsondata.ABKRS);//工资范围
+						$("#jobAgreementvalue${rand}").val(jsondata.ANSVH);//工作合同
+						//根据系统获取相应的招聘专员
+						if(jsondata.PERSK!='40'){
+							$.post("engineer/getLoginNo.json",{
+								engineerId:'01058659'//吴志强
+							},function(data){
+								$("#hrOfficeWorker${rand}").val(data);
+							});
+						}
+						//初始化公司代码
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+$("#companyCode${rand}").val(),
+						exportTableName:'T_BUKRS',code:'BUKRS',describe:'BUTXT'},
+						function(data){
+						$('#companyCode${rand}').combobox("clear").combobox('loadData',data);
+						//$('#companyCode${rand}').combobox('setValue', '${companyCodevalue}');
+						//$('#companyCode${rand}').combobox('setText', '${companyCodetext}');
+						$('#companyCode${rand}').combobox('setValue', '${companyCodevalue}');
+						$("#companyCodeText${rand}").val('${companyCodetext}');
+						},
+						'json');
+						//初始化人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+'${companyCodevalue}',
+						exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+						function(data){
+						$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#hrScope${rand}').combobox('setValue', '${hrScopevalue}');
+						$('#hrScopeText${rand}').val('${hrScopetext}');
+						},
+						'json');
+						$('#oprationReasion${rand}').combobox('setValue', '${oprationReasionvalue}');
+						$('#oprationReasion${rand}').combobox('setText', '${oprationReasiontext}')
+						//初始化子人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+'${companyCodevalue}'+'_NEXT_P_WERKS_VALUE_'+$("#hrScopevalue${rand}").val(),
+						exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+						function(data){
+						 //console.log(data);
+						$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#childhrScope${rand}').combobox('setValue', '${childhrScopevalue}');
+						$('#childhrScopeText${rand}').val('${childhrScopetext}');
+						},
+						'json');
+						
+						//初始化员工组
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_PERSG',code:'PERSG',describe:'PTEXT'},
+						function(data){
+						 //console.log(data);
+						$('#employeeGroup${rand}').combobox("clear").combobox('loadData',data);
+						$('#employeeGroup${rand}').combobox('setValue', '${employeeGroupvalue}');
+						$('#employeeGroupText${rand}').val('${employeeGrouptext}');
+						},
+						'json');
+						//初始化员工子组
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_PERSK',code:'PERSK',describe:'PTEXT'},
+						function(data){
+						$('#childemployeeGroup${rand}').combobox("clear").combobox('loadData',data);
+						$('#childemployeeGroup${rand}').combobox('setValue', '${childemployeeGroupvalue}');
+						$('#childemployeeGroupText${rand}').val('${childemployeeGrouptext}');
+						},
+						'json');
+						//初始化工资范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_ABKRS',code:'ABKRS',describe:'ATEXT'},
+						function(data){
+						 //console.log(data);
+						$('#saleScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#saleScope${rand}').combobox('setValue', '${saleScopevalue}');
+						$('#saleScopeText${rand}').val('${saleScopetext}');
+						},
+						'json');
+						//初始化工作合同
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_ANSVH',code:'ANSVH',describe:'ATX'},
+						function(data){
+						 //console.log(data);
+						$('#jobAgreement${rand}').combobox("clear").combobox('loadData',data);
+						$('#jobAgreement${rand}').combobox('setValue', '${jobAgreementvalue}');
+						$('#jobAgreementText${rand}').val('${jobAgreementtext}');
+						},
+						'json');
+						},
+				'json');
+					
+					
+					
+					
+				
+					
+					//操作类型初始化
+					 $.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA06',
+						vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+						exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+						function(data){
+							var i = new Array();
+							i[0] = data[3];
+							i[1] = data[4];
+							i[2] = data[5];
+							data = i;
+						$('#opration${rand}').combobox("clear").combobox('loadData',data);
+						$('#opration${rand}').combobox('setValue', '${oprationTypevalue}');
+						$('#opration${rand}').combobox('setText', '${oprationTypetext}');
+						},
+						'json'); 
+			
+					//操作类型赋值		
+					$('#opration${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#oprationvalue${rand}').val(record.id);
+		           		$('#oprationText${rand}').val(record.text);
+		           		
+		           		if(record.id!=null){
+		           		//操作原因初始化
+		           		$.get('hrFlow/getSapOptions.json',
+								{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+record.id+'_NEXT_P_MASSG_VALUE_'+' ',
+								exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+								function(data){
+								$('#oprationReasion${rand}').combobox("clear").combobox('loadData',data);
+								},
+								'json');
+		           		}
+		       		}
+					});
+						//操作原因赋值		
+					$('#oprationReasion${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#oprationReasionvalue${rand}').val(record.id);
+		           		$('#oprationReasionText${rand}').val(record.text);
+		       		}
+					});
+					//公司代码赋值
+					$('#companyCode${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#companyCodevalue${rand}').val(record.id);
+		           		$('#companyCodeText${rand}').val(record.text);
+		           		$('#childhrScope${rand}').combobox("clear");
+		           	//初始化人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+record.id,
+						exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+						function(data){
+						$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+						},
+						'json');
+						
+		       		}
+					});
+					//人事范围赋值
+					$('#hrScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#hrScopevalue${rand}').val(record.id);
+		           		$('#hrScopeText${rand}').val(record.text);
+		           		$('#childhrScope${rand}').combobox.DataSource=null;
+		           		//初始化子人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+$("#companyCodevalue${rand}").val()+'_NEXT_P_WERKS_VALUE_'+record.id,
+						exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+						function(data){
+						$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+						},
+						'json');
+						
+		       		}
+					});
+					//人事子范围赋值
+					$('#childhrScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#childhrScopevalue${rand}').val(record.id);
+		           		$('#childhrScopeText${rand}').val(record.text);
+		       		}
+					});
+					//员工组赋值
+					$('#employeeGroup${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#employeeGroupvalue${rand}').val(record.id);
+		           		$('#employeeGroupText${rand}').val(record.text);
+		       		}
+					});
+					//员工子赋值
+					$('#childemployeeGroup${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#childemployeeGroupvalue${rand}').val(record.id);
+		           		$('#childemployeeGroupText${rand}').val(record.text);
+		       		}
+					});
+					//工资范围赋值
+					$('#saleScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#saleScopevalue${rand}').val(record.id);
+		           		$('#saleScopeText${rand}').val(record.text);
+		       		}
+					});
+					//工作合同赋值
+					$('#jobAgreement${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#jobAgreementvalue${rand}').val(record.id);
+		           		    $('#jobAgreementText${rand}').val(record.text);
+		       		}
+					});
+					
+					
+					
+			});
+			//格式化日期	yyyy-MM-dd
+			function getNowFormatDate(){ 
+				var day = new Date(); 
+				var Year = 0; 
+				var Month = 0; 
+				var Day = 0; 
+				var CurrentDate = ""; 
+				Year= day.getFullYear();//ie火狐下都可以 
+				Month= day.getMonth()+1; 
+				Day = day.getDate(); 
+				CurrentDate += Year + "-"; 
+				if (Month >= 10 ) 
+				{ 
+				CurrentDate += Month + "-"; 
+				} 
+				else 
+				{ 
+				CurrentDate += "0" + Month + "-"; 
+				} 
+				if (Day >= 10 ) 
+				{ 
+				CurrentDate += Day ; 
+				} 
+				else 
+				{ 
+				CurrentDate += "0" + Day ; 
+				} 
+				return CurrentDate; 
+			} 
+			 function succeed(){
+		    	 $('#companyCode${rand}').combobox({required:true});
+		    	 $('#hrScope${rand}').combobox({required:true});
+		    	 $('#childhrScope${rand}').combobox({required:true});
+		    	 $('#employeeGroup${rand}').combobox({required:true});
+		    	 $('#employeeGroup${rand}').combobox({required:true});
+		    	 $('#childemployeeGroup${rand}').combobox({required:true});
+		    	 $('#saleScope${rand}').combobox({required:true});
+		    	 $('#jobAgreement${rand}').combobox({required:true});
+		    	 $('#opration${rand}').combobox({required:true});
+		    	 $('#oprationReasion${rand}').combobox({required:true});
+		    	 $("#tr${rand}").show();
+		    	 $("#tr2${rand}").show();
+		    	 $("#tr3${rand}").show();
+		     }
+		     function failure(){
+		    	 $('#companyCode${rand}').combobox({required:false});
+		    	 $('#hrScope${rand}').combobox({required:false});
+		    	 $('#childhrScope${rand}').combobox({required:false});
+		    	 $('#employeeGroup${rand}').combobox({required:false});
+		    	 $('#employeeGroup${rand}').combobox({required:false});
+		    	 $('#childemployeeGroup${rand}').combobox({required:false});
+		    	 $('#saleScope${rand}').combobox({required:false});
+		    	 $('#jobAgreement${rand}').combobox({required:false});
+		    	 $('#opration${rand}').combobox({required:false});
+		    	 $('#oprationReasion${rand}').combobox({required:false});
+		    	 $("#tr${rand}").hide();
+		    	 $("#tr2${rand}").hide();
+		    	 $("#tr3${rand}").hide();
+		     }
+	</script>
+	
+	</#if>
+	</#if>
+</#if>
+<!--职员招聘专员确认审批-->
+<#if currentStep?exists>
+    <#if processSteps??> 
+	<#if currentStep == 'hrOfficeWorkerCheckAudi'>
+     		<#list processSteps as steps>
+      			<#if steps.key == 'hrCheckAudi'>
+      			     <#assign hrleaderCheckenableTime=steps.vars["hrleaderCheckenableTime"]!''/>
+      			</#if>
+      			<#if steps.key == 'startevent1'>
+      			     <#assign account=steps.vars["account"]!''/>
+      			     
+      			     
+      			     <#assign companyCodevalue=steps.vars["companyCodevalue"]!""/>
+      			     <#assign companyCodetext=steps.vars["companyCodeText"]!""/>
+      			     
+      			     
+      			     <#assign hrScopevalue=steps.vars["hrScopevalue"]!""/>
+      			     <#assign hrScopetext=steps.vars["hrScopeText"]!""/>
+      			     
+      			     <#assign childhrScopevalue=steps.vars["childhrScopevalue"]!''/>
+      			     <#assign childhrScopetext=steps.vars["childhrScopeText"]!''/>
+      			     
+      			     <#assign employeeGroupvalue=steps.vars["employeeGroupvalue"]!''/>
+      			     <#assign employeeGrouptext=steps.vars["employeeGroupText"]!''/>
+      			    
+      			     <#assign childemployeeGroupvalue=steps.vars["childemployeeGroupvalue"]!''/>
+      			     <#assign childemployeeGrouptext=steps.vars["childemployeeGroupText"]!''/>
+      			     
+      			     <#assign saleScopevalue=steps.vars["saleScopevalue"]!''/>
+      			     <#assign saleScopetext=steps.vars["saleScopeText"]!''/>
+      			     
+      			     <#assign jobAgreementvalue=steps.vars["jobAgreementvalue"]!''/>
+      			     <#assign jobAgreementtext=steps.vars["jobAgreementText"]!''/>
+      			     
+      			     <#assign oprationTypevalue=steps.vars["oprationTypevalue"]!''/>
+      			     <#assign oprationTypetext=steps.vars["oprationText"]!''/>
+      			     
+      			     <#assign oprationReasionvalue=steps.vars["oprationReasionvalue"]!''/>
+      			     <#assign oprationReasiontext=steps.vars["oprationReasionText"]!''/>
+      		</#if>
+	       </#list>
+		<div id="hrOfficeWorkerCheckAudi">
+			<form id="hrOfficeWorkerCheckAudiForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="hrOfficeWorkerCheckAudiFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">人力专员确认信息</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	<td  class="formtable_td_key" >温馨提示：</td>
+		  	  	<td class="formtable_td_value" colspan="5">
+		  	  		<span style="font-size: 13pt;  font-family:黑体;color: red" >务必核实该员工上述信息！无误后可点击完成按钮将调整信息写入SAP系统，谨慎操作！</span></td>
+		  	  	</tr>
+		  	  	  <tr>
+		  	  	  	<td class="formtable_td_key">是否修改岗位信息：</td>
+			  		<td class="formtable_td_value" > 
+					<input id="checkResult0${rand}" type="radio" name="fp_updateJobInfo"  value="0" />是
+					<input id="checkResult1${rand}" type="radio" name="fp_updateJobInfo" checked="checked" value="1" />否
+			  		</td>
+		  	  		<td class="formtable_td_key">签名：</td>
+		  	  		<td class="formtable_td_value" width="175px"> 
+					<input type="hidden" name="fp_hrOfficeWorkerCheckAudiName" value="${appuser.name}" />
+					${appuser.name}
+			  		</td>
+			  		<td class="formtable_td_key">查核日期：</td>
+					 <td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+			    	<input type="hidden" name="fp_hrOfficeWorkerCheckAudiTime"
+					value="${.now?string('yyyy-MM-dd')}" />
+					</td>
+		  	  	</tr>
+		  	  	<tr id="newJobConfirm${rand}">
+		  	  		<td class="formtable_td_key">新岗位确认：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+			  	  		公司：
+			  	  		<input id="accepterCompanyOfficeWorker${rand}" class="easyui-validatebox  textbox" style="width: 160px;" type="text" name="fp_accepterCompanyOfficeWorker" />
+						<input id="updateCompanyIdOfficeWorker${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_updateCompanyIdOfficeWorker" />
+						<input id="updateCompanyNameOfficeWorker${rand}" class="easyui-validatebox  textbox" type="hidden" name="fp_updateCompanyNameOfficeWorker" />
+						部门：
+						<input id="accepterOrgOfficeWorker${rand}" class="easyui-combotree" style="width: 120px;"  name="fp_accepterOrgOfficeWorker" data-options="required:true">
+		  	  			<input id="updateOrgIdOfficeWorker${rand}" type="hidden"  name="fp_updateOrgIdOfficeWorker" />
+		  	  			<input id="updateOrgNameOfficeWorker${rand}" type="hidden"  name="fp_updateOrgNameOfficeWorker"/>
+		  	  			新岗位：
+		  	  			<input id="accepterJobOfficeWorker${rand}" class="easyui-combotree" style="width: 120px;"  data-options="required:true" name="fp_accepterJobOfficeWorker"/>
+		  	  			<input id="updateJobIdOfficeWorker${rand}" type="hidden" name="fp_updateJobIdOfficeWorker"  />
+						<input id="updateJobNameOfficeWorker${rand}" type="hidden" name="fp_updateJobNameOfficeWorker"  />
+						<input id="startDate${rand}" type="hidden" value='${hrleaderCheckenableTime}'/>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	  	<td class="formtable_td_key">是否传入SAP：</td>
+			  		<td class="formtable_td_value" > 
+					<input id="checkResult0${rand}" type="radio" name="fp_isUploadSap" checked="checked" value="0" />是
+					<input id="checkResult1${rand}" type="radio" name="fp_isUploadSap" value="1" />否
+			  		</td>
+			  		<td class="formtable_td_key">是否修改数据：</td>
+			  		<td class="formtable_td_value"  colspan="3"> 
+					<input id="checkResult0${rand}" type="radio" name="fp_isUpdate"  value="0" onclick="succeed();"/>是
+					<input id="checkResult1${rand}" type="radio" name="fp_isUpdate" checked="checked" value="1" onclick=" failure();" />否
+			  		</td>
+		  	  	</tr>
+		  	  	<tr id="tr${rand}">
+		  	  				<td class="formtable_td_key">公司代码：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="companyCodevalue${rand}"  type='hidden' name="fp_companyCodevalueTo" value="${companyCodevalue}"/>
+						  		<input id="companyCode${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="companyCodeText${rand}"  type='hidden' name="fp_companyCodeTextTo"  value="${companyCodetext}" />
+						  	</td>
+		  	  				<td class="formtable_td_key">人事范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="hrScopevalue${rand}"  type='hidden' name="fp_hrScopevalueTo" value="${hrScopevalue}"/>
+						  		<input id="hrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="hrScopeText${rand}"  type='hidden' name="fp_hrScopeTextTo" value="${hrScopetext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">人事子范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childhrScopevalue${rand}"  type='hidden' name="fp_childhrScopevalueTo" value="${childhrScopevalue}"/>
+						  		<input id="childhrScope${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childhrScopeText${rand}"  type='hidden' name="fp_childhrScopeTextTo" value="${childhrScopetext}"/>
+						  	</td>
+						  	
+				</tr>
+				<tr id="tr2${rand}">	
+							<td class="formtable_td_key">员工组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="employeeGroupvalue${rand}"  type='hidden' name="fp_employeeGroupvalueTo" value="${employeeGroupvalue}"/>
+						  		<input id="employeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="employeeGroupText${rand}"  type='hidden' name="fp_employeeGroupTextTo" value="${employeeGrouptext}"/>
+						  	</td>	  	
+						  	<td class="formtable_td_key">员工子组：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="childemployeeGroupvalue${rand}"  type='hidden' name="fp_childemployeeGroupvalueTo" value="${childemployeeGroupvalue}"/>
+						  		<input id="childemployeeGroup${rand}" class='easyui-combobox' type='text'  />
+						  		<input id="childemployeeGroupText${rand}"  type='hidden' name="fp_childemployeeGroupTextTo" value="${childemployeeGrouptext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">工资范围：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="saleScopevalue${rand}"  type='hidden' name="fp_saleScopevalueTo" value="${saleScopevalue}"/>
+						  		<input id="saleScope${rand}" class='easyui-combobox' type='text' />
+						  		<input id="saleScopeText${rand}"  type='hidden' name="fp_saleScopeTextTo" value="${saleScopetext}"/>
+						  	</td>
+						  	
+		  	  	</tr>
+		  	  	<tr  id="tr3${rand}">
+		  	  				<td class="formtable_td_key">工作合同：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="jobAgreementvalue${rand}"  type='hidden' name="fp_jobAgreementvalueTo" value="${jobAgreementvalue}"/>
+						  		<input id="jobAgreement${rand}" class='easyui-combobox' type='text' />
+						  		<input id="jobAgreementText${rand}"  type='hidden' name="fp_jobAgreementTextTo" value="${jobAgreementtext}"/>
+						  	</td>
+						  	<td class="formtable_td_key">操作类型：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationvalue${rand}"  type="hidden" name="fp_oprationTypevalueTo"   value="${oprationTypevalue}"/>
+						  		<input id="opration${rand}" class="easyui-combobox" type="text" />
+						  		<input id="oprationText${rand}"  type="hidden" name="fp_oprationTextTo"   value="${oprationTypetext}"/>
+						  	</td>
+		  	  				<td class="formtable_td_key">操作原因：</td>
+						  	<td class="formtable_td_value" >
+						  		<input id="oprationReasionvalue${rand}" type="hidden" name="fp_oprationReasionvalueTo"   value="${oprationReasionvalue}"/>
+						  		<input id="oprationReasion${rand}" class="easyui-combobox" type="text"   />
+						  		<input id="oprationReasionText${rand}" type="hidden" name="fp_oprationReasionTextTo" value="${oprationReasiontext}" />
+						  	</td>
+		  	  				
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_key">确认意见：</td>
+		  	  		<td class="formtable_td_value" colspan="5"><textarea name="fp_hrOfficeWorkerCheckAudiAdvice" class="formtable_remark"></textarea></td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+				
+	<script type="text/javascript">
+	
+		    var accepterJobOfficeWorkerName = $('#accepterJobOfficeWorker${rand}');
+			var updateJobOfficeWorkerName = $('#updateJobNameOfficeWorker${rand}');
+			
+			
+			
+			  
+			$(function(){
+				
+					$("#tr${rand}").hide();
+			    	$("#tr2${rand}").hide();
+			    	$("#tr3${rand}").hide();
+		    	 
+					$("#newJobConfirm${rand}").hide();
+					$("#accepterJobOfficeWorker${rand}").combotree({required:false});
+					$("#accepterOrgOfficeWorker${rand}").combotree({required:false});
+					$("#accepterCompanyOfficeWorker${rand}").combotree({required:false});
+				 	$("#checkResult0${rand}").bind("click",function(){
+					$("#newJobConfirm${rand}").show();
+					$("#accepterJobOfficeWorker${rand}").combotree({required:true});
+					$("#accepterOrgOfficeWorker${rand}").combotree({required:true});
+					$("#accepterCompanyOfficeWorker${rand}").combotree({required:true});
+					
+				});
+				var f=function(){
+				 	$("#newJobConfirm${rand}").hide();
+					$("#accepterJobOfficeWorker${rand}").combotree({required:false});
+					$("#accepterOrgOfficeWorker${rand}").combotree({required:false});
+					$("#accepterCompanyOfficeWorker${rand}").combotree({required:false});
+				};
+				$("#checkResult1${rand}").bind("click",f);
+				
+				var testTree = null;	
+				$('#accepterCompanyOfficeWorker${rand}').combobox({
+						valueField: 'id',
+				        textField: 'name',
+					    url: 'hrFlow/auth/getCom.json',
+						editable:false,
+						onSelect:function(record){
+						$('#updateCompanyIdOfficeWorker${rand}').val(record.id);
+						$('#updateCompanyNameOfficeWorker${rand}').val(record.name);
+						$('#accepterOrgOfficeWorker${rand}').combotree("reload","hrFlow/auth/orgs.json?id=" + record.id);
+						$('#accepterOrgOfficeWorker${rand}').combotree("tree").tree("options").url =  "hrFlow/auth/orgs.json";
+						}
+					   
+					});
+					
+				
+					//组织架构初始化
+					$('#accepterOrgOfficeWorker${rand}').combotree({
+					    url: 'hrFlow/auth/orgs.json',
+					    method:'get',
+					    //required:true,
+					    //onBeforeExpand:function(node) {  $('#accepterOrgName${rand}').combotree("tree").tree("options").url = "hrFlow/auth/orgs.json?id=" +node.id;},
+					    lines:true,
+						panelWidth:300,
+						panelHeight:280,
+					    onClick:function(node){
+							 $('#updateOrgIdOfficeWorker${rand}').val(node.id);
+						  	 $('#updateOrgNameOfficeWorker${rand}').val(node.text);
+						  	  //转换部门ID
+								  	$.get('hrFlow/transOrgIdToSap.json',
+									{deptId:node.id
+								   },
+									function(record){
+										
+										   if(record==null){
+										   return;
+										   }
+										   //初始化职位树
+										  $.get('hrFlow/getSapOptions4Job.json',
+											{functionName:'ZHR_OA02',vars:'P_OBJID_VALUE_'+record+'_NEXT_P_KEYDATE_VALUE_'+$("#startDate${rand}").val()+"-01",
+										    exportTableName:'T_POSITION',code:'PLANS',describe:'PLANS_T'},
+											function(data){
+												accepterJobOfficeWorkerName.combobox("clear").combobox('loadData',data);
+											},'json'); 
+										
+									},'json');
+									
+							
+						}  
+					});
+					
+					//获取SAP个人信息
+					$.get('hrFlow/getSapEmpInfoForJson.json',
+						{functionName:'ZHR_OA0001',vars:'P_PERNR_VALUE_'+'${account}'+'_NEXT_P_DATUM_VALUE_'+getNowFormatDate(),exportTableName:'T_0001',
+						exportlist:'BUKRS_NEXT_WERKS_NEXT_BTRTL_NEXT_PERSG_NEXT_PERSK_NEXT_ABKRS_NEXT_ANSVH'},
+						function(data){
+						 var jsondata=eval("("+data+")");
+						$("#companyCodevalue${rand}").val(jsondata.BUKRS);//公司代码
+						$("#hrScopevalue${rand}").val(jsondata.WERKS);//人事范围
+						$("#childhrScopevalue${rand}").val(jsondata.BTRTL);//人事子范围
+						$("#employeeGroupvalue${rand}").val(jsondata.PERSG);//员工组 
+						$("#childemployeeGroupvalue${rand}").val(jsondata.PERSK);//员工子组 
+						$("#saleScopevalue${rand}").val(jsondata.ABKRS);//工资范围
+						$("#jobAgreementvalue${rand}").val(jsondata.ANSVH);//工作合同
+						//根据系统获取相应的招聘专员
+						if(jsondata.PERSK!='40'){
+							$.post("engineer/getLoginNo.json",{
+								engineerId:'01058659'//吴志强
+							},function(data){
+								$("#hrOfficeWorker${rand}").val(data);
+							});
+						}
+						//初始化公司代码
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+$("#companyCode${rand}").val(),
+						exportTableName:'T_BUKRS',code:'BUKRS',describe:'BUTXT'},
+						function(data){
+						$('#companyCode${rand}').combobox("clear").combobox('loadData',data);
+						//$('#companyCode${rand}').combobox('setValue', '${companyCodevalue}');
+						//$('#companyCode${rand}').combobox('setText', '${companyCodetext}');
+						$('#companyCode${rand}').combobox('setValue', '${companyCodevalue}');
+						$("#companyCodeText${rand}").val('${companyCodetext}');
+						},
+						'json');
+						//初始化人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+'${companyCodevalue}',
+						exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+						function(data){
+						$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#hrScope${rand}').combobox('setValue', '${hrScopevalue}');
+						//$('#hrScopeText${rand}').val('${hrScopetext}');
+						},
+						'json');
+						$('#oprationReasion${rand}').combobox('setValue', '${oprationReasionvalue}');
+						$('#oprationReasion${rand}').combobox('setText', '${oprationReasiontext}')
+						//初始化子人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+'${companyCodevalue}'+'_NEXT_P_WERKS_VALUE_'+$("#hrScopevalue${rand}").val(),
+						exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+						function(data){
+						 //console.log(data);
+						$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#childhrScope${rand}').combobox('setValue', '${childhrScopevalue}');
+						$('#childhrScopeText${rand}').val('${childhrScopetext}');
+						},
+						'json');
+						
+						//初始化员工组
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_PERSG',code:'PERSG',describe:'PTEXT'},
+						function(data){
+						 //console.log(data);
+						$('#employeeGroup${rand}').combobox("clear").combobox('loadData',data);
+						$('#employeeGroup${rand}').combobox('setValue', '${employeeGroupvalue}');
+						$('#employeeGroupText${rand}').val('${employeeGrouptext}');
+						},
+						'json');
+						//初始化员工子组
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_PERSK',code:'PERSK',describe:'PTEXT'},
+						function(data){
+						$('#childemployeeGroup${rand}').combobox("clear").combobox('loadData',data);
+						$('#childemployeeGroup${rand}').combobox('setValue', '${childemployeeGroupvalue}');
+						$('#childemployeeGroupText${rand}').val('${childemployeeGrouptext}');
+						},
+						'json');
+						//初始化工资范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_ABKRS',code:'ABKRS',describe:'ATEXT'},
+						function(data){
+						 //console.log(data);
+						$('#saleScope${rand}').combobox("clear").combobox('loadData',data);
+						$('#saleScope${rand}').combobox('setValue', '${saleScopevalue}');
+						$('#saleScopeText${rand}').val('${saleScopetext}');
+						},
+						'json');
+						//初始化工作合同
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:' ',
+						exportTableName:'T_ANSVH',code:'ANSVH',describe:'ATX'},
+						function(data){
+						 //console.log(data);
+						$('#jobAgreement${rand}').combobox("clear").combobox('loadData',data);
+						$('#jobAgreement${rand}').combobox('setValue', '${jobAgreementvalue}');
+						$('#jobAgreementText${rand}').val('${jobAgreementtext}');
+						},
+						'json');
+						},
+				'json');
+					
+					
+					
+					
+					
+					
+					//选择赋值		
+					accepterJobOfficeWorkerName.combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+	                		updateJobOfficeWorkerName.val(record.text);
+	                		$('#updateJobIdOfficeWorker${rand}').val(record.id);
+	            		}
+					});
+					
+					//操作类型初始化
+					 $.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA06',
+						vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+						exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+						function(data){
+							var i = new Array();
+							i[0] = data[3];
+							i[1] = data[4];
+							i[2] = data[5];
+							data = i;
+						$('#opration${rand}').combobox("clear").combobox('loadData',data);
+						$('#opration${rand}').combobox('setValue', '${oprationTypevalue}');
+						$('#opration${rand}').combobox('setText', '${oprationTypetext}');
+						$('#oprationText${rand}').val('${oprationTypetext}');
+						
+						},
+						'json'); 
+			
+					//操作类型赋值		
+					$('#opration${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#oprationvalue${rand}').val(record.id);
+		           		$('#oprationText${rand}').val(record.text);
+		           		
+		           		if(record.id!=null){
+		           		//操作原因初始化
+		           		$.get('hrFlow/getSapOptions.json',
+								{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+record.id+'_NEXT_P_MASSG_VALUE_'+' ',
+								exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+								function(data){
+								$('#oprationReasion${rand}').combobox("clear").combobox('loadData',data);
+								},
+								'json');
+		           		}
+		       		}
+					});
+						//操作原因赋值		
+					$('#oprationReasion${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#oprationReasionvalue${rand}').val(record.id);
+		           		$('#oprationReasionText${rand}').val(record.text);
+		       		}
+					});
+					//公司代码赋值
+					$('#companyCode${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#companyCodevalue${rand}').val(record.id);
+		           		$('#companyCodeText${rand}').val(record.text);
+		           		$('#childhrScope${rand}').combobox("clear");
+		           	//初始化人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+record.id,
+						exportTableName:'T_WERKS',code:'WERKS',describe:'NAME1'},
+						function(data){
+						$('#hrScope${rand}').combobox("clear").combobox('loadData',data);
+						},
+						'json');
+						
+		       		}
+					});
+					//人事范围赋值
+					$('#hrScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#hrScopevalue${rand}').val(record.id);
+		           		$('#hrScopeText${rand}').val(record.text);
+		           		$('#childhrScope${rand}').combobox.DataSource=null;
+		           		//初始化子人事范围
+						$.get('hrFlow/getSapOptions.json',
+						{functionName:'ZHR_OA07',
+						vars:'P_BUKRS_VALUE_'+$("#companyCodevalue${rand}").val()+'_NEXT_P_WERKS_VALUE_'+record.id,
+						exportTableName:'T_BTRTL',code:'BTRTL',describe:'BTEXT'},
+						function(data){
+						$('#childhrScope${rand}').combobox("clear").combobox('loadData',data);
+						},
+						'json');
+						
+		       		}
+					});
+					//人事子范围赋值
+					$('#childhrScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#childhrScopevalue${rand}').val(record.id);
+		           		$('#childhrScopeText${rand}').val(record.text);
+		       		}
+					});
+					//员工组赋值
+					$('#employeeGroup${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#employeeGroupvalue${rand}').val(record.id);
+		           		$('#employeeGroupText${rand}').val(record.text);
+		       		}
+					});
+					//员工子赋值
+					$('#childemployeeGroup${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#childemployeeGroupvalue${rand}').val(record.id);
+		           		$('#childemployeeGroupText${rand}').val(record.text);
+		       		}
+					});
+					//工资范围赋值
+					$('#saleScope${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						required:true,
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#saleScopevalue${rand}').val(record.id);
+		           		$('#saleScopeText${rand}').val(record.text);
+		       		}
+					});
+					//工作合同赋值
+					$('#jobAgreement${rand}').combobox({
+						valueField:'id',
+						textField:'text',
+						editable:false,
+						onSelect:function(record){
+							//set cur hidden value
+							$('#jobAgreementvalue${rand}').val(record.id);
+		           		    $('#jobAgreementText${rand}').val(record.text);
+		       		}
+					});
+			});
+			//格式化日期	yyyy-MM-dd
+			function getNowFormatDate(){ 
+				var day = new Date(); 
+				var Year = 0; 
+				var Month = 0; 
+				var Day = 0; 
+				var CurrentDate = ""; 
+				Year= day.getFullYear();//ie火狐下都可以 
+				Month= day.getMonth()+1; 
+				Day = day.getDate(); 
+				CurrentDate += Year + "-"; 
+				if (Month >= 10 ) 
+				{ 
+				CurrentDate += Month + "-"; 
+				} 
+				else 
+				{ 
+				CurrentDate += "0" + Month + "-"; 
+				} 
+				if (Day >= 10 ) 
+				{ 
+				CurrentDate += Day ; 
+				} 
+				else 
+				{ 
+				CurrentDate += "0" + Day ; 
+				} 
+				return CurrentDate; 
+			}
+		     function succeed(){
+		    	 $('#companyCode${rand}').combobox({required:true});
+		    	 $('#hrScope${rand}').combobox({required:true});
+		    	 $('#childhrScope${rand}').combobox({required:true});
+		    	 $('#employeeGroup${rand}').combobox({required:true});
+		    	 $('#employeeGroup${rand}').combobox({required:true});
+		    	 $('#childemployeeGroup${rand}').combobox({required:true});
+		    	 $('#saleScope${rand}').combobox({required:true});
+		    	 $('#jobAgreement${rand}').combobox({required:true});
+		    	 $('#opration${rand}').combobox({required:true});
+		    	 $('#oprationReasion${rand}').combobox({required:true});
+		    	 $("#tr${rand}").show();
+		    	 $("#tr2${rand}").show();
+		    	 $("#tr3${rand}").show();
+		     }
+		     function failure(){
+		    	 $('#companyCode${rand}').combobox({required:false});
+		    	 $('#hrScope${rand}').combobox({required:false});
+		    	 $('#childhrScope${rand}').combobox({required:false});
+		    	 $('#employeeGroup${rand}').combobox({required:false});
+		    	 $('#employeeGroup${rand}').combobox({required:false});
+		    	 $('#childemployeeGroup${rand}').combobox({required:false});
+		    	 $('#saleScope${rand}').combobox({required:false});
+		    	 $('#jobAgreement${rand}').combobox({required:false});
+		    	 $('#opration${rand}').combobox({required:false});
+		    	 $('#oprationReasion${rand}').combobox({required:false});
+		    	 $("#tr${rand}").hide();
+		    	 $("#tr2${rand}").hide();
+		    	 $("#tr3${rand}").hide();
+		     }
+	</script>
+	 </#if>
+	</#if>
+</#if>
+<#include "/common/foot.html">
+
+
+  
+

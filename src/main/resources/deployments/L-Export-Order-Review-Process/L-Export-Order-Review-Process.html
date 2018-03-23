@@ -1,0 +1,742 @@
+<#include "/common/head.html">
+<style>
+ div.form_title{
+	 font-size: 15pt;
+	 text-align: center;
+	 font-weight: normal;
+ }
+  div.form_sub_title{
+	 font-size: 14pt;
+	 text-align: center;
+	 font-weight: bold;
+	 padding-top:7px;
+	 padding-bottom: 7px;
+ }
+</style>
+<#if processSteps??>
+<#list processSteps as steps> 
+	<#if steps.key == 'startevent1'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<div  class="form_title">金 立 通 信 设 备 有 限 公 司</div>
+		<div  class="form_sub_title">外 销 订 单 评 审 表</div>
+		   <tr>
+	  	  			<td class="formtable_td_key">客户名称：</td>							
+					<td  class="formtable_td_value" width="100">${steps.vars["clientName"]}
+					</td>
+					<td class="formtable_td_key">国家：</td>							
+					<td  class="formtable_td_value" width="100">${steps.vars["country"]}
+					</td>
+	  	  	</tr>
+	  	  			  	  	<tr>
+	  	  			<td class="formtable_td_key">项目名称：</td>							
+					<td  class="formtable_td_value" >${steps.vars["projectName"]}
+					</td>
+					<td class="formtable_td_key">客户型号：</td>							
+					<td  class="formtable_td_value">${steps.vars["clientModel"]}
+					</td>
+	  	  	</tr>
+	  	  	<#assign orderCount = 0 />
+	  		<#list steps.vars?keys as key>
+	  	  		<#if key?index_of("orderQuantity")!=-1>
+	  	  			<#assign orderCount = orderCount+1 />
+	  	  		</#if>
+  	  		</#list>
+	  	  	<tr>
+					<td class="formtable_td_key" rowspan="${orderCount}">颜色：</td>							
+					<td  class="formtable_td_value">${steps.vars["color"]}
+					</td>
+	  	  			<td class="formtable_td_key" rowspan="${orderCount}">订货数量：</td>							
+					<td  class="formtable_td_value" >${steps.vars["orderQuantity"]}
+					</td>
+	  	  	</tr>
+	  	  	<#list steps.vars?keys as key>
+	  	  	<#if key?index_of("orderQuantity")!=-1>
+	  	  		<#if key != "orderQuantity">
+			  	  	<tr>
+							<td  class="formtable_td_value">${steps.vars["color"+key?substring(13)]}
+							</td>
+							<td  class="formtable_td_value" >${steps.vars[key]}
+							</td>
+			  	  	</tr>
+	  	  		</#if>
+	  	  	</#if>
+		  	</#list> 	
+	  	  	<tr>
+	  	  			<td class="formtable_td_key">出货方式：</td>							
+					<td  class="formtable_td_value">
+						<#if steps.vars["deliveryMode"] == "1">成品</#if>
+						<#if steps.vars["deliveryMode"] == "2">SKD</#if>
+					</td>
+					<td class="formtable_td_key">累计订货数量：</td>							
+					<td  class="formtable_td_value">${steps.vars["orderTotalQuantity"]}
+					</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  			<td class="formtable_td_key">订货日期：</td>							
+					<td  class="formtable_td_value" >${steps.vars["orderDate"]}
+					</td>
+					<td class="formtable_td_key">交货日期：</td>							
+					<td  class="formtable_td_value">${steps.vars["deliveryDate"]}
+					</td>
+	  	  	</tr>
+	  	  			  	  	<tr>
+	  	  			<td class="formtable_td_key">付款方式：</td>							
+					<td  class="formtable_td_value" >${steps.vars["paymentMethod"]}
+					</td>
+					<td class="formtable_td_key">订单编号：</td>							
+					<td  class="formtable_td_value">${steps.vars["orderNumber"]}
+					</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  			<td class="formtable_td_key">拟制：</td>							
+					<td  class="formtable_td_value" >${steps.vars["fictionBy"]}
+					</td>
+					<td class="formtable_td_key">日期：</td>							
+					<td  class="formtable_td_value">${steps.vars["fictionDate"]}
+					</td>
+		  	 </tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="3">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+				</#list>
+				</td>
+			</tr>
+			</#if>
+	</table>
+	</#if>
+</#list>
+
+<#list processSteps as steps> 
+	<#if steps.key == 'mb_businessReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+ 	  		<td  style="font-size: 16px; " colspan="4" class="formtable_td_key" align="center" >商务评审</td>
+  		</tr>
+		<tr>
+  	  		<td class="formtable_td_key">客户资信评审：</td>
+  	  		<td class="formtable_td_value" colspan="3">
+  	  			<textarea  class="formtable_remark likedisabled"  style="height: 30px;min-height: 30px"  style="height: 30px;min-height: 30px" name="fp_customerCreditReview"   readonly="readonly">${steps.vars["customerCreditReview"]}</textarea>
+  	  		</td>
+  	  	</tr>
+		<tr>
+  	  		<td class="formtable_td_key" >定金预付评审：</td>
+  	  		<td class="formtable_td_value" colspan="3">
+  	  			<textarea  class="formtable_remark likedisabled"  style="height: 30px;min-height: 30px" name="fp_depositPrepaidReview"  readonly="readonly">${steps.vars["depositPrepaidReview"]}</textarea>
+  	  		</td>
+  	  	</tr>
+  	  	<tr>
+			<td class="formtable_td_key" >签字：</td>
+			<td class="formtable_td_value">${steps.vars["businessSignature"]}
+			</td>
+			<td class="formtable_td_key">日期：</td>
+		  	<td class="formtable_td_value">${steps.vars["businessSignatureTime"]}
+		  	</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+</#list>
+
+<#list processSteps as steps> 
+	<#if steps.key == 'mb_operatorReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+ 	  		<td  style="font-size: 16px; " colspan="4" class="formtable_td_key" align="center" >计调评审 </td>
+  		</tr>
+		<tr>
+  	  		<td class="formtable_td_key" >物料齐套满足性评审：</td>
+  	  		<td class="formtable_td_value" colspan="3">
+  	  			<textarea  class="formtable_remark likedisabled"  style="height: 30px;min-height: 30px"  name="fp_materialsMeetSexualReview"   readonly="readonly">${steps.vars["materialsMeetSexualReview"]}</textarea>
+  	  		</td>
+  	  	</tr>
+		<tr>
+  	  		<td class="formtable_td_key">生产能力满足性评审：</td>
+  	  		<td class="formtable_td_value" colspan="3">
+  	  			<textarea  class="formtable_remark likedisabled"  style="height: 30px;min-height: 30px" name="fp_productionCapacitySatisfactionReview" readonly="readonly">${steps.vars["productionCapacitySatisfactionReview"]}</textarea>
+  	  		</td>
+  	  	</tr>
+  	  	<tr>
+			<td class="formtable_td_key" >签字：</td>
+			<td class="formtable_td_value">${steps.vars["operatorSignature"]}
+			</td>
+			<td class="formtable_td_key">日期：</td>
+		  	<td class="formtable_td_value">${steps.vars["operatorSignatureTime"]}
+		  	</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+</#list>
+
+<#list processSteps as steps> 
+	<#if steps.key == 'mb_productCenterReviewTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+ 	  		<td  style="font-size: 16px; " colspan="4" class="formtable_td_key" align="center" >评审结论处理</td>
+  		</tr>
+		<tr>
+  	  		<td class="formtable_td_key" >处理意见：</td>
+  	  		<td class="formtable_td_value" colspan="3">
+  	  			<textarea  class="formtable_remark likedisabled" style="height: 30px;min-height: 30px"  name="fp_productCenterReviewAdvice"  readonly="readonly">${steps.vars["productCenterReviewAdvice"]}</textarea>
+  	  		</td>
+  	  	</tr>
+  	  	<tr>
+			<td class="formtable_td_key" >签字：</td>
+			<td class="formtable_td_value">${steps.vars["productCenterSignature"]}
+			</td>
+			<td class="formtable_td_key">日期：</td>
+		  	<td class="formtable_td_value">${steps.vars["productCenterSignatureTime"]}
+		  	</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+</#list>
+
+<#list processSteps as steps> 
+	<#if steps.key == 'mb_chairmanAudiTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px;table-layout: fixed;">
+		<tr height="0">
+	  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+			<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+			<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+			</td>
+		</tr>
+		<tr>
+  			<td  style="font-size: 16px; " colspan="4" class="formtable_td_key" align="center" >评审结论</td>
+  		</tr>
+		<tr>
+			<td class="formtable_td_key">评审结果：</td>
+			<td class="formtable_td_value" colspan="3">
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 0>checked="checked"</#if> />同意
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 1>checked="checked"</#if> />不同意
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 2>checked="checked"</#if> />其他
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value"  colspan="3">
+				<textarea  class="formtable_remark likedisabled"  style="height: 30px;min-height: 30px"  name="fp_chairmanRemark" readonly="readonly">${steps.vars["chairmanRemark"]}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">签名：</td>
+			<td class="formtable_td_value" >${steps.vars["chairmanSignature"]}</td>
+			<td class="formtable_td_key">日期</td>
+			<td class="formtable_td_value">${steps.vars["chairmanSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="3">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</table>
+	</#if>
+</#list>
+</#if>
+<#if currentStep?exists>
+	<!-- 开始表单 -->
+	<#if currentStep == 'startevent1'>
+	<div id="start">
+		<form id="startForm" method="post" enctype='multipart/form-data'>
+			  <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" />
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  			<td class="formtable_td_key">客户名称：</td>							
+						<td  class="formtable_td_value" width="100">
+							<input name="fp_clientName" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key">国家：</td>							
+						<td  class="formtable_td_value" width="100">
+							<input name="fp_country" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key">项目名称：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_projectName" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key">客户型号：</td>							
+						<td  class="formtable_td_value">
+							<input name="fp_clientModel" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+						<td class="formtable_td_key">颜色：</td>							
+						<td  class="formtable_td_value">
+							<input name="fp_color" class="easyui-validatebox"   data-options="required:true"  type="text" />
+						</td>
+		  	  			<td class="formtable_td_key">订货数量：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_orderQuantity" class="easyui-numberbox"   data-options="min:0,precision:0,required:true"  type="text" onblur="caculateOrder${rand}()"/>
+							<a class="easyui-linkbutton" id="addOrderBtn${rand}" iconCls="icon-add" data-options="plain:true">添加</a>
+						</td>
+		  	  	</tr>
+		  	  	<tr id="orderColorTr${rand}1">
+						<td class="formtable_td_key">出货方式：</td>							
+						<td  class="formtable_td_value">
+							<select class="easyui-combobox easyui-validatebox" name="fp_deliveryMode" style="width: 140px">
+								<option value="1">成品</option>
+								<option value="2">SKD</option>
+							</select>
+						</td>
+		  	  			<td class="formtable_td_key">累计订货数量：</td>							
+						<td  class="formtable_td_value">
+							<input id="fp_orderTotalQuantity${rand}" name="fp_orderTotalQuantity" class="easyui-numberbox"   data-options="min:0,precision:0,required:true"  type="text"  validType="mone" readonly="readonly"/>
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key">订货日期：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_orderDate" data-options="dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',required:true" class="easyui-my97 easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key">交货日期：</td>							
+						<td  class="formtable_td_value">
+							<input name="fp_deliveryDate"  data-options="dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',required:true" class="easyui-my97 easyui-validatebox"   required="required" type="text" />
+						</td>
+		  	  	</tr>
+		  	  			  	  	<tr>
+		  	  			<td class="formtable_td_key">付款方式：</td>							
+						<td  class="formtable_td_value" >
+							<input name="fp_paymentMethod" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key">订单编号：</td>							
+						<td  class="formtable_td_value">
+							<input name="fp_orderNumber" class="easyui-validatebox"  type="text" />
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" rowspan="2">评审负责人：</td>
+		  	  		<td class="formtable_td_value" >商务评审负责人：</td>
+		  	  		<td colspan="2" class="formtable_td_value">
+  	  				  	<input id="businessAssignerAccount${rand}" name="fp_businessAssignerAccount" type="text" class="easyui-validatebox hidden-input" data-options="required:true"  readonly="readonly"/>
+  	  					<input id="businessAssignerName${rand}" name="fp_businessAssignerName" type="text"  class="easyui-validatebox" data-options="required:true"  readonly="readonly"/>
+  	  					<a id="addBusinessButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_value">计调评审负责人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+  	  					<input id="operatorAssignerAccount${rand}" name="fp_operatorAssignerAccount" type="text" class="easyui-validatebox hidden-input" data-options="required:true" readonly="readonly"/>
+  	  					<input id="operatorAssignerName${rand}" name="fp_operatorAssignerName" type="text"  class="easyui-validatebox" data-options="required:true"  readonly="readonly"/>
+  	  					<a id="addOperatorButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  			<td class="formtable_td_key">拟制：</td>							
+						<td  class="formtable_td_value" >
+							<input type="hidden" name="fp_applyUserAccount" value="${appuser.account}" readonly="readonly"/>
+							<input name="fp_fictionBy" class="none-input"  required="required" type="text" value="${appuser.name}" readonly="readonly"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>							
+						<td  class="formtable_td_value">
+							<input name="fp_fictionDate" class="none-input"  required="required" type="text" value="${.now?string('yyyy-MM-dd')}" readonly="readonly"/>
+						</td>
+		  	  	</tr>
+		  	  </table>
+	  	 </form>
+	  	  <!-- 选择意见负责人 -->
+		 <div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px" data-options="modal:true,closed:true,iconCls:'icon-process'">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+					style="padding: 5px 0px 5px 0px">
+					<ul id="orgs${rand}" />
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 0px 0px 30px 0px;">
+					<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+						员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="users${rand}"></table>
+				</div>
+			</div>
+		 </div>
+		 <script type="text/javascript">
+		 $(function(){
+	  			var orgWin = $('#orgWin-${rand}');
+	  			var orgs = $('#orgs${rand}');
+	  			var users = $('#users${rand}');
+	  			
+	  			$("#processName${rand}").val("[${appuser.account},${appuser.name}]外销订单评审流程");
+	  			//计调评审负责人选择事件
+	  			$("#addOperatorButton${rand}").on("click",function(){
+	  				$('#users${rand}').datagrid("reload",{id:74456});
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("operator"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				})
+  				//商务经理负责人选择事件
+  				$("#addBusinessButton${rand}").on("click",function(){
+  					$('#users${rand}').datagrid("reload",{id:133685});
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("business"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				})
+	  			
+	  		//初始化负责人选择窗口中的组织架构树
+	  			orgs.tree({
+	  			    url: 'hrFlow/auth/orgs.json',
+	  			    method:'get',
+	  			    required:true,
+	  			    lines:true,
+	  				panelWidth:300,
+	  				panelHeight:280,
+	  		        onClick:function(node){
+	  		        		$.post("hrFlow/isThirdAndLeaf.json",{
+	  		        			orgId:node.id
+	  		        		},function(data){
+	  		        			if(data.success){
+	  		        				$('#users${rand}').datagrid('reload',{id:node.id});
+	  		        			}
+	  		        		});
+	  				}
+	  			});
+	  		    //初始化负责人选择窗口中的人员列表 
+	  		     $('#users${rand}').datagrid({
+	  					  fit:true,
+	  					  fitColumns:false,
+	  					  url:'bpmRole/users.json',
+	  					  queryParams:{
+	  							id:"${appuser.orgId}".replace(/,/,"")
+	  						},
+	  					  columns:[[
+	  						{field:'id',checkbox:true},
+	  						{field:'account',title:'帐号',width:100},
+	  						{field:'name',title:'姓名',width:100},
+	  						{field:'orgName',title:'部门',width:100}
+	  					  ]],
+	  					  border:false,
+	  					  nowrap: true,
+	  					  pagination:false,
+	  					  pageNumber:1,
+	  					  pageSize:20,
+	  					  fit : true,
+	  					  singleSelect:true,
+	  					  rownumbers:true,
+	  			});
+	  		    //查询用户
+	  			$('#userGridSearchBtn${rand}').bind('click', function(){
+	  				var userAccount = $('#userAccount${rand}').val();
+	  				var userName = $('#searchName${rand}').val();
+	  				if(!userAccount && !userName){
+	  					$.messager.alert('提示','请输入信息','warning');
+	  					return;
+	  				}
+	  				$('#users${rand}').datagrid('reload',
+	  					{
+	  						userAccount:userAccount,
+	  						userName:userName
+	  					});
+	  		         $("#users${rand}").datagrid({ singleSelect: false });
+	  			});
+	  		   //选择用户完成事件
+	  		    function selectUserEnd(assigner){
+	  			   var row = $('#users${rand}').datagrid('getSelected');
+	  				if (row) {
+	  				    $("#"+assigner+"AssignerAccount${rand}").val(row.account);
+	  				    $("#"+assigner+"AssignerName${rand}").val(row.name);
+	  				    orgWin.dialog('close');	
+	  				} else {
+	  					$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+	  				}
+	  		  	 }
+	  		   //关闭组织架构窗口
+	  		   function  closeSelectUserWin(){
+	  		   	 	orgWin.dialog('close');	
+	  		  	}
+	  		   var currentClickCount = 1;
+	  		   $("#addOrderBtn${rand}").on("click",appendOrderColor);
+	  		   //追加行
+	  		   function appendOrderColor(){
+	  			 currentClickCount ++;
+	  			   var tr = 
+	  			   '<tr id="orderColorTr${rand}'+currentClickCount+'">'+
+						'<td class="formtable_td_key"></td>	'+				
+						'<td  class="formtable_td_value">'+
+							'<input name="fp_color'+currentClickCount+'"  class="easyui-validatebox"   data-options="required:true"  type="text" />'+
+						'</td>'+
+		  	  			'<td class="formtable_td_key"></td>	'+					
+						'<td  class="formtable_td_value" >'+
+							'<input name="fp_orderQuantity'+currentClickCount+'" class="easyui-numberbox"   data-options="min:0,precision:0,required:true"  type="text" onblur="caculateOrder${rand}()"/>'+
+							'<a class="easyui-linkbutton" iconCls="icon-remove" data-options="plain:true" onclick="deleteOrder${rand}(event)">删除</a>'+
+						'</td>'+
+		  	  		'</tr>';
+		  	  		$("#orderColorTr${rand}1").before(tr);
+		  	  		$.parser.parse('#orderColorTr${rand}'+currentClickCount);
+	  		   }
+	  		});
+			 //删除订单
+			 function deleteOrder${rand}(event){
+				var e = event || window.event;
+				if (e.target)
+					targ = e.target
+				else if (e.srcElement) 
+					targ = e.srcElement
+				if (targ.nodeType == 3) // defeat Safari bug
+				   targ = targ.parentNode;
+				$(targ).parent().parent().parent().parent().remove();
+			 }
+			 //计算累积订货数量
+			 function caculateOrder${rand}(){
+				 var totalOrder = 0;
+				 $("input[name^=fp_orderQuantity]").each(function(){
+				     var name =  $(this).attr("name");
+					 var orderCount = parseInt($("input[numberboxname="+name+"]").val() == ""?0:$("input[numberboxname="+name+"]").val());
+					 totalOrder += orderCount;
+				 });
+				 $("#fp_orderTotalQuantity${rand}").val(totalOrder);
+				 $("#fp_orderTotalQuantity${rand}").next().val(totalOrder);
+			 }
+	  	 </script>
+	</#if>
+	<#if currentStep == 'mb_operatorReviewTask'>
+		<div id="mb_operatorReviewTask"  style="margin-top: 10px;">
+			<form id="mb_operatorReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="4" class="formtable_td_value" >计调评审</td>
+					</tr>
+				</table>
+				<table id="mb_operatorReviewTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >物料齐套满足性评审：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark"  name="fp_materialsMeetSexualReview"   required="required" mobile="处物料齐套满足性评审" ></textarea>
+			  	  		</td>
+			  	  	</tr>
+					<tr>
+			  	  		<td class="formtable_td_key">生产能力满足性评审：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" name="fp_productionCapacitySatisfactionReview"   required="required" mobile="生产能力满足性评审" ></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value">${appuser.name}
+							<input  type="hidden" name="fp_operatorSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_operatorSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_businessReviewTask'>
+		<div id="mb_businessReviewTask"  style="margin-top: 10px;">
+			<form id="mb_businessReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="4" class="formtable_td_value" >商务评审</td>
+					</tr>
+				</table>
+				<table id="mb_businessReviewTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key">客户资信评审：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark"  name="fp_customerCreditReview"   required="required" mobile="客户资信评审"></textarea>
+			  	  		</td>
+			  	  	</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >定金预付评审：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" name="fp_depositPrepaidReview"   required="required" mobile="定金预付评审"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value">${appuser.name}
+							<input  type="hidden" name="fp_businessSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_businessSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	
+	<#if currentStep == 'mb_productCenterReviewTask'>
+		<div id="mb_productCenterReviewTask"  style="margin-top: 10px;">
+			<form id="mb_productCenterReviewTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="4" class="formtable_td_value" >评审结论处理</td>
+					</tr>
+				</table>
+				<table id="mb_productCenterReviewTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key" >处理意见：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark"  name="fp_productCenterReviewAdvice"  required="required" mobile="处理意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value">${appuser.name}
+							<input  type="hidden" name="fp_productCenterSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_productCenterSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_chairmanAudiTask'>
+		<div id="mb_chairmanAudiTask"   style="margin-top: 10px;">
+			<form id="mb_chairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+					<tr>
+						<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="4" class="formtable_td_value" >评审结论</td>
+					</tr>
+				</table>
+				<table id="mb_chairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr height="0">
+				  	  	<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+						<td class="formtable_td_key" style="height: 0px;padding-top: 0px;padding-bottom: 0px"></td>							
+						<td  class="formtable_td_value" width="100" style="height: 0px;padding-top: 0px;padding-bottom: 0px">
+						</td>
+					</tr>
+					<tr>
+			  	  		<td class="formtable_td_key">评审结果：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+							<input type="radio"  checked="checked" name="fp_chairmanAudi" value="0" style="margin-left: 10px" mobile="同意"/>同意
+							<input type="radio" name="fp_chairmanAudi"  value="1" style="margin-left: 10px" mobile="不同意"/>不同意
+							<input type="radio" name="fp_chairmanAudi"  value="2" style="margin-left: 10px" mobile="其他"/>其他			  	  	
+						</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">备注：</td>
+			  	  		<td class="formtable_td_value" colspan="3">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="chairmanRemark${rand}"  name="fp_chairmanRemark" mobile="备注" makethis_required_field_name="fp_chairmanAudi" makethis_required_field_values="1"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value">
+							<input  type="text" class="none-input" readonly="readonly" name="fp_chairmanSignature"  value="<#if appuser.name>刘立荣</#if>" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" >
+					  		<input  type="text" class="none-input" readonly="readonly" name="fp_chairmanSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+			<script type="text/javascript">
+				$(function(){
+					$("input[name='fp_chairmanAudi']").on("change",function(){
+						$("input[name='fp_chairmanAudi']").each(function(){
+							if(this.checked){
+								var audi = this.value;
+								if(audi == "0"){
+									$("#chairmanRemark${rand}").validatebox({required:false});
+								}else{
+									$("#chairmanRemark${rand}").validatebox({required:true});
+								}
+							}
+						})
+					})
+				})
+			</script>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">

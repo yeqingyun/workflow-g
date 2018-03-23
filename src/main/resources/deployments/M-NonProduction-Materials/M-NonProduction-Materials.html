@@ -1,0 +1,3903 @@
+<#include "/common/head.html">
+<#assign text=""/>
+<#assign proofType=""/>
+<#assign processId=""/>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		<tr>
+			<td colspan="6" class="formtable_td_key"  align="center">非生产物资申请单</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">凭证类型：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["proofType"] == 'NB'>NB 标准采购申请</#if>
+				<#if steps.vars["proofType"] == 'ZR01'>ZR01 总经办非生产物资采购申请</#if>
+				<#if steps.vars["proofType"] == 'ZR02'>ZR02 工程部非生产物资采购申请</#if>
+				<#if steps.vars["proofType"] == 'ZR03'>ZR03 物殊采购申请</#if>
+				<#if steps.vars["proofType"] == 'ZR04 '>ZR04 金立非生产物资采购申请(测试部)</#if>
+				<#if steps.vars["proofType"] == 'ZR05'>ZR05金立非生产物资采购申请(信息部)</#if>
+			</td>
+		</tr>
+		<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">非生产物资清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:1480px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="24" align="center">序号</td>
+											<td width="30" align="center">科目分配</td>
+											<td width="80" align="center">物料编码</td>
+											<td width="90" align="center">物料名称及规格</td>
+											<td width="60" align="center">申请数量</td>
+											<td width="60" align="center">单位</td>
+											<td width="125" align="center">工厂</td>
+											<td width="80" align="center">总账科目</td>
+											<td width="125" align="center">成本中心</td>
+											<td width="60" align="center">预估单价</td>
+											<td width="80" align="center">合计</td>
+											<td width="125" align="center">交货日期</td>
+											<td width="80" align="center">采购组</td>
+											<td width="80" align="center">物料组</td>
+											<td width="80" align="center">申请者</td>
+											<td width="180" align="center">备注</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									<#if steps.vars["scrapWay"]=='1'>
+										<#if steps.vars["MFixedAssetsDetraction"]??>
+						   					<#assign text1>
+												${(steps.vars["MFixedAssetsDetraction"])!""}
+											</#assign>
+											<#assign json=text1?eval />
+											<#list json.accessoryData as item>
+												<tr>
+													<td width="24" align="center">${item.rowno}</td>
+													<td width="30" align="top">${item.courseAllot}</td>
+													<td width="80" align="top">${item.stockNumber}</td>
+													<td width="90" align="top">${item.stockNameAndStandard}</td>
+													<td width="60" align="top">${item.applyNumber}</td>
+													<td width="60" align="top">${item.monad}</td>
+													<td width="125" align="top">${item.factory}</td>
+													<td width="80" align="top">${item.reckoning}</td>
+													<td width="125" align="top">${item.costCenter}</td>
+													<td width="60" align="top">${item.unitPrice}</td>
+													<td width="80" align="top">${item.amountInTotal}</td>
+													<td width="125" align="top">${item.deliveryDate}</td>
+													<td width="80" align="top">${item.procurementSection}</td>
+													<td width="80" align="top">${item.itemGroup}</td>
+													<td width="80" align="top">${item.applyName}</td>
+													<td width="180" align="top">${item.remark}</td>
+												</tr>
+											</#list>
+			   							</#if>
+			   						</#if>
+			   						<#if steps.vars["scrapWay"]=='2'>
+										<#if steps.vars["scrapWay2JsonStr"]??>
+						   					<#assign text1>
+												${(steps.vars["scrapWay2JsonStr"])!""}
+											</#assign>
+											<#assign json=text1?eval />
+											<#list json.accessoryData as item>
+												<tr>
+													<td width="24" align="center">${item.rowno}</td>
+													<td width="30" align="top">${item.courseAllot}</td>
+													<td width="80" align="top">${item.stockNumber}</td>
+													<td width="90" align="top">${item.stockNameAndStandard}</td>
+													<td width="60" align="top">${item.applyNumber}</td>
+													<td width="60" align="top">${item.monad}</td>
+													<td width="125" align="top">${item.factory}</td>
+													<td width="80" align="top">${item.reckoning}</td>
+													<td width="125" align="top">${item.costCenter}</td>
+													<td width="60" align="top">${item.unitPrice}</td>
+													<td width="80" align="top">${item.amountInTotal}</td>
+													<td width="125" align="top">${item.deliveryDate}</td>
+													<td width="80" align="top">${item.procurementSection}</td>
+													<td width="80" align="top">${item.itemGroup}</td>
+													<td width="80" align="top">${item.applyName}</td>
+													<td width="180" align="top">${item.remark}</td>
+												</tr>
+											</#list>
+			   							</#if>
+			   						</#if>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+			<!--<td class="formtable_td_key">科目分配：</td>
+			<td class="formtable_td_value">
+			</td>
+			<td class="formtable_td_key">物料编码：</td>
+			<td class="formtable_td_value">${steps.vars["stockNumber"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">物料名称及规格：</td>
+			<td class="formtable_td_value">${steps.vars["stockNameAndStandard"]!""}</td>
+			<td class="formtable_td_key">申请数量：</td>
+			<td class="formtable_td_value">${steps.vars["applyNumber"]!""}</td>
+			<td class="formtable_td_key">单位：</td>
+			<td class="formtable_td_value">${steps.vars["monad"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">工厂：</td>
+			<td class="formtable_td_value">${steps.vars["factory"]!""}</td>
+			<td class="formtable_td_key">成本中心：</td>
+			<td class="formtable_td_value">${steps.vars["costCenter"]!""}</td>
+			<td class="formtable_td_key">预估单价：</td>
+			<td class="formtable_td_value">${steps.vars["unitPrice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">合计：</td>
+			<td class="formtable_td_value">${steps.vars["amountInTotal"]!""}</td>
+			<td class="formtable_td_key">交货日期：</td>
+			<td class="formtable_td_value">${steps.vars["deliveryDate"]!""}</td>
+			<td class="formtable_td_key">采购组：</td>
+			<td class="formtable_td_value">${steps.vars["procurementSection"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">非生产物资清单：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["participantList"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">物料组：</td>
+			<td class="formtable_td_value">${steps.vars["itemGroup"]!""}</td>
+			<td class="formtable_td_key">申请人签名:</td>
+			<td class="formtable_td_value">${steps.vars["applyName"]!""}</td>
+			<td class="formtable_td_key">申请日期:</td>
+			<td class="formtable_td_value">${steps.vars["applyDate"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${steps.vars["remark"]!""}</textarea></td>
+		</tr>-->
+		<tr>
+			<td class="formtable_td_key">申请人签名:</td>
+			<td class="formtable_td_value">${steps.vars["applyName"]!""}</td>
+			<td class="formtable_td_key">申请日期:</td>
+			<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+		<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>
+		</#if>
+
+<!-- 流程发起人确认流程是否结束 -->
+<#if steps.key == 'confirmProcessEndTask'>
+<#if steps.vars["confirmProcessEndAudi"] == '1'>
+	<tr>
+	<td class="formtable_td_key" rowspan="3">发起人确认流程是否结束</td>
+		<td class="formtable_td_key">是否结束该流程：</td>	
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["confirmProcessEndAudi"] == '1'>
+			是
+			</#if>
+			<#if steps.vars["confirmProcessEndAudi"] == '0'>
+			否
+			</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认意见：</td>	
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["applyUserAudiAdvice"])!""}</textarea></td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">发起人签字：</td>
+		<td class="formtable_td_value" >
+			${(steps.vars["applyUserName"])!""}
+		</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value">
+			${(steps.vars["applyUserAudiTime"])!""}
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 修改表单申请 -->
+	<#if steps.key =='updateNonProdutionMaterialsApply'>
+		<tr>
+			<td colspan="6" class="formtable_td_key"  align="center">非生产物资修改申请单</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">凭证类型：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["updateProofType"] == 'NB'>NB 标准采购申请</#if>
+				<#if steps.vars["updateProofType"] == 'ZR01'>ZR01 总经办非生产物资采购申请</#if>
+				<#if steps.vars["updateProofType"] == 'ZR02'>ZR02 工程部非生产物资采购申请</#if>
+				<#if steps.vars["updateProofType"] == 'ZR03'>ZR03 物殊采购申请</#if>
+				<#if steps.vars["updateProofType"] == 'ZR04'>ZR04 金立非生产物资采购申请(测试部)</#if>
+				<#if steps.vars["updateProofType"] == 'ZR05'>ZR05金立非生产物资采购申请(信息部)</#if>
+			</td>
+		</tr>
+		<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">非生产物资清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  	  	<div style="width:1480px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="24" align="center">序号</td>
+											<td width="30" align="center">科目分配</td>
+											<td width="80" align="center">物料编码</td>
+											<td width="90" align="center">物料名称及规格</td>
+											<td width="60" align="center">申请数量</td>
+											<td width="60" align="center">单位</td>
+											<td width="125" align="center">工厂</td>
+											<td width="80" align="center">总账科目</td>
+											<td width="125" align="center">成本中心</td>
+											<td width="60" align="center">预估单价</td>
+											<td width="80" align="center">合计</td>
+											<td width="125" align="center">交货日期</td>
+											<td width="80" align="center">采购组</td>
+											<td width="80" align="center">物料组</td>
+											<td width="80" align="center">申请者</td>
+											<td width="180" align="center">备注</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+										<#if steps.vars["updateMFixedAssetsDetraction"]??>
+						   					<#assign text1>
+												${(steps.vars["updateMFixedAssetsDetraction"])!""}
+											</#assign>
+											<#assign json=text1?eval />
+											<#list json.accessoryData as item>
+												<tr>
+													<td width="24" align="center">${item.rowno}</td>
+													<td width="30" align="top">${item.courseAllot}</td>
+													<td width="80" align="top">${item.stockNumber}</td>
+													<td width="90" align="top">${item.stockNameAndStandard}</td>
+													<td width="60" align="top">${item.applyNumber}</td>
+													<td width="60" align="top">${item.monad}</td>
+													<td width="125" align="top">${item.factory}</td>
+													<td width="80" align="top">${item.reckoning}</td>
+													<td width="125" align="top">${item.costCenter}</td>
+													<td width="60" align="top">${item.unitPrice}</td>
+													<td width="80" align="top">${item.amountInTotal}</td>
+													<td width="125" align="top">${item.deliveryDate}</td>
+													<td width="80" align="top">${item.procurementSection}</td>
+													<td width="80" align="top">${item.itemGroup}</td>
+													<td width="80" align="top">${item.applyName}</td>
+													<td width="180" align="top">${item.remark}</td>
+												</tr>
+											</#list>
+			   							</#if>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+			<!--<td class="formtable_td_key">科目分配：</td>
+			<td class="formtable_td_value">
+			</td>
+			<td class="formtable_td_key">物料编码：</td>
+			<td class="formtable_td_value">${steps.vars["updateStockNumber"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">物料名称及规格：</td>
+			<td class="formtable_td_value">${steps.vars["updateStockNameAndStandard"]!""}</td>
+			<td class="formtable_td_key">申请数量：</td>
+			<td class="formtable_td_value">${steps.vars["updateApplyNumber"]!""}</td>
+			<td class="formtable_td_key">单位：</td>
+			<td class="formtable_td_value">${steps.vars["updateMonad"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">工厂：</td>
+			<td class="formtable_td_value">${steps.vars["updateFactory"]!""}</td>
+			<td class="formtable_td_key">成本中心：</td>
+			<td class="formtable_td_value">${steps.vars["updateCostCenter"]!""}</td>
+			<td class="formtable_td_key">预估单价：</td>
+			<td class="formtable_td_value">${steps.vars["updateUnitPrice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">合计：</td>
+			<td class="formtable_td_value">${steps.vars["updateAmountInTotal"]!""}</td>
+			<td class="formtable_td_key">交货日期：</td>
+			<td class="formtable_td_value">${steps.vars["updateDeliveryDate"]!""}</td>
+			<td class="formtable_td_key">采购组：</td>
+			<td class="formtable_td_value">${steps.vars["updateProcurementSection"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">非生产物资清单：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["updateParticipantList"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">物料组：</td>
+			<td class="formtable_td_value">${steps.vars["updateItemGroup"]!""}</td>
+			<td class="formtable_td_key">申请人签名:</td>
+			<td class="formtable_td_value">${steps.vars["updateApplyName"]!""}</td>
+			<td class="formtable_td_key">申请日期:</td>
+			<td class="formtable_td_value">${steps.vars["updateApplyDate"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${steps.vars["updateRemark"]!""}</textarea></td>
+		</tr>-->
+		<tr>
+			<td class="formtable_td_key">申请人签名:</td>
+			<td class="formtable_td_value">${steps.vars["updateApplyName"]!""}</td>
+			<td class="formtable_td_key">申请日期:</td>
+			<td class="formtable_td_value" colspan="3">${steps.vars["updateApplyDate"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+		<style type="text/css">
+						table.gridtable {
+							font-family: verdana,arial,sans-serif;
+							font-size:11px;
+							color:#333333;
+							border-width: 1px;
+							border-color: #666666;
+							border-collapse: collapse;
+						}
+						table.gridtable thead td {
+							padding: 4px;
+							border-top:solid 1px #666666;
+							border-right:solid 1px #666666;
+							border-left:solid 1px #666666;
+						}
+						table.gridtable tbody td {
+							padding: 4px;
+							border-width: 1px;
+							border-style: solid;
+							border-color: #666666;
+						}
+			</style>			
+		</#if>
+
+<!-- 部门经理审核 -->
+<#if steps.key == 'departManagerAuditTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	部门负责人审核
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门负责人：</td>
+				<td class="formtable_td_value" colspan="2">${(steps.vars["departManagerName"])!""}</td>
+			<td class="formtable_td_key">审核结果：</td>
+				<td class="formtable_td_value" colspan="2">
+					<#if steps.vars["departManagerAudi"] == '0' >同意</#if>
+					<#if steps.vars["departManagerAudi"] == '1' >不同意</#if>
+				</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["departManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["departManagerRemark"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+			<td class="formtable_td_key">审核时间：</td>
+			<td class="formtable_td_value"  colspan="5">${(steps.vars["departManagerAudiTime"])!""}</td>
+		</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if> 
+
+<!-- SAP录入员确认-->
+<#if steps.key == 'keyboarderVerifyTask'>
+		<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	SAP录入员确认
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">SAP录入员：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["keyboarderName"])!""}</td>
+		<td class="formtable_td_key">确认结果：</td>
+			<td class="formtable_td_value" colspan="2">
+				<#if steps.vars["keyboarderVerify"] == '0' >是</#if>
+				<#if steps.vars["keyboarderVerify"] == '1' >否</#if>
+			</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">处理意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["keyboarderAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["keyboarderRemark"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">确认时间：</td>
+		<td class="formtable_td_value"  colspan="5">${(steps.vars["keyboarderAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 后勤部主管审核-->
+<#if steps.key == 'logisticsDepartChargeTask'>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	后勤部主管审核
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">后勤部主管：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["logisticsDepartChargeName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+		<td class="formtable_td_value" colspan="2">
+			<#if steps.vars["logisticsDepartChargeAudi"] == '0' >同意</#if>
+			<#if steps.vars["logisticsDepartChargeAudi"] == '1' >不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["logisticsDepartChargeAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["logisticsDepartChargeRemark"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value"  colspan="5">${(steps.vars["logisticsDepartChargeAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 后勤部经理审核-->
+<#if steps.key == 'logisticsDepartManagerAuditTask'>
+	<#assign processId=steps.vars["proInstId"]/>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	后勤部经理审核
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">后勤部经理：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["logisticsDepartManagerName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+		<td class="formtable_td_value" colspan="2">
+			<#if steps.vars["logisticsDepartManagerAudi"] == '0' >同意</#if>
+			<#if steps.vars["logisticsDepartManagerAudi"] == '1' >不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["logisticsDepartManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 1200px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["logisticsDepartManagerRemark"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">凭证编号：</td>
+		<td class="formtable_td_value proofNo${rand}"></td>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value"  colspan="3">${(steps.vars["logisticsDepartManagerAudiTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+	<script type="text/javascript">
+		$(function(){
+			$.get("workspace/getNoProducProofNo.json",{
+				processId:'${processId}'
+			},function(data){
+				$(".proofNo${rand}").text(data);
+			});
+		});
+	</script>	
+</#if>
+
+<!--<#if steps.key == 'applyGetProofNoTask'>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	申请人查看凭证编号
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">凭证编号：</td>
+		<td class="formtable_td_value" colspan="5">
+		${(steps.vars["proofNo"])!""}
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">查看人：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["getProofNoName"])!""}</td>
+		<td class="formtable_td_key">查看时间：</td>
+		<td class="formtable_td_value"  colspan="2">${(steps.vars["getProofNoTime"])!""}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>-->
+
+<!-- 总经理-->
+<!--<#if steps.key == 'generalManagerTask'>
+	<tr>
+			<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	总经理审核
+			</td>
+		</tr>
+	<tr>
+		<td class="formtable_td_key">总经理：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["generalManagerName"])!""}</td>
+		<td class="formtable_td_key">审核结果：</td>
+		<td class="formtable_td_value" colspan="2">
+			<#if steps.vars["generalManagerAudi"] == '0' >同意</#if>
+			<#if steps.vars["generalManagerAudi"] == '1' >不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核时间：</td>
+		<td class="formtable_td_value"  colspan="5">${(steps.vars["generalManagerAudiTime"])!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审核意见：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["generalManagerAudiAdvice"])!""}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">备注：</td>
+		<td class="formtable_td_value" colspan="5">
+		<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["generalManagerRemark"])!""}</textarea>
+		</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+		<#list steps.attachments as attachs> 
+		<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<#if steps.key == 'buyerVerifyTask'>
+		<tr>
+			<td class="formtable_td_key">处理意见：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["buyerAudidvice"])!""}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">采购员:</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["buyerName"])!""}</td>
+			<td class="formtable_td_key">确认时间：</td>
+			<td class="formtable_td_value" colspan="2">${(steps.vars["buyerVerifyTime"])!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="5">
+			<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 660px; height: 50px;" readonly="readonly" disabled="disabled">${(steps.vars["buyerRemark"])!""}</textarea>
+			</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+			</td>
+		</tr>
+	</#if>
+</#if>-->
+
+</#list> 
+</table>
+</#if>
+
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">凭证类型：</td>
+					<td class="formtable_td_value" colspan="5">
+						 <select id="proofType${rand}" name="fp_proofType" style="width:150px;">
+						 	<option value='ZR01'>ZR01 总经办非生产物资采购申请</option>
+						  	<option value='NB'>NB 标准采购申请</option>
+						  	<option value='ZR02'>ZR02 工程部非生产物资采购申请</option>
+						  	<option value='ZR03'>ZR03 物殊采购申请</option>
+						  	<option value='ZR04'>ZR04 金立非生产物资采购申请(测试部)</option>
+						  	<option value='ZR05'>ZR05金立非生产物资采购申请(信息部)</option>
+						 </select>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">选择申请方式：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<input type="radio" name="fp_scrapWay" value="1" checked/>少量申请
+		  	  			<input type="radio" name="fp_scrapWay" value="2"/>批量申请
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">非生产物资清单</td>
+				</tr>
+				<tr class="scrapWay1">
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="AccessoriesJsonStr${rand}" name="fp_MFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:1600px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="1" align="center"><input type="checkbox" class="thchk" /></td>
+											<td width="24" align="center">序号</td>
+											<td width="45" align="center">科目分配</td>
+											<td width="80" align="center">物料编码</td>
+											<td width="150" align="center">物料名称及规格</td>
+											<td width="60" align="center">申请数量</td>
+											<td width="60" align="center">单位</td>
+											<td width="125" align="center">工厂</td>
+											<td width="80" align="center">总账科目</td>
+											<td width="125" align="center">成本中心</td>
+											<td width="60" align="center">预估单价</td>
+											<td width="80" align="center">合计</td>
+											<td width="125" align="center">交货日期</td>
+											<td width="50" align="center">采购组</td>
+											<td width="100" align="center">物料组</td>
+											<td width="80" align="center">申请者</td>
+											<td width="180" align="center">备注</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="accessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  	<tr class="scrapWay2">
+					<td class="formtable_td_value" colspan="6">
+						<input id="partAccount" type="hidden" name="fp_partList" /> 
+						<!--<input id="participantList_val" type="hidden" name="fp_participantList" />--> 
+						<input id="scrapWay2JsonStr${rand}" type="hidden" name="fp_scrapWay2JsonStr" />
+						<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-upload'">导入非生产物资清单</a>
+						<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+						<div id="participantList" style="font-size: 12px; ">
+							<table id="participantListTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</td>
+				 	</tr>
+				  	<tr>
+				  	<td class="formtable_td_key" >申请人签字:</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="curEmpLoginId${rand}" type="hidden" name="fp_curLoginNo" value="${appuser.account}"/>
+		  	  			<input id="curAccount${rand}" name="fp_applyEmpId" type="hidden"/>
+		  	  			<input id="applyName${rand}" name="fp_applyName" type="hidden" value="${appuser.name}"/>${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >申请日期:</td>
+		  	  		<td class="formtable_td_value" colspan="3">${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  			<input id="applyDate${rand}" class="easyui-validatebox" name="fp_applyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+		  	  			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+		  	  		</td>
+		  	  		<!--<td class="formtable_td_key">科目分配：</td>
+					<td class="formtable_td_value">
+						 <select id="courseAllot${rand}" name="fp_courseAllot" style="width:140px;">
+						  	<option value='0'>空</option>
+						  	<option value='1'>K</option>
+						 </select>
+					</td>
+		  	  		<td class="formtable_td_key">物料编码：</td>
+					<td class="formtable_td_value">
+						 <input id="stockNumber${rand}" class='easyui-validatebox' type="text" name="fp_stockNumber" onblur="getStockInfo();"/>
+					</td>-->
+		  	  	</tr>
+		  	  	<!--<tr>
+		  	  		<td class="formtable_td_key">物料名称及规格：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="text" class="easyui-validatebox" name="fp_stockNameAndStandard" id="stockNameAndStandard${rand}" data-options="required:true"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请数量：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="text" class="easyui-numberbox" name="fp_applyNumber" id="applyNumber${rand}" data-options="required:true" onChange="getAcountIntTotal();"/>
+		  	  		</td>
+						<td class="formtable_td_key">单位：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="monad-${rand}"  type="text"  class="easyui-validatebox textbox"  data-options="required:true"  name="fp_monad"/>
+			  	  		</td>
+			  	  </tr>
+			  	  <tr>
+			  	  		<td class="formtable_td_key">工厂：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="factory${rand}"  type="text"  class="easyui-combobox"  name="fp_factory"/>
+			  	  			<input id="companyId${rand}" class="easyui-validatebox" type="hidden" name="fp_companyId" />
+			  	  			<input id="comname${rand}" class="easyui-validatebox" type="hidden" name="fp_companyName" />
+			  	  		</td>
+			  	  		<td class="formtable_td_key">成本中心：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="costCenter${rand}"  type="text"  class="easyui-combotree"  data-options="required:true"  name="fp_costCenter"/>
+			  	  			<input id="costCenterName${rand}" type="hidden" name="fp_costCenterName"/>
+			  	  			<input id="costCenterId${rand}" type="hidden" name="fp_costCenterId"/>
+			  	  		</td>
+		  	  			<td class="formtable_td_key">预估单价：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="unitPrice${rand}" type="text" class="easyui-numberbox" data-options="required:true"  name="fp_unitPrice" onChange="getAcountIntTotal();"/>
+			  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="amountInTotal${rand}" type="text" class="easyui-numberbox"  disabled="disabled"  name="fp_amountInTotal"/>
+			  	  		</td>
+		  	  		<td class="formtable_td_key">交货日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="deliveryDate${rand}"  type="text"  class="easyui-my97" data-options="width:120,required:true,disabled:false,minDate:'%y-%M-{%d}',validType:'reqdate' " name="fp_deliveryDate"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">采购组：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="procurementSection${rand}"  type="text"  class="easyui-validatebox" name="fp_procurementSection"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料组：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="itemGroup${rand}"  type="text"  class="easyui-validatebox" name="fp_itemGroup"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >申请人签字:</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="curEmpLoginId${rand}" type="hidden" name="fp_curLoginNo" value="${appuser.account}"/>
+		  	  			<input id="curAccount${rand}" name="fp_applyEmpId" type="hidden"/>
+		  	  			<input id="applyName${rand}" name="fp_applyName" type="hidden" value="${appuser.name}"/>${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >申请日期:</td>
+		  	  		<td class="formtable_td_value">${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  			<input id="applyDate${rand}" class="easyui-validatebox" name="fp_applyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+		  	  		</td>
+		  	  	</tr>
+				<tr>
+					<td class="formtable_td_key" >备注:</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea
+							 name="fp_remark" class="easyui-validatebox"   
+							style="font-size: 12px; width: 660px; height: 50px;" data-options="required:true"></textarea>
+		  	  		</td>
+				</tr>-->
+		  	  </table>
+			</form>
+		</div>
+		
+	<div id="importWin-${rand}" class="easyui-dialog"
+		data-options="modal:true, title:'导入非生产物资清单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+		<div  style="padding:10px 10px;">
+		<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+					<td>
+						<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>
+	
+	<style type="text/css">
+				table.gridtable {
+					font-family: verdana,arial,sans-serif;
+					font-size:11px;
+					color:#333333;
+					border-width: 1px;
+					border-color: #666666;
+					border-collapse: collapse;
+				}
+				table.gridtable thead td {
+					padding: 4px;
+					border-top:solid 1px #666666;
+					border-right:solid 1px #666666;
+					border-left:solid 1px #666666;
+				}
+				table.gridtable tbody td {
+					padding: 4px;
+					border-width: 1px;
+					border-style: solid;
+					border-color: #666666;
+				}
+			</style>	
+	<script type="text/javascript">
+		$(function(){
+			$('#processName${rand}').val(
+					"[" + "${appuser.account}" + ","
+							+ "${appuser.name}" + "]非生产物资申请");//流程实例名称
+							
+			$.post("hrFlow//getHrUserInfo.json",{
+				account:$("#curEmpLoginId${rand}").val()
+			},function(data){
+				if(data.success){
+					var accounts='00000000'+data.obj.empId;
+					$("#curAccount${rand}").val(accounts.substring(accounts.length-8,accounts.length));
+				}
+			});
+							
+			$(".scrapWay2").hide();
+			$(":radio[name='fp_scrapWay']").click(function(){
+				$("#rows${rand}").val(0);
+				var scrapWay=$('input[name="fp_scrapWay"]:checked').val();
+				if(scrapWay=='1'){
+					$(".scrapWay1").show();
+					$("#scrapWay2JsonStr${rand}").val('');
+					$("#participantListTb${rand} tbody").html('');
+					$(".scrapWay2").hide();
+				}else{
+					$(".scrapWay2").show();
+					$("#accessoryInfoTb${rand} tbody").html('');
+					$("#AccessoriesJsonStr${rand}").val('');
+					$(".scrapWay1").hide();
+				}
+			});
+			
+			$('.thchk').each(function(){ 
+				$(this).click(function(){ 
+					if($(this).prop('checked')){
+						$('.tdchk').prop("checked", true);
+					} else {
+						$('.tdchk').prop("checked", false);
+					} 	
+				});
+			});
+		});
+		
+		function addAccessory() {
+			var rows = $('#accessoryInfoTb${rand} tbody tr'); 
+			var rowno = rows.length + 1;
+			var str = '<tr>';
+			str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+			str += '<td width="24" align="center">' + rowno + '</td>';
+			str += '<td width="45"><select id="courseAllot'+rowno+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showRequire('+rowno+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>';
+			str += '<td width="80"><input id="stock'+rowno+'${rand}" type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getStockInfo('+rowno+');"/></td>';
+			str += '<td width="150"><input id="stockNameAndStandard'+rowno+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');"/></td>';
+			str +='<td width="60"><input id="monad'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="125"><input id="factory'+rowno+'${rand}" type="text" class="easyui-combobox" data-options="required:true" style="width:120px;border:solid 1px #007ACC;"/></td>';
+			str +='<td width="80"><input id="reckoning'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="125"><input id="costCenter'+rowno+'${rand}" type="text" class="easyui-combobox" style="width:120px;border:solid 1px #007ACC;"/></td>';
+			str +='<td width="60"><input id="unitPrice'+rowno+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onchange="getAcountIntTotal('+rowno+');"/></td>';
+			str +='<td width="80"><input id="totalAmount'+rowno+'${rand}" type="text" class="easyui-numberbox" style="width:75px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="50"><input id="procurementSection'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="006" onblur="makeAccessory();"/></td>';
+			str +='<td width="100"><input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" onblur="makeAccessory();"/></td>';
+			str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str += '</tr>';
+	    	$('#accessoryInfoTb${rand} tbody').append(str);
+	    	$.parser.parse($('#accessoryInfoTb${rand}').find("tr").eq(-1));
+	    	$("#rows${rand}").val(rowno);
+	    	
+	    	$("#unitPrice"+rowno+"${rand}").numberbox({
+			    precision:3
+			});
+	    	
+	    	$("#totalAmount"+rowno+"${rand}").numberbox({
+			    precision:3
+			});
+	    	
+	    	var costCenter=$("#costCenter"+rowno+"${rand}");
+	    	var factory=$("#factory"+rowno+"${rand}");
+	    	//根据工厂获取成本中心
+			factory.combobox(
+					{
+						valueField : 'id',
+						textField : 'name',
+						url : 'hrFlow/auth/filterFactory.json',
+						required : true,
+						editable : false,
+						onSelect : function(record) {
+							var courseAllot=$("#courseAllot"+rowno+"${rand}").val();
+							var stock=$("#stock"+rowno+"${rand}").val();
+							var stockNameAndStandard=$("#stockNameAndStandard"+rowno+"${rand}");
+							var monad=$("#monad"+rowno+"${rand}");
+							var reckoning=$("#reckoning"+rowno+"${rand}");
+							var procurementSection=$("#procurementSection"+rowno+"${rand}");
+							var itemGroup=$("#itemGroup"+rowno+"${rand}");
+							if(record.id=='59513'){
+								if(stock==null || stock==''){
+									return;
+								}
+								//根据工厂、物料编号获取非生产物资数据
+								$.get("hrFlow/getStockInfo.json",{
+									functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+									exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+								},function(data){
+									var jsondata=eval("("+data+")");
+									if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+										$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+										$("#stock"+rowno+"${rand}").val('');
+									}
+									stockNameAndStandard.val(jsondata.MAKTX);
+									monad.val(jsondata.MEINS);
+									procurementSection.val(jsondata.EKGRP);
+									//if(courseAllot=='K'){
+										if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+											reckoning.val('6598000059');
+										}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+											reckoning.val('6598000022');
+										}else if(jsondata.MATKL=='7509'){
+											reckoning.val('6598000086');
+										}else if(jsondata.MATKL=='7510'){
+											reckoning.val('6598000087');
+										}else if(jsondata.MATKL=='7511'){
+											reckoning.val('6598000088');
+										}else{
+											reckoning.val('6598000033');
+										}
+									if(courseAllot=='K'){
+										itemGroup.parent().html('<input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory();"/>')
+									}else{
+										itemGroup.val(jsondata.MATKL);
+									}
+								});
+							}else{
+								if(stock==null || stock==''){
+									return;
+								}
+								//根据工厂、物料编号获取非生产物资数据
+								$.get("hrFlow/getStockInfo.json",{
+									functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+									exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+								},function(data){
+									var jsondata=eval("("+data+")");
+									if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+										$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+										$("#stock"+rowno+"${rand}").val('');
+									}
+									stockNameAndStandard.val(jsondata.MAKTX);
+									monad.val(jsondata.MEINS);
+									procurementSection.val(jsondata.EKGRP);
+									//if(courseAllot=='K'){
+										if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+											reckoning.val('6598000059');
+										}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+											reckoning.val('6598000022');
+										}else if(jsondata.MATKL=='7509'){
+											reckoning.val('6598000086');
+										}else if(jsondata.MATKL=='7510'){
+											reckoning.val('6598000087');
+										}else if(jsondata.MATKL=='7511'){
+											reckoning.val('6598000088');
+										}else{
+											reckoning.val('6598000033');
+										}
+									if(courseAllot=='K'){
+										itemGroup.parent().html('<input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory();"/>')
+									}else{
+										itemGroup.val(jsondata.MATKL);
+									}
+								});
+							}
+						},
+						onChange : function(n, o) {
+							makeAccessory();
+							if(n=='59513'){
+								$.get('hrFlow/getSapCostCenter.json', {
+									factory:'2000'
+								}, function(data) {
+									costCenter.combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}else{
+								$.get('hrFlow/getSapCostCenter.json', {
+									factory:'3000'
+								}, function(data) {
+									costCenter.combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}
+						}
+					});
+				costCenter.combobox({
+					valueField : 'id',
+					textField : 'text',
+					//required : false,
+					editable : false,
+					onSelect : function(record) {
+						makeAccessory();
+						//$("#costCenterName${rand}").val(record.text);
+						//$('#costCenterId${rand}').val(record.id);
+					}
+				});
+		}
+		
+		function showRequire(n){
+			var courseAllot = $.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("select").val());
+			var stock=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input");
+			var stockNameAndStandard=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input");
+			var monad=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input");
+			var roging=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			//var costCenter=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(9);
+			var procurementSection=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(13).find("input");
+			var itemGroup=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14);
+			//itemGroup.empty();
+			roging.val('');
+			if(courseAllot=='K'){
+				stock.validatebox({required:false});
+				stockNameAndStandard.validatebox({required:true});
+				monad.validatebox({required:true});
+				roging.validatebox({required:true});
+				procurementSection.validatebox({required:true});
+				//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : true,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+				//roging.val('6598000059');
+				if(stock.val()==null || stock.val()==''){
+					itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+n+');">'
+							+'<option value="" selected="selected"></option>'
+							+'<option value="7001">7001-消防类</option>'
+							+'<option value="7002">7002-安全系统类</option>'
+							+'<option value="7004">7004-电工维修工具类</option>'
+							+'<option value="7005">7005-办公设施类</option>'
+							+'<option value="7006">7006-办公用品类</option>'
+							+'<option value="7007">7007-生活辅助类</option>'
+							+'<option value="7008">7008-安装制作维修类</option>'
+							+'<option value="7010">7010-设备维修类</option>'
+							+'<option value="7011">7011-手机充值卡类</option>'
+							+'<option value="7012">7012-手机测试卡类</option>'
+							+'<option value="7014">7014-培训物资类</option>'
+						+' </select>');
+				}
+			}else{
+				//roging.val('');
+				stock.validatebox({required:true});
+				stockNameAndStandard.validatebox({required:false});
+				monad.validatebox({required:false});
+				roging.validatebox({required:false});
+				procurementSection.validatebox({required:false});
+				//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : false,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+				itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" onblur="makeAccessory();" readonly/>');
+			}
+			//$('#accessoryInfoTb${rand} tbody').append($("#accessoryInfoTb${rand}").find("tr").eq(n-1));
+	    	$.parser.parse($('#accessoryInfoTb${rand}').find("tr").eq(n-1));
+			makeAccessory();
+		}
+		
+		function getRecoking(n){
+			var itemGroup = $.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14).find("select").val());
+			var reckoning=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			if(itemGroup=='7001'||itemGroup=='7010'){
+				reckoning.val('6598000059');
+			}else if(itemGroup=='7011'||itemGroup=='7014'){
+				reckoning.val('6598000022');
+			}else if(itemGroup=='7509'){
+				reckoning.val('6598000086');
+			}else if(itemGroup=='7510'){
+				reckoning.val('6598000087');
+			}else if(itemGroup=='7511'){
+				reckoning.val('6598000088');
+			}else{
+				reckoning.val('6598000033');
+			}
+			makeAccessory();
+		}
+		
+		function removeAccessory() {
+	    	var rows = $('#accessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+            if (rows.length == 0) {
+        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+        		return false;
+            }
+
+            $.each(rows, function () {        
+                $(this).parent("td").parent("tr").remove();
+            });
+            
+            /*var rowno=1;
+            $('#accessoryInfoTb${rand} tbody tr').each(function () {
+            	$(this).find('td').eq(1).text(rowno++);
+            });*/
+            var MFixedAssetsDetraction = { accessoryData:[] };
+            var accessoryArr = [];
+            var rows=1;
+    		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+    			var courseAllot = $.trim($(this).find('td').eq(2).find("select").val());
+    			var stockNumber = $.trim($(this).find('td').eq(3).find("input").val());
+    			var stockNameAndStandard = $.trim($(this).find('td').eq(4).find("input").val());
+    			var applyNumber = $.trim($(this).find('td').eq(5).find("input").numberbox("getValue"));
+    			var monad = $.trim($(this).find('td').eq(6).find("input").val());
+    			var factory = $.trim($(this).find('td').eq(7).find("input").combotree("getText"));
+    			var reckoning = $.trim($(this).find('td').eq(8).find("input").val());
+    			var costCenter = $.trim($(this).find('td').eq(9).find("input").combotree("getText"));
+    			var unitPrice = $.trim($(this).find('td').eq(10).find("input").numberbox("getValue"));
+    			var amountInTotal = $.trim($(this).find('td').eq(11).find("input").numberbox("getValue"));
+    			var deliveryDate = $.trim($(this).find('td').eq(12).find("input").val());
+    			var procurementSection = $.trim($(this).find('td').eq(13).find("input").val());
+    			var itemGroup='';
+    			if(courseAllot=='K' && (stockNumber==null || stockNumber=='')){
+    				itemGroup = $.trim($(this).find('td').eq(14).find("select").val());
+    			}else{
+    				itemGroup = $.trim($(this).find('td').eq(14).find("input").val());
+    			}
+    			var applyName = $.trim($(this).find('td').eq(15).find("input").val());
+    			var remark = $.trim($(this).find('td').eq(16).find("input").val());
+    			accessoryArr.push({
+    				courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+    			});
+    			MFixedAssetsDetraction.accessoryData.push({
+    				rowno:rows,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+    			});
+    			rows++;
+    		});
+    		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+
+        	var rowno = '';
+        	$("#accessoryInfoTb${rand} tbody").empty();
+    		$.each(accessoryArr, function(idx, obj) {
+    			rowno=idx+1;
+    			var str = '<tr>';
+				str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+				str += '<td width="24" align="center">' + rowno + '</td>';
+				str += '<td width="45"><select id="courseAllot'+rowno+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showRequire('+rowno+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>';
+				str += '<td width="80"><input id="stock'+rowno+'${rand}" type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getStockInfo('+rowno+');" value="'+obj.stockNumber+'"/></td>';
+				str += '<td width="150"><input id="stockNameAndStandard'+rowno+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" value="'+obj.stockNameAndStandard+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');" value="'+obj.applyNumber+'"/></td>';
+				str +='<td width="60"><input id="monad'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" value="'+obj.monad+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="125"><input id="factory'+rowno+'${rand}" type="text" data-options="required:true" style="width:120px;border:solid 1px #007ACC;" value="'+obj.factory+'" /></td>';
+				str +='<td width="80"><input id="totalAllot'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.reckoning+'"/></td>';
+				str +='<td width="125"><input id="costCenter'+rowno+'${rand}" type="text" style="width:120px;border:solid 1px #007ACC;" value="'+obj.costCenter+'"/></td>';
+				str +='<td width="60"><input id="unitPrice'+rowno+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" precision="3" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');" value="'+obj.unitPrice+'"/></td>';
+				str +='<td width="80"><input id="totalAmount'+rowno+'${rand}" type="text" class="easyui-numberbox" precision="3" style="width:75px;border:solid 1px #007ACC;" value="'+obj.amountInTotal+'" readonly/></td>';
+				str +='<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.deliveryDate+'"/></td>';
+				str +='<td width="50"><input id="procurementSection'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="'+obj.procurementSection+'" onblur="makeAccessory()"/></td>';
+				if(obj.courseAllot=='K'&&(obj.stockNumber==null||obj.stockNumber=='')){
+					str +='<td width="100"><select id="itemGroup'+rowno+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+rowno+');">'
+					+'<option value="" selected="selected"></option>'
+					+'<option value="7001">7001-消防类</option>'
+					+'<option value="7002">7002-安全系统类</option>'
+					+'<option value="7004">7004-电工维修工具类</option>'
+					+'<option value="7005">7005-办公设施类</option>'
+					+'<option value="7006">7006-办公用品类</option>'
+					+'<option value="7007">7007-生活辅助类</option>'
+					+'<option value="7008">7008-安装制作维修类</option>'
+					+'<option value="7010">7010-设备维修类</option>'
+					+'<option value="7011">7011-手机充值卡类</option>'
+					+'<option value="7012">7012-手机测试卡类</option>'
+					+'<option value="7014">7014-培训物资类</option>'
+				+' </select></td>';
+				}else{
+					str +='<td width="100"><input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+obj.itemGroup+'" onblur="makeAccessory()"/></td>';
+				}
+				str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.applyName+'"/></td>';
+				str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.remark+'"/></td>';
+				str += '</tr>';
+			
+				$('#accessoryInfoTb${rand} tbody').append(str);
+				//$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+				$.parser.parse($('#accessoryInfoTb${rand}').find("tr").eq(rowno-1));
+				
+				/*$("#unitPrice"+rowno+"${rand}").numberbox({
+				    precision:3
+				});
+		    	
+		    	$("#totalAmount"+rowno+"${rand}").numberbox({
+				    precision:3
+				});*/
+		    	
+				if(obj.courseAllot=='K'){
+					$("#stock"+rowno+"${rand}").validatebox({required:false});
+					$("#stockNameAndStandard"+rowno+"${rand}").validatebox({required:true});
+					$("#monad"+rowno+"${rand}").validatebox({required:true});
+					$("#totalAllot"+rowno+"${rand}").validatebox({required:true});
+					if(obj.stockNumber==null||obj.stockNumber==''){
+						$("#itemGroup"+rowno+"${rand} option[value='"+obj.itemGroup+"']").attr("selected", true); 
+					}
+				}
+				$("#courseAllot"+rowno+"${rand} option[value='"+obj.courseAllot+"']").attr("selected", true);     		    	
+    		});
+    		var rows = $('#accessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#accessoryInfoTb${rand}').val('');
+			} else {				
+        		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+        			var row=$.trim($(this).find('td').eq(1).find("input").val());
+        			var courseAllot1=$.trim($(this).find('td').eq(2).find("input").val());
+        			var stock1 = $(this).find('td').eq(3).find("input");
+        			var stockNameAndStandard1 =$(this).find('td').eq(4).find("input");
+        			var monad1 = $(this).find('td').eq(6).find("input");
+        			var factory1 = $(this).find('td').eq(7).find("input");
+        			var reckoning=$(this).find('td').eq(8).find("input");
+        			var costCenter1 = $(this).find('td').eq(9).find("input");
+        			//var unitPrice = $(this).find('td').eq(10).find("input");
+        			//var amountInTotal = $(this).find('td').eq(11).find("input");
+        			var procurementSection1 =$(this).find('td').eq(13).find("input");
+        			var itemGroup1=null;
+        			/*unitPrice.numberbox({
+    				    precision:3
+    				});
+    		    	
+        			amountInTotal.numberbox({
+    				    precision:3
+    				});*/
+        			if(courseAllot1=='K'&&(stock1==null||stock1=='')){
+        				itemGroup1 =$(this).find('td').eq(14);
+        			}else{
+        				itemGroup1 =$(this).find('td').eq(14).find("input");
+        			}
+        			if(factory1.val()=='东莞市金铭电子有限公司'){
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'2000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}else{
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'3000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}
+    		    	//根据工厂获取成本中心
+    				factory1.combobox(
+    						{
+    							valueField : 'id',
+    							textField : 'name',
+    							url : 'hrFlow/auth/filterFactory.json',
+    							required : true,
+    							editable : false,
+    							onSelect : function(record) {
+    								if(record.id=='59513'){
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}else{
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}
+    							},
+    							onChange : function(n, o) {
+    								makeAccessory();
+    								if(n=='59513'){
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'2000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}else{
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'3000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}
+    							},onLoadSuccess:function(){
+    								factory1.combobox('setValue',factory1.val());
+    							}
+    						});
+    					costCenter1.combobox({
+    						valueField : 'id',
+    						textField : 'text',
+    						//required : true,
+    						editable : false,
+    						onSelect : function(record) {
+    							makeAccessory();
+    							//$("#costCenterName${rand}").val(record.text);
+    							//$('#costCenterId${rand}').val(record.id);
+    						},onLoadSuccess:function(){
+    							costCenter1.combobox('setValue',costCenter1.val());
+    						}
+    					});
+        		});
+			}
+    		//$('#accessoryInfoTb${rand} tbody').append($('#accessoryInfoTb${rand} tbody tr'));
+    		//$.parser.parse($('#accessoryInfoTb${rand}').parent());
+    		$("#rows${rand}").val($('#accessoryInfoTb${rand} tbody tr').length);
+    		//makeAccessory();
+		}
+		
+		function makeAccessory() {
+			var rows = $('#accessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#AccessoriesJsonStr${rand}').val('');
+			} else {				
+				var MFixedAssetsDetraction = { accessoryData:[] };
+				var rowno = 1;
+        		$('#accessoryInfoTb${rand} tbody tr').each(function () {
+        			var courseAllot = $.trim($(this).find('td').eq(2).find("select").val());
+        			var stockNumber = $.trim($(this).find('td').eq(3).find("input").val());
+        			var stockNameAndStandard = $.trim($(this).find('td').eq(4).find("input").val());
+        			var applyNumber = $.trim($(this).find('td').eq(5).find("input").numberbox("getValue"));
+        			var monad = $.trim($(this).find('td').eq(6).find("input").val());
+        			var factory = $.trim($(this).find('td').eq(7).find("input").combotree("getText"));
+        			var reckoning = $.trim($(this).find('td').eq(8).find("input").val());
+        			var costCenter = $.trim($(this).find('td').eq(9).find("input").combotree("getText"));
+        			var unitPrice = $.trim($(this).find('td').eq(10).find("input").val());
+        			var amountInTotal = $.trim($(this).find('td').eq(11).find("input").numberbox("getValue"));
+        			var deliveryDate = $.trim($(this).find('td').eq(12).find("input").val());
+        			var procurementSection = $.trim($(this).find('td').eq(13).find("input").val());
+        			var itemGroup='';
+        			if(courseAllot=='K' && (stockNumber==null || stockNumber=='')){
+        				itemGroup = $.trim($(this).find('td').eq(14).find("select").val());
+        			}else{
+        				itemGroup = $.trim($(this).find('td').eq(14).find("input").val());
+        			}
+        			var applyName = $.trim($(this).find('td').eq(15).find("input").val());
+        			var remark = $.trim($(this).find('td').eq(16).find("input").val());
+        		
+        			MFixedAssetsDetraction.accessoryData.push({
+        				rowno:rowno,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+        			})
+        			rowno++;
+        		});
+        		
+        		$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+			}
+		}
+		function getStockInfo(n){
+			var courseAllot = $.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("select").val());
+			var stock=$.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val());
+			var factory=$.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").combobox('getValue'));
+			var reckoning=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			var stockNameAndStandard=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input");
+			var monad=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input");
+			var procurementSection=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(13).find("input");
+			var itemGroup=null;
+			if(courseAllot=='K'){
+				itemGroup=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14);
+			}else{
+				itemGroup=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14).find("input");
+			}
+			if(factory==null || factory==''){
+				return;
+			}
+			if(stock==null || stock==''){
+				if(courseAllot=='K'){
+					itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+n+');">'
+							+'<option value="" selected="selected"></option>'
+							+'<option value="7001">7001-消防类</option>'
+							+'<option value="7002">7002-安全系统类</option>'
+							+'<option value="7004">7004-电工维修工具类</option>'
+							+'<option value="7005">7005-办公设施类</option>'
+							+'<option value="7006">7006-办公用品类</option>'
+							+'<option value="7007">7007-生活辅助类</option>'
+							+'<option value="7008">7008-安装制作维修类</option>'
+							+'<option value="7010">7010-设备维修类</option>'
+							+'<option value="7011">7011-手机充值卡类</option>'
+							+'<option value="7012">7012-手机测试卡类</option>'
+							+'<option value="7014">7014-培训物资类</option>'
+						+' </select>');
+					reckoning.val('');
+				}
+				return;
+			}
+			//根据工厂、物料编号获取非生产物资数据
+			if(factory=='59513'){
+				if(stock==null || stock==''){
+					return;
+				}
+				//根据工厂、物料编号获取非生产物资数据
+				$.ajax({
+			           type: "post",
+			           url: "hrFlow/getStockInfo.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+							exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'},
+			           success: function (data) {
+			            	var jsondata=eval("("+data+")");
+			            	if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+								$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+								$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							}
+			            	stockNameAndStandard.val(jsondata.MAKTX);
+							monad.val(jsondata.MEINS);
+							procurementSection.val(jsondata.EKGRP);
+							//if(courseAllot=='K'){
+								if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+									reckoning.val('6598000059');
+								}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+									reckoning.val('6598000022');
+								}else if(jsondata.MATKL=='7509'){
+									reckoning.val('6598000086');
+								}else if(jsondata.MATKL=='7510'){
+									reckoning.val('6598000087');
+								}else if(jsondata.MATKL=='7511'){
+									reckoning.val('6598000088');
+								}else{
+									reckoning.val('6598000033');
+								}
+							if(courseAllot=='K'){
+								itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory();"/>');
+							}else{
+								itemGroup.val(jsondata.MATKL);
+							}
+			            }
+			          });
+			}else{
+				if(stock==null || stock==''){
+					return;
+				}
+				//根据工厂、物料编号获取非生产物资数据
+				$.ajax({
+			           type: "post",
+			           url: "hrFlow/getStockInfo.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+							exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'},
+			           success: function (data) {
+			            	var jsondata=eval("("+data+")");
+			            	if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+								$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+								$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							}
+			            	stockNameAndStandard.val(jsondata.MAKTX);
+							monad.val(jsondata.MEINS);
+							procurementSection.val(jsondata.EKGRP);
+							//if(courseAllot=='K'){
+								if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+									reckoning.val('6598000059');
+								}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+									reckoning.val('6598000022');
+								}else if(jsondata.MATKL=='7509'){
+									reckoning.val('6598000086');
+								}else if(jsondata.MATKL=='7510'){
+									reckoning.val('6598000087');
+								}else if(jsondata.MATKL=='7511'){
+									reckoning.val('6598000088');
+								}else{
+									reckoning.val('6598000033');
+								}
+							if(courseAllot=='K'){
+								itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory();"/>');
+							}else{
+								itemGroup.val(jsondata.MATKL);
+							}
+			            }
+			          });
+			}
+			makeAccessory();
+		}
+		
+		//下载模板
+		$("#downloadTravelExcel${rand}").bind('click',function(){
+			submitForm("download.nonProductionMaterials.name");
+		});
+		function submitForm(value){
+			var form = $("<form>");
+			form.attr('style','display:none');
+			form.attr('method','post');
+			form.attr('action','${base}sysprocess/task/mDownload.html');
+			
+			var key = $("<input>");
+			key.attr('type','hidden');
+			key.attr('name','key');
+			key.attr('value',value);
+			
+			$("body").append(form);
+			form.append(key);
+			
+			form.submit();
+			form.remove();
+		}
+		
+		//导入非生产物资清单
+		 $("#openImportPersonBtn-${rand}").bind('click',function(){
+			 $("#importWin-${rand}").dialog('open');
+		 });
+		
+		 function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input_${rand}');
+			}
+		 
+		 $("#upfile-${rand}").bind('click',function(){
+			 $.messager.progress();
+			 $("#upform-${rand}").form('submit',{
+					url:'teamActivities/importNonProduc.json',
+					onSubmit:function(){
+						var validateResult = $(this).form('validate');
+				    	if (!validateResult) {
+				    		$.messager.progress('close');
+							return false;
+				    	} else {
+				    		return true;
+				    	}
+				    },
+					success:function(data){
+						if(typeof(data).toLowerCase()=='string'){
+							data=eval("("+data+")");
+						}
+						if(data.success){
+							if(data.obj == null || data.obj.length == 0){
+								$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+							}else{
+							
+								var MFixedAssetsDetraction = { accessoryData:[] };
+								if(data.obj.length>0){
+									$("#rows${rand}").val(data.obj.length);
+									$('#participantListTb${rand} tbody').html("");
+									$("#participantListTb${rand}").append("<tr align=center><td width=5%>序号</td><td width=5%>科目分配</td><td width=5%>物料编码</td><td width=10%>物料名称及规格</td><td width=5%>申请数量</td><td width=5%>单位</td><td width=5%>工厂</td><td width=5%>总账科目</td><td width=10%>成本中心</td><td width=5%>预估单价</td><td width=5%>合计</td><td width=10%>交货日期</td><td width=5%>采购组</td><td width=5%>物料组</td><td width=5%>申请者</td><td width=10%>备注</td></tr>");
+									for(var i = 0;i < data.obj.length;i++){
+									 var str='<tr align="center"><td>'+data.obj[i].number+'</td>'
+										+'<td width="45"><select id="courseAllot'+data.obj[i].number+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showImportRequire('+data.obj[i].number+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>'
+										+'<td width="80"><input id="stock'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getImportStockInfo('+data.obj[i].number+');" value="'+$.trim(data.obj[i].stockNumber)+'"/></td>'
+										+'<td width="150"><input id="stockNameAndStandard'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" value="'+data.obj[i].stockNameAndStandard+'" onblur="makeImportInf()"/></td>'
+										+'<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getImportAcountIntTotal('+data.obj[i].number+');" value="'+data.obj[i].applyNumber+'"/></td>'
+										+'<td width="60"><input id="monad'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" value="'+data.obj[i].monad+'" onblur="makeImportInf()"/></td>'
+										+'<td width="125"><input id="factory'+data.obj[i].number+'${rand}" type="text" data-options="required:true" style="width:120px;border:solid 1px #007ACC;" value="'+data.obj[i].factory+'" readonly/></td>'
+										+'<td width="80"><input id="totalAllot'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeImportInf()" value="'+data.obj[i].reckoning+'"/></td>'
+										+'<td width="125"><input id="costCenter'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" style="width:120px;border:solid 1px #007ACC;" value="'+data.obj[i].costCenter+'"/></td>'
+										+'<td width="60"><input id="unitPrice'+data.obj[i].number+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" precision="3" style="width:55px;border:solid 1px #007ACC;" onblur="getImportAcountIntTotal('+data.obj[i].number+');" value="'+data.obj[i].unitPrice+'"/></td>'
+										+'<td width="80"><input id="totalAmount'+data.obj[i].number+'${rand}" type="text" class="easyui-numberbox" precision="3" style="width:75px;border:solid 1px #007ACC;" value="'+data.obj[i].amountInTotal+'" readonly/></td>'
+										+'<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeImportInf()" value="'+$.trim(data.obj[i].deliveryDate)+'"/></td>'
+										+'<td width="50"><input id="procurementSection'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="'+data.obj[i].procurementSection+'" onblur="makeImportInf()"/></td>';
+										if(data.obj[i].courseAllot=='K'&&(data.obj[i].stockNumber==null||$.trim(data.obj[i].stockNumber)=='')){
+											str +='<td width="100"><select id="itemGroup'+data.obj[i].number+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getImportRecoking('+data.obj[i].number+');">'
+											+'<option value="" selected="selected"></option>'
+											+'<option value="7001">7001-消防类</option>'
+											+'<option value="7002">7002-安全系统类</option>'
+											+'<option value="7004">7004-电工维修工具类</option>'
+											+'<option value="7005">7005-办公设施类</option>'
+											+'<option value="7006">7006-办公用品类</option>'
+											+'<option value="7007">7007-生活辅助类</option>'
+											+'<option value="7008">7008-安装制作维修类</option>'
+											+'<option value="7010">7010-设备维修类</option>'
+											+'<option value="7011">7011-手机充值卡类</option>'
+											+'<option value="7012">7012-手机测试卡类</option>'
+											+'<option value="7014">7014-培训物资类</option>'
+										+' </select></td>';
+										}else{
+											str +='<td width="100"><input id="itemGroup'+data.obj[i].number+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+data.obj[i].itemGroup+'" onblur="makeImportInf()"/></td>';
+										}
+										str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeImportInf()" value="'+data.obj[i].applyName+'"/></td>';
+										str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeImportInf" value="'+data.obj[i].remark+'"/></td>';
+										str += '</tr>';
+										
+										$('#participantListTb${rand} tbody').append(str);
+										//$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+										$.parser.parse($('#participantListTb${rand}').find("tr").eq(data.obj[i].number));
+								    	
+										if(data.obj[i].courseAllot=='K'){
+											$("#stock"+data.obj[i].number+"${rand}").validatebox({required:false});
+											$("#stockNameAndStandard"+data.obj[i].number+"${rand}").validatebox({required:true});
+											$("#monad"+data.obj[i].number+"${rand}").validatebox({required:true});
+											$("#totalAllot"+data.obj[i].number+"${rand}").validatebox({required:true});
+											if(data.obj[i].stockNumber==null||$.trim(data.obj[i].stockNumber)==''){
+												$("#itemGroup"+data.obj[i].number+"${rand} option[value='"+data.obj[i].itemGroup+"']").attr("selected", true); 
+											}
+										}
+										$("#courseAllot"+data.obj[i].number+"${rand} option[value='"+data.obj[i].courseAllot+"']").attr("selected", true);  
+										
+									  MFixedAssetsDetraction.accessoryData.push({
+										  rowno:data.obj[i].number,courseAllot:data.obj[i].courseAllot,stockNumber:data.obj[i].stockNumber,stockNameAndStandard:data.obj[i].stockNameAndStandard,applyNumber:data.obj[i].applyNumber,monad:data.obj[i].monad,factory:data.obj[i].factory,reckoning:data.obj[i].reckoning,costCenter:$.trim(data.obj[i].costCenter),unitPrice:data.obj[i].unitPrice,amountInTotal:data.obj[i].amountInTotal,deliveryDate:data.obj[i].deliveryDate,procurementSection:data.obj[i].procurementSection,itemGroup:data.obj[i].itemGroup,applyName:data.obj[i].applyName,remark:data.obj[i].remark
+					        			});
+									  $.ajaxSetup({async : true});
+									}
+									
+						    		var rows = $('#participantListTb${rand} tbody tr');
+						    		var count=0;
+						    		$('#participantListTb${rand} tbody tr').each(function () {
+						        			if(count>0){
+						        				var row=$.trim($(this).find('td').eq(0).find("input").val());
+							        			var courseAllot1=$.trim($(this).find('td').eq(1).find("input").val());
+							        			var stock1 = $(this).find('td').eq(2).find("input");
+							        			var stockNameAndStandard1 =$(this).find('td').eq(3).find("input");
+							        			var monad1 = $(this).find('td').eq(4).find("input");
+							        			var factory1 = $(this).find('td').eq(6).find("input");
+							        			var reckoning=$(this).find('td').eq(7).find("input");
+							        			var costCenter1 = $(this).find('td').eq(8).find("input");
+							        			//var unitPrice = $(this).find('td').eq(10).find("input");
+							        			//var amountInTotal = $(this).find('td').eq(11).find("input");
+							        			var procurementSection1 =$(this).find('td').eq(12).find("input");
+							        			var itemGroup1=null;
+							        			
+							        			if(courseAllot1=='K'&&(stock1==null||stock1=='')){
+							        				itemGroup1 =$(this).find('td').eq(13);
+							        			}else{
+							        				itemGroup1 =$(this).find('td').eq(13).find("input");
+							        			}
+							        			
+							        			costCenter1.combobox({
+						    						valueField : 'id',
+						    						textField : 'text',
+						    						//required : true,
+						    						editable : false,
+						    						onSelect : function(record) {
+						    							makeImportInf();
+						    							//$("#costCenterName${rand}").val(record.text);
+						    							//$('#costCenterId${rand}').val(record.id);
+						    						},onLoadSuccess:function(){
+						    							costCenter1.combobox('setValue',costCenter1.val());
+						    						}
+						    					});
+							        			
+							    					$.get('hrFlow/getSapCostCenter.json', {
+							    						factory:factory1.val()
+							    					}, function(data) {
+							    						costCenter1.combobox("clear")
+							    								.combobox('loadData', data);
+							    					}, 'json');
+						        			}
+						    				
+						    					count++;
+						        		});
+							  }
+								$('#scrapWay2JsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+								//document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+								$.messager.alert("提示信息",data.msg);
+							}
+						}else{ 
+							$.messager.alert("提示信息",data.msg);
+						}
+						$("#importWin-${rand}").dialog('close');
+						$.messager.progress('close');
+					}
+				});
+		 });
+		 
+		 function makeImportInf() {
+				
+			 	var rows = $('#participantListTb${rand} tbody tr');
+				if(rows.length == 0) {		
+					$('#scrapWay2JsonStr${rand}').val('');
+				} else {				
+					var MFixedAssetsDetraction = { accessoryData:[] };
+					var rowno = 0;
+					$('#participantListTb${rand} tbody tr').each(function () {
+						if(rowno>0){
+							var courseAllot = $.trim($(this).find('td').eq(1).find("select").val());
+		        			var stockNumber = $.trim($(this).find('td').eq(2).find("input").val());
+		        			var stockNameAndStandard = $.trim($(this).find('td').eq(3).find("input").val());
+		        			var applyNumber = $.trim($(this).find('td').eq(4).find("input").numberbox("getValue"));
+		        			var monad = $.trim($(this).find('td').eq(5).find("input").val());
+		        			var factory = $.trim($(this).find('td').eq(6).find("input").val());
+		        			var reckoning = $.trim($(this).find('td').eq(7).find("input").val());
+		        			var costCenter = $.trim($(this).find('td').eq(8).find("input").combotree("getText"));
+		        			var unitPrice = $.trim($(this).find('td').eq(9).find("input").val());
+		        			var amountInTotal = $.trim($(this).find('td').eq(10).find("input").numberbox("getValue"));
+		        			var deliveryDate = $.trim($(this).find('td').eq(11).find("input").val());
+		        			var procurementSection = $.trim($(this).find('td').eq(12).find("input").val());
+		        			var itemGroup='';
+		        			if(courseAllot=='K' && (stockNumber==null || stockNumber=='')){
+		        				itemGroup = $.trim($(this).find('td').eq(13).find("select").val());
+		        			}else{
+		        				itemGroup = $.trim($(this).find('td').eq(13).find("input").val());
+		        			}
+		        			var applyName = $.trim($(this).find('td').eq(14).find("input").val());
+		        			var remark = $.trim($(this).find('td').eq(15).find("input").val());
+	        			
+	        		    	MFixedAssetsDetraction.accessoryData.push({
+		        				rowno:rowno,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+		        			})
+	        		    }
+	        			
+	        			rowno++;
+	        		});
+	        		
+	        		$('#scrapWay2JsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+				}
+			}
+		
+		 function showImportRequire(n){
+				var courseAllot = $.trim($("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(1).find("select").val());
+				var stock=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(2).find("input");
+				var stockNameAndStandard=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(3).find("input");
+				var monad=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(5).find("input");
+				var roging=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(7).find("input");
+				//var costCenter=$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(9);
+				var procurementSection=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(12).find("input");
+				var itemGroup=$("#participantListTb${rand} tbody").find("tr").eq(n).find("td").eq(13);
+				//itemGroup.empty();
+				roging.val('');
+				if(courseAllot=='K'){
+					stock.validatebox({required:false});
+					stockNameAndStandard.validatebox({required:true});
+					monad.validatebox({required:true});
+					roging.validatebox({required:true});
+					procurementSection.validatebox({required:true});
+					//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : true,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+					//roging.val('6598000059');
+					if(stock.val()==null || stock.val()==''){
+						itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getImportRecoking('+n+');">'
+								+'<option value="" selected="selected"></option>'
+								+'<option value="7001">7001-消防类</option>'
+								+'<option value="7002">7002-安全系统类</option>'
+								+'<option value="7004">7004-电工维修工具类</option>'
+								+'<option value="7005">7005-办公设施类</option>'
+								+'<option value="7006">7006-办公用品类</option>'
+								+'<option value="7007">7007-生活辅助类</option>'
+								+'<option value="7008">7008-安装制作维修类</option>'
+								+'<option value="7010">7010-设备维修类</option>'
+								+'<option value="7011">7011-手机充值卡类</option>'
+								+'<option value="7012">7012-手机测试卡类</option>'
+								+'<option value="7014">7014-培训物资类</option>'
+							+' </select>');
+					}
+				}else{
+					//roging.val('');
+					stock.validatebox({required:true});
+					stockNameAndStandard.validatebox({required:false});
+					monad.validatebox({required:false});
+					roging.validatebox({required:false});
+					procurementSection.validatebox({required:false});
+					//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : false,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+					itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" onblur="makeImportInf();" readonly/>');
+				}
+				//$('#accessoryInfoTb${rand} tbody').append($("#accessoryInfoTb${rand}").find("tr").eq(n-1));
+		    	$.parser.parse($('#participantListTb${rand}').find("tr").eq(n));
+		    	makeImportInf();
+			}
+		 
+		 function getImportStockInfo(n){
+			    var courseAllot = $.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(1).find("select").val());
+				var stock=$.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(2).find("input").val());
+				var factory=$.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(6).find("input").val());
+				var reckoning=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(7).find("input");
+				var stockNameAndStandard=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(3).find("input");
+				var monad=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(5).find("input");
+				var procurementSection=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(12).find("input");
+				var itemGroup=null;
+				if(courseAllot=='K'){
+					itemGroup=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(13);
+				}else{
+					itemGroup=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(13).find("input");
+				}
+				if(factory==null || factory==''){
+					return;
+				}
+				if(stock==null || stock==''){
+					if(courseAllot=='K'){
+						itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getImportRecoking('+n+');">'
+								+'<option value="" selected="selected"></option>'
+								+'<option value="7001">7001-消防类</option>'
+								+'<option value="7002">7002-安全系统类</option>'
+								+'<option value="7004">7004-电工维修工具类</option>'
+								+'<option value="7005">7005-办公设施类</option>'
+								+'<option value="7006">7006-办公用品类</option>'
+								+'<option value="7007">7007-生活辅助类</option>'
+								+'<option value="7008">7008-安装制作维修类</option>'
+								+'<option value="7010">7010-设备维修类</option>'
+								+'<option value="7011">7011-手机充值卡类</option>'
+								+'<option value="7012">7012-手机测试卡类</option>'
+								+'<option value="7014">7014-培训物资类</option>'
+							+' </select>');
+						reckoning.val('');
+					}
+					return;
+				}
+				
+					//根据工厂、物料编号获取非生产物资数据
+					$.get("hrFlow/getStockInfo.json",
+				           {functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_'+factory,exportTableName:'E_MATNR',
+								exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'},
+				           function (data) {
+				            	var jsondata=eval("("+data+")");
+				            	if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+									$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+									$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(2).find("input").val('');
+								}
+				            	stockNameAndStandard.val(jsondata.MAKTX);
+								monad.val(jsondata.MEINS);
+								procurementSection.val(jsondata.EKGRP);
+								//if(courseAllot=='K'){
+									if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+										reckoning.val('6598000059');
+									}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+										reckoning.val('6598000022');
+									}else if(jsondata.MATKL=='7509'){
+										reckoning.val('6598000086');
+									}else if(jsondata.MATKL=='7510'){
+										reckoning.val('6598000087');
+									}else if(jsondata.MATKL=='7511'){
+										reckoning.val('6598000088');
+									}else{
+										reckoning.val('6598000033');
+									}
+								if(courseAllot=='K'){
+									itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeImportInf();"/>');
+								}else{
+									itemGroup.val(jsondata.MATKL);
+								}
+								makeImportInf();
+				          });
+				
+			}
+					
+		 function getImportRecoking(n){
+				var itemGroup = $.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(13).find("select").val());
+				var reckoning=$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(7).find("input");
+				if(itemGroup=='7001'||itemGroup=='7010'){
+					reckoning.val('6598000059');
+				}else if(itemGroup=='7011'||itemGroup=='7014'){
+					reckoning.val('6598000022');
+				}else if(itemGroup=='7509'){
+					reckoning.val('6598000086');
+				}else if(itemGroup=='7510'){
+					reckoning.val('6598000087');
+				}else if(itemGroup=='7511'){
+					reckoning.val('6598000088');
+				}else{
+					reckoning.val('6598000033');
+				}
+				makeImportInf();
+			}
+		//计算物资合计价钱
+		function getAcountIntTotal(n){
+			var count=$.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val());
+			var price=$.trim($("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(10).find("input").val());
+			if(isNaN(count)||count==undefined||count==''){
+				return;
+			}else{
+				count=parseFloat(count);
+			}
+			if(isNaN(price)||price==undefined||price==''){
+				return;
+			}else{
+				price=parseFloat(price);
+			}
+			$("#accessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(11).find("input").val(price*count);
+			makeAccessory();
+		}
+		
+		function getImportAcountIntTotal(n){
+			var count=$.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(4).find("input").val());
+			var price=$.trim($("#participantListTb${rand}").find("tr").eq(n).find("td").eq(9).find("input").val());
+			if(isNaN(count)||count==undefined||count==''){
+				return;
+			}else{
+				count=parseFloat(count);
+			}
+			if(isNaN(price)||price==undefined||price==''){
+				return;
+			}else{
+				price=parseFloat(price);
+			}
+			$("#participantListTb${rand}").find("tr").eq(n).find("td").eq(10).find("input").val(price*count);
+			makeImportInf();
+		}
+	</script>
+	</#if>
+</#if>
+
+<!-- 判断是否结束流程 -->
+<#if currentStep?exists && currentStep == 'confirmProcessEndTask'> 
+		<div id="confirmProcessEndTask">
+			<form id="confirmProcessEndTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="confirmProcessEndTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				
+			   	<tr>
+			   		<td class="formtable_td_key" rowspan="3">发起人确认</td>
+			  	  	<td class="formtable_td_key">是否结束该流程：</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+								<input id="endProcess-${rand}" type="radio" name="fp_confirmProcessEndAudi"  value="1" mobile="是否结束该流程_是"/>是
+								<input id="continueProcess-${rand}" type="radio" name="fp_confirmProcessEndAudi" checked="checked" value="0" mobile="是否结束该流程_否"/>否
+					</td>
+		  	  	</tr>
+					<tr>
+						<td class="formtable_td_key">确认意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 800px; height: 100px" id="applyUserAudiAdvice${rand}" name="fp_applyUserAudiAdvice" class="easyui-validatebox" mobile="确认意见"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认人</td>
+						<td class="formtable_td_value" >
+							<input type="hidden" name="fp_applyUserAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_applyUserName" value="${appuser.name}" mobile="确认人"/>
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_applyUserAudiTime" timeEditor="1"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="确认时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#applyUserAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#applyUserAudiAdvice${rand}").validatebox({required:false});//是否结束流程意见为非必填项
+			}
+			var failure=function(){
+				$("#applyUserAudiAdvice${rand}").val('');
+				$("#applyUserAudiAdvice${rand}").validatebox({required:true});//是否结束流程意见为必填项
+			};
+			$("#continueProcess-${rand}").bind("click",success);
+			$("#endProcess-${rand}").bind("click",failure);
+		</script>
+</#if>
+<!-- 修改设备维修申请 -->
+<#if currentStep?exists>
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+	<#if currentStep == 'updateNonProdutionMaterialsApply'>
+	<#if steps.vars["scrapWay"]=='1'>
+		<#assign text=steps.vars["MFixedAssetsDetraction"]!""/>
+	</#if>
+	<#if steps.vars["scrapWay"]=='2'>
+		<#assign text=steps.vars["scrapWay2JsonStr"]!""/>
+	</#if>
+	<#assign proofType=steps.vars["proofType"]!""/>
+		<div id="updateNonProdutionMaterialsApply">
+			<form id="updateNonProdutionMaterialsApplyForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="updateNonProdutionMaterialsApplyFormTable" class="formtable" cellspacing="1" cellpadding="0">
+			  	 	<tr>
+			  	  		<td class="formtable_td_key" align="center" colspan="6" style="font-weight:bold;font-size:14px;">
+			  	  			修改非生产物资申请表
+			  	  		</td>
+			  	  	</tr>
+		  	  		<tr>
+			  	  		<td class="formtable_td_key">凭证类型：</td>
+						<td class="formtable_td_value" colspan="5">
+							 <select id="updateProofType${rand}" name="fp_updateProofType" style="width:150px;">
+							  	<option value='NB'>NB 标准采购申请</option>
+							  	<option value='ZR01'>ZR01 总经办非生产物资采购申请</option>
+							  	<option value='ZR02'>ZR02 工程部非生产物资采购申请</option>
+							  	<option value='ZR03'>ZR03 物殊采购申请</option>
+							  	<option value='ZR04'>ZR04 金立非生产物资采购申请(测试部)</option>
+							  	<option value='ZR05'>ZR05金立非生产物资采购申请(信息部)</option>
+							 </select>
+						</td>
+		  	  		</tr>
+		  	  		<tr>
+				  	<td colspan="6" class="formtable_td_key" align="center">非生产物资清单</td>
+				</tr>
+				<tr>
+				  	<td class="formtable_td_value" colspan="6">
+				  		<div>
+				  	  		<a class="easyui-linkbutton l-btn" onclick="addAccessory()">
+	    						<span class="l-btn-text icon-add l-btn-icon-left">新增</span>
+	    					</a>
+	    					<a class="easyui-linkbutton l-btn" onclick="removeAccessory()">
+	    						<span class="l-btn-text icon-remove l-btn-icon-left">删除</span>
+	    						<input type="hidden" id="updateAccessoriesJsonStr${rand}" name="fp_updateMFixedAssetsDetraction"/>
+	    						<input type="hidden" id="rows${rand}" name="fp_rows" value="0"/>
+	    						<input type="hidden" id="scrapWay${rand}" name="fp_scrapWay" value='${(steps.vars["scrapWay"])!""}'/>
+	    					</a>
+				  	  	</div>
+				  	  	<div style="width:1600px;margin-top:2px;border:solid 1px #95B8E7;">
+					  	  	<div style="border-top:solid 1px #666666;">
+								<table class="gridtable">
+									<thead>
+										<tr>
+											<td width="1" align="center"><input type="checkbox" class="thchk" /></td>
+											<td width="24" align="center">序号</td>
+											<td width="45" align="center">科目分配</td>
+											<td width="80" align="center">物料编码</td>
+											<td width="150" align="center">物料名称及规格</td>
+											<td width="60" align="center">申请数量</td>
+											<td width="60" align="center">单位</td>
+											<td width="125" align="center">工厂</td>
+											<td width="80" align="center">总账科目</td>
+											<td width="125" align="center">成本中心</td>
+											<td width="60" align="center">预估单价</td>
+											<td width="80" align="center">合计</td>
+											<td width="125" align="center">交货日期</td>
+											<td width="50" align="center">采购组</td>
+											<td width="100" align="center">物料组</td>
+											<td width="80" align="center">申请者</td>
+											<td width="180" align="center">备注</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+							<div style="height:auto;overflow-y:auto;border-top:solid 1px #666666;">
+								<table id="updateAccessoryInfoTb${rand}" class="gridtable" style="word-break:break-all; word-wrap:break-all;">
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+				  	  </td>
+				  	</tr>
+				  	<tr>
+				  		<td class="formtable_td_key" >申请人签字:</td>
+			  	  		<td class="formtable_td_value">
+			  	  			<input id="UpdateApplyName${rand}" name="fp_updateApplyName" type="hidden" value="${appuser.name}"/>${appuser.name}
+			  	  		</td>
+			  	  		<td class="formtable_td_key" >申请日期:</td>
+			  	  		<td class="formtable_td_value" colspan="3">${.now?string('yyyy-MM-dd HH:mm:ss')}
+			  	  			<input id="updateApplyDate${rand}" class="easyui-validatebox" name="fp_updateApplyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+			  	  		</td>
+				  	</tr>
+		  	  		<!--<td class="formtable_td_key">科目分配：</td>
+					<td class="formtable_td_value">
+						  <select id="updateCourseAllot${rand}" name="fp_updateCourseAllot">
+						  	<option value='0'>空</option>
+						  	<option value='1'>K</option>
+						  </select>
+					</td>
+		  	  		<td class="formtable_td_key">物料编码：</td>
+					<td class="formtable_td_value">
+						  <input id="updateStockNumber${rand}" class='easyui-validatebox' type="text" name="fp_updateStockNumber" onblur="getCostAndStock();"/>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料名称及规格：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="text" class="easyui-validatebox" name="fp_updateStockNameAndStandard" id="updateStockNameAndStandard${rand}" data-options="required:true"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请数量：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="text" class="easyui-numberbox" name="fp_updateApplyNumber" id="updateApplyNumber${rand}" data-options="required:true" onChange="getAcountIntTotal();"/>
+		  	  		</td>
+						<td class="formtable_td_key">单位：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="updateMonad-${rand}"  type="text"  class="easyui-validatebox textbox"  data-options="required:true"  name="fp_updateMonad"/>
+			  	  		</td>
+			  	  </tr>
+			  	  <tr>
+			  	  		<td class="formtable_td_key">工厂：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="updateFactory${rand}"  type="text"  class="easyui-validatebox"  data-options="required:true"  name="fp_updateFactory"/>
+			  	  			<input id="companyId${rand}" class="easyui-validatebox" type="hidden" name="fp_companyId" />
+			  	  			<input id="comname${rand}" class="easyui-validatebox" type="hidden" name="fp_companyName" />
+			  	  		</td>
+			  	  		<td class="formtable_td_key">成本中心：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="updateCostCenter${rand}"  type="text"  class="easyui-validatebox"  data-options="required:true"  name="fp_updateCostCenter"/>
+			  	  			<input id="costCenterName${rand}" type="hidden" name="fp_costCenterName"/>
+			  	  			<input id="costCenterId${rand}" type="hidden" name="fp_costCenterId"/>
+			  	  		</td>
+		  	  			<td class="formtable_td_key">预估单价：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="updateUnitPrice${rand}" type="text" class="easyui-numberbox" data-options="required:true"  name="fp_updateUnitPrice" onChange="getAcountIntTotal();"/>
+			  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计：</td>
+			  	  		<td class="formtable_td_value"  >
+			  	  			<input id="updateAmountInTotal${rand}" type="text" class="easyui-numberbox"  disabled="disabled"  name="fp_updateAmountInTotal"/>
+			  	  		</td>
+		  	  		<td class="formtable_td_key">交货日期：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="updateDeliveryDate${rand}"  type="text"  class="easyui-my97" data-options="width:120,required:true,disabled:false,minDate:'%y-%M-{%d}',validType:'reqdate' " name="fp_updateDeliveryDate"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key">采购组：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="updateProcurementSection${rand}"  type="text"  class="easyui-validatebox" name="fp_updateProcurementSection"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key">非生产物资申清单</td>
+					<td class="formtable_td_value" colspan="5">
+						<input id="partAccount" type="hidden" name="fp_partList" /> 
+						<input id="participantList_val" type="hidden" name="fp_updateparticipantList" /> 
+						<input id="AccessoriesJsonStr${rand}" type="hidden" name="fp_updateAccessoriesJsonStr" />
+						<a id="openImportPersonBtn-${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-upload'">导入非生产物资申清单</a>
+						<a id="downloadTravelExcel${rand}" href="javascript:void(0);" class="easyui-linkbutton" 
+								data-options="iconCls:'icon-down_load'">下载EXCEL电子模板</a>
+						<div id="participantList" style="font-size: 12px; "></div>
+					</td>
+				</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">物料组：</td>
+		  	  		<td class="formtable_td_value" >
+		  	  			<input id="updateItemGroup${rand}"  type="text"  class="easyui-validatebox" name="fp_updateItemGroup"/>
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >申请人签字:</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input id="UpdateApplyName${rand}" name="fp_updateApplyName" type="hidden" value="${appuser.name}"/>${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key" >申请日期:</td>
+		  	  		<td class="formtable_td_value">${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  			<input id="updateApplyDate${rand}" class="easyui-validatebox" name="fp_updateApplyDate" type="hidden" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+		  	  		</td>
+		  	  	</tr>
+				<tr>
+					<td class="formtable_td_key" >备注:</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea
+							 name="fp_updateRemark" class="easyui-validatebox"   
+							style="font-size: 12px; width: 660px; height: 50px;" data-options="required:true"></textarea>
+		  	  		</td>
+				</tr>-->
+		  	  </table>
+			</form>
+		</div>
+		
+		<!--<div id="importWin-${rand}" class="easyui-dialog"
+		data-options="modal:true, title:'导入非生效物资清单',closed:true,cache:false,iconCls:'icon-process',width:600,height:100,onClose:clearInputFile${rand}">
+		<div  style="padding:10px 10px;">
+		<form id="upform-${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td width="120" align="center">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/></td>
+					<td>
+						<a id="upfile-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+		</div>
+	</div>-->
+	<style type="text/css">
+				table.gridtable {
+					font-family: verdana,arial,sans-serif;
+					font-size:11px;
+					color:#333333;
+					border-width: 1px;
+					border-color: #666666;
+					border-collapse: collapse;
+				}
+				table.gridtable thead td {
+					padding: 4px;
+					border-top:solid 1px #666666;
+					border-right:solid 1px #666666;
+					border-left:solid 1px #666666;
+				}
+				table.gridtable tbody td {
+					padding: 4px;
+					border-width: 1px;
+					border-style: solid;
+					border-color: #666666;
+				}
+			</style>	
+	<script type="text/javascript">
+		$(function(){
+			/*$("input[name='fp_updateEquipmentType']").bind("click",function(){
+		    	document.getElementById("moduleName${rand}").value = "";
+		    	var str="";
+		    	  $("input[name='fp_updateEquipmentType']").each(function(){ 
+		                if($(this).prop("checked")){
+		                    str += $(this).val()+",";
+		                    document.getElementById("moduleName${rand}").value = str;
+		                }
+		            })
+		    });*/
+		    $("#updateProofType${rand} option[value='${proofType}']").attr("selected", true); 
+		    var json=eval("("+'${text}'+")"); 
+			for(var i=0;i<json.accessoryData.length;i++){
+				var str = '<tr>';
+				str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+				str += '<td width="24" align="center">' + json.accessoryData[i].rowno + '</td>';
+				str += '<td width="45"><select id="courseAllot'+json.accessoryData[i].rowno+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showRequire('+json.accessoryData[i].rowno+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>';
+				str += '<td width="80"><input id="stock'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="getStockInfo('+json.accessoryData[i].rowno+');" value="'+json.accessoryData[i].stockNumber+'"/></td>';
+				str += '<td width="150"><input id="stockNameAndStandard'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].stockNameAndStandard+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+json.accessoryData[i].rowno+');" value="'+json.accessoryData[i].applyNumber+'"/></td>';
+				str +='<td width="60"><input id="monad'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].monad+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="125"><input id="factory'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-combobox" data-options="required:true" style="width:120px;border:solid 1px #007ACC;"/></td>';
+				str +='<td width="80"><input type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+json.accessoryData[i].reckoning+'"/></td>';
+				str +='<td width="125"><input id="costCenter'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-combobox" style="width:120px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].costCenter+'"/></td>';
+				str +='<td width="60"><input id="unitPrice'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+json.accessoryData[i].rowno+');" value="'+json.accessoryData[i].unitPrice+'"/></td>';
+				str +='<td width="80"><input id="totalAmount'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-numberbox" style="width:75px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].amountInTotal+'" readonly/></td>';
+				str +='<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+json.accessoryData[i].deliveryDate+'"/></td>';
+				str +='<td width="50"><input id="procurementSection'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].procurementSection+'" onblur="makeAccessory()"/></td>';
+				if(json.accessoryData[i].courseAllot=='K'&&(json.accessoryData[i].stockNumber==null||json.accessoryData[i].stockNumber=='')){
+					str +='<td width="100"><select id="itemGroup'+json.accessoryData[i].rowno+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+json.accessoryData[i].rowno+');">'
+					+'<option value="7001" selected="selected">7001-消防类</option>'
+					+'<option value="7002">7002-安全系统类</option>'
+					+'<option value="7004">7004-电工维修工具类</option>'
+					+'<option value="7005">7005-办公设施类</option>'
+					+'<option value="7006">7006-办公用品类</option>'
+					+'<option value="7007">7007-生活辅助类</option>'
+					+'<option value="7008">7008-安装制作维修类</option>'
+					+'<option value="7010">7010-设备维修类</option>'
+					+'<option value="7011">7011-手机充值卡类</option>'
+					+'<option value="7012">7012-手机测试卡类</option>'
+					+'<option value="7014">7014-培训物资类</option>'
+				+' </select></td>';
+				}else{
+					str +='<td width="100"><input id="itemGroup'+json.accessoryData[i].rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+json.accessoryData[i].itemGroup+'" onblur="makeAccessory()"/></td>';
+				}
+				str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+json.accessoryData[i].applyName+'"/></td>';
+				str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+json.accessoryData[i].remark+'"/></td>';
+				str += '</tr>';
+				$("#rows${rand}").val(i+1);
+			
+				$('#updateAccessoryInfoTb${rand} tbody').append(str);
+				//$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+				$.parser.parse($('#updateAccessoryInfoTb${rand}').find("tr").eq(json.accessoryData[i].rowno));
+				
+				/*$("#unitPrice"+rowno+"${rand}").numberbox({
+				    precision:3
+				});
+		    	
+		    	$("#totalAmount"+rowno+"${rand}").numberbox({
+				    precision:3
+				});*/
+				if(json.accessoryData[i].courseAllot=='K'){
+					$("#stock"+json.accessoryData[i].rowno+"${rand}").validatebox({required:false});
+					if(json.accessoryData[i].stockNumber==null||json.accessoryData[i].stockNumber==''){
+						$("#itemGroup"+json.accessoryData[i].rowno+"${rand} option[value='"+json.accessoryData[i].itemGroup+"']").attr("selected", true); 
+					}
+				}
+				if(json.accessoryData[i].factory=='2000'){
+					$("#factory"+json.accessoryData[i].rowno+"${rand}").val('东莞市金铭电子有限公司');
+				}
+				if(json.accessoryData[i].factory=='3000'){
+					$("#factory"+json.accessoryData[i].rowno+"${rand}").val('东莞金卓通信科技有限公司');
+				}
+				$("#courseAllot"+json.accessoryData[i].rowno+"${rand} option[value='"+json.accessoryData[i].courseAllot+"']").attr("selected", true); 
+			}
+			var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#updateAccessoriesJsonStr${rand}').val('');
+			} else {				
+        		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {
+        			var row=$.trim($(this).find('td').eq(1).find("input").val());
+        			var courseAllot1=$.trim($(this).find('td').eq(2).find("input").val());
+        			var stock1 = $(this).find('td').eq(3).find("input");
+        			var stockNameAndStandard1 =$(this).find('td').eq(4).find("input");
+        			var monad1 = $(this).find('td').eq(6).find("input");
+        			var factory1 = $(this).find('td').eq(7).find("input");
+        			var reckoning=$(this).find('td').eq(8).find("input");
+        			var costCenter1 = $(this).find('td').eq(9).find("input");
+        			var unitPrice = $(this).find('td').eq(10).find("input");
+        			var amountInTotal = $(this).find('td').eq(11).find("input");
+        			var procurementSection1 =$(this).find('td').eq(13).find("input");
+        			var itemGroup1=null;
+        			unitPrice.numberbox({
+    				    precision:3
+    				});
+    		    	
+        			amountInTotal.numberbox({
+    				    precision:3
+    				});
+        			if(courseAllot1=='K'&&(stock1==null||stock1=='')){
+        				itemGroup1 =$(this).find('td').eq(14);
+        			}else{
+        				itemGroup1 =$(this).find('td').eq(14).find("input");
+        			}
+        			if(factory1.val()=='东莞市金铭电子有限公司'){
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'2000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}else{
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'3000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}
+    		    	//根据工厂获取成本中心
+    				factory1.combobox(
+    						{
+    							valueField : 'id',
+    							textField : 'name',
+    							url : 'hrFlow/auth/filterFactory.json',
+    							required : true,
+    							editable : false,
+    							onSelect : function(record) {
+    								if(record.id=='59513'){
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}else{
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}
+    							},
+    							onChange : function(n, o) {
+    								makeAccessory();
+    								if(n=='59513'){
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'2000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}else{
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'3000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}
+    							}
+    						});
+    					costCenter1.combobox({
+    						valueField : 'id',
+    						textField : 'text',
+    						//required : true,
+    						editable : false,
+    						onSelect : function(record) {
+    							makeAccessory();
+    							//$("#costCenterName${rand}").val(record.text);
+    							//$('#costCenterId${rand}').val(record.id);
+    						},onLoadSuccess:function(){
+    							costCenter1.combobox('setValue',costCenter1.val());
+    						}
+    					});
+        		});
+			}
+    		//makeAccessory();
+    		var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#updateAccessoriesJsonStr${rand}').val('');
+			} else {				
+				var MFixedAssetsDetraction = { accessoryData:[] };
+				var rowno = 1;
+        		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {	        			
+        			var courseAllot = $.trim($(this).find('td').eq(2).find("select").val());
+        			var stockNumber = $.trim($(this).find('td').eq(3).find("input").val());
+        			var stockNameAndStandard = $.trim($(this).find('td').eq(4).find("input").val());
+        			var applyNumber = $.trim($(this).find('td').eq(5).find("input").val());
+        			var monad = $.trim($(this).find('td').eq(6).find("input").val());
+        			var factory = $.trim($(this).find('td').eq(7).find("input").val());
+        			var reckoning = $.trim($(this).find('td').eq(8).find("input").val());
+        			var costCenter = $.trim($(this).find('td').eq(9).find("input").val());
+        			var unitPrice = $.trim($(this).find('td').eq(10).find("input").numberbox("getValue"));
+        			var amountInTotal = $.trim($(this).find('td').eq(11).find("input").numberbox("getValue"));
+        			var deliveryDate = $.trim($(this).find('td').eq(12).find("input").val());
+        			var procurementSection = $.trim($(this).find('td').eq(13).find("input").val());
+        			var itemGroup='';
+        			if(courseAllot=='K'&&(stockNumber==null||stockNumber=='')){
+        				itemGroup = $.trim($(this).find('td').eq(14).find("select").val());
+        			}else{
+        				itemGroup = $.trim($(this).find('td').eq(14).find("input").val());
+        			}
+        			var applyName = $.trim($(this).find('td').eq(15).find("input").val());
+        			var remark = $.trim($(this).find('td').eq(16).find("input").val());
+        		
+        			MFixedAssetsDetraction.accessoryData.push({
+        				rowno:rowno,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+        			})
+        			rowno++;
+        		});
+        		
+        		$('#updateAccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+			}
+		    
+			$('.thchk').each(function(){ 
+				$(this).click(function(){ 
+					if($(this).prop('checked')){
+						$('.tdchk').prop("checked", true);
+					} else {
+						$('.tdchk').prop("checked", false);
+					} 	
+				});
+			});
+		});
+		
+		function addAccessory() {
+			var rows = $('#updateAccessoryInfoTb${rand} tbody tr'); 
+			var rowno = rows.length + 1;
+			var str = '<tr>';
+			str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+			str += '<td width="24" align="center">' + rowno + '</td>';
+			str += '<td width="45"><select id="courseAllot'+rowno+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showRequire('+rowno+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>';
+			str += '<td width="80"><input id="stock'+rowno+'${rand}" type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getStockInfo('+rowno+');"/></td>';
+			str += '<td width="150"><input id="stockNameAndStandard'+rowno+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');"/></td>';
+			str +='<td width="60"><input id="monad'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="125"><input id="factory'+rowno+'${rand}" type="text" class="easyui-combobox" data-options="required:true" style="width:120px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="80"><input type="text" id="reckoning'+rowno+'${rand}" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="125"><input id="costCenter'+rowno+'${rand}" type="text" class="easyui-combobox" style="width:120px;border:solid 1px #007ACC;"/></td>';
+			str +='<td width="60"><input id="unitPrice'+rowno+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');"/></td>';
+			str +='<td width="80"><input id="totalAmount'+rowno+'${rand}" type="text" class="easyui-numberbox" style="width:75px;border:solid 1px #007ACC;" readonly/></td>';
+			str +='<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="50"><input id="procurementSection'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="006" onblur="makeAccessory()"/></td>';
+			str +='<td width="100"><input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeAccessory()"/></td>';
+			str += '</tr>';
+	    	$('#updateAccessoryInfoTb${rand} tbody').append(str);
+	    	$.parser.parse($('#updateAccessoryInfoTb${rand}').find("tr").eq(-1));
+	    	$("#rows${rand}").val(rowno);
+	    	
+	    	$("#unitPrice"+rowno+"${rand}").numberbox({
+			    precision:3
+			});
+	    	
+	    	$("#totalAmount"+rowno+"${rand}").numberbox({
+			    precision:3
+			});
+	    	
+	    	var costCenter=$("#costCenter"+rowno+"${rand}");
+	    	var factory=$("#factory"+rowno+"${rand}");
+	    	//根据工厂获取成本中心
+			factory.combobox(
+					{
+						valueField : 'id',
+						textField : 'name',
+						url : 'hrFlow/auth/filterFactory.json',
+						required : true,
+						editable : false,
+						onSelect : function(record) {
+							var courseAllot=$("#courseAllot"+rowno+"${rand}").val();
+							var stock=$("#stock"+rowno+"${rand}").val();
+							var stockNameAndStandard=$("#stockNameAndStandard"+rowno+"${rand}");
+							var monad=$("#monad"+rowno+"${rand}");
+							var reckoning=$("#reckoning"+rowno+"${rand}");
+							var procurementSection=$("#procurementSection"+rowno+"${rand}");
+							var itemGroup=$("#itemGroup"+rowno+"${rand}");
+							if(record.id=='59513'){
+								if(stock==null || stock==''){
+									return;
+								}
+								//根据工厂、物料编号获取非生产物资数据
+								$.get("hrFlow/getStockInfo.json",{
+									functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+									exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+								},function(data){
+									var jsondata=eval("("+data+")");
+									if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+										$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+										$("#stock"+rowno+"${rand}").val('');
+									}
+									stockNameAndStandard.val(jsondata.MAKTX);
+									monad.val(jsondata.MEINS);
+									procurementSection.val(jsondata.EKGRP);
+									//if(courseAllot=='K'){
+										if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+											reckoning.val('6598000059');
+										}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+											reckoning.val('6598000022');
+										}else if(jsondata.MATKL=='7509'){
+											reckoning.val('6598000086');
+										}else if(jsondata.MATKL=='7510'){
+											reckoning.val('6598000087');
+										}else if(jsondata.MATKL=='7511'){
+											reckoning.val('6598000088');
+										}else{
+											reckoning.val('6598000033');
+										}
+									if(courseAllot=='K'){
+										itemGroup.parent().html('<input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+									}else{
+										itemGroup.val(jsondata.MATKL);
+									}
+								});
+							}else{
+								if(stock==null || stock==''){
+									return;
+								}
+								//根据工厂、物料编号获取非生产物资数据
+								$.get("hrFlow/getStockInfo.json",{
+									functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+									exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+								},function(data){
+									var jsondata=eval("("+data+")");
+									if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+										$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+										$("#stock"+rowno+"${rand}").val('');
+									}
+									stockNameAndStandard.val(jsondata.MAKTX);
+									monad.val(jsondata.MARA-MEINS);
+									procurementSection.val(jsondata.EKGRP);
+									//if(courseAllot=='K'){
+										if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+											reckoning.val('6598000059');
+										}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+											reckoning.val('6598000022');
+										}else if(jsondata.MATKL=='7509'){
+											reckoning.val('6598000086');
+										}else if(jsondata.MATKL=='7510'){
+											reckoning.val('6598000087');
+										}else if(jsondata.MATKL=='7511'){
+											reckoning.val('6598000088');
+										}else{
+											reckoning.val('6598000033');
+										}
+									if(courseAllot=='K'){
+										itemGroup.parent().html('<input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+									}else{
+										itemGroup.val(jsondata.MATKL);
+									}
+								});
+							}
+						},
+						onChange : function(n, o) {
+							makeAccessory();
+							if(n=='59513'){
+								$.get('hrFlow/getSapCostCenter.json', {
+									factory:'2000'
+								}, function(data) {
+									costCenter.combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}else{
+								$.get('hrFlow/getSapCostCenter.json', {
+									factory:'3000'
+								}, function(data) {
+									costCenter.combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}
+						}
+					});
+				costCenter.combobox({
+					valueField : 'id',
+					textField : 'text',
+					//required : true,
+					editable : false,
+					onSelect : function(record) {
+						makeAccessory();
+						//$("#costCenterName${rand}").val(record.text);
+						//$('#costCenterId${rand}').val(record.id);
+					}
+				});
+		}
+		
+		function showRequire(n){
+			var courseAllot = $.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("select").val());
+			var stock=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input");
+			var stockNameAndStandard=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input");
+			var monad=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input");
+			var factory=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input");
+			var roging=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			//var costCenter=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(9);
+			var procurementSection=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(13).find("input");
+			var itemGroup=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14);
+			roging.val('');
+			if(courseAllot=='K'){
+				stock.validatebox({required:false});
+				stockNameAndStandard.validatebox({required:true});
+				monad.validatebox({required:true});
+				roging.validatebox({required:true});
+				procurementSection.validatebox({required:true});
+				//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : true,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+				//roging.val('6598000059');
+				if(stock.val()==null || stock.val()==''){
+					itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+n+');">'
+							+'<option value="" selected="selected"></option>'
+							+'<option value="7001">7001-消防类</option>'
+							+'<option value="7002">7002-安全系统类</option>'
+							+'<option value="7004">7004-电工维修工具类</option>'
+							+'<option value="7005">7005-办公设施类</option>'
+							+'<option value="7006">7006-办公用品类</option>'
+							+'<option value="7007">7007-生活辅助类</option>'
+							+'<option value="7008">7008-安装制作维修类</option>'
+							+'<option value="7010">7010-设备维修类</option>'
+							+'<option value="7011">7011-手机充值卡类</option>'
+							+'<option value="7012">7012-手机测试卡类</option>'
+							+'<option value="7014">7014-培训物资类</option>'
+						+' </select>');
+				}
+			}else{
+				//roging.val('');
+				stock.validatebox({required:true});
+				stockNameAndStandard.validatebox({required:false});
+				monad.validatebox({required:false});
+				roging.validatebox({required:false});
+				procurementSection.validatebox({required:false});
+				//costCenter.html('<input id="costCenter'+n+'${rand}" type="text" class="easyui-combobox" data-options="valueField : \'id\',textField : \'text\',required : false,editable : false,onSelect : function(record) {makeAccessory();}" style="width:120px;border:solid 1px #007ACC;"/>');
+				itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" onblur="makeAccessory();"/>');
+			}
+			$.parser.parse($('#updateAccessoryInfoTb${rand}').find("tr").eq(n-1));
+			makeAccessory();
+		}
+		
+		function getRecoking(n){
+			var itemGroup = $.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14).find("select").val());
+			var reckoning=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			if(itemGroup=='7001'||itemGroup=='7010'){
+				reckoning.val('6598000059');
+			}else if(itemGroup=='7011'||itemGroup=='7014'){
+				reckoning.val('6598000022');
+			}else if(itemGroup=='7509'){
+				reckoning.val('6598000086');
+			}else if(itemGroup=='7510'){
+				reckoning.val('6598000087');
+			}else if(itemGroup=='7511'){
+				reckoning.val('6598000088');
+			}else{
+				reckoning.val('6598000033');
+			}
+			makeAccessory();
+		}
+		
+		function removeAccessory() {
+	    	var rows = $('#updateAccessoryInfoTb${rand} tbody tr input[type="checkbox"]:checked');
+            if (rows.length == 0) {
+        		$.messager.alert("操作提示", "请至少选择一条数据", "info");
+        		return false;
+            }
+
+            $.each(rows, function () {        
+                $(this).parent("td").parent("tr").remove();
+            });
+            var MFixedAssetsDetraction = { accessoryData:[] };
+            var accessoryArr = [];
+            var rows=1;
+    		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {
+    			var courseAllot = $.trim($(this).find('td').eq(2).find("select").val());
+    			var stockNumber = $.trim($(this).find('td').eq(3).find("input").val());
+    			var stockNameAndStandard = $.trim($(this).find('td').eq(4).find("input").val());
+    			var applyNumber = $.trim($(this).find('td').eq(5).find("input").numberbox("getValue"));
+    			var monad = $.trim($(this).find('td').eq(6).find("input").val());
+    			var factory = $.trim($(this).find('td').eq(7).find("input").combotree("getText"));
+    			var reckoning = $.trim($(this).find('td').eq(8).find("input").val());
+    			var costCenter = $.trim($(this).find('td').eq(9).find("input").combotree("getText"));
+    			var unitPrice = $.trim($(this).find('td').eq(10).find("input").numberbox("getValue"));
+    			var amountInTotal = $.trim($(this).find('td').eq(11).find("input").numberbox("getValue"));
+    			var deliveryDate = $.trim($(this).find('td').eq(12).find("input").val());
+    			var procurementSection = $.trim($(this).find('td').eq(13).find("input").val());
+    			var itemGroup='';
+    			if(courseAllot=='K' && (stockNumber==null || stockNumber=='')){
+    				itemGroup = $.trim($(this).find('td').eq(14).find("select").val());
+    			}else{
+    				itemGroup = $.trim($(this).find('td').eq(14).find("input").val());
+    			}
+    			var applyName = $.trim($(this).find('td').eq(15).find("input").val());
+    			var remark = $.trim($(this).find('td').eq(16).find("input").val());
+    			accessoryArr.push({
+    				courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+    			});
+    			MFixedAssetsDetraction.accessoryData.push({
+    				rowno:rows,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+    			})
+    			rows++;
+    		});
+    		$('#updateAccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+
+        	var rowno = 1;
+        	$("#updateAccessoryInfoTb${rand} tbody").empty();
+    		$.each(accessoryArr, function(idx, obj) {
+    			var str = '<tr>';
+				str += '<td width="1"><input type="checkbox" class="tdchk" /></td>';
+				str += '<td width="24" align="center">' + rowno + '</td>';
+				str += '<td width="45"><select id="courseAllot'+rowno+'${rand}" style="width:40px;border:solid 1px #007ACC;" onchange="showRequire('+rowno+')"><option value="" selected="selected"></option><option value="K">K</option></select></td>';
+				str += '<td width="80"><input id="stock'+rowno+'${rand}" type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="getStockInfo('+rowno+');" value="'+obj.stockNumber+'"/></td>';
+				str += '<td width="150"><input id="stockNameAndStandard'+rowno+'${rand}" type="text" class="easyui-validatebox"  style="width:145px;border:solid 1px #007ACC;" value="'+obj.stockNameAndStandard+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="60"><input type="text" class="easyui-numberbox" data-options="required:true" style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');" value="'+obj.applyNumber+'"/></td>';
+				str +='<td width="60"><input id="monad'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:55px;border:solid 1px #007ACC;" value="'+obj.monad+'" onblur="makeAccessory()"/></td>';
+				str +='<td width="125"><input id="factory'+rowno+'${rand}" type="text" data-options="required:true" style="width:120px;border:solid 1px #007ACC;" value="'+obj.factory+'" /></td>';
+				str +='<td width="80"><input id="totalAllot'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.reckoning+'"/></td>';
+				str +='<td width="125"><input id="costCenter'+rowno+'${rand}" type="text" style="width:120px;border:solid 1px #007ACC;" value="'+obj.costCenter+'"/></td>';
+				str +='<td width="60"><input id="unitPrice'+rowno+'${rand}" type="text" class="easyui-numberbox" data-options="required:true" precision="3"  style="width:55px;border:solid 1px #007ACC;" onblur="getAcountIntTotal('+rowno+');" value="'+obj.unitPrice+'"/></td>';
+				str +='<td width="80"><input id="totalAmount'+rowno+'${rand}" type="text" class="easyui-numberbox" precision="3"  style="width:75px;border:solid 1px #007ACC;" value="'+obj.amountInTotal+'" readonly/></td>';
+				str +='<td width="125"><input type="text" class="easyui-my97" data-options="width:100,required:true,disabled:false,minDate:\'%y-%M-{%d}\',validType:\'reqdate\' " style="width:100px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.deliveryDate+'"/></td>';
+				str +='<td width="50"><input id="procurementSection'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:45px;border:solid 1px #007ACC;" value="'+obj.procurementSection+'" onblur="makeAccessory()"/></td>';
+				if(obj.courseAllot=='K'&&(obj.stockNumber==null||obj.stockNumber=='')){
+					str +='<td width="100"><select id="itemGroup'+rowno+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+rowno+');">'
+					+'<option value="" selected="selected"></option>'
+					+'<option value="7001">7001-消防类</option>'
+					+'<option value="7002">7002-安全系统类</option>'
+					+'<option value="7004">7004-电工维修工具类</option>'
+					+'<option value="7005">7005-办公设施类</option>'
+					+'<option value="7006">7006-办公用品类</option>'
+					+'<option value="7007">7007-生活辅助类</option>'
+					+'<option value="7008">7008-安装制作维修类</option>'
+					+'<option value="7010">7010-设备维修类</option>'
+					+'<option value="7011">7011-手机充值卡类</option>'
+					+'<option value="7012">7012-手机测试卡类</option>'
+					+'<option value="7014">7014-培训物资类</option>'
+				+' </select></td>';
+				}else{
+					str +='<td width="100"><input id="itemGroup'+rowno+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+obj.itemGroup+'" onblur="makeAccessory()"/></td>';
+				}
+				str +='<td width="80"><input type="text" class="easyui-validatebox" data-options="required:true" style="width:75px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.applyName+'"/></td>';
+				str +='<td width="180"><input type="text" class="easyui-validatebox" style="width:175px;border:solid 1px #007ACC;" onblur="makeAccessory()" value="'+obj.remark+'"/></td>';
+				str += '</tr>';
+			
+				$('#updateAccessoryInfoTb${rand} tbody').append(str);
+				//$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+				$.parser.parse($('#updateAccessoryInfoTb${rand}').find("tr").eq(rowno-1));
+				
+				/*$("#unitPrice"+rowno+"${rand}").numberbox({
+				    precision:3
+				});
+		    	
+		    	$("#totalAmount"+rowno+"${rand}").numberbox({
+				    precision:3
+				});*/
+				
+				if(obj.courseAllot=='K'){
+					$("#stock"+rowno+"${rand}").validatebox({required:false});
+					$("#stockNameAndStandard"+rowno+"${rand}").validatebox({required:true});
+					$("#monad"+rowno+"${rand}").validatebox({required:true});
+					$("#totalAllot"+rowno+"${rand}").validatebox({required:true});
+					if(obj.stockNumber==null||obj.stockNumber==''){
+						$("#itemGroup"+rowno+"${rand} option[value='"+obj.itemGroup+"']").attr("selected", true);
+					}
+				}
+				$("#courseAllot"+rowno+"${rand} option[value='"+obj.courseAllot+"']").attr("selected", true);     		    	
+    			rowno++;
+    		});
+    		var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#updateAccessoryInfoTb${rand}').val('');
+			} else {				
+        		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {
+        			var row=$.trim($(this).find('td').eq(1).find("input").val());
+        			var courseAllot1=$.trim($(this).find('td').eq(2).find("input").val());
+        			var stock1 = $(this).find('td').eq(3).find("input");
+        			var stockNameAndStandard1 =$(this).find('td').eq(4).find("input");
+        			var monad1 = $(this).find('td').eq(6).find("input");
+        			var factory1 = $(this).find('td').eq(7).find("input");
+        			var reckoning=$(this).find('td').eq(8).find("input");
+        			var costCenter1 = $(this).find('td').eq(9).find("input");
+        			//var unitPrice = $(this).find('td').eq(10).find("input");
+        			//var amountInTotal = $(this).find('td').eq(11).find("input");
+        			var procurementSection1 =$(this).find('td').eq(13).find("input");
+        			var itemGroup1=null;
+        			/*unitPrice.numberbox({
+    				    precision:3
+    				});
+    		    	
+        			amountInTotal.numberbox({
+    				    precision:3
+    				});*/
+        			if(courseAllot1=='K'&&(stock1==null||stock1=='')){
+        				itemGroup1 =$(this).find('td').eq(14);
+        			}else{
+        				itemGroup1 =$(this).find('td').eq(14).find("input");
+        			}
+        			if(factory1.val()=='东莞市金铭电子有限公司'){
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'2000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}else{
+    					$.get('hrFlow/getSapCostCenter.json', {
+    						factory:'3000'
+    					}, function(data) {
+    						costCenter1.combobox("clear")
+    								.combobox('loadData', data);
+    					}, 'json');
+    				}
+    		    	//根据工厂获取成本中心
+    				factory1.combobox(
+    						{
+    							valueField : 'id',
+    							textField : 'name',
+    							url : 'hrFlow/auth/filterFactory.json',
+    							required : true,
+    							editable : false,
+    							onSelect : function(record) {
+    								if(record.id=='59513'){
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}else{
+    									if(stock1.val()==null || stock1.val()==''){
+    										return;
+    									}
+    									//根据工厂、物料编号获取非生产物资数据
+    									$.get("hrFlow/getStockInfo.json",{
+    										functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock1.val()+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+    										exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'
+    									},function(data){
+    										var jsondata=eval("("+data+")");
+    										if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+    											$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+    											$(this).find('td').eq(3).find("input").val('');
+    										}
+    										stockNameAndStandard1.val(jsondata.MAKTX);
+    										monad1.val(jsondata.MEINS);
+    										procurementSection1.val(jsondata.EKGRP);
+    										//if(courseAllot1=='K'){
+    											if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+    												reckoning.val('6598000059');
+    											}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+    												reckoning.val('6598000022');
+    											}else if(jsondata.MATKL=='7509'){
+    												reckoning.val('6598000086');
+    											}else if(jsondata.MATKL=='7510'){
+    												reckoning.val('6598000087');
+    											}else if(jsondata.MATKL=='7511'){
+    												reckoning.val('6598000088');
+    											}else{
+    												reckoning.val('6598000033');
+    											}
+    										if(courseAllot1=='K'){
+    											itemGroup1.html('<input id="itemGroup'+row+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>');
+    										}else{
+    											itemGroup1.val(jsondata.MATKL);
+    										}
+    									});
+    								}
+    							},
+    							onChange : function(n, o) {
+    								makeAccessory();
+    								if(n=='59513'){
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'2000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}else{
+    									$.get('hrFlow/getSapCostCenter.json', {
+    										factory:'3000'
+    									}, function(data) {
+    										costCenter1.combobox("clear")
+    												.combobox('loadData', data);
+    									}, 'json');
+    								}
+    							},onLoadSuccess:function(){
+    								factory1.combobox('setValue',factory1.val());
+    							}
+    						});
+    					costCenter1.combobox({
+    						valueField : 'id',
+    						textField : 'text',
+    						//required : true,
+    						editable : false,
+    						onSelect : function(record) {
+    							makeAccessory();
+    							//$("#costCenterName${rand}").val(record.text);
+    							//$('#costCenterId${rand}').val(record.id);
+    						},onLoadSuccess:function(){
+    							costCenter1.combobox('setValue',costCenter1.val());
+    						}
+    					});
+        		});
+			}
+    		//$('#updateAccessoryInfoTb${rand} tbody').append($('#updateAccessoryInfoTb${rand} tbody tr'));
+    		//$.parser.parse($('#updateAccessoryInfoTb${rand}').parent());
+    		$("#rows${rand}").val($('#updateAccessoryInfoTb${rand} tbody tr').length);
+    		//makeAccessory();
+		}
+		
+		function makeAccessory() {
+			var rows = $('#updateAccessoryInfoTb${rand} tbody tr');
+			if(rows.length == 0) {		
+				$('#updateAccessoriesJsonStr${rand}').val('');
+			} else {				
+				var MFixedAssetsDetraction = { accessoryData:[] };
+				var rowno = 1;
+        		$('#updateAccessoryInfoTb${rand} tbody tr').each(function () {	        			
+        			var courseAllot = $.trim($(this).find('td').eq(2).find("select").val());
+        			var stockNumber = $.trim($(this).find('td').eq(3).find("input").val());
+        			var stockNameAndStandard = $.trim($(this).find('td').eq(4).find("input").val());
+        			var applyNumber = $.trim($(this).find('td').eq(5).find("input").numberbox("getValue"));
+        			var monad = $.trim($(this).find('td').eq(6).find("input").val());
+        			var factory = $.trim($(this).find('td').eq(7).find("input").combotree("getText"));
+        			var reckoning = $.trim($(this).find('td').eq(8).find("input").val());
+        			var costCenter = $.trim($(this).find('td').eq(9).find("input").combotree("getText"));
+        			var unitPrice = $.trim($(this).find('td').eq(10).find("input").val());
+        			var amountInTotal = $.trim($(this).find('td').eq(11).find("input").numberbox("getValue"));
+        			var deliveryDate = $.trim($(this).find('td').eq(12).find("input").val());
+        			var procurementSection = $.trim($(this).find('td').eq(13).find("input").val());
+        			var itemGroup='';
+        			if(courseAllot=='K'&&(stockNumber==null||stockNumber=='')){
+        				itemGroup = $.trim($(this).find('td').eq(14).find("select").val());
+        			}else{
+        				itemGroup = $.trim($(this).find('td').eq(14).find("input").val());
+        			}
+        			var applyName = $.trim($(this).find('td').eq(15).find("input").val());
+        			var remark = $.trim($(this).find('td').eq(16).find("input").val());
+        		
+        			MFixedAssetsDetraction.accessoryData.push({
+        				rowno:rowno,courseAllot:courseAllot,stockNumber:stockNumber,stockNameAndStandard:stockNameAndStandard,applyNumber:applyNumber,monad:monad,factory:factory,reckoning:reckoning,costCenter:costCenter,unitPrice:unitPrice,amountInTotal:amountInTotal,deliveryDate:deliveryDate,procurementSection:procurementSection,itemGroup:itemGroup,applyName:applyName,remark:remark
+        			})
+        			rowno++;
+        		});
+        		
+        		$('#updateAccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+			}
+		}
+		function getStockInfo(n){
+			var courseAllot=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(2).find("select").val());
+			var stock=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val());
+			var factory=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(7).find("input").combobox('getValue'));
+			var reckoning=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(8).find("input");
+			var stockNameAndStandard=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(4).find("input");
+			var monad=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(6).find("input");
+			var procurementSection=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(13).find("input");
+			var itemGroup=null;
+			if(courseAllot=='K'){
+				itemGroup=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14);
+			}else{
+				itemGroup=$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(14).find("input");
+			}
+			if(factory==null || factory==''){
+				return;
+			}
+			if(stock==null || stock==''){
+				if(courseAllot=='K'){
+					itemGroup.html('<select id="itemGroup'+n+'${rand}" style="width:95px;border:solid 1px #007ACC;" onchange="getRecoking('+n+');">'
+							+'<option value="" selected="selected"></option>'
+							+'<option value="7001">7001-消防类</option>'
+							+'<option value="7002">7002-安全系统类</option>'
+							+'<option value="7004">7004-电工维修工具类</option>'
+							+'<option value="7005">7005-办公设施类</option>'
+							+'<option value="7006">7006-办公用品类</option>'
+							+'<option value="7007">7007-生活辅助类</option>'
+							+'<option value="7008">7008-安装制作维修类</option>'
+							+'<option value="7010">7010-设备维修类</option>'
+							+'<option value="7011">7011-手机充值卡类</option>'
+							+'<option value="7012">7012-手机测试卡类</option>'
+							+'<option value="7014">7014-培训物资类</option>'
+						+' </select>');
+					reckoning.val('');
+				}
+				return;
+			}
+			//根据工厂、物料编号获取非生产物资数据
+			if(factory=='59513'){
+				if(stock==null || stock==''){
+					return;
+				}
+				//根据工厂、物料编号获取非生产物资数据
+				$.ajax({
+			           type: "post",
+			           url: "hrFlow/getStockInfo.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_2000',exportTableName:'E_MATNR',
+							exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'},
+			           success: function (data) {
+			            	var jsondata=eval("("+data+")");
+			            	if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+								$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+								$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							}
+			            	stockNameAndStandard.val(jsondata.MAKTX);
+							monad.val(jsondata.MEINS);
+							procurementSection.val(jsondata.EKGRP);
+							//if(courseAllot=='K'){
+								if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+									reckoning.val('6598000059');
+								}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+									reckoning.val('6598000022');
+								}else if(jsondata.MATKL=='7509'){
+									reckoning.val('6598000086');
+								}else if(jsondata.MATKL=='7510'){
+									reckoning.val('6598000087');
+								}else if(jsondata.MATKL=='7511'){
+									reckoning.val('6598000088');
+								}else{
+									reckoning.val('6598000033');
+								}
+							if(courseAllot=='K'){
+								itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>')
+							}else{
+								itemGroup.val(jsondata.MATKL);
+							}
+			            }
+			          });
+			}else{
+				if(stock==null || stock==''){
+					return;
+				}
+				//根据工厂、物料编号获取非生产物资数据
+				$.ajax({
+			           type: "post",
+			           url: "hrFlow/getStockInfo.json",
+			           cache: false,
+			           async: false,  //设置同步
+			           dataType: "json",
+			           data: {functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_3000',exportTableName:'E_MATNR',
+							exportlist:'MAKTX_NEXT_MEINS_NEXT_EKGRP_NEXT_MATKL'},
+			           success: function (data) {
+			            	var jsondata=eval("("+data+")");
+			            	if(jsondata.MAKTX=='' && jsondata.MEINS=='' && jsondata.EKGRP=='' && jsondata.MATKL==''){
+								$.messager.alert("提示信息","您好，此编号的非生产物资不存在!");
+								$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(3).find("input").val('');
+							}
+			            	stockNameAndStandard.val(jsondata.MAKTX);
+							monad.val(jsondata.MEINS);
+							procurementSection.val(jsondata.EKGRP);
+							//if(courseAllot=='K'){
+								if(jsondata.MATKL=='7001'||jsondata.MATKL=='7010'){
+									reckoning.val('6598000059');
+								}else if(jsondata.MATKL=='7011'||jsondata.MATKL=='7014'){
+									reckoning.val('6598000022');
+								}else if(jsondata.MATKL=='7509'){
+									reckoning.val('6598000086');
+								}else if(jsondata.MATKL=='7510'){
+									reckoning.val('6598000087');
+								}else if(jsondata.MATKL=='7511'){
+									reckoning.val('6598000088');
+								}else{
+									reckoning.val('6598000033');
+								}
+							if(courseAllot=='K'){
+								itemGroup.html('<input id="itemGroup'+n+'${rand}" type="text" class="easyui-validatebox" style="width:95px;border:solid 1px #007ACC;" value="'+jsondata.MATKL+'" onblur="makeAccessory()"/>')
+							}else{
+								itemGroup.val(jsondata.MATKL);
+							}
+			            }
+			          });
+			}
+			makeAccessory();
+		}
+		
+		//计算物资合计价钱
+		function getAcountIntTotal(n){
+			var count=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(5).find("input").val());
+			var price=$.trim($("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(10).find("input").val());
+			if(isNaN(count)||count==undefined||count==''){
+				return;
+			}else{
+				count=parseFloat(count);
+			}
+			if(isNaN(price)||price==undefined||price==''){
+				return;
+			}else{
+				price=parseFloat(price);
+			}
+			$("#updateAccessoryInfoTb${rand}").find("tr").eq(n-1).find("td").eq(11).find("input").val((price*count+'').substring(0,(price*count+'').indexOf(".")+4));
+			makeAccessory();
+		}
+		
+		//根据工厂获取成本中心
+		/*$('#updateFactory${rand}')
+			.combobox(
+					{
+						valueField : 'id',
+						textField : 'name',
+						url : 'hrFlow/auth/filterFactory.json',
+						required : true,
+						editable : false,
+						onSelect : function(record) {
+							$('#companyId${rand}').val(record.id);
+							$('#comname${rand}').val(record.name);
+						},
+						onChange : function(n, o) {
+							if(n=='59513'){
+								$.get('hrFlow/getSapCostCenter.json', {
+									functionName : 'ZHR_OA44',
+									vars : 'I_TYPE_VALUE_C'
+											+ '_NEXT_I_BUKRS_VALUE_2000'
+											,
+									exportTableName : 'OT_CSKS',
+									code : 'KOSTL',
+									describe :'KTEXT'
+								}, function(data) {
+									$("#updateCostCenter${rand}").combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}else{
+								$.get('hrFlow/getSapCostCenter.json', {
+									functionName : 'ZHR_OA44',
+									vars : 'I_TYPE_VALUE_C'
+											+ '_NEXT_I_BUKRS_VALUE_3000'
+											,
+									exportTableName : 'OT_CSKS',
+									code : 'KOSTL',
+									describe :'KTEXT'
+								}, function(data) {
+									$("#updateCostCenter${rand}").combobox("clear")
+											.combobox('loadData', data);
+								}, 'json');
+							}
+						}
+					});
+		$("#updateCostCenter${rand}").combobox({
+			valueField : 'id',
+			textField : 'text',
+			required : true,
+			editable : false,
+			onSelect : function(record) {
+				$("#costCenterName${rand}").val(record.text);
+				$('#costCenterId${rand}').val(record.id);
+			}
+		});
+		
+		//获取物料信息
+		function getCostAndStock(){
+			var stock=$("#updateStockNumber${rand}").val();
+			var factory=$("#updateFactory${rand}").val();
+			if(factory==null||factory==''){
+				return;
+			}
+			if(stock==null||stock==''){
+				return;
+			}
+			//根据工厂、物料编号获取非生产物资数据
+			$.get("hrFlow/getStockInfo.json",{
+				functionName:'ZHR_OA46',vars:'I_MATNR_VALUE_'+stock+'_NEXT_I_WERKS_VALUE_'+factory,exportTableName:'',
+				exportlist:'MARA-MAKTX_NEXT_MARA-MEINS_NEXT_MARC-EKGRP_NEXT_MARA-MATKL'
+			},function(data){
+				var jsondata=eval("("+data+")");
+				$("#updateStockNameAndStandard${rand}").val(jsondata.MARA-MAKTX);
+				$("#updateMonad-${rand}").val(jsondata.MARA-MEINS);
+				$("#updateProcurementSection${rand}").val(jsondata.MARC-EKGRP);
+				$("#updateItemGroup${rand}").val(jsondata.MARA-MATKL);
+			});
+		}
+		
+		//下载模板
+		$("#downloadTravelExcel${rand}").bind('click',function(){
+			submitForm("download.nonProductionMaterials.name");
+		});
+		function submitForm(value){
+			var form = $("<form>");
+			form.attr('style','display:none');
+			form.attr('method','post');
+			form.attr('action','${base}sysprocess/task/download.html');
+			
+			var key = $("<input>");
+			key.attr('type','hidden');
+			key.attr('name','key');
+			key.attr('value',value);
+			
+			$("body").append(form);
+			form.append(key);
+			
+			form.submit();
+			form.remove();
+		}
+		
+		//导入非生产物资清单
+		 $("#openImportPersonBtn-${rand}").bind('click',function(){
+			 $("#importWin-${rand}").dialog('open');
+		 });
+		
+		 function clearInputFile${rand}(){
+				//清空文件框
+				$("#upload_file-${rand}").remove(); //移除原来的
+			    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="files" style="width:300px;"/>';
+			   	$('#td_input_${rand}').html(newFileInput); //添加新的
+			    $.parser.parse('#td_input_${rand}');
+			}
+		 
+		 $("#upfile-${rand}").bind('click',function(){
+			 $.messager.progress();
+			 $("#upform-${rand}").form('submit',{
+					url:'teamActivities/importNonProduc.json',
+					onSubmit:function(){
+						var validateResult = $(this).form('validate');
+				    	if (!validateResult) {
+				    		$.messager.progress('close');
+							return false;
+				    	} else {
+				    		return true;
+				    	}
+				    },
+					success:function(data){
+						if(typeof(data).toLowerCase()=='string'){
+							data=eval("("+data+")");
+						}
+						if(data.success){
+							if(data.obj == null || data.obj.length == 0){
+								$.messager.alert("提示信息","您上传的文件为空，请重新上传！");
+							}else{
+								var str = "";
+								var MFixedAssetsDetraction = { accessoryData:[] };
+								if(data.obj.length>0){
+									$('#participantList').val("");
+									str = "<table border=1 cellspace=1 width=100%><tr align=center><td width=5%>序号</td><td width=5%>科目分配</td><td width=10%>物料编码</td><td width=10%>物料名称及规格</td><td width=5%>申请数量</td><td width=5%>单位</td><td width=10%>工厂</td><td width=10%>成本中心</td><td width=5%>预估单价</td><td width=5%>合计</td><td width=10%>交货日期</td><td width=5%>采购组</td><td width=5%>物料组</td><td width=10%>备注</td></tr>";
+									for(var i = 0;i < data.obj.length;i++){
+									  str += "<tr align=center><td>"+data.obj[i].number+"</td><td>"+data.obj[i].courseAllot+"</td><td>"+data.obj[i].stockNumber+"</td><td>"+data.obj[i].stockNameAndStandard+"</td><td>"+data.obj[i].applyNumber+"</td><td>"+data.obj[i].monad+"</td><td>"+data.obj[i].factory+"</td><td>"+data.obj[i].costCenter+"</td><td>"+data.obj[i].unitPrice+"</td><td>"+data.obj[i].amountInTotal+"</td><td>"+data.obj[i].deliveryDate+"</td><td>"+data.obj[i].procurementSection+"</td><td>"+data.obj[i].itemGroup+"</td><td>"+data.obj[i].remark+"</td></tr>"
+									  MFixedAssetsDetraction.accessoryData.push({
+										  number:data.obj[i].number,courseAllot:data.obj[i].courseAllot,stockNumber:data.obj[i].stockNumber,stockNameAndStandard:data.obj[i].stockNameAndStandard,applyNumber:data.obj[i].applyNumber,monad:data.obj[i].monad,factory:data.obj[i].factory,costCenter:data.obj[i].costCenter,unitPrice:data.obj[i].unitPrice,amountInTotal:data.obj[i].amountInTotal,deliveryDate:data.obj[i].deliveryDate,procurementSection:data.obj[i].procurementSection,itemGroup:data.obj[i].itemGroup,remark:data.obj[i].remark
+					        			})
+									  $.ajaxSetup({async : false});
+									}
+									str+="</table>"
+									document.getElementById("participantList").innerHTML=str;
+							  }
+								$('#AccessoriesJsonStr${rand}').val(JSON.stringify(MFixedAssetsDetraction));
+								document.getElementById('participantList_val').value=document.getElementById("participantList").innerHTML;
+								$.messager.alert("提示信息",data.msg);
+							}
+						}else{ 
+							$.messager.alert("提示信息",data.msg);
+						}
+						$("#importWin-${rand}").dialog('close');
+						$.messager.progress('close');
+					}
+				});
+		 });
+		
+		//获取合计价钱
+		function getUpdateAcountIntTotal(){
+			var count=$("#updateApplyNumber${rand}").val();
+			var price=$("#updateUnitPrice${rand}").val();
+			if(isNaN(count)||count==undefined||count==''){
+				return;
+			}else{
+				count=parseFloat(count);
+			}
+			if(isNaN(price)||price==undefined||price==''){
+				return;
+			}else{
+				price=parseFloat(price);
+			}
+			$('#updateAmountInTotal${rand}').numberbox('setValue',price*count);
+		}*/
+	</script>
+				</#if>
+			</#if>
+		</#list>
+	</#if>
+</#if>
+
+<!-- 部门经理审核 -->
+<#if currentStep?exists && currentStep == 'departManagerAuditTask'> 
+		<div id="departManagerAuditTask">
+			<form id="departManagerAuditTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="departManagerAuditTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="width:1498px;">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				部门负责人审核
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">部门负责人：</td>
+						<td width="325px" class="formtable_td_value">
+							<input type="hidden" name="fp_departManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_departManagerName" mobile="部门负责人审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="departManagerAudiAgree${rand}" type="radio" name="fp_departManagerAudi" mobile="处理结果_同意"checked="checked" value="0"/>同意
+							<input id="departManagerAudiDisAgree${rand}" type="radio" name="fp_departManagerAudi" mobile="处理结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea id="departManagerAudiAdvice${rand}" style="width: 1200px; height: 100px" mobile="审核意见" name="fp_departManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 1200px; height: 100px" mobile="备注" name="fp_departManagerRemark" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_departManagerAudiTime" mobile="审核时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#departManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#departManagerAudiAdvice${rand}").validatebox({required:false});//部门经理意见为非必填项
+			}
+			var failure=function(){
+				$("#departManagerAudiAdvice${rand}").val('');
+				$("#departManagerAudiAdvice${rand}").validatebox({required:true});//部门经理意见为必填项
+			};
+			$("#departManagerAudiAgree${rand}").bind("click",success);
+			$("#departManagerAudiDisAgree${rand}").bind("click",failure);
+		</script>
+</#if>
+
+<!--SAP录入员确认-->
+<#if currentStep?exists && currentStep == 'keyboarderVerifyTask'> 
+		<div id="keyboarderVerifyTask">
+			<form id="keyboarderVerifyTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="keyboarderVerifyTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="width:1498px;">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				SAP录入员确认
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td style="width:133px" class="formtable_td_key">SAP录入员：</td>
+						<td width="325px" class="formtable_td_value">
+							<input type="hidden" name="fp_keyboarderAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_keyboarderName"mobile="SAP录入员确认" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="keyboarderAgree${rand}" type="radio" name="fp_keyboarderVerify" mobile="是否通过_是" checked="checked" value="0"/>是
+							<input id="keyboarderDisagree${rand}" type="radio" name="fp_keyboarderVerify" mobile="是否通过_否" value="1" />否
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="keyboarderAudiAdvice${rand}" style="width: 1200px; height: 100px" mobile="处理意见"
+								name="fp_keyboarderAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea style="width: 1200px; height: 100px" mobile="备注"
+								name="fp_keyboarderRemark" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_keyboarderAudiTime" mobile="确认时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#keyboarderAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#keyboarderAudiAdvice${rand}").validatebox({required:false});//后勤采购员意见为非必填项
+			}
+			var failure=function(){
+				$("#keyboarderAudiAdvice${rand}").val('');
+				$("#keyboarderAudiAdvice${rand}").validatebox({required:true});//后勤采购员意见为必填项
+			};
+			$("#keyboarderAgree${rand}").bind("click",success);
+			$("#keyboarderDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+
+<!-- 后勤部主管审核 -->
+<#if currentStep?exists && currentStep == 'logisticsDepartChargeTask'> 
+		<div id="logisticsDepartChargeTask">
+			<form id="logisticsDepartChargeTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="logisticsDepartChargeTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="width:1498px;">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				后勤部主管审核
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" width="">后勤部主管：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_logisticsDepartChargeAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_logisticsDepartChargeName" mobile="后勤部主管审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="logisticsDepartChargeAgree${rand}" type="radio" name="fp_logisticsDepartChargeAudi"mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="logisticsDepartChargeDisagree${rand}" type="radio" name="fp_logisticsDepartChargeAudi" mobile="审核结果_不同意"value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="logisticsDepartChargeAudiAdvice${rand}" style="width: 1200px; height: 100px" mobile="审批意见"
+								name="fp_logisticsDepartChargeAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea style="width: 1200px; height: 100px" mobile="备注"
+								name="fp_logisticsDepartChargeRemark" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_logisticsDepartChargeAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#logisticsDepartChargeAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#logisticsDepartChargeAudiAdvice${rand}").validatebox({required:false});//后勤部经理意见为非必填项
+			}
+			var failure=function(){
+				$("#logisticsDepartChargeAudiAdvice${rand}").val('');
+				$("#logisticsDepartChargeAudiAdvice${rand}").validatebox({required:true});//后勤部经理意见为必填项
+			};
+			$("#logisticsDepartChargeAgree${rand}").bind("click",success);
+			$("#logisticsDepartChargeDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+
+<!-- 后勤部经理审核 -->
+<#if currentStep?exists && currentStep == 'logisticsDepartManagerAuditTask'> 
+		<div id="logisticsDepartManagerAuditTask">
+			<form id="logisticsDepartManagerAuditTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="logisticsDepartManagerAuditTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="width:1498px;">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				后勤部经理审核
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" width="">后勤部经理：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_logisticsDepartManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_logisticsDepartManagerName" mobile="后勤部经理审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="logisticsDepartManagerAgree${rand}" type="radio" name="fp_logisticsDepartManagerAudi"mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="logisticsDepartManagerDisagree${rand}" type="radio" name="fp_logisticsDepartManagerAudi" mobile="审核结果_不同意"value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="logisticsDepartManagerAudiAdvice${rand}" style="width: 1200px; height: 100px" mobile="审批意见"
+								name="fp_logisticsDepartManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea style="width: 1200px; height: 100px"
+								name="fp_logisticsDepartManagerRemark" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input id="proInstId" type="hidden" name="fp_proInstId" value="${processInstanceId}"/>
+							<input type="hidden" name="fp_logisticsDepartManagerAudiTime" mobile="审批时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#logisticsDepartManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#logisticsDepartManagerAudiAdvice${rand}").validatebox({required:false});//后勤部经理意见为非必填项
+			}
+			var failure=function(){
+				$("#logisticsDepartManagerAudiAdvice${rand}").val('');
+				$("#logisticsDepartManagerAudiAdvice${rand}").validatebox({required:true});//后勤部经理意见为必填项
+			};
+			$("#logisticsDepartManagerAgree${rand}").bind("click",success);
+			$("#logisticsDepartManagerDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+
+<!-- 申请人查看凭证编号 -->
+<!--<#if currentStep?exists && currentStep == 'applyGetProofNoTask'> 
+		<div id="applyGetProofNoTask">
+			<form id="applyGetProofNoTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="applyGetProofNoTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="width:1498px;">
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				申请人查看凭证编号
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key">凭证编号：</td>
+						<td class="formtable_td_value" colspan="3">
+							<input type="easyui-validatebox" name="fp_proofNo" id="proofNo${rand}" readonly/>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:133px" class="formtable_td_key">查看人：</td>
+						<td width="325px" class="formtable_td_value">
+							<input type="hidden" name="fp_getProofNoAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_getProofNoName" mobile="查看人" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">查看时间：</td>
+						<td class="formtable_td_value">
+							<input id="proInstId" type="hidden" value="${processInstanceId}"/>
+							<input type="hidden" name="fp_getProofNoTime" mobile="查看时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	<script type="text/javascript">
+		$(function(){
+			$.get("workspace/getNoProducProofNo.json",{
+				processId:$("#proInstId").val()
+			},function(data){
+				$("#proofNo${rand}").val(data);
+			});
+		});
+</script>
+</#if>-->
+
+<!-- 总经理审核 -->
+<!--<#if currentStep?exists && currentStep == 'generalManagerTask'> 
+		<div id="generalManagerTask">
+			<form id="generalManagerTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="generalManagerTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr>
+		  	  			<td class="formtable_td_key" align="center" colspan="4" style="font-weight:bold;font-size:14px;">
+		  	  				总经理审核
+		  	  			</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" width="">总经理：</td>
+						<td class="formtable_td_value"  >
+							<input type="hidden" name="fp_generalManagerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_generalManagerName" mobile="总经理审核" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_value" colspan="2">
+							<input id="generalManagerAgree${rand}" type="radio" name="fp_generalManagerAudi" mobile="审核结果_同意" checked="checked" value="0" />同意
+							<input id="generalManagerDisagree${rand}" type="radio" name="fp_generalManagerAudi" mobile="审核结果_不同意" value="1" />不同意
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核意见：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea id="generalManagerAudiAdvice${rand}" style="width: 730px; height: 100px" mobile="审核意见"
+								name="fp_generalManagerAudiAdvice" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审核时间：</td>
+						<td class="formtable_td_value"  colspan="3">
+							<input type="hidden" name="fp_generalManagerAudiTime" mobile="审核时间"
+								timeEditor="1" 	value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_generalManagerRemark" class="easyui-validatebox" ></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$("#generalManagerAudiAdvice${rand}").validatebox({required:false});
+			var success = function(){
+				$("#generalManagerAudiAdvice${rand}").validatebox({required:false});//总经理意见为非必填项
+			}
+			var failure=function(){
+				$("#generalManagerAudiAdvice${rand}").val('');
+				$("#generalManagerAudiAdvice${rand}").validatebox({required:true});//总经理意见为必填项
+			};
+			$("#generalManagerAgree${rand}").bind("click",success);
+			$("#generalManagerDisagree${rand}").bind("click",failure);
+</script>
+</#if>
+
+<#if currentStep?exists && currentStep == 'buyerVerifyTask'> 
+	<#if processSteps??> 
+      <#list processSteps as steps> 
+      	<#if steps.key == 'startevent1'>
+		<div id="buyerVerifyTask">
+			<form id="buyerVerifyTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="buyerVerifyTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" >
+					<tr><td class="formtable_td_key" align="center" colspan="4">采购员确认</td></tr>
+					<tr>
+						<td class="formtable_td_key">处理意见：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px" name="fp_buyerAudiAdvice" class="formtable_remark" ></textarea>
+						</td>
+					</tr>
+		  	  		<tr>
+						<td class="formtable_td_key" width="">确认人:</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_buyerAccount" value="${appuser.account}" />
+							<input type="hidden" name="fp_buyerName" value="${appuser.name}" />
+							${appuser.name}
+						</td>
+						<td class="formtable_td_key">确认时间：</td>
+						<td class="formtable_td_value">
+							<input type="hidden" name="fp_buyerVerifyTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">备注：</td>
+						<td class="formtable_td_value" colspan="3">
+							<textarea style="width: 730px; height: 100px" name="fp_buyerRemark" class="formtable_remark" ></textarea>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		</script>
+		</#if>
+	</#list>
+   </#if>
+</#if>-->
+
+<#include "/common/foot.html">

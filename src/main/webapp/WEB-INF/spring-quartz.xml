@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd
+              http://www.springframework.org/schema/mvc
+              http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	
+	<!-- 实体任务，编写的java定时任务类 -->
+	<!--<bean id="sapReqSheetJob" class="com.gionee.gniflow.sap.quartz.FetchSapReqSheetJob"/>
+	<bean id="taskTimeoutJob" class="com.gionee.gniflow.web.scheduler.TaskTimeoutJob"/>
+	<bean id="mpChecklistTimeoutJob" class="com.gionee.gniflow.web.scheduler.MPChecklistTimeoutJob"/>
+	<bean id="mpSoftwareTimeoutJob" class="com.gionee.gniflow.web.scheduler.MPSoftwareTimeoutJob"/>-->
+	<!-- 关键用户确认未确认时，一个月后系统自动完成流程的任务类 -->
+	<bean id="lastProJob" class="com.gionee.gniflow.web.scheduler.LastProJob"/>
+	<!-- 导师期内每隔一个月给导师发一次邮件 -->
+	<bean id="sendEmailToTea" class="com.gionee.gniflow.web.scheduler.SendEmailToTeacherJon"/>
+	
+	<!-- 定义目标bean和bean中的方法 targetObject-目标对象，targetMethod-目标方法，concurrent-是否并发-->
+	<!--<bean id="sapReqSheetJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="sapReqSheetJob"/>
+		<property name="targetMethod" value="fetchSapReqSheetJob"/>
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="taskTimeoutJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="taskTimeoutJob"/>
+		<property name="targetMethod" value="processTaskTimeoutJob"/>
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="mpChecklistTimeoutJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mpChecklistTimeoutJob"/>
+		<property name="targetMethod" value="mpChecklistTimeoutSendMsg"/>
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<bean id="mpSoftwareTimeoutJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mpSoftwareTimeoutJob"/>
+		<property name="targetMethod" value="mpSoftwareTimeoutSendMsg"/>
+		<property name="concurrent" value="false" />
+	</bean>-->
+	
+	<bean id="lastProJobMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="lastProJob"/>
+		<property name="targetMethod" value="executJob"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<bean id="sendEmailToTeaMethod" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="sendEmailToTea"/>
+		<property name="targetMethod" value="sendEmail"/>
+		<property name="concurrent" value="false"/>
+	</bean>
+	
+	<!-- 配置调度触发器 jobDetail-具体任务的方法Bean,cronExpression-quartz触发表达式-->
+	<!-- 0 0 2 * * ? 每天凌晨2点跑 -->
+	<!--<bean id="sapReqSheetTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="sapReqSheetJobMethod"></property>
+		<property name="cronExpression" value="0 * 9 * * ?"></property>
+	</bean>
+	
+	<bean id="taskTimeoutTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="taskTimeoutJobMethod"></property>
+		<property name="cronExpression" value="0 * 9 * * ?"></property>
+	</bean>-->
+	
+	<!--<bean id="mpChecklistTimeoutTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="mpChecklistTimeoutJobMethod"></property>-->
+		<!-- 量产流checklist签核单每周一、周四上午10点自动发送未完成任务短信 -->
+		<!-- <property name="cronExpression" value="0 0 10 ? * MON,THU"></property> -->	
+		<!-- 量产流checklist签核单每周一到周五上午10点自动发送未完成任务短信 -->
+		<!--<property name="cronExpression" value="0 0 10 ? * MON-FRI"></property>
+	</bean>-->
+	
+	<!-- 量产软件评审表每周一到周五上午11点自动发送未完成任务短信 -->
+	<!--<bean id="mpSoftwareTimeoutTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="mpSoftwareTimeoutJobMethod"></property>
+		<property name="cronExpression" value="0 0 11 ? * MON-FRI"></property>
+	</bean>-->
+	
+	<!-- 每天零晨查询一次keep_task_inf表，看有没有到时要执行的确认任务 -->
+	<bean id="lastProTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="lastProJobMethod"></property>
+		<property name="cronExpression" value="0 0 5 * * ?"></property>
+	</bean>
+	
+	<!-- 每天上午十点查询一次save_empAndTeacher_inf表，看有没有要发送的邮件 -->
+	<bean id="sendEmailToTeaTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="sendEmailToTeaMethod"></property>
+		<property name="cronExpression" value="0 0 10 * * ?"></property>
+	</bean>
+	
+	<!-- 配置调度工厂，具体属性看SchedulerFactoryBean的源码 -->
+	<bean id="SpringJobSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<!-- 加载属性文件 -->
+		<property name="configLocation" value="classpath:quartz.properties"/>
+		<!-- 修改配置生效 -->
+		<property name="overwriteExistingJobs" value="true"/>
+		<!-- 在SchedulerFactoryBean初始化完成后，延迟60秒启动Scheduler，以便让Spring能够更快初始化容器中剩余的Bean -->
+		<property name="startupDelay" value="30"/>
+		<property name="triggers">
+			<list>
+				<!--  
+				<ref bean="sapReqSheetTriggerBean"/>
+				-->
+				<!--<ref bean="taskTimeoutTriggerBean"/>
+				<ref bean="mpChecklistTimeoutTriggerBean"/>
+				<ref bean="mpSoftwareTimeoutTriggerBean"/>-->
+				<ref bean="lastProTriggerBean"/>
+				<ref bean="sendEmailToTeaTriggerBean"/>
+			</list>
+		</property>
+	</bean>
+</beans>

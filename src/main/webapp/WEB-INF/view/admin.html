@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+	<base href="${base}"></base>
+	<meta charset="utf-8"/>
+	<title>金立工作流平台</title>
+	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css"/>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="js/formrenderer.js"></script>
+	<script type="text/javascript" src="js/processgraphtrace.js"></script>
+  </head>
+  <body class="easyui-layout">
+	<div data-options="region:'north',border:false" style="height:50px;background:#D1E2FF;"></div>
+	<div data-options="region:'west',border:false,split:true,title:'操作菜单'" style="width:200px;margin-left:10px;">
+	  <ul id="menu" class="easyui-tree">
+		<li><span><a turl="welcome.html">Welcome</a></span></li>
+		<li>
+		  <span>我的任务</span>
+		  <ul>
+			<li><span><a turl="myflow/flow.html" tid="startprocess">发起流程</a></span></li>
+			<li><span><a turl="myflow/tasks.html" tid="runprocess">待办任务</a></span></li>
+			<li><span><a turl="myflow/archive.html">归档任务</a></span></li>
+			<li><span><a turl="myflow/process.html" tid="test-process:2:2017">流程实例</a></span></li>
+		  </ul>
+		</li>
+		<li>
+		  <span>流程管理</span>
+		  <ul>
+			<li><span><a turl="process/category.html">分类管理</a></span></li>
+			<li><span><a turl="deploy.html">部署管理</a></span></li>
+			<li><span><a turl="design.html">设计流程</a></span></li>
+		  </ul>
+		</li>
+		<li>
+		  <span>用户与组管理</span>
+		  <ul>
+			<li><span><a turl="user.html">用户管理</a></span></li>
+			<li><span><a turl="group.html">组管理</a></span></li>
+		  </ul>
+		</li>
+		<li>
+		  <span>流程监控</span>
+		  <ul>
+			<li><span><a turl="hang.html">挂起的流程</a></span></li>
+			<li><span><a turl="active.html">活动的流程</a></span></li>
+			<li><span><a turl="jobs.html">作业管理</a></span></li>
+			<li><span><a turl="instance.html">流程实例管理</a></span></li>
+		  </ul>
+		</li>
+		<li>
+		  <span>报表</span>
+		</li>
+	  </ul>
+	</div>
+	<div data-options="region:'center',border:false" style="padding:5px;">
+	  <div id="tt" class="easyui-tabs" fit="true" border="false" plain="true">
+		<div title="Welcome" data-options="closable:true" href="">
+		</div>
+      </div>
+	</div>
+<script type="text/javascript">
+$(function() {
+  $('#menu a').click(function() {
+	$('#tt').tabs('add', {
+	  id : $(this).attr('tid'),
+	  title: $(this).text(),
+	  href: $(this).attr('turl'),
+	  closable: true,
+	});
+  });
+});
+function opentab(title, url) {
+  $('#tt').tabs('add', {
+	title: title,
+	href: 'prototype/' + url,
+	closable: true,
+  });
+}
+</script>
+  </body>
+</html>

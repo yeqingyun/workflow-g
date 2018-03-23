@@ -1,0 +1,89 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="viewTaskProcessImage" data-options="" align='center' class="easyui-panel" title="流程图">
+	<image src='workspace/graphProcessDefinition?processInstanceId=${RequestParameters.processInstanceId}' align="center"/>
+</div>
+<br/>
+
+<div id="viewTaskHisTaskGrid"></div>
+<br/>
+
+<div id="viewTaskHisFormContent" class="easyui-panel" title="流程表单" style="padding:10px;"></div>
+<br/>
+
+<script type="text/javascript">
+$('#viewTaskHisTaskGrid').datagrid({
+  fitColumns:true,
+  url:'workspace/viewHistoryTask.json?processInstanceId=' + ${RequestParameters.processInstanceId},
+  columns:[[
+	{field:'id',title:'编号',checkbox:false,hidden:true},
+	{field:'processInstanceId',title:'流程实例编号',width:80,hidden:true},
+	{field:'proStep',title:'流程步骤',width:80},
+	{field:'processDefinitionId',title:'流程定义',width:200},
+	{field:'activityName',title:'节点名称',width:150},
+	{field:'userAccount',title:'账号',width:100},
+	{field:'userName',title:'处理人',width:100},
+	{field:'startTime',title:'审批开始时间',width:150},
+	{field:'endTime',title:'审批结束时间',width:150},
+	{field:'durationInMillis',title:'处理周期(小时)',width:100,
+		formatter: function(value,row,index){
+			var value = row.durationInMillis;
+   			var day = value/1000/3600;
+    		return day.toFixed(2);
+		}
+	}
+  ]],
+  title:'流程步骤',
+  rownumbers:true,
+  nowrap: true,       
+  border : true,
+  pagination:false,
+  pageNumber : 1,
+  pageSize : 20,
+  onLoadSuccess : graphTrace
+});
+
+$('#viewTaskHisFormGrid').datagrid({
+  fitColumns:true,
+  url:'workspace/viewHistoryVariable.json?processInstanceId=' + ${RequestParameters.processInstanceId},
+  columns:[[
+	{field:'variableName',title:'名称',width:100},
+	{field:'value',title:'值',width:100}
+  ]],
+  title:'表单',
+  nowrap: true,       
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20
+});
+
+$('#viewTaskHisAttachmentGrid').datagrid({
+  fitColumns:true,
+  url:'workspace/viewHistoryAttachment.json?processInstanceId=' + ${RequestParameters.processInstanceId},
+  columns:[[
+	{field:'id',title:'编号',width:100},
+	{field:'url',title:'文件编号',width:120},
+	{field:'name',title:'文件名',width:120},
+	{field:'revision',title:'版本',width:120},
+	{field:'operate',title:'操作',width:120,
+		formatter: function(value,row,index){
+			return "<a href='javascript:void(0)' onclick='downAttch("+ row.id +");'>下载</a>";
+		}
+	}
+  ]],
+  title:'附件',
+  nowrap: true,       
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20
+});
+
+function graphTrace(){
+	$('#viewTaskHisFormContent').panel('refresh','sapspace/task/viewHisform.html?processInstanceId=' + ${RequestParameters.processInstanceId});
+}
+
+</script>
+<#include "/common/foot.ftl">

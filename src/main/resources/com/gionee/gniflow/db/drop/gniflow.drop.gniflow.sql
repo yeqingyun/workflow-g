@@ -1,0 +1,22 @@
+DROP TABLE bpm_comm_code ;
+DROP TABLE bpm_conf_base ;
+DROP TABLE bpm_conf_node ;
+DROP TABLE bpm_conf_node_send ;
+DROP TABLE bpm_conf_process_role ;
+DROP TABLE bpm_email_template ;
+DROP TABLE bpm_process_conf ;
+DROP TABLE bpm_process_run ;
+DROP TABLE bpm_task_execution ;
+DROP TABLE pro_account_handle_info ;
+DROP TABLE quartz_job_log ;
+DROP TABLE quit_application_info ;
+DROP TABLE sap_account_relation  ;
+DROP TABLE sap_approval_relation  ;
+DROP TABLE sap_reqsheet_attachment ;
+DROP TABLE sap_requisition_sheet ;
+DROP TABLE sign_file_information ;
+DROP TABLE sign_org_code ;
+DROP TABLE category ;
+
+delete gc_property_ where key_ = 'gniflow.version';
+delete auth_resource;

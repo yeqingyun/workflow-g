@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="8">
+  <process id="L-Working-Prove" name="在职证明开具流程" isExecutable="true">
+    <documentation>1. 申请该证明，必须说明申请原因，由人力资源管理中心相关负责人审批通过后，通过邮件方式通知领取时间和地点。&lt;br/&gt;
+2. 公司有固定的在职证明模板，个人如有模板要求，请将模板添加至附件。&lt;br/&gt;</documentation>
+    <startEvent id="startevent" name="填写薪资证明申请"></startEvent>
+    <userTask id="mb_hrAttestationAudiTask" name="人力资源开具证明" activiti:assignee="${bpmConfProcessRoleService.getSpecialAreaRoleMaster(&quot;招聘专员&quot;,applyUserId,execution)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent" targetRef="mb_hrAttestationAudiTask"></sequenceFlow>
+    <endEvent id="endevent1" name="流程结束"></endEvent>
+    <sequenceFlow id="flow3" sourceRef="mb_hrAttestationAudiTask" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Working-Prove">
+    <bpmndi:BPMNPlane bpmnElement="L-Working-Prove" id="BPMNPlane_L-Working-Prove">
+      <bpmndi:BPMNShape bpmnElement="startevent" id="BPMNShape_startevent">
+        <omgdc:Bounds height="35.0" width="35.0" x="230.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_hrAttestationAudiTask" id="BPMNShape_mb_hrAttestationAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="359.0" y="55.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="559.0" y="65.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="265.0" y="82.0"></omgdi:waypoint>
+        <omgdi:waypoint x="359.0" y="82.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="464.0" y="82.0"></omgdi:waypoint>
+        <omgdi:waypoint x="559.0" y="82.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

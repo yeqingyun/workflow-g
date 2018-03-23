@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:cache="http://www.springframework.org/schema/cache"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/cache
+			http://www.springframework.org/schema/cache/spring-cache.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task.xsd
+			http://www.springframework.org/schema/p
+			http://www.springframework.org/schema/p/spring-p.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:property-placeholder location="classpath:app.properties"/>
+  
+  <bean id="propertyConfigurer" class="com.gionee.gniflow.web.util.PropertyHolder"> 
+	    <property name="ignoreResourceNotFound" value="true" /> 
+	    <property name="locations"> 
+	        <list> 
+	            <value>classpath:config.properties</value> 
+	        </list> 
+	    </property> 
+	    <property name="fileEncoding" value="utf-8" />
+	</bean> 
+  
+  <context:component-scan base-package="com.gionee.gniflow.biz.service.impl,com.gionee.devtool.biz.service.impl,com.gionee.auth.impl"/>
+
+  <cache:annotation-driven cache-manager="cacheManager"/>
+
+  <!-- 声明cacheManager -->  
+  <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+	<property name="cacheManager">
+	  <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="/WEB-INF/ehcache.xml" />
+	  </bean>
+	</property>
+  </bean>
+  
+  <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="dataSource" />
+  </bean>
+
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+
+  <bean id="freemarkerConfig" class="freemarker.template.Configuration">
+	<property name="templateLoader">
+	  <bean class="com.gionee.gniflow.util.ActivitiTemplateLoader"/>
+	</property>
+	<property name="localizedLookup" value="false"/>
+	<property name="defaultEncoding" value="UTF-8"/>
+	<property name="classicCompatible" value="1"></property>
+  </bean>
+
+  <!-- Activiti begin -->
+  <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="transactionManager" ref="transactionManager"/>
+    <property name="databaseSchemaUpdate" value="true"/>
+    <property name="jobExecutorActivate" value="false"/>
+    <property name="history" value="full"/>
+    <property name="processDefinitionCacheLimit" value="30"/>
+    
+    <!-- 不自动生成流程定义图片 
+    <property name="createDiagramOnDeploy" value="false" />
+    -->
+   
+    <property name="idGenerator" ref="bpmIdGenerator" />
+
+    <!-- 生成流程图的字体 -->
+    <property name="activityFontName" value="宋体"/>
+    <property name="labelFontName" value="宋体"/>
+
+	<property name="formEngines">
+	  <map>
+		<entry key="freemarker">
+		  <bean class="com.gionee.gniflow.util.FreemarkerFormEngine">
+			<property name="freemarkerConfig" ref="freemarkerConfig"/>
+			<!-- 从 deployments 文件中读取 form 表单，如果需要读取 bar 中的文件，则注释掉以下设置 -->
+			<property name="formDir" value="${env.read.template}"/>
+			<property name="base" value="${base.path}"/>
+			<!-- GnFs Variables -->
+			<property name="file_upload_url" value="${file.upload.url}"/>
+			<property name="file_download_url" value="${file.download.url}"/>
+			<property name="file_param_iframeUrl" value="${file.param.iframeUrl}"/>
+			<property name="file_param_syId" value="${file.param.syId}"/>
+			<property name="file_param_syNm" value="${file.param.syNm}"/>
+			<property name="file_param_diyFolder" value="${file.param.diyFolder}"/>
+			<property name="file_parma_uploadType" value="${file.parma.uploadType}"/>
+			<property name="file_param_fileVersion" value="${file.param.fileVersion}"/>
+		  </bean>
+		</entry>
+	  </map>
+	</property>
+
+	<property name="activityBehaviorFactory">
+	  <bean class="com.gionee.gniflow.util.GnifActivityBehaviorFactory"/>
+	</property>
+	
+	<!-- 添加的自定义监听器 -->
+ 	<property name="customDefaultBpmnParseHandlers">
+    	 <list>
+			<bean class="com.gionee.gniflow.web.listener.ProxyUserTaskBpmnParseHandler">
+				<property name="taskListenerId" value="customTaskListener"/>
+				<property name="useDefaultUserTaskParser" value="true"/>
+			</bean>
+    	 </list>
+	</property>
+	<property name="postBpmnParseHandlers">
+    	 <list>
+			<bean class="com.gionee.gniflow.web.listener.ProxyUserTaskBpmnParseHandler">
+				<property name="taskListenerId" value="postTaskListener"/>
+			</bean>
+    	 </list>
+	</property>
+
+    <!-- 自定义表单字段类型 -->
+	<!-- 处理date类型的默认正则表达式 -->
+	<property name="customFormTypes">
+	  <list>
+	    <bean class="org.activiti.engine.impl.form.DateFormType">
+	      <constructor-arg value="yyyy-MM-dd HH:mm:ss" />
+	    </bean>
+	    <bean class="com.gionee.gniflow.web.formtype.UsersFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.CurUserNameFormType" />
+	   	<bean class="com.gionee.gniflow.web.formtype.CurUserIdFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.TextFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.HtmlFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.ComboTreeFormType">
+	    	 <constructor-arg value="project" index="0" />
+	    	 <constructor-arg value="${pms.url.projectTree}" index="1" />
+	    </bean>
+	    <bean class="com.gionee.gniflow.web.formtype.ComboTreeFormType">
+	    	 <constructor-arg value="dept" index="0" />
+	    	  <constructor-arg value="yyy.json" index="1" />  
+	    </bean>
+	  </list>
+	</property>
+
+  </bean>
+
+  <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+    <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+  </bean>
+  
+  <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+  <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+  <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+  <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+  <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+  <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+  <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+  
+  <!-- 在记录history之前执行的TaskListener -->
+  <bean id="customTaskListener" class="com.gionee.gniflow.web.listener.ProxyTaskListener">
+		<property name="taskListeners">
+			<list>
+				<bean class="com.gionee.gniflow.web.listener.AssigneeTaskListener"/>
+			</list>
+		</property>
+  </bean>
+  
+  <!-- 在记录history之后执行的TaskListener -->
+  <bean id="postTaskListener" class="com.gionee.gniflow.web.listener.ProxyTaskListener">
+	<property name="taskListeners">
+		<list>
+			<bean class="com.gionee.gniflow.web.listener.NoticeTaskListener"/>
+			<bean class="com.gionee.gniflow.web.listener.SkipTaskListener"/>
+		</list>
+	</property>
+  </bean>
+	
+  <bean id="bpmIdGenerator" class="com.gionee.gniflow.util.CustomIDGenerator"/>
+  
+  <!-- custom defined -->
+  <bean id="autoDeployer" class="com.gionee.gniflow.util.CustomAutoDeployer" depends-on="gnifConfig,springTools">
+		<property name="processEngine" ref="processEngine"/>
+        <property name="deploymentResources">
+            <list>
+            	<value>classpath*:/deployments/L-Sfm-Application.bar</value>
+            
+                <value>classpath*:/deployments/M-PostAdjustment-App.bar</value>
+        		<value>classpath*:/deployments/M-Leave-Application.bar</value>
+        		<value>classpath*:/deployments/M-Probation-Exam.bar</value>
+        		<value>classpath*:/deployments/M-Personnel-Requirement.bar</value>
+        		<value>classpath*:/deployments/M-Team-Activities-Travel.bar</value>
+        		<value>classpath*:/deployments/M-Team-Activities.bar</value>
+		        <value>classpath*:/deployments/M-Cross-Dept-Transfer.bar</value>
+		        <value>classpath*:/deployments/M-Interview-Assessment.bar</value>
+		        <value>classpath*:/deployments/M-Cross-Company-Transfer.bar</value>
+		        <value>classpath*:/deployments/M-Equipment-Maintain.bar</value>
+		        <value>classpath*:/deployments/M-NonProduction-Materials.bar</value>
+		        <value>classpath*:/deployments/M-FixedAssets-Detraction.bar</value>
+		         <value>classpath*:/deployments/M-Reward-and-punishment-Application.bar</value>
+		        <value>classpath*:/deployments/M-foreign-training-Application.bar</value>
+		        <value>classpath*:/deployments/M-Welfare-Application.bar</value>
+		       	<value>classpath*:/deployments/SAP-Purchase-Requisition.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Account-Handle.bar</value>
+        		<value>classpath*:/deployments/L-Cross-Company-Transfer.bar</value>
+        		<value>classpath*:/deployments/L-Cross-Dept-Transfer.bar</value>
+        		<value>classpath*:/deployments/L-File-Abolish.bar</value>
+        		<value>classpath*:/deployments/L-Filesign-Process.bar</value>
+        		<value>classpath*:/deployments/L-Interview-Assessment.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Personnel-Requirement.bar</value>
+        		<value>classpath*:/deployments/L-Promotino-Application.bar</value>
+        		<value>classpath*:/deployments/L-Quit-Audi.bar</value>
+        		<value>classpath*:/deployments/L-Requirement-Alter.bar</value>
+        		<value>classpath*:/deployments/L-Salary-Prove.bar</value>
+        		<value>classpath*:/deployments/L-Train-Application.bar</value>
+        		<value>classpath*:/deployments/L-Trial-Positive.bar</value>
+        		<value>classpath*:/deployments/L-Working-Prove.bar</value>
+        	
+        		<value>classpath*:/deployments/L-SendOrder-Process.bar</value>
+        		<value>classpath*:/deployments/L-PostAdjustment-App.bar</value>
+        	    <value>classpath*:/deployments/L-Training-Record.bar</value>
+        		<value>classpath*:/deployments/L-Probation-Exam.bar</value>
+        		<value>classpath*:/deployments/L-JinLiTeam-Activities.bar</value>
+        		<value>classpath*:/deployments/L-jinLiTeam-Activities-Travel.bar</value>
+        		<value>classpath*:/deployments/L-Leave-Application.bar</value>
+        		<value>classpath*:/deployments/L-Welfare-Application.bar</value>
+        		<value>classpath*:/deployments/L-Performance-Evaluation.bar</value>
+        			
+        		<value>classpath*:/deployments/L-Publish-Application.bar</value>
+        		<value>classpath*:/deployments/L-SapAccount-Application.bar</value>
+        		<value>classpath*:/deployments/L-SapAccountModify-Application.bar</value>
+        	    <value>classpath*:/deployments/L-Auto-Update-Appliction.bar</value>
+        		
+        		<value>classpath*:/deployments/L-SystemProject-Application.bar</value>
+        		<value>classpath*:/deployments/L-InformationData-Application.bar</value>
+        		<value>classpath*:/deployments/L-SAPAccount-Cancel-Application.bar</value>
+        		<value>classpath*:/deployments/L-SAP-Requirement-Application.bar</value>
+        		<value>classpath*:/deployments/L-ABAP-Develop-Application.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Mass-Production-Checklist.bar</value>
+        		<value>classpath*:/deployments/L-MP-Software-Audit.bar</value>
+        		<value>classpath*:/deployments/L-Project-Human-Input-Account.bar</value>
+        		<value>classpath*:/deployments/L-InfoCenterData-Application.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Process-Management-Optimization.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Accessories-Pricing-Flow.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Consult-Hand-Process.bar</value>
+        		
+        		<value>classpath*:/deployments/L-Airline-Ticke-Application.bar</value>
+        		<value>classpath*:/deployments/L-Labor-Contract-Renewal-Flow.bar</value>
+        		<value>classpath*:/deployments/L-Product-Change-Application.bar</value>
+        		<value>classpath*:/deployments/L-Extramural-Training-Application.bar</value>
+        		<value>classpath*:/deployments/L-Export-Order-Review-Process.bar</value>
+        		<value>classpath*:/deployments/L-ToNational-Project-Approval-Application.bar</value>
+            </list>
+        </property>
+  </bean>
+  <!-- Activiti end -->
+  <bean id="simpleValidateProcessConfiguration" class="com.gionee.gniflow.groovy.SimpleValidateProcessConfiguration">
+		<property name="simpleValidateProcessEngine" ref="simpleValidateProcessEngine"/>
+        <property name="validateResources">
+            <list>
+            	<value>classpath*:/deployments/L-Product-Change-Application/L-Product-Change-Application.dsld</value>
+            	<value>classpath*:/deployments/L-ABAP-Develop-Application/L-ABAP-Develop-Application.dsld</value>
+            	<value>classpath*:/deployments/L-Training-Record/L-Training-Record.dsld</value>
+            	<value>classpath*:/deployments/M-Leave-Application/M-Leave-Application.dsld</value>
+            	<value>classpath*:/deployments/L-Extramural-Training-Application/L-Extramural-Training-Application.dsld</value>
+            	<value>classpath*:/deployments/L-Export-Order-Review-Process/L-Export-Order-Review-Process.dsld</value>
+            	<value>classpath*:/deployments/L-ToNational-Project-Approval-Application/L-ToNational-Project-Approval-Application.dsld</value>
+            	<value>classpath*:/deployments/L-Leave-Application/L-Leave-Application.dsld</value>
+            	<value>classpath*:/deployments/L-Account-Handle/L-Account-Handle.dsld</value>
+            	<value>classpath*:/deployments/L-jinLiTeam-Activities-Travel/L-jinLiTeam-Activities-Travel.dsld</value>
+            	<value>classpath*:/deployments/L-Labor-Contract-Renewal-Flow/L-Labor-Contract-Renewal-Flow.dsld</value>
+            	<value>classpath*:/deployments/L-JinLiTeam-Activities/L-JinLiTeam-Activities.dsld</value>
+           	</list>
+        </property>
+  </bean>
+  <bean id="simpleValidateProcessEngine" class="com.gionee.gniflow.groovy.SimpleValidateProcessEngine"></bean>
+  <!-- 用于在实现 Service 的时候进行数据校验 -->
+  <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+  </bean>
+
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driverClassName}" />
+    <property name="url" value="${jdbc.url}" />
+    <property name="username" value="${jdbc.username}" />
+    <property name="password" value="${jdbc.password}" />
+    <property name="testWhileIdle" value="true" />
+    <property name="validationQuery" value="select 1 from dual" />
+    <property name="minEvictableIdleTimeMillis" value="1800000" />
+    <property name="removeAbandonedTimeout" value="180" />
+    <property name="removeAbandoned" value="true" />
+  </bean>
+
+  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <property name="configLocation" value="/WEB-INF/mybatis-config.xml" />
+	<property name="dataSource" ref="dataSource" />
+	<property name="typeAliasesPackage" value="com.gionee.gniflow.biz.model" />
+  </bean>
+
+  <bean id="gniflowMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<property name="basePackage" value="com.gionee.gniflow.integration.dao,com.gionee.devtool.integration.dao,com.gionee.auth.dao,com.gionee.gnif.integration.dao,com.gionee.gnif.dao" />
+	<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+  </bean>
+
+  <bean id="mailDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${mail.jdbc.driverClassName}" />
+    <property name="url" value="${mail.jdbc.url}" />
+    <property name="username" value="${mail.jdbc.username}" />
+    <property name="password" value="${mail.jdbc.password}" />
+  </bean>
+
+  <bean id="mailSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="mailDataSource" />
+  </bean>
+
+  <bean id="mailMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<property name="basePackage" value="com.gionee.gnif.mail.integration.dao" />
+	<property name="sqlSessionFactoryBeanName" value="mailSqlSessionFactory"/>
+  </bean>
+  <!--  
+  <bean id="mailSender" class="com.gionee.gnif.mail.biz.model.MailSender" />
+  -->
+  <!-- SpringToos -->
+  <bean id="springTools" class="com.gionee.gniflow.web.util.SpringTools"/>
+  
+  <bean id="gnifConfig" class="com.gionee.gnif.GnifConfig">
+    <property name="databaseSchemaUpdate" value="true" />
+	<property name="environment" value="TEST" />
+  </bean>
+
+  <bean id="devTool" class="com.gionee.devtool.DevToolConfig">
+    <property name="modelType" value="business" />
+	<property name="codeBasePackage" value="com.gionee.gniflow" />
+  </bean>
+
+  <bean class="com.gionee.auth.AuthConfig">
+    <property name="databaseSchemaUpdate" value="true" />
+	<property name="environment" value="TEST" />
+  </bean>
+
+  <!-- 获取用户详细信息 -->
+  <bean class="com.gionee.gnif.biz.domain.AccountManager">
+  	<property name="uaamUrl" value="${uaam.url}"></property>
+  	<property name="authCode" value="${app.authCode}"></property>
+  </bean>
+  
+  <bean id="idGenerator" class="com.gionee.gnif.util.impl.DatabaseIDGenerator"/>
+  
+  <bean id="organizationManager" class="com.gionee.gnif.biz.domain.OrganizationManager"/>
+ 
+  <!-- <import resource="spring-quartz.xml"/> -->
+  <!-- 文件上传服务 -->
+  <bean id="ossApiUpload" class="com.gionee.oss.api.transmit.impl.DefaultUpload">
+        <property name="chunkSize" value="52428800"/>
+    </bean>
+  <bean id="ossApiDownload" class="com.gionee.oss.api.transmit.impl.DefaultDownload"/>
+  <bean id="ossApiCommonFileService" class="com.gionee.oss.api.transmit.impl.DefaultCommonFileServiceImpl"/>
+  <bean id="ossClient" class="com.gionee.oss.api.client.impl.OssClient" init-method="initURL">
+      <property name="download" ref="ossApiDownload"/>
+      <property name="upload" ref="ossApiUpload"/>
+      <property name="commonFileService" ref="ossApiCommonFileService"/>
+
+      <property name="key" value="${oss.key}"/>
+      <property name="code" value="${oss.code}"/>
+      <property name="serverUrl" value="${oss.serverUrl}"/>
+  </bean>
+</beans>

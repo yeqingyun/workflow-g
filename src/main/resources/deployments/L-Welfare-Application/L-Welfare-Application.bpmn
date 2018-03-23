@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="239">
+  <process id="L-Welfare-Application" name="福利申请流程" isExecutable="true">
+    <startEvent id="startevent1" name="start" activiti:initiator="applyUserId"></startEvent>
+    <endEvent id="endevent1" name="end"></endEvent>
+    <userTask id="PaymentLeaderAudiTask" name="薪酬经理" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;薪酬经理&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow8" sourceRef="PaymentLeaderAudiTask" targetRef="endevent1"></sequenceFlow>
+    <userTask id="UpdateWelfareApplication" name="修改申请" activiti:assignee="${applyUserId}"></userTask>
+    <userTask id="MeritPayLeaderAudiTask" name="绩效薪酬总监审核" default="flow10" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;绩效薪酬总监审核&quot;,execution)}"></userTask>
+    <sequenceFlow id="flow9" sourceRef="startevent1" targetRef="MeritPayLeaderAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="MeritPayLeaderAudiTask" targetRef="PaymentLeaderAudiTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${MeritPayLeaderAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="MeritPayLeaderAudiTask" targetRef="UpdateWelfareApplication">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${MeritPayLeaderAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="UpdateWelfareApplication" targetRef="MeritPayLeaderAudiTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Welfare-Application">
+    <bpmndi:BPMNPlane bpmnElement="L-Welfare-Application" id="BPMNPlane_L-Welfare-Application">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="630.0" y="80.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PaymentLeaderAudiTask" id="BPMNShape_PaymentLeaderAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UpdateWelfareApplication" id="BPMNShape_UpdateWelfareApplication">
+        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="170.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="MeritPayLeaderAudiTask" id="BPMNShape_MeritPayLeaderAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="249.0" y="70.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="555.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="630.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="75.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="354.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="301.0" y="125.0"></omgdi:waypoint>
+        <omgdi:waypoint x="301.0" y="170.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="249.0" y="197.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="196.0"></omgdi:waypoint>
+        <omgdi:waypoint x="212.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="249.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

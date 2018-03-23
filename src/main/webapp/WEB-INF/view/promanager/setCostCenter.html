@@ -1,0 +1,224 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap;padding-left:12px;">工厂：</td>
+		    			<td> 
+		    			 	<input id="factory-${rand}" type="text" class="easyui-textbox" style="width:150px;" name="factory"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap;padding-left:12px;">成本中心：</td>
+		   				<td> 
+    			 			<input id="code-${rand}" type="text" class="easyui-textbox" style="width:150px;" name="code"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">名称：</td>
+		   				<td width="200">
+		   				 	<input id="name-${rand}" style="width:150px;" class="easyui-textbox" type="text" name="name"/>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="monitorTaskGrid-${rand}"></div>
+	</div>
+ </div>
+ 
+ <div id="updateCostCenterDialog${rand}" style="width:350px;height:250px;" >  
+	<div style="padding: 26.5px 35px;">
+		<table border="0" >
+			<tr>
+				<td class="formtable_td_key">工厂：</td>
+				<td class="formtable_td_value">
+					<input id="updateFactory${rand}" class="easyui-validatebox"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">成本中心：</td>
+				<td class="formtable_td_value">
+					<input id="updateCostCenter${rand}" class="easyui-validatebox"  readonly="readonly"/>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">名称：</td>
+				<td class="formtable_td_value">
+					<input id="updateCostName${rand}" class="easyui-validatebox"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+ 
+ <script type="text/javascript">
+$('#monitorTaskGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'hrFlow/getAllCostCenter.json',
+  columns:[[
+    {checkbox:true},
+  	{field:'factory',title:'工厂',width:100,align:'center'},
+  	{field:'code',title:'成本中心',width:100,align:'center'},
+  	{field:'name',title:'名称',width:100,align:'center'},
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:false,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar: [{
+	text : '添加',
+	iconCls: 'icon-add',
+	handler: saveCostCenterPage${rand}
+  },{
+	  text:'编辑',
+	  iconCls:'icon-edit',
+	  handler:updateCostCenter${rand}
+  },{
+	  text:'删除',
+	  iconCls:'icon-remove',
+	  handler:deleteCostCenter${rand}
+  }]
+  //onDblClickRow:function(rowIndex, rowData){
+	//	 viewHisProcss${rand}();
+	  //}
+});
+
+function saveCostCenterPage${rand}(){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '添加成本中心',
+	    width: 300,
+	    height: 250,
+	    closed: false,
+	    cache: false,
+	    maximizable:true,
+	    style:"padding:10px",
+	    href: 'promanager/saveCostCenterPage.html',
+	    modal: true,
+	    resizable:false,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    	$('#monitorTaskGrid-${rand}').datagrid('reload');
+	    }
+	});
+}
+
+//编辑成本中心
+function updateCostCenter${rand}(){
+	var rows=$('#monitorTaskGrid-${rand}').datagrid('getSelections');
+	if(rows.length==0 || rows.length > 1){
+		$.messager.alert('信息提示','只可选择一条记录!','warning');
+		return ;
+	}
+	$.parser.parse($('#updateCostCenterDialog${rand}'));
+	$("#updateCostCenterDialog${rand}").dialog("open");
+	var row=rows[0];
+	$('#updateFactory${rand}').val(row.factory);
+	$('#updateCostCenter${rand}').val(row.code);
+	$('#updateCostName${rand}').val(row.name);
+}
+
+$('#updateCostCenterDialog${rand}').dialog({
+	modal:true, 
+	closed:true,
+	iconCls:'icon-update',
+	title:"编辑",
+	buttons: [{
+        text:'确认',
+        plain:true,
+        iconCls:'icon-ok',
+        handler: function(){
+        	var updateFactory=$('#updateFactory${rand}').val();
+        	var updateCostName=$('#updateCostName${rand}').val();
+        	if((updateFactory==null || updateFactory=='') || (updateCostName==null || updateCostName=='')){
+        		$.messager.alert('信息提示','工厂、名称不可为空！');
+        		return;
+        	}
+        	$.post('hrFlow/updateCostCenter.json',{
+        		factory:updateFactory,
+        		name:updateCostName,
+        		code:$('#updateCostCenter${rand}').val()
+        	},function(data){
+        		$.messager.alert('提示', data);
+        		$('#monitorTaskGrid-${rand}').datagrid('reload');
+        	},'json');
+        	
+       		$('#updateCostCenterDialog${rand}').dialog("close");
+        }
+    },{
+        text:'取消',
+        plain:true,
+        iconCls:'icon-cancel',
+        handler: function(){
+        	  $("#updateFactory${rand}").val('');
+           	  $("#updateCostName${rand}").val('');
+           	  $("#updateCostCenter${rand}").val('');
+           	  $('#updateCostCenterDialog${rand}').dialog("close");
+        }
+    }]
+});
+
+function deleteCostCenter${rand}(){
+	var rows=$('#monitorTaskGrid-${rand}').datagrid('getSelections');
+	if(rows.length==0){
+		$.messager.alert('信息提示','请至少选择一条记录!','warning');
+		return ;
+	}
+	var codes = [];
+	for(var i=0;i<rows.length;i++){
+		var row = rows[i];
+		codes.push(row.code);
+	}
+	codes=codes.join(",");
+	$.post('hrFlow/deleteCostCenter.json',{
+		codes:codes
+	},function(data){
+		$.messager.alert('提示', data);
+		$('#monitorTaskGrid-${rand}').datagrid('reload');
+	},'json');
+}
+//查询按钮
+/*$('#search_btn-${rand}').bind('click', function(){
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var proInstId = $('#proInstId-${rand}').val();
+	var proInstName = $('#proInstName-${rand}').val();
+	var startFinishTime = $('#startFinishTime-${rand}').val();
+	var endFinishTime = $('#endFinishTime-${rand}').val();
+	var engineerName = $('#engineerName-${rand}').val();
+
+	$('#monitorTaskGrid-${rand}').datagrid('reload',
+		{
+			startCreateTime_t:startCreateTime,
+			endCreateTime_t:endCreateTime,
+			proInstId:proInstId,
+			processInstanceName:proInstName,
+			startFinishTime_t:startFinishTime,
+			endFinishTime_t:endFinishTime,
+			engineerName:engineerName
+		});
+});*/
+
+//重置按钮
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$('#proInstId-${rand}').val('');
+	$('#proInstName-${rand}').val('');
+	$('#startFinishTime-${rand}').val('');
+	$('#endFinishTime-${rand}').val('');
+	$('#engineerName-${rand}').val('');
+});
+
+</script>
+<#include "/common/foot.ftl">

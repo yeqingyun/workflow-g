@@ -1,0 +1,551 @@
+<#include "/common/head.html">
+<!-- 展示表单  -->
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">信息数据申请</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >申请数据内容及范围</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["infoDataContents"]!""}</textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >数据用途</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["infoDataUse"]!""}</textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">申请人：</td>
+				<td class="formtable_td_value" >${steps.vars["applyUserName"]}</td>
+				<td class="formtable_td_key">申请时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]}</td>
+			</tr>		 
+					 
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>
+<!-- 表单修改情况  -->
+ <#if steps.key == 'nmb_updateInfoDataAudiTask'>
+			 <tr>
+				  <td colspan="6" class="formtable_td_key"  align="center">${steps.activityName}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >申请数据内容及范围</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["infoDataContents"]!""}</textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >数据用途</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["infoDataUse"]!""}</textarea></td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">申请人：</td>
+				<td class="formtable_td_value" >${steps.vars["applyUserName"]}</td>
+				<td class="formtable_td_key">申请时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]}</td>
+			</tr>		
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+					<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+					</#list>
+					</td>
+				</tr>
+			</#if>
+		</#if>	
+	   <!-- 部门经理审批 -->
+	   <#if steps.key == 'deptManagerAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">部门经理审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value">
+					<#if steps.vars["deptManagerAudi"] == '0'>同意</#if>
+					<#if steps.vars["deptManagerAudi"] == '1'>不同意</#if>
+				</td>
+				<td class="formtable_td_key">签名：</td>
+				<td class="formtable_td_value" >${steps.vars["deptManagerAudiName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" >${steps.vars["deptManagerAudiTime"]}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["deptManagerAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 项目部经理审批 -->
+	   <#if steps.key == 'mb_projectManagerAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">项目部经理审批</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["projectManagerAudi"] == '0'>同意</#if>
+					<#if steps.vars["projectManagerAudi"] == '1'>不同意</#if>
+				</td>
+				<td class="formtable_td_key">签名：</td>
+				<td class="formtable_td_value" >${steps.vars["projectManagerAudiName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" >${steps.vars["projectManagerAudiTime"]}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">
+					<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["projectManagerAudiAdvice"]!""}</textarea></td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 业务顾问导出数据 -->
+	   <#if steps.key == 'businessAdviserExportDataAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">业务顾问导出数据</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["businessAdviserExportDataAudi"] == '0'>同意</#if>
+					<#if steps.vars["businessAdviserExportDataAudi"] == '1'>不同意</#if>
+				</td>
+				<td class="formtable_td_key">签名：</td>
+				<td class="formtable_td_value" >${steps.vars["businessAdviserExportDataAudiName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" >${steps.vars["businessAdviserExportDataAudiTime"]}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["businessAdviserExportDataAudiAdvice"]!""}</textarea></td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 用户确认-->
+	   <#if steps.key == 'keyUserConfirmAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">用户确认</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >确认结果：</td>
+				<td class="formtable_td_value" colspan="5">
+				<textarea class="easyui-validatebox"   
+					style="font-size: 12px; width: 700px; height: 50px;" readonly="readonly" >${steps.vars["keyUserConfirmAudiAdvice"]!""}</textarea></td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">签名：</td>
+				<td class="formtable_td_value" >${steps.vars["keyUserConfirmAudiName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["keyUserConfirmAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	     	
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+ 		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">信息数据申请</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请数据内容及范围：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_infoDataContents" style="width: 700px; height: 100px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">数据用途：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_infoDataUse" style="width: 700px; height: 100px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!--修改申请-->
+<#if currentStep?exists> 
+	<#if currentStep == 'nmb_updateInfoDataAudiTask'>
+		<#if processSteps??> 
+     		<#list processSteps as steps> 
+      			<#if steps.key == 'startevent1'>
+		<div id="nmb_updateInfoDataAudiTask">
+			<form id="nmb_updateInfoDataAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="nmb_updateInfoDataAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">修改信息数据申请</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请数据内容及范围：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_infoDataContents" style="width: 700px; height: 100px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">数据用途：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_infoDataUse" style="width: 700px; height: 100px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+				</table>
+			</form>
+		</div>
+		</#if> 
+			</#list>
+		</#if> 
+	</#if> 
+</#if>
+<!-- 部门经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'deptManagerAudiTask'>
+		<div id="deptManagerAudiTask">
+		  <form id="deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">部门经理审批</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_deptManagerAudi" mobile="审批结果_同意" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input type="radio" name="fp_deptManagerAudi" mobile="审批结果_不同意"  value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px"mobile="备注"  name="fp_deptManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden"mobile="签名"  name="fp_deptManagerAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_deptManagerAudiTime" timeEditor="1" mobile="签名时间"  readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+
+<!-- 项目部经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_projectManagerAudiTask'>
+		<div id="mb_projectManagerAudiTask">
+		  <form id="mb_projectManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_projectManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">项目部经理审批</td>
+				</tr>
+				<tr id="checkResult${rand}">
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="checkResult0${rand}" type="radio" name="fp_projectManagerAudi" checked="checked" value="0" mobile="审批结果_同意" />同意&nbsp;&nbsp;
+							<input id="checkResult1${rand}" type="radio" name="fp_projectManagerAudi" value="1"  mobile="审批结果_不同意"/>不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_projectManagerAudiAdvice" class="formtable_remark" mobile="备注"></textarea>
+						</td>
+				</tr>
+				<tr id="moduleAdviser${rand}">
+		  	        <td class="formtable_td_key">选择数据导出人员：</td>
+				  	<td class="formtable_td_value" colspan="7">
+				  		 <input id="accepterTrainner${rand}" type="hidden" value="" name="fp_infoCancelPerson" style="width:80px"/>
+				  		 <input id="accepterNameTrainner${rand}" class="easyui-validatebox" name="fp_accepterNameTrainner" data-options="required:true"     readonly="readonly" selectUserUrl="bpmRole/users.json?id=57682"  relateFieldName="fp_projectManagerAudi"  addField="true"    relateShowFieldValue="0"   relateHideFieldValue="1" nextAssigneeAttrName="fp_infoCancelPerson"    mobile="选择数据导出人员"  />
+				  		 <a id="openOrgWinTrainnerBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" mobile="选择">选择</a>
+				  	</td>
+		  	  	</tr>
+				<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_projectManagerAudiName"  value="${appuser.name}" mobile="签名" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_projectManagerAudiTime" timeEditor="1" mobile="签名时间"  readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+		<!--  选择模组顾问-->
+<div id="orgWinTrainner-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserTrainnerEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserTrainnerWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersTrainner${rand}"></table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">	
+
+
+//选择测试人员
+//弹出选择选择测试人员窗口
+$('#openOrgWinTrainnerBtn${rand}').bind('click', function(){
+	$('#orgWinTrainner-${rand}').dialog('open');	
+});
+
+//init org win
+$(function(){
+	$("#checkResult0${rand}").bind("click",function(){
+		$("#moduleAdviser${rand}").show();
+		$("#accepterNameTrainner${rand}").validatebox({required:true});
+	});
+	var f=function(){
+		$("#moduleAdviser${rand}").hide();
+		$("#accepterNameTrainner${rand}").validatebox({required:false});
+	};
+	$("#checkResult1${rand}").bind("click",f);
+	
+   //init UserGrid 
+     $('#usersTrainner${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:57682
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  rownumbers:true
+	 
+	});
+	//init UserGrid 
+	  
+});
+
+//选择用户完成事件
+function selectUserTrainnerEnd(){
+	var row = $('#usersTrainner${rand}').datagrid('getSelected');
+	if (row) {
+	    $('#accepterTrainner${rand}').val(row.account);
+	    $('#accepterNameTrainner${rand}').val(row.name);
+	       		
+	    $('#accepterNameTrainner${rand}').validatebox('validate');
+	       		
+	    $('#orgWinTrainner-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+function  closeSelectUserTrainnerWin(){
+	$('#orgWinTrainner-${rand}').dialog('close');	
+}
+
+</script>	
+	</#if>
+</#if>
+<!-- 业务顾问导出数据 -->
+<#if currentStep?exists>
+	<#if currentStep == 'businessAdviserExportDataAudiTask'>
+		<div id="businessAdviserExportDataAudiTask">
+		  <form id="businessAdviserExportDataAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="businessAdviserExportDataAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">业务顾问导出数据</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio"  mobile="审批结果_同意" name="fp_businessAdviserExportDataAudi" checked="checked" value="0" />同意&nbsp;&nbsp;
+							<input type="radio"mobile="审批结果_不同意"   name="fp_businessAdviserExportDataAudi" value="1" />不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" mobile="备注"  name="fp_businessAdviserExportDataAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" mobile="签名"  name="fp_businessAdviserExportDataAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_businessAdviserExportDataAudiTime" timeEditor="1" mobile="签名时间"  readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 用户确认 -->
+<#if currentStep?exists>
+	<#if currentStep == 'keyUserConfirmAudiTask'>
+		<div id="keyUserConfirmAudiTask">
+		  <form id="keyUserConfirmAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="IkeyUserConfirmAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">用户确认</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >确认结果：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" mobile="确认结果"  name="fp_keyUserConfirmAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden"  mobile="签名"  name="fp_keyUserConfirmAudiName"  value="${appuser.name}" />
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_keyUserConfirmAudiTime" mobile="签名时间" timeEditor="1" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<#include "/common/foot.html">

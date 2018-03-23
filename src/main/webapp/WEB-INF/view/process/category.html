@@ -1,0 +1,130 @@
+<#include "/common/head.html">
+
+<table class="easyui-treegrid" id="dataarea-${rand}" data-options="fitColumns:true,idField:'id',treeField:'name',singleSelect:true,rownumbers:true,toolbar:[{text: '添加', handler: addCategory${rand}},{text: '修改', handler: modifyCategory${rand}},{text: '删除', handler: removeCategory${rand}}]" style="height:400px;" url="category/all.json">
+  <thead>
+	<tr>
+	  <th data-options="field:'name'">分类名称</th>
+	</tr>
+  </thead>
+</table>
+<div id="add-${rand}" class="easyui-dialog" style="width:300px;height:300px;padding:15px;" data-options="closed:true,iconCls:'icon-save',resizable:true,modal:true,buttons:[
+{text: '提交', handler: caddCategory${rand}}
+]
+">
+<form id="add-form-${rand}" method="post">
+  <input type="hidden" id="add-id-${rand}" name="id" />
+  <div>
+    <label class="fitem">上级分类</label>
+    <input class="easyui-combotree" id="add-pid-${rand}" type="text" name="pid" />
+  </div>
+  <div>
+    <label class="fitem">分类名称</label>
+    <input class="easyui-validatebox" id="add-name-${rand}" type="text" name="name" data-options="" />
+  </div>
+</form>
+</div>
+
+<div id="modify-${rand}" class="easyui-dialog" style="width:300px;height:300px;padding:15px;" data-options="closed:true,iconCls:'icon-save',resizable:true,modal:true,buttons:[
+{text: '提交', handler: cmodifyCategory${rand}}
+]
+">
+<form id="modify-form-${rand}" method="post">
+  <input type="hidden" id="modify-id-${rand}" name="id" />
+  <div>
+    <label class="fitem">上级分类</label>
+    <input class="easyui-combotree" id="modify-pid-${rand}" type="text" name="pid" />
+  </div>
+  <div>
+    <label class="fitem">分类名称</label>
+    <input class="easyui-validatebox" id="modify-name-${rand}" type="text" name="name" data-options="" />
+  </div>
+</form>
+</div>
+
+<form id="remove-form-${rand}" method="post"></form>
+
+<script type="text/javascript">
+
+function addCategory${rand}() {
+  $('#add-form-${rand}').form('clear');
+  $('#add-pid-${rand}').combotree({
+	url:"category/trees.json"
+  });
+  $('#add-${rand}').dialog('open');
+}
+
+function modifyCategory${rand}() {
+  if ($('#dataarea-${rand}').treegrid('getSelected')) {
+	$('#modify-pid-${rand}').combotree({
+	  url:"category/trees.json"
+	});
+    $('#modify-form-${rand}').form('load', 'category/get.json?id=' + $('#dataarea-${rand}').treegrid('getSelected').id);
+    $('#modify-${rand}').dialog('open');
+  }
+  else {
+    alert("请选择要修改的内容");
+  }
+}
+
+function findCategory${rand}() {
+  $('#dataarea-${rand}').treegrid('load',{
+    code_s: $('#search-code-${rand}').val(),
+    name_s: $('#search-name-${rand}').val()
+  });
+}
+
+function caddCategory${rand}() {
+  $('#add-form-${rand}').form('submit', {
+    url: 'category/add.json',
+    success: function(data) {
+      var data = eval('(' + data + ')');
+      alert(data.message);
+      if (data.success) {
+        $('#add-${rand}').dialog('close');
+        $('#dataarea-${rand}').treegrid('reload');
+      }
+    }
+  });
+}
+
+function cmodifyCategory${rand}() {
+  $('#modify-form-${rand}').form('submit', {
+    url: 'category/modify.json',
+    success: function(data) {
+      var data = eval('(' + data + ')');
+      alert(data.message);
+      if (data.success) {
+        $('#modify-${rand}').dialog('close');
+        $('#dataarea-${rand}').treegrid('reload');
+      }
+    }
+  });
+}
+
+function removeCategory${rand}() {
+  $('#remove-form-${rand}').form('submit', {
+    url: 'category/remove.json',
+    onSubmit: function(param) {
+      var ids = new Array();
+      $.each($('#dataarea-${rand}').treegrid('getSelections'), function(i, d) {
+        ids.push(d.id);
+      });
+      if (ids.length == 0) {
+        alert("请选框选择要删除的内容");
+        return false;
+      }
+      param.ids = ids;
+    },
+    success: function(data) {
+      var data = eval('(' + data + ')');
+      alert(data.message);
+      if (data.success) {
+        $('#modify-${rand}').dialog('close');
+        $('#dataarea-${rand}').treegrid('reload');
+      }
+    }
+  });   
+}
+
+</script>
+<#include "/common/foot.html">

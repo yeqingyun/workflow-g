@@ -1,0 +1,314 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:65px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">流程定义名称：</td>
+		    			<td> 
+		    			 	<input id="processName-${rand}" type="text" class="easyui-"  name="processName" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">流程定义的Key：</td>
+		   				<td> 
+    			 			<input id="processDefKey-${rand}" type="text" class="easyui-"  name="processDefKey" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">所属范围：</td>
+		   				<td> 
+    			 			<input id="dcategoryId-${rand}" type="text" class="easyui-"  name="categoryId" />
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		 				<td align="left" style="white-space:nowrap">是否在手机端审批:</td>
+						<td >
+						<input id="canShowInMobile-${rand}" type="text" class="easyui-combobox" name="canShowInMobile" 
+							data-options="
+				    			valueField: 'label',
+			            		textField: 'value',
+					            data: [{
+								  	label: '1',
+							 		value: '可以'
+							    	},{
+									label: '2',
+									value: '不可以'
+					    		}]" 
+					    	>
+				    	</td>
+		   				<td align="right" style="white-space:nowrap">是否可重复发起：</td>
+		    			<td > 
+		    			<input id="canRepeat-${rand}" type="text" class="easyui-combobox"  name="canRepeat" 
+		    			data-options="
+		    				valueField: 'label',
+	            			textField: 'value',
+					    	data: [{
+							  	label: '1',
+						 		value: '可以'
+						    	},{
+								label: '2',
+								value: '不可以'
+					    	}]"
+		    			/>
+		   				</td>
+		 				<td align="left" style="white-space:nowrap">是否可用:</td>
+						<td >
+						<input id="status-${rand}" type="text" class="easyui-combobox" name="status" 
+							data-options="
+				    			valueField: 'label',
+			            		textField: 'value',
+					            data: [{
+								  	label: '0',
+							 		value: '可以'
+							    	},{
+									label: '-1',
+									value: '不可以'
+					    		}]" 
+					    	>
+				    	</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="confProcessGrid-${rand}"></div>
+	</div>
+ </div>
+
+<div id="process${rand}">
+	<div  style="padding:10px 10px;">
+		<form id="addProcessForm${rand}" method="post">
+			<table>
+				<tr>
+					<td width="120" align="right" >流程定义名称:</td>
+					<td><input class="easyui-validatebox " data-options="required:true" type="text" name="processName" style="width:200px;" readonly="readonly" disabled="disabled"/></td>
+					<td width="120" align="right" >流程定义的Key:</td>
+					<td><input class="easyui-validatebox " name="processDefKey" type="text" data-options="required:true" style="width:200px;" readonly="readonly" disabled="disabled"></td>
+					<td><input  type="hidden" name="id" /></td>
+				</tr>
+				<tr>
+					<td width="120" align="right" >序号:</td>
+					<td><input class="easyui-validatebox " data-options="required:true" type="text" name="sort" style="width:200px;"/></td>
+					<td width="120" align="right" >是否可重复发起:</td>
+					<td colspan="2"><input class="easyui-combobox" name="canRepeat" data-options="
+		    			valueField: 'label',
+	            		textField: 'value',
+	            		required: 'true',
+			            data: [{
+						  	label: '1',
+					 		value: '可以'
+					    	},{
+							label: '2',
+							value: '不可以'
+			    		}]" style="width:200px;">
+			    	</td>
+				</tr>
+				<tr>
+					<td width="120" align="right" >所属范围:</td>
+					<td><input class="easyui-validatebox " name="categoryId" data-options="required:true" type="text" style="width:200px;"></td>
+					<td width="120" align="right" >是否在手机端审批:</td>
+					<td colspan="2"><input class="easyui-combobox" name="canShowInMobile" data-options="
+		    			valueField: 'label',
+	            		textField: 'value',
+	            		required: 'true',
+			            data: [{
+						  	label: '1',
+					 		value: '可以'
+					    	},{
+							label: '2',
+							value: '不可以'
+			    		}]" style="width:200px;">
+			    	</td>
+				</tr>
+				<tr>
+					<td width="120" align="right" >是否可用:</td>
+					<td colspan="2"><input class="easyui-combobox" name="status" data-options="
+		    			valueField: 'label',
+	            		textField: 'value',
+	            		required: 'true',
+			            data: [{
+						  	label: '0',
+					 		value: '可以'
+					    	},{
+							label: '-1',
+							value: '不可以'
+			    		}]" style="width:200px;">
+			    	</td>
+				</tr>
+				<tr>
+					<td width="120" align="right" >权限人群:</td>
+					<td colspan="3">
+						<textarea class="easyui-validatebox" name="permissionCrowd" style="width: 550px; height: 120px"></textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$('#confProcessGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'bpmProcessConf/loadAllProcessConf.json',
+  columns:[[
+	{field:'id',title:'编号',checkbox:true,width:150},
+	{field:'processName',title:'流程定义名称',width:150},
+	{field:'processDefKey',title:'流程定义的Key',width:100},
+	{field:'sort',title:'序号',width:100},
+	{field:'categoryId',title:'所属范围',width:100},
+	{field:'status',title:'是否可用',width:100,
+		formatter: function(value,row,index){
+			if (value == 0){
+				return '可以';
+			} else if(value == -1){
+				return '不可以';
+			}
+		}
+	},
+	{field:'canRepeat',title:'是否可重复发起',width:100,
+		formatter: function(value,row,index){
+			if (value == 1){
+				return '可以';
+			} else if(value == 2){
+				return '不可以';
+			}
+		}
+	},
+	{field:'canShowInMobile',title:'是否可在手机端处理',width:100,
+		formatter: function(value,row,index){
+			if (value == 1){
+				return '可以';
+			} else if(value == 2){
+				return '不可以';
+			}
+		}
+	},
+	{field:'permissionCrowd',title:'权限人群',width:100}
+  ]],
+  nowrap: true,
+  pagination:true,
+  pageNumber:1,
+  pageSize:20,
+  fit : true,
+  singleSelect:true,
+  border : true,
+  rownumbers:true,
+  toolbar: [{
+	text:'编辑',
+	iconCls: 'icon-edit',
+	handler:editDictionary${rand}
+  }]
+});
+
+
+
+function saveDictionary${rand}(){
+	$('#addProcessForm${rand}').form('submit',{
+			url: "bpmProcessConf/saveProcessConf.html",
+		    onSubmit: function(){
+		        return $(this).form('validate');
+		    },
+		    success: function(result){
+		        var result = eval('('+result+')');
+		        if (!result.success){
+		            $.messager.show({
+		                title: 'Error',
+		                msg: result.msg
+		            });
+		        } else {
+		            $('#process${rand}').dialog('close');
+		            $('#confProcessGrid-${rand}').datagrid('reload');
+		            $.messager.show({
+		                title: '信息提示',
+		                msg: result.msg
+		            });
+		        }
+		    }
+	});
+}
+//edit
+function editDictionary${rand}(){
+	var row = $('#confProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+	createDialog();
+	$('#addProcessForm${rand}').form('load',row);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+function createDialog(){
+	var win = $('#process${rand}').dialog({
+		title: '编辑流程配置',
+		collapsible:false,
+		width: 800,
+		height: 500,
+		maximizable:true,
+		resizable:true,
+		closed: false,
+		cache: false,
+		modal: true,
+		buttons:[{
+			text : '保存',    
+			iconCls:'icon-save',    
+			handler:function(){
+				saveDictionary${rand}();
+			}    
+		},{    
+			text:'重置',
+			iconCls:'icon-undo',    
+			handler:function(){
+				$('#addProcessForm${rand}').form('clear');
+			}    
+		}],
+		onClose : function(){
+			$('#addProcessForm${rand}').form('clear');
+		}
+	});
+	return win;
+}
+
+//refresh
+function refreshDictionary${rand}(){
+	$('#confProcessGrid-${rand}').datagrid('reload');
+}
+
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+    var processName = $('#processName-${rand}').val();
+	var processDefKey = $('#processDefKey-${rand}').val();
+	var status = $('#status-${rand}').combobox("getValue");
+	var categoryId = $('#categoryId-${rand}').val(); 
+	var canRepeat = $('#canRepeat-${rand}').combobox("getValue");
+	var canShowInMobile = $('#canShowInMobile-${rand}').combobox("getValue");
+
+	$('#confProcessGrid-${rand}').datagrid('reload',
+		{
+			processName:processName,
+			processDefKey:processDefKey,
+			status:status,
+			categoryId:categoryId,
+			canRepeat:canRepeat,
+			canShowInMobile:canShowInMobile
+		});
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#processName-${rand}').val('');
+	$('#processDefKey-${rand}').val('');
+	$('#categoryId-${rand}').val('');
+	$('#canRepeat-${rand}').val('');
+	$('#canRepeat-${rand}').combobox("setValue","");
+	$('#canShowInMobile-${rand}').val('');
+	$('#canShowInMobile-${rand}').combobox("setValue","");
+	$('#status-${rand}').val('');
+	$('#status-${rand}').combobox("setValue","");
+	
+	
+});
+</script>
+<#include "/common/foot.ftl">

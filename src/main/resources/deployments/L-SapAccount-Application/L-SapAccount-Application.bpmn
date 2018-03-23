@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="135">
+  <process id="L-SapAccount-Application" name="SAP账号申请" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="deptLeader" name="部门经理审核" default="flow10" activiti:assignee="${processHelpService.getOrgMaster(applyUserId)}"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="deptLeader">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.LSapAccountApplication.StartLSapAccountApplicationListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="finaceMultiInstTask" name="财务审核" activiti:assignee="${assignee}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(assignee)}" activiti:elementVariable="assignee"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <userTask id="mb_sapLeader" name="SAP项目负责人审核" activiti:assignee="${bpmConfProcessRoleService.getSpecialRoleMaster(&quot;SAP项目负责人审核&quot;,execution)}"></userTask>
+    <userTask id="mb_moduleAdviser" name="模组顾问填写授权角色 " activiti:assignee="${moduleassignee}"></userTask>
+    <userTask id="createAccount" name="创建帐号及维护权限" default="flow14" activiti:assignee="${accountassignee}"></userTask>
+    <sequenceFlow id="flow5" name="同意" sourceRef="exclusivegateway3" targetRef="createAccount">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isModuleAdviserAgree=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow7" sourceRef="finaceMultiInstTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow8" name="同意" sourceRef="exclusivegateway1" targetRef="mb_sapLeader">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${processHelpService.muliInstanceIsCompleted(execution,assignee) =='true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="n_flow9" name="不同意" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${processHelpService.muliInstanceIsCompleted(execution,assignee) =='false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" name="同意" sourceRef="deptLeader" targetRef="finaceMultiInstTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isDeptLeaderPass=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="n_flow11" name="不同意" sourceRef="deptLeader" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isDeptLeaderPass=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow12" sourceRef="mb_sapLeader" targetRef="exclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow13" name="同意" sourceRef="exclusivegateway2" targetRef="mb_moduleAdviser">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isSapLeaderPass=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="n_flow14" name="不同意" sourceRef="exclusivegateway2" targetRef="nmb_updateAccountApplicationTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isSapLeaderPass=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="keyUserConfirm" name="关键用户确认" default="flow15" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow14" name="同意" sourceRef="createAccount" targetRef="keyUserConfirm">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.LastProListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isCreateAccountAgree=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow15" name="同意" sourceRef="keyUserConfirm" targetRef="endevent1">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.CheckProListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isKeyUserAgree=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="n_flow16" name="不同意" sourceRef="exclusivegateway3" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isModuleAdviserAgree=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow17" name="不同意" sourceRef="keyUserConfirm" targetRef="mb_moduleAdviser">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.CheckProListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isKeyUserAgree=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow18" name="不同意" sourceRef="createAccount" targetRef="mb_moduleAdviser">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isCreateAccountAgree=='2'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="nmb_updateAccountApplicationTask" name="修改申请" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow19" sourceRef="nmb_updateAccountApplicationTask" targetRef="deptLeader">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.LSapAccountApplication.UpdateLSapAccountApplicationListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow20" sourceRef="mb_moduleAdviser" targetRef="exclusivegateway3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-SapAccount-Application">
+    <bpmndi:BPMNPlane bpmnElement="L-SapAccount-Application" id="BPMNPlane_L-SapAccount-Application">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="221.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="deptLeader" id="BPMNShape_deptLeader">
+        <omgdc:Bounds height="55.0" width="105.0" x="149.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="finaceMultiInstTask" id="BPMNShape_finaceMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="300.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_sapLeader" id="BPMNShape_mb_sapLeader">
+        <omgdc:Bounds height="55.0" width="116.0" x="440.0" y="211.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_moduleAdviser" id="BPMNShape_mb_moduleAdviser">
+        <omgdc:Bounds height="55.0" width="141.0" x="584.0" y="76.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="createAccount" id="BPMNShape_createAccount">
+        <omgdc:Bounds height="55.0" width="123.0" x="729.0" y="162.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="773.0" y="370.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="332.0" y="301.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway2" id="BPMNShape_exclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="477.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="keyUserConfirm" id="BPMNShape_keyUserConfirm">
+        <omgdc:Bounds height="55.0" width="105.0" x="738.0" y="259.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_updateAccountApplicationTask" id="BPMNShape_nmb_updateAccountApplicationTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="149.0" y="76.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway3" id="BPMNShape_exclusivegateway3">
+        <omgdc:Bounds height="40.0" width="40.0" x="770.0" y="83.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="149.0" y="238.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="790.0" y="123.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="162.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="800.0" y="123.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="352.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="301.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="372.0" y="321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="497.0" y="321.0"></omgdi:waypoint>
+        <omgdi:waypoint x="498.0" y="266.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="389.0" y="302.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="n_flow9" id="BPMNEdge_n_flow9">
+        <omgdi:waypoint x="352.0" y="341.0"></omgdi:waypoint>
+        <omgdi:waypoint x="352.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="773.0" y="387.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="361.0" y="349.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="254.0" y="238.0"></omgdi:waypoint>
+        <omgdi:waypoint x="300.0" y="238.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="260.0" y="238.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="n_flow11" id="BPMNEdge_n_flow11">
+        <omgdi:waypoint x="201.0" y="266.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="773.0" y="387.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="209.0" y="341.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="498.0" y="211.0"></omgdi:waypoint>
+        <omgdi:waypoint x="497.0" y="123.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="517.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="584.0" y="103.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="516.0" y="86.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="n_flow14" id="BPMNEdge_n_flow14">
+        <omgdi:waypoint x="477.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="254.0" y="103.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="391.0" y="86.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="790.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="259.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="799.0" y="220.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="790.0" y="314.0"></omgdi:waypoint>
+        <omgdi:waypoint x="790.0" y="370.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="800.0" y="314.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="n_flow16" id="BPMNEdge_n_flow16">
+        <omgdi:waypoint x="810.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="914.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="914.0" y="387.0"></omgdi:waypoint>
+        <omgdi:waypoint x="808.0" y="387.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="821.0" y="86.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="738.0" y="286.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="286.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="131.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="690.0" y="270.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="729.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="189.0"></omgdi:waypoint>
+        <omgdi:waypoint x="654.0" y="131.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="675.0" y="168.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="201.0" y="131.0"></omgdi:waypoint>
+        <omgdi:waypoint x="201.0" y="211.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="725.0" y="103.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="103.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,1 @@
+INSERT INTO auth_resource (id, pid, type, name, code, index_, action, url, icon, status, remark, create_by, create_time, update_by, update_time) VALUES ('33', '5', '1', '” º˛ƒ£∞Â≈‰÷√', '', '1', '', 'processEmailConf/confEmailTemplate.html', 'icon-joinprocess', '0', NULL, 'ali', '2014-12-25 14:37:37.000', 'ali', '2014-12-25 14:37:50.000');

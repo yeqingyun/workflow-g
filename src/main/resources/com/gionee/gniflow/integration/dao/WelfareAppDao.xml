@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.WelfareAppDao">
+  
+   <select id="weddingIsRepeat" resultType="int" parameterType="java.util.Map">
+         select count(1) from (SELECT b.proc_inst_id_ as pid, dbms_lob.substr(b.text_,4000)as deadRelation  FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+	     and hi.proc_def_id_ like '%'||'M-Welfare-Application'||'%'
+	     and b.name_='staffNumber'
+	     and dbms_lob.substr(b.text_,4000)=#{account}) a,
+	    (SELECT b.proc_inst_id_ as pid,dbms_lob.substr(b.text_,4000) as reqChannels FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+	    and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+	    and b.name_='reqChannels'
+        and dbms_lob.substr(b.text_,4000)=#{number})b where a.pid=b.pid
+   </select>
+   <select id="birthIsRepeat" resultType="int" parameterType="java.util.Map">
+         select count(1) from (SELECT b.proc_inst_id_ as pid, dbms_lob.substr(b.text_,4000)as deadRelation  FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+	     and hi.proc_def_id_ like '%'||'M-Welfare-Application'||'%'
+	     and b.name_='applyUserAccount'
+	     and dbms_lob.substr(b.text_,4000)=#{account}) a,
+	    (SELECT b.proc_inst_id_ as pid,dbms_lob.substr(b.text_,4000) as reqChannels FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+	    and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+	    and b.name_='reqChannels'
+        and dbms_lob.substr(b.text_,4000)=#{number})b where a.pid=b.pid
+   </select>
+   
+   
+    <select id="birthIsRepeatToAgain" resultType="java.util.Date" parameterType="java.util.Map">
+           select max(c.appdate) from (SELECT b.proc_inst_id_ as pid, dbms_lob.substr(b.text_,4000)as deadRelation  FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+       and hi.proc_def_id_ like '%'||'M-Welfare-Application'||'%'
+       and b.name_='applyUserAccount'
+       and dbms_lob.substr(b.text_,4000)=#{account}) a,
+      (SELECT b.proc_inst_id_ as pid,dbms_lob.substr(b.text_,4000) as reqChannels FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+      and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+      and b.name_='reqChannels'
+        and dbms_lob.substr(b.text_,4000)=#{number})b, 
+        (SELECT c.proc_inst_id_ as pid,dbms_lob.substr(c.text_,4000) as appDate FROM act_hi_procinst hi,ACT_HI_VARINST c where hi.proc_inst_id_=c.proc_inst_id_ 
+      and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+      and c.name_='applyDate')c,bpm_process_run run
+        where a.pid=b.pid and a.pid=c.pid and a.pid=run.process_inst_id and run.status <![CDATA[ <>]]>5
+      <!--   <![CDATA[   and  to_date(c.appdate,'yyyy-mm-dd hh24:mi:ss') <= add_months(sysdate,-6)]]> -->
+   </select>
+    <select id="weddingIsRepeatToAgain" resultType="java.util.Date" parameterType="java.util.Map">
+         select max(c.appdate) from (SELECT b.proc_inst_id_ as pid, dbms_lob.substr(b.text_,4000)as deadRelation  FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+       and hi.proc_def_id_ like '%'||'M-Welfare-Application'||'%'
+       and b.name_='staffNumber'
+       and dbms_lob.substr(b.text_,4000)=#{account}) a,
+      (SELECT b.proc_inst_id_ as pid,dbms_lob.substr(b.text_,4000) as reqChannels FROM act_hi_procinst hi,ACT_HI_VARINST b where hi.proc_inst_id_=b.proc_inst_id_ 
+      and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+      and b.name_='reqChannels'
+        and dbms_lob.substr(b.text_,4000)=#{number})b,
+         (SELECT c.proc_inst_id_ as pid,dbms_lob.substr(c.text_,4000) as appDate FROM act_hi_procinst hi,ACT_HI_VARINST c where hi.proc_inst_id_=c.proc_inst_id_ 
+      and hi.proc_def_id_ like  '%'||'M-Welfare-Application'||'%'
+      and c.name_='applyDate')c,bpm_process_run run
+        where a.pid=b.pid and a.pid=c.pid and a.pid=run.process_inst_id and run.status <![CDATA[ <>]]>5
+        
+        <!-- <![CDATA[ and to_date(c.appdate,'yyyy-mm-dd hh24:mi:ss') <= add_months(sysdate,-6) ]]> -->
+   </select>
+</mapper>

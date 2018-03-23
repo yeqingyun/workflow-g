@@ -1,0 +1,415 @@
+<#include "/common/head.html">
+<!-- 历史流程 -->
+<div title="历史信息" style="background-color: #f5f5f5;" >
+<#if processSteps??>
+	<#list processSteps as step>
+		<table class="formtable" cellspacing="1" cellpadding="0" style="background:gray; ">
+		<#if step.key=='startevent1'>
+			<tr>
+	  	  		<td class="formtable_td_key">流程实例名称：</td>
+	  	  		<td class="formtable_td_value" colspan="3">${(step.vars["processName"])!""}</td>
+	  	  	</tr>
+	  	  	<tr>
+				<td class="formtable_td_key">日期:</td>
+				<td class="formtable_td_value"  colspan="3">
+					${(step.vars["${current_param_date}"])!""}
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">收件人邮箱:</td>
+				<td class="formtable_td_value"  colspan="3">
+					供应商名称:${(step.vars["supplierName"])!""}
+					邮箱:${(step.vars["toemail"])!""} <font style="color: red;" ><strong id="isSafeMail-${rand}"></strong></font>
+					名称:${(step.vars["toName"])!""}
+					物料类型:${(step.vars["supplierCategory"])!""}
+					<script type="text/javascript">
+						$.get("${base}/crossdomain/isSafeEmail",{email : '${(step.vars["toemail"])!""}'},
+								function(data){
+									if(!data.ajaxJson.success){
+										$("#isSafeMail-${rand}").html("(邮箱不在供应商名单内!!!)")
+									}
+									//else{
+									//	$("#isSafeMail-${rand}").val("(邮箱在供应商名单内!!!)")
+									//}
+								})
+					</script>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">抄送邮箱<分号隔开>:</td>
+				<td class="formtable_td_value"  colspan="3">
+					${(step.vars["ccs"])!""}
+				</td>
+			</tr>
+	  	  	<tr>
+	  	  		<td class="formtable_td_key">主题:</td>
+	  	  		<td class="formtable_td_value"  colspan="3">
+	  	  			${(step.vars["subject"])!""}
+	  	  		</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<td class="formtable_td_key">文件<分号隔开>:</td>
+	  	  		<td class="formtable_td_value"  colspan="3">
+	  	  		<textarea name="fp_filePaths" class="easyui-validatebox" readonly="readonly" style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true">
+	  	  			${(step.vars["dispFilePaths"])!""}
+	  	  		</textarea>
+	  	  			
+	  	  		</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<td class="formtable_td_key">内容:</td>
+		  	  	<td class="formtable_td_value" colspan="3">
+					${(step.vars["content"])!""}
+				</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<td class="formtable_td_key">描述:</td>
+		  	  	<td class="formtable_td_value" colspan="3">
+					${(step.vars["sendDescribe"])!""}
+				</td>
+	  	  	</tr>
+	  	  	<tr>
+	  	  		<td class="formtable_td_key">选择审核人:</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+			  	  		${(step.vars["assignName"])!""}
+			  	  	</td>
+	  	  	</tr>
+		</#if>
+		<#if step.key=='usertask1'>
+			<tr>
+		  	  	<td class="formtable_td_key">是否发送:</td>
+	  	  		<td class="formtable_td_value"  colspan="3">
+	  	  			<#if step.vars["IsPass"]=='1'>
+	  	  				已审核发送
+	  	  			</#if>
+	  	  			<#if step.vars["IsPass"]=='2'>
+	  	  				已审核不发送
+	  	  			</#if>
+	  	  		</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">签字人:</td>
+				<td class="formtable_td_value" colspan="3">
+				 	${(step.vars["Manager"])!""}
+				</td>
+			</tr>
+			<tr>
+	 	  		<td class="formtable_td_key">描述:</td>
+		  	  	<td class="formtable_td_value" colspan="3">
+					${(step.vars["summaryDescribe"])!""}
+				</td>
+	 	  	</tr>
+		</#if>
+		<#if step.key == 'usertask2'>
+				<td class="formtable_td_key">是否申请：</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<#if step.vars["IsModify"]=='1'>
+		  	  				修改申请
+		  	  			</#if>
+		  	  			<#if step.vars["IsModify"]=='2'>
+		  	  				不修改申请
+		  	  			</#if>
+		  	  		</td>
+			</#if>
+		</table>
+	</#list>
+</#if>
+</div>
+<!-- 当前流程 -->
+<#if currentStep?exists>
+	<!-- 提交申请    -->
+	<#if currentStep == 'startevent1'>
+	<div id="start">
+		<form id="startForm" method="post" enctype='multipart/form-data'>
+			<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				 <tr>
+		  	  		<td class="formtable_td_key">流程实例名称：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input id="processName${rand}" type="text" name="fp_processName"  style="width:400px"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+					<td class="formtable_td_key">日期:</td>
+					<td class="formtable_td_value"  colspan="3">
+						<input    class="easyui-validatebox" type="text" value="${current_param_date}"  name="fp_date" readonly="readonly" data-options="required:true"  /> 
+					</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">收件人信息:</td>
+					<td class="formtable_td_value"  colspan="3">
+						供应商名称:<input id="supplierName-${rand}" name="fp_supplierName"  class="easyui-validatebox" type="text"    />
+						邮箱:<input id="toemail-${rand}" onfocus="getEmail()" class="easyui-validatebox" type="text"  name="fp_toemail" data-options="required:true"  /> 
+						名称:<input id="toName-${rand}" name="fp_toName"  class="easyui-validatebox" type="text"  />
+						物料类型: <input id="category-${rand}" name="fp_supplierCategory"  class="easyui-validatebox" type="text"   />
+					</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">抄送邮箱<分号隔开>:</td>
+					<td class="formtable_td_value"  colspan="3">
+						<input    class="easyui-validatebox" type="text"  name="fp_ccs" data-options="required:false"  /> 
+					</td>
+				</tr>
+		  	  	<tr id="theme-${rand}">
+		  	  		<td class="formtable_td_key">主题:</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<input    class="easyui-validatebox" type="text"  name="fp_subject" data-options="required:true"  /> 
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">文件<分号隔开>:</td>
+		  	  		<td class="formtable_td_value"  colspan="3">
+		  	  			<a  class="easyui-linkbutton"  href="javascript:openAddFilesDialog()">添加文件</a>
+		  	  			<textarea name="fp_filePaths" id="filesArea--${rand}" class="easyui-validatebox" hidden="hidden" readonly="readonly" style="font-size: 12px; width: 800px; height: auto;" data-options="required:true"></textarea>
+		  	  			<textarea name="fp_dispFilePaths" id="dispFilesArea--${rand}" readonly="readonly" style="font-size: 12px; width: 800px; height: auto;"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" >内容:</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+						<textarea id="files" name="fp_content" class="easyui-validatebox" style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" >描述:</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+						<textarea name="fp_sendDescribe" class="easyui-validatebox" style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+					</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">审核人:</td>
+			  	  	<td class="formtable_td_value" colspan="3" id="assignName${rand}">
+			  	  	<!-- 
+			  	  		<input  id="assignName${rand}" readonly="readonly"  type="text" name="fp_assignName" data-options="required:true"/>
+			  	  		 -->
+			  	  		<input  id="assign${rand}" readonly="readonly" hidden="hidden"  type="text" name="fp_assign" data-options="required:true" />
+					</td>
+		  	  	</tr>
+		  	 </table>
+		</form>
+	</div>
+	<div class="easyui-dialog" id="addFiles-${rand}" data-options="width:500,height:250,title:'添加文件',closed:true,buttons:[{text:'完成',handler:completeAddFilesDialog}],toolbar:[{
+				text:'搜索',
+				iconCls:'icon-search',
+				handler:function(){openSearchFileDialog();}
+			}]">
+		<ul id="fileSelect-${rand}"></ul>
+		<script type="text/javascript">
+			
+		</script>
+	</div>
+	
+	<div class="easyui-dialog" id="searchFile-${rand}"  data-options="width:500,height:250,title:'搜索文件',closed:true,buttons:[{text:'添加',handler:addSearchFile},{text:'关闭',handler:completeSearchFileDialog}]">
+			<div style="padding-top:25px" align="center">
+				请输入文件名：<input class="easyui-combobox" id="files-${rand}"  data-options="valueField:'path',textField:'fileName',multiple:false,multiline:false,delay:600,keyHandler:{
+						up: function(e){},
+						down: function(e){},
+						left: function(e){},
+						right: function(e){},
+						enter: function(e){},
+						query: function(q,e){
+							if(q && q != '')
+							{
+								$('#files-${rand}').combobox('reload','${base}/crossdomain/searchFiles?page=1&rows=50&fileName='+q);
+								$('#files-${rand}').combobox('setValue',q);
+							}
+						}
+					}
+					"/>
+		</div>
+	</div>
+	
+	<div class="easyui-dialog" id="addEmail-${rand}" data-options="top:$('#theme-${rand}').offset().top,width:700,height:250,title:'选择收件人',closed:true">
+		<table id="emailSelect-${rand}"></table>
+	</div>
+	
+	<script type="text/javascript">	
+	
+	function addSearchFile(){
+		var path = $('#files-${rand}').combobox('getValue');
+		console.log("path="+path);
+		var text = $('#files-${rand}').combobox('getText');
+		console.log("text="+text);
+		if(!!path){
+			var origlPath = $("#filesArea--${rand}").val();
+			origlPath = origlPath + path + ";\n";
+			
+			console.log("origlPath="+origlPath);
+			$("#filesArea--${rand}").val(origlPath);
+			
+			var origilText = $('#dispFilesArea--${rand}').val();
+			origilText = origilText + text.split(":")[0].trim() + ";\n";
+			console.log("origilText="+origilText);
+			$('#dispFilesArea--${rand}').val(origilText);
+			
+			$('#files-${rand}').combobox('setText',"");
+		}
+	}
+	
+	function openSearchFileDialog(){
+		completeAddFilesDialog();
+		$('#searchFile-${rand}').dialog('open');
+	}
+	
+	function completeSearchFileDialog(){
+		$('#searchFile-${rand}').dialog('close');
+	}
+	
+	function getEmail(){
+		$('#addEmail-${rand}').dialog('open');
+		$('#emailSelect-${rand}').datagrid({
+		    url:'${base}/crossdomain/getEmailAddr',
+		    pageSize:6,
+		    pageList:[6,12,18],
+		    rownumbers:true,
+		    pagination:true,
+		    method:'get',
+		    autoRowHeight:true,
+		    fitColumns:true,
+		    columns:[[
+		        {field:'supplierName',title:'供应商名称',width:100},
+		        {field:'username',title:'联系人',width:100},
+		        {field:'email',title:'邮箱',width:100},
+		        {field:'category',title:'物料类型',width:100},
+		        {field:'operator',title:'选择',width:100,formatter: function(value,row,index){
+		   		 return '<a href="javascript:selectEmail(\''+row.username+'\',\''+row.email+'\')">选中</a>';  
+		    	}},
+		    ]]
+		});
+	}
+	
+	
+	function selectEmail(username,email){
+		$('#addEmail-${rand}').dialog('close');
+		$("#toemail-${rand}").val(email);
+		$("#toName-${rand}").val(username);
+	}
+	
+	
+	$(function(){
+		//界面通过接口加载个人信息
+		$.get("${base}/lead/queryDirectLead",{account : "${appuser.account}"},
+		function(data){
+			if(!data.ajaxJson.success){
+			}else{
+				$("#assign${rand}").val(data.ajaxJson.msg);
+				$.get("${base}/crossdomain/hrUser",{page : 1,rows:50,username:data.ajaxJson.msg},function(data){
+					var obj = eval('(' + data + ')');
+					$("#assignName${rand}").append(obj[0].username);
+				})
+			}
+		})
+	});
+	
+	function openAddFilesDialog(){
+		$('#addFiles-${rand}').dialog('open');
+		$('#fileSelect-${rand}').tree({
+			url: '${base}crossdomain/listFile?path=',
+		    onBeforeExpand:function(node){  
+		    	console.log('${base}crossdomain/listFile?path='+node.attributes.path);
+		    	$(this).tree('options').url = '${base}crossdomain/listFile?path='+node.attributes.path; 
+	        },
+	        checkbox:true
+		});
+	}
+	function completeAddFilesDialog(){
+		var nodes = $('#fileSelect-${rand}').tree('getChecked');
+		var pathArray = new Array();
+		var nameArray = new Array();
+		for(var i=0;i<nodes.length;i++){
+			if(!!!nodes[i].attributes.isDir){
+				var path = nodes[i].attributes.path;
+				pathArray.push(path);
+				var name = nodes[i].text;
+				nameArray.push(name);
+			}
+		}
+		$('#dispFilesArea--${rand}').val(nameArray.join(';\n'));
+		$("#filesArea--${rand}").val(pathArray.join(';\n'));
+		$('#addFiles-${rand}').dialog('close');
+	}
+	
+	function getUser(q){
+		$('#getUser-${rand}').combobox('reload','${base}/crossdomain/hrUser?page=1&rows=50&username='+q);
+		$('#getUser-${rand}').combobox('setValue',q);
+	}
+	
+	//选择文件
+	//弹出文件选择框
+	$('#selectFiles-${rand}').combotree({
+		url: '${base}crossdomain/listFile?path=',
+	    onBeforeExpand:function(node){  
+	    	console.log('${base}crossdomain/listFile?path='+node.attributes.path);
+	    	$(this).tree('options').url = '${base}crossdomain/listFile?path='+node.attributes.path; 
+        },
+        multiple:true,
+        onBeforeCheck:function(node,checked){
+       		var node = $('#selectFiles-${rand}');
+       		var t = $('#selectFiles-${rand}').combotree('tree');
+           	console.log(t.tree('getChecked'));
+           	var nodes =t.tree('getChecked');
+           	var array = new Array();
+           	for(var i=0;i<nodes.length;i++){
+           		var arg = nodes[i].attributes.path+"/"+nodes[i].text+";";
+           		array.push(arg);
+           	}
+           	console.log(array);
+        	$('#selectFiles-${rand}').combotree('setValues',array);
+        },
+	    required: true
+	});
+	</script>	
+	</#if>
+	
+	<!-- 审核 -->
+	<#if currentStep == 'usertask1'>
+	<div id="usertask1">
+		<form id="usertask1Form" method="post" enctype='multipart/form-data'>
+			<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				<tr>
+			  	  	<td class="formtable_td_key">是否发送：</td>
+		  	  		<td class="formtable_td_value"  colspan="3" >
+		  	  			<input type="radio"   name="fp_IsPass" value="1" />同意
+		                <input type="radio"   name="fp_IsPass" value="2" checked="checked" />不同意
+		  	  		</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key" colspan="1">审核人</td>
+					<td class="formtable_td_value" colspan="3">
+					 	<input class='easyui-validatebox' type='text'  name='fp_Manager' style="width:80px" data-options="required:true" value="${appuser.name}" readonly="readonly" mobile="负责人" />
+					</td>
+				</tr>
+				<tr>
+		 	  		<td class="formtable_td_key">理由:</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+						<textarea name="fp_summaryDescribe" class="easyui-validatebox" style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+					</td>
+		 	  	</tr>
+		 	 </table>
+	 	</form>
+ 	</div>
+	</#if>
+	
+	<#if currentStep == 'usertask2'>
+	<div id="usertask2">
+		<form id="usertask2Form" method="post" enctype='multipart/form-data'>
+			<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+				<tr>
+					<td class="formtable_td_key">是否重新申请：</td>
+		 	  		<td class="formtable_td_value"  colspan="3"  >
+		 	  		   <input type="radio"   name="fp_IsModify" value="1"  />申请
+		               <input type="radio"   name="fp_IsModify" value="2"  checked="checked"  />不申请
+		 	  		</td>
+				</tr>
+				<tr>
+		  	  		<td class="formtable_td_key" >描述:</td>
+			  	  	<td class="formtable_td_value" colspan="3">
+						<textarea name="fp_sendDescribe" class="easyui-validatebox" style="font-size: 12px; width: 800px; height: 50px;" data-options="required:true"></textarea>
+					</td>
+		  	  	</tr>
+	 	  	</table>
+	 	 </form>
+	 </div>
+	</#if>
+</#if>
+
+<#include "/common/foot.html">

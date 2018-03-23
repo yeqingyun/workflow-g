@@ -1,0 +1,79 @@
+ process(id:"L-jinLiTeam-Activities-Travel"){
+	step(id:"startevent1"){
+		field(name:"companyName",validType:"required",label:"申请公司")
+		
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserId",validType:"required",label:"申请人账号")
+		
+		field(name:"applyOrgId",validType:"required",label:"申请部门编号")
+		
+		field(name:"applyOrgName",validType:"required",label:"申请部门")
+		
+		field(name:"timeFrom",validType:"required",label:"旅游开始时间")
+		
+		field(name:"timeTo",validType:"required",label:"旅游结束时间")
+		
+		field(name:"actiAddress",validType:"required",label:"旅游地点")
+		
+		field(name:"actiDays",validType:"required",label:"旅游天数")
+		
+		field(name:"orgWay",validType:"required",label:"组织方式")
+		
+		field(name:"participantList4Hidden",validType:"required",label:"旅游名单")
+		
+		field(name:"numOfPeople",validType:"required",label:"旅游人数")
+		
+		field(name:"singerBudget",validType:"required",label:"旅游预算")
+		
+		field(name:"fundsBudget",validType:"required",label:"总预算")
+		
+		field(name:"travelPlans",validType:"required",label:"旅游计划")
+		
+		field(name:"userName",validType:"required",label:"申请人")
+		
+		field(name:"applyTime",validType:"required",label:"申请时间")
+		
+		field(name:"applyTel",validType:"required",label:"电话号码")
+		
+		field(name:"applyMail",validType:"required",label:"邮箱")
+	}
+	
+	step(id:"nmb_updateTeamActivitiesTravelTask"){
+		field(name:"companyName",validType:"required",label:"申请公司")
+		
+		field(name:"applyUserId",validType:"required",label:"申请人账号")
+		
+		field(name:"applyOrgId",validType:"required",label:"申请部门编号")
+		
+		field(name:"applyOrgName",validType:"required",label:"申请部门")
+		
+		field(name:"timeFrom",validType:"required",label:"旅游开始时间")
+		
+		field(name:"timeTo",validType:"required",label:"旅游结束时间")
+		
+		field(name:"actiAddress",validType:"required",label:"旅游地点")
+		
+		field(name:"actiDays",validType:"required",label:"旅游天数")
+		
+		field(name:"orgWay",validType:"required",label:"组织方式")
+		
+		field(name:"participantList4Hidden",validType:"required",label:"旅游名单")
+		
+		field(name:"numOfPeople",validType:"required",label:"旅游人数")
+		
+		field(name:"singerBudget",validType:"required",label:"旅游预算")
+		
+		field(name:"fundsBudget",validType:"required",label:"总预算")
+		
+		field(name:"travelPlans",validType:"required",label:"旅游计划")
+		
+		field(name:"userName",validType:"required",label:"申请人")
+		
+		field(name:"applyTime",validType:"required",label:"申请时间")
+		
+		field(name:"applyTel",validType:"required",label:"电话号码")
+		
+		field(name:"applyMail",validType:"required",label:"邮箱")
+	}
+}

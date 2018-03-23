@@ -1,0 +1,388 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">创建时间：</td>
+		    			<td> 
+		    			 	<input id="startCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">流程实例编号：</td>
+		   				<td>
+		   				 	<input id="proInstId-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstId" data-options=""></input>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap">完成时间：</td>
+		    			<td> 
+		    			 	<input id="startFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">流程名称：</td>
+		    			<td> 
+		    			 	<input id="processTree-${rand}" class="easyui-combotree" data-options="panelHeight:300,panelWidth:230,lines:true,url:'menus.json',onClick:proTreeNodeClick${rand}" style="width:154px;"/>
+		   					<input id="processDefId-${rand}" type="hidden" value=""/>
+		   					<input id="categoryId-${rand}" type="hidden" value=""/>
+		   					<input id="account-${rand}" type="hidden"  value="${appuser.account}" style="width:80px"/>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap">状态：</td>
+		    			<td colspan="3"> 
+		    			 	<input id="processStatus-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="processStatus" 
+		    			 		data-options="
+									valueField: 'label',
+									textField: 'value',
+									data: [{
+										label: '',
+										value: '--请选择--'
+									},{
+										label: '1',
+										value: '运行中'
+									},{
+										label: '5',
+										value: '已作废'
+									},{
+										label: '2',
+										value: '已完成'
+									},{
+										label: '6',
+										value: '审批未通过'
+									}]"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">实例名称：</td>
+		   				<td>
+		   				 	<input id="proInstName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstName" data-options=""></input>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="involvedProcessGrid-${rand}"></div>
+	</div>
+ </div>
+
+<div id="hisWin-${rand}"></div>
+
+<!-- his_PrintWin -->
+<div id="his_PrintWin" style="overflow-y:hidden"></div>
+
+<script type="text/javascript">
+
+$('#involvedProcessGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'workspace/involvedProcess.json',
+  columns:[[
+  	{field:'processInstanceId',title:'流程实例编号',checkbox:false,width:130,align:'center'},
+  	{field:'processInstanceName',title:'实例名称',width:130,align:'center'},
+  	{field:'processDefName',title:'流程名称',width:140,align:'center'},
+	{field:'processDefinitionId',title:'流程定义',hidden:true,width:150},
+	{field:'categoryName',title:'流程所属部门',width:150,hidden:true},
+	{field:'startUserName',title:'流程发起人',width:80,align:'center'},
+	{field:'processStatus',title:'状态',width:80,align:'center',
+		formatter: function(value,row,index){
+			if(value == 1){
+				return '<span style=\"color:red\">运行中</span>';
+			} else if (value == 2) {
+				return '<span style=\"color:blue\">已完成</span>';
+			} else if (value == 3) {
+				return '<span style=\"color:#005831\">已挂起</span>';
+			} else if (value == 4) {
+				return '<span style=\"color:#c88400\">已激活</span>';
+			} else if (value == 5) {
+				return '<span style=\"color:#840228\">已作废</span>';
+			} else if (value == 6) {
+				return '<span style=\"color:#D2691E\">审批未通过</span>';
+			} else {
+				return '<span style=\"color:#008792\">未知状态</span>';
+			}
+		}
+	},
+	{field:'checkUserId',title:'审批人工号',hidden:true,width:100},
+	{field:'checkUserName',title:'审批人',width:100,align:'center'},
+	{field:'startTime',title:'创建时间',width:150,align:'center'},
+	{field:'endTime',title:'完成时间',width:150,align:'center'},
+	{field:'startUserId',title:'流程发起人工号',hidden:true,width:100},
+	
+	{field:'durationInMillis',title:'处理耗时(小时)',width:100,align:'center',
+		formatter: function(value,row,index){
+			var value = row.durationInMillis;
+   			var day = value/1000/3600;
+    		return day.toFixed(2);
+		}
+	}
+	
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:true,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar: [{
+	text : '流转详情',
+	iconCls: 'icon-history',
+	handler: viewHisProcss${rand}
+  },'-',{
+	text:'废止',
+	iconCls: 'icon-stop',
+	handler: obsoleteProcess${rand}
+  },"-",{
+	text : '打印',
+	iconCls: 'icon-history',
+	handler: openPrintWin${rand}
+  },"-",{
+	text : '删除薪资数据',
+	id:'deleteSalary-${rand}',
+	iconCls: 'icon-history',
+	handler: deleteSalary${rand}
+  }],
+  onDblClickRow:function(rowIndex, rowData){
+	 viewHisProcss${rand}();
+  }
+});
+
+
+$(function(){//根据账号隐藏按钮
+	var hideButton = function(){
+		var account= $('#account-${rand}').val();
+		if(account !=null && (account=='01000161'||account=='00000094'||account=='rita')){//金铭黄梅(01000161)--金立梅花(00000094)
+			$('#deleteSalary-${rand}').show();
+		}else{
+			$('#deleteSalary-${rand}').hide();
+		}
+	}
+	hideButton();
+});
+
+
+//废止流程
+function obsoleteProcess${rand}(){
+  var row = $('#involvedProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+  	if (row.processStatus == '1') {
+  		$.messager.confirm('信息提示', '你确定要废止流程吗?', function(r){
+	        if (r){
+	           $.post("workspace/obsoleteProcess.json",{processInstanceId:row.processInstanceId},function(data){
+					$.messager.alert('信息提示',data.msg,'info');
+					//reload
+					$('#involvedProcessGrid-${rand}').datagrid('reload');
+			  	});
+	        }
+	    });
+  	} else {
+  		 $.messager.alert('信息提示','非运行中的流程不能废止!','warning');
+  	}
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+//查看历史
+function viewHisProcss${rand}(){
+  var row = $('#involvedProcessGrid-${rand}').datagrid('getSelected');
+  if (row){
+	viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    href: 'workspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+
+//
+function proTreeNodeClick${rand}(node){
+	var processTree = $('#processTree-${rand}');
+	var proDefId = $('#processDefId-${rand}');
+	var categoryId = $('#categoryId-${rand}');
+	
+	//清空
+	proDefId.val('');
+	categoryId.val('');
+	
+	if (node.id == null) {
+		var defArr = node.attributes.processDefId.split(":");
+		proDefId.val(defArr[0]);
+	} else {
+		categoryId.val(node.id);
+	}
+	return true;
+}
+
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var proInstId = $('#proInstId-${rand}').val();
+	var startFinishTime = $('#startFinishTime-${rand}').val();
+	var endFinishTime = $('#endFinishTime-${rand}').val();
+	var processDefId = $('#processDefId-${rand}').val();
+	var categoryId = $('#categoryId-${rand}').val();
+	
+	var processStatus = $('#processStatus-${rand}').combobox('getValue');
+	var processInstanceName = $('#proInstName-${rand}').val();
+	$('#involvedProcessGrid-${rand}').datagrid('reload',
+		{
+			startCreateTime_d:startCreateTime,
+			endCreateTime_d:endCreateTime,
+			proInstId:proInstId,
+			startFinishTime_d:startFinishTime,
+			endFinishTime_d:endFinishTime,
+			processDefId:processDefId,
+			categoryId:categoryId,
+			processStatus:processStatus,
+			processInstanceName:processInstanceName,
+		});
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$('#proInstId-${rand}').val('');
+	$('#startFinishTime-${rand}').val('');
+	$('#endFinishTime-${rand}').val('');
+	$('#proInstName-${rand}').val('');
+	$('#processTree-${rand}').combotree('clear');
+	$('#processStatus-${rand}').combobox('clear');
+	//特殊处理
+	$('#processDefId-${rand}').val('');
+	$('#categoryId-${rand}').val('');
+});
+
+
+//deleteSalary
+  function deleteSalary${rand}(){
+  try{
+	var row = $('#involvedProcessGrid-${rand}').datagrid('getSelected');
+	var account= $('#account-${rand}').val();
+//	alert("account---"+account);//00000094--梅花，01000161--黄梅
+	if(account!=null&&(account=='01000161'||account=='00000094'||account=='rita')){
+  	if (row){
+  	if (row.processStatus == '2'||row.processStatus == '5'||row.processStatus == '6') {
+  	$.messager.confirm('信息提示', "您确定要删除本流程的薪资数据吗?薪资数据删除后不能再恢复！", function(r){
+			$.post('probationExam/deleteSalary.json',
+	                {processInstanceId:row.processInstanceId},
+	                       function(data){
+	                      $.messager.alert('信息提示',data.msg,'info');
+							//reload
+							$('#runingProcessGrid-${rand}').datagrid('reload');
+				          },
+	                        'json');
+	                  
+      		         
+	 })
+	 }else{
+	 $.messager.alert('信息提示','未办结的流程不能删除薪资数据!','warning');
+	 }
+	 } else {
+		$.messager.show({
+	  	title: '信息提示',
+	  	msg: "请选择记录！"
+		});
+  	}
+  	}else{
+  	 $.messager.alert('信息提示','你没有删除薪资数据的权限!','warning');
+  	}
+  	}catch(e){
+  	alert(e);
+  	}
+}
+
+
+//print
+function openPrintWin${rand}(){
+ try{
+ var row = $('#involvedProcessGrid-${rand}').datagrid('getSelected');
+ var account= $('#account-${rand}').val();
+if (row){
+ var processDefinitionId=row.processDefinitionId;
+ var flag=false;
+ //alert("processDefinitionId---"+processDefinitionId);
+ if(processDefinitionId!=null&&processDefinitionId!=''&&(processDefinitionId.indexOf("M-Probation-Exam")==-1&&processDefinitionId.indexOf("M-PostAdjustment-App")==-1)){
+ flag=true;
+ }else{
+ //只有金铭人资人资黄梅(01000161)、曾冬梅(01000467)、蒋丰羽(01017061)、吴志强(01058659)、毛娇(01058438)才有打印涉及薪资流程的权限
+  if(account!=null&&(account=='01000467'||account=='01017061'||account=='01000161'||account=='01058659')||account=='01058438'){
+  flag=true;
+  }
+ }
+  	if(flag){
+
+  		var processInstanceId = row.processInstanceId;
+		var content = '<iframe scrolling="auto" frameborder="0"  src="sysprocess/task/viewHisPrintform.html?processInstanceId='+ processInstanceId +'" style="width:100%;height:100%;"></iframe>'; 
+		$('#his_PrintWin').window({
+			title:'打印窗口',
+			iconCls:'icon-print',
+		    width:795,//此值是为了适应打印窗口的宽度，为了防止部分文字被高度所隐藏
+		    height:600,
+		    modal:true,
+		    closed: false,
+	    	cache: false,
+	    	minimizable:false,
+	    	collapsible:false,
+	    	maximizable:true,
+	    	resizable:false,
+	    	style:"padding:10px",
+		    content:content
+		});
+		
+		}else{
+  	 $.messager.alert('信息提示','你没有打印本流程表单的权限!','warning');
+  	}
+  	} else {
+		$.messager.show({
+	  	title: '信息提示',
+	  	msg: "请选择记录！"
+		});
+  	}
+  	
+  	}catch(e){
+  	alert(e);
+  	}
+}
+
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,302 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'west',iconCls:'icon-process',
+			title:'流程列表',border:true,
+			split:true,minHeight:200,width:230"
+			style="padding: 5px 0px 5px 0px">
+		<ul id="process${rand}" />
+	</div>
+	<div data-options="region:'center',border:false,split:true">
+	  		<div id="centerLayout${rand}" class="easyui-layout" data-options="fit:true" style="">
+	  			<div data-options="region:'center',iconCls:'icon-task',title:'任务节点列表',border:true,split:true"
+						style="padding: 0px 0px 0px 0px;">
+					<table id="task${rand}"></table>
+				</div>
+	  			<div id="centerSouth${rand}" data-options="region:'south',border:true,title:'流程节点邮件配置',
+	  					height:300,split:true,collapsed:true">
+	  				<table id="confAttr${rand}"></table>
+	  			</div>
+	  		</div>
+	 </div>
+</div>
+
+<!-- add ConfNodeEmail Dialog -->
+<div id="confNodeEmailWin${rand}" class="easyui-dialog" data-options="width:700,height:250,title:'流程角色配置',
+		closed:true,modal:true,buttons: '#confNodeEmailDialog-buttons${rand}'">
+	<div style="padding:15px" align="center">
+		<table style="width: 100%">
+			<tr>
+				<td width="100px">
+					是否发送邮件：
+				</td>
+				<td>
+					<input id="id${rand}" type="hidden" value=""/>
+					<input id="send_flag${rand}" class="easyui-combobox"  style="width:500px;"
+						data-options="valueField:'id',textField:'text',multiple:false,required:true,
+							data: [{
+							id: '0',
+							text: '是'
+						},{
+							id: '1',
+							text: '否'
+						}]"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="100px">
+					收件人：
+				</td>
+				<td>
+					<input id="addressee${rand}" class="easyui-validatebox" required="true" style="width: 495px"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="100px">
+					邮件模板：
+				</td>
+				<td>
+					<input id="conf_email_temp_id${rand}" class="easyui-combogrid" style="width:500px" data-options="
+			            panelWidth: 800,
+			            panelHeight:300,
+			            idField: 'id',
+			            textField: 'name',
+			            url: 'bpmEmailTemplate/showAllEmailTemplate.json',
+			            method: 'get',
+			            columns: [[
+			                {field:'id',title:'ID',width:120,hidden:true},
+			                {field:'name',title:'名称',width:120},
+			                {field:'subject',title:'邮件标题',width:250},
+			                {field:'content',title:'邮件内容',width:1500}
+			            ]],
+			           	border : false,
+						pagination:true,
+						pageNumber : 1,
+						pageSize : 20,
+						rownumbers:true,
+						singleSelect:true
+			        "/>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="confNodeEmailDialog-buttons${rand}">
+   <a id="confNodeEmailSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="confNodeEmailCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	var centerLayout = $('#centerLayout${rand}');
+	var processDefKey = null;
+	var taskDefKey = null;
+	
+	var processTree = $('#process${rand}');
+	var taskGrid = $('#task${rand}');
+	var confAttrPGrid = $('#confAttr${rand}');
+	var proceddDefId = null;
+	
+	var confNodeEmailWin = $("#confNodeEmailWin${rand}");
+	var input_id= $('#id${rand}');
+	var input_send_flag= $('#send_flag${rand}');
+	var input_addressee= $('#addressee${rand}');
+	var input_conf_email_temp_id= $('#conf_email_temp_id${rand}');
+	
+	//init tree
+	processTree.tree({
+		url: 'menus.json',
+		method:'get',
+		required:true,
+		lines:true,
+		panelWidth:300,
+		panelHeight:280,
+		onClick:function(node){
+			proceddDefId = node.attributes.processDefId;
+			taskGrid.datagrid('reload',{
+				processDefinitionId:proceddDefId
+			});
+		}
+	});
+	
+	//task grid
+	taskGrid.datagrid({
+		fitColumns:true,
+		url:'bpmConfNodeEmail/showTaskNodes.json',
+		columns:[[
+			{field:'taskDefKey',title:'任务KEY',width:150},
+			{field:'taskName',title:'任务名称',width:150},
+			{field:'taskType',title:'任务类型',width:150},
+			{field:'processDefKey',title:'流程定义KEY',width:250}
+		]],
+		nowrap: true,    
+		fit : true,
+		border : false,
+		pagination:true,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:true,
+		onClickRow:function(index,row){
+			processDefKey = row.processDefKey;
+			taskDefKey = row.taskDefKey;
+			//
+			centerLayout.layout('expand','south');
+			
+			confAttrPGrid.datagrid('reload',
+				{
+					processDefKey:processDefKey,
+					taskDefKey:taskDefKey
+				}
+			);
+		}
+	});
+	
+	//conf attr
+	confAttrPGrid.datagrid({
+		url:'bpmConfNodeEmail/loadBpmConfNodeEmail.json',
+		columns:[[
+			{field:'id',title:'ID'},
+			{field:'processDefKey',title:'流程定义KEY',width:150},
+			{field:'taskDefKey',title:'任务定义KEY',width:120},
+			{field:'addressee',title:'收件人',width:250},
+			{field:'sendFlag',title:'是否发送',width:100,
+				formatter: function(value,row,index){
+					if (value == 0) {
+						return '是';
+					} else {
+						return '否';					
+					}
+				}
+			},
+			{field:'templateId',title:'模板ID',width:150,hidden:true},
+			{field:'name',title:'名称',width:150},
+			{field:'subject',title:'邮件标题',width:350},
+			{field:'content',title:'邮件内容',width:1500}
+		]],
+		nowrap: true,    
+		fit : true,
+		border : false,
+		pagination:true,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:true,
+		toolbar: [{
+			text : '新增配置',
+			iconCls: 'icon-edit',
+			handler:addConfNodeEmail${rand}
+			},'-',{
+			text : '编辑配置',
+			iconCls: 'icon-edit',
+			handler:editConfNodeEmail${rand}
+			},'-',{
+			text : '删除配置',
+			iconCls: 'icon-handle',
+			handler:delConfNodeEmail${rand}
+		}]
+	});
+	
+	//add
+	function addConfNodeEmail${rand}(){
+		var row = taskGrid.datagrid('getSelected');
+		if (row){
+			//清空编辑框中的值
+			clearconfNodeEmailWinValue${rand}();
+			confNodeEmailWin.dialog('open');
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+		
+	}
+	
+	//btn handle
+	$('#confNodeEmailSaveBtn${rand}').bind('click',function(){
+		var row = taskGrid.datagrid('getSelected');
+		$.post('bpmConfNodeEmail/saveBpmConfNodeEmail.json',
+			{
+				id:input_id.val(),
+				processDefKey:row.processDefKey,
+				taskDefKey:row.taskDefKey,
+				sendFlag:input_send_flag.combobox('getValue'),
+				addressee:input_addressee.val(),
+				confEmailTemplateId:input_conf_email_temp_id.combogrid('getValue')
+			},
+			function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					confNodeEmailWin.dialog('close');
+					confAttrPGrid.datagrid('reload');
+				} 
+		},'json');
+	})
+	
+	$('#confNodeEmailCloseBtn${rand}').bind('click',function(){
+		confNodeEmailWin.dialog('close');
+	})
+	
+	//edit
+	function editConfNodeEmail${rand}(){
+		var row = confAttrPGrid.datagrid('getSelected');
+		if (row) {
+			//clear
+			clearconfNodeEmailWinValue${rand}();
+				
+			confNodeEmailWin.dialog('open');
+			//回填值
+			input_send_flag.combobox('setValue',row.sendFlag);
+			input_addressee.val(row.addressee);
+			input_conf_email_temp_id.combogrid('setValue', row.templateId);
+			//设置ID
+			input_id.val(row.id);
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+	}
+	
+	//clear
+	function clearconfNodeEmailWinValue${rand}(){
+		//清空编辑框中的值
+		input_id.val('');
+		input_send_flag.combobox('clear');
+		input_addressee.val('');
+		input_conf_email_temp_id.combogrid('clear');
+	}
+	
+	//delete
+	function delConfNodeEmail${rand}(){
+		var row = confAttrPGrid.datagrid('getSelected');
+	  	if (row){
+	  		$.messager.confirm('信息提示', '您确定要删除该条记录吗?', function(r){
+                if (r){
+                    $.post('bpmConfNodeEmail/deleteBpmConfNodeEmail.json',
+						{
+							id:row.id
+						},
+						function(result){
+							$.messager.show({
+								title: '信息提示', msg: result.msg
+							});
+							if (result.success){
+								confAttrPGrid.datagrid('reload');
+							} 
+					},'json');
+                }
+            });
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请从任务列表选择一条记录！"
+			});
+		}
+	}
+});
+</script>
+<#include "/common/foot.ftl">

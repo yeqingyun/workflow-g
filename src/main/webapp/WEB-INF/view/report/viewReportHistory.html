@@ -1,0 +1,267 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="viewProcessImage-${rand}" data-options="" align='center' class="easyui-panel" title="流程图">
+	<image src='workspace/graphProcessDefinition?processInstanceId=${RequestParameters.processInstanceId}&randId=${rand}' align="center" style="max-width:97%"/>
+	<image src='${base}image/instructions.jpg' align="center"/>
+	<div>&nbsp;&nbsp;&nbsp;</div>
+</div>
+<br/>
+
+<!-- trun to do win -->
+<div id="truntodoWin-${rand}" class="easyui-dialog" data-options="closed:true">
+	   <div>
+			<form id="turntodoForm${rand}" method="post" enctype='multipart/form-data'>
+		  	  <table id="turntodoFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">任务接收人：</td>
+				  	<td class="formtable_td_value">
+				  		 <input id="accepter${rand}" type="hidden" value="" name="accepter"/>
+				  		 <input id="accepterName${rand}" class="easyui-validatebox" readonly="readonly" name="accepterName" data-options="required:true">
+				  		 <a id="openOrgWinBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'">选择</a>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">转办原因：</td>
+				  	<td class="formtable_td_value">
+		  	  			<textarea name="turntodoReason" class="formtable_remark easyui-validatebox" 
+		  	  				style="width: 450px; height: 100px" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+</div>
+<div id="viewHisTaskGrid-${rand}"></div>
+<br/>
+
+  <div id="viewHisFormContent-${rand}" class="easyui-panel" title="流程表单" style="padding:10px;"></div>
+<br/>
+<!-- select account win -->
+<div id="orgWin-${rand}" class="easyui-dialog" data-options="closed:true">
+	<div class="easyui-layout" data-options="fit:true">
+	 	<div data-options="region:'north',border:false,minHeight:30," style="padding:5px 0px 5px 0px">
+			<div style="padding:5px;height:30px;background:#fafafa;border:1px solid #ccc">
+			    <table border="0" >
+			 			<tr>
+			   				<td align="right" style="white-space:nowrap;padding-left:12px;" >用户编号：</td>
+			    			<td width="160px"> 
+			    			 	<input id="userAccount-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="account" data-options=""/>
+			   				</td>
+			   				<td align="right" style="white-space:nowrap; padding-left:12px;">用户姓名：</td>
+			   				<td width="160px">
+			   				 	<input id="userName-${rand}" style="width:200px;" class="easyui-validatebox" type="text" name="name" data-options=""/>
+			   				</td>
+			   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+			   					<a href="javascript:void(0)" id="user_search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+			   					<a href="javascript:void(0)" id="user_reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+			   				</td>
+			 			</tr>
+				</table>
+			  </div>
+		 </div>
+		
+		<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+			<div id="userGrid-${rand}"></div>
+		</div>
+	 </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#viewHisTaskGrid-${rand}').datagrid({
+		  fitColumns:true,
+		  url:'workspace/viewHistoryTask.json?processInstanceId=' + ${RequestParameters.processInstanceId},
+		  columns:[[
+			{field:'processInstanceId',title:'流程实例编号',width:80,hidden:true},
+			{field:'processInstanceName',title:'实例名称',width:150},
+			{field:'proStep',title:'流程步骤',width:80},
+			{field:'id',title:'编号',checkbox:false,hidden:false},
+			{field:'processDefinitionId',title:'流程定义',hidden:true,width:200},
+			{field:'activityName',title:'节点名称',width:150},
+			{field:'userAccount',title:'账号',width:100},
+			{field:'userName',title:'处理人',width:100},
+			{field:'startTime',title:'审批开始时间',width:150},
+			{field:'endTime',title:'审批结束时间',width:150},
+			{field:'durationInMillis',title:'处理周期(小时)',width:100,
+				formatter: function(value,row,index){
+					var value = row.durationInMillis;
+		   			var day = value/1000/3600;
+		    		return day.toFixed(2);
+				}
+			},
+			{field:'operate',title:'操作',width:120,
+				formatter: function(value,row,index){
+					if (row.endTime == null && row.userAccount != '${appuser.account}'){
+						return "&nbsp;<a href='javascript:void(0);' onclick='remindersTask${rand}(\""+ row.id+"\");'>催办</a>&nbsp;<a href='javascript:void(0);' onclick='turntodoTask${rand}(\""+ row.taskId+"\");'>转办</a>";
+					}
+				}
+			}
+		  ]],
+		  title:'列表',
+		  nowrap: true,       
+		  border : true,
+		  pagination:false,
+		  pageNumber : 1,
+		  pageSize : 20,
+		  onLoadSuccess : graphTrace${rand}
+		});
+	});
+	//流程历史
+	function graphTrace${rand}(){
+		$('#viewProcessImage-${rand}').panel('refresh');
+		$('#viewHisFormContent-${rand}').panel('refresh','sysprocess/task/viewHisform.html?processInstanceId=' + ${RequestParameters.processInstanceId});
+	}
+	//催办邮件
+	function remindersTask${rand}(id){
+		$.messager.confirm('信息提示', '您确定需要催办吗?', function(r){
+	       if (r){
+	    		$.getJSON("workspace/remindersTask.html", {
+	    	        taskId: id
+	    	    },
+	    	    function(data) {
+	    	        $.messager.alert('提示', '<font size=\"2\" color=\"#666666\"><strong>' + data.msg + '</strong></font>', 'infoSunnyIcon', function() {
+	    	            //alert('点击确定按钮才关闭');//
+	    	        });
+	    	    });
+	    	}
+		});
+	}
+	//转办
+	function turntodoTask${rand}(taskId){
+		//打开转办窗口
+		$('#truntodoWin-${rand}').dialog({
+			title: '转办',
+			collapsible:false,
+			width: 600,
+			height: 300,
+			maximizable:true,
+			resizable:true,
+			closed: false,
+			cache: false,
+			modal: true,
+			maximizable:true,
+		    resizable:true,
+		    buttons: [{
+	       		text:'确定',
+	            iconCls:'icon-ok',
+	           	handler:function(){
+	           		truntodoWinSubmit${rand}(taskId);
+	           	}
+	     	},{
+	           text:'关闭',
+	           iconCls:'icon-cancel',
+	           handler:truntodoWinClose${rand}
+	       }]
+		});
+		//绑定用户选择按钮
+		$('#openOrgWinBtn${rand}').off();
+		$('#openOrgWinBtn${rand}').bind('click', function(){
+			//弹出用户选择窗口
+			$("#orgWin-${rand}").dialog({
+				modal:true, 
+				closed:false,
+				iconCls:'icon-process',
+				title:"用户选择窗口",
+				width: 1000, 
+				height: 500,
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserWin
+		              }]
+			});
+			
+			$('#user_search_btn-${rand}').off();
+			//查询用户按钮绑定事件
+			$('#user_search_btn-${rand}').bind('click', function(){
+			    var account = $('#userAccount-${rand}').val();
+				var name = $('#userName-${rand}').val();
+				$('#userGrid-${rand}').datagrid('reload',
+					{
+						account:account,
+						name:name,
+						taskId:taskId
+					});
+			});
+			//重置查询
+			$('#user_reset_btn-${rand}').off();
+			$('#user_reset_btn-${rand}').bind('click', function(){
+			    $('#userAccount-${rand}').val('');
+				$('#userName-${rand}').val('');
+			});
+		});
+		//初始化用户列表
+		$('#userGrid-${rand}').datagrid({
+			fitColumns:true,
+			url:'hrFlow/queryUserByOrgId.json',
+			queryParams: {
+				taskId:taskId
+			},
+			columns:[[
+				{field:'id',hidden:true, checkbox:false},
+				{field:'account',title:'帐号',width:150},
+				{field:'name',title:'姓名',width:150},
+				{field:'orgId',title:'部门ID',hidden:true, width:150},
+				{field:'orgName',title:'部门名称',width:150}
+			]],
+			nowrap: true,       
+			fit : true,
+			border : true,
+			pagination:true,
+			pageNumber : 1,
+			pageSize : 20,
+			rownumbers:true,
+			singleSelect:true
+		});
+	}
+	//转办确认
+	function truntodoWinSubmit${rand}(taskId){
+	 	$('#turntodoForm${rand}').form('submit', {
+			url: 'turntodoTask/'+taskId+".html",
+			onSubmit: function(param) {
+				var validateResult = $(this).form('enableValidation').form('validate');
+				if (!validateResult) {
+					$.messager.progress('close');
+					return false;
+				}
+			},
+			success: function(data){
+			  $.messager.progress('close');
+			  var data = JSON.parse(data);
+			  $('#truntodoWin-${rand}').dialog('close');
+			  $.messager.show({
+				title: '信息提示',
+				msg: data.msg
+			  });
+			}
+		  });
+	}
+	//转办关闭
+	function truntodoWinClose${rand}(){
+		$('#truntodoWin-${rand}').dialog('close');
+	}
+
+	//选择用户完成事件
+	function selectUserEnd(){
+		var row = $('#userGrid-${rand}').datagrid('getSelected');
+		if (row) {
+		    $('#accepter${rand}').val(row.account);
+		    $('#accepterName${rand}').val(row.name);
+		    $('#accepterName${rand}').validatebox('validate');
+		    $('#orgWin-${rand}').dialog('close');	
+		} else {
+			$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+		}
+	}
+	//关闭用户选择窗口	   
+	function closeSelectUserWin(){
+		$('#orgWin-${rand}').dialog('close');	
+	}
+	
+
+</script>
+<#include "/common/foot.ftl">

@@ -1,0 +1,60 @@
+ process(id:"M-Leave-Application"){
+	step(id:"startevent1"){
+		field(name:"leaveUserAccount",validType:"required",label:"离职人员账号")
+		
+		field(name:"processName",validType:"required",label:"流程名称")
+		
+		field(name:"applyUserAccount",validType:"required",label:"申请人员员工编号")
+		
+		field(name:"userName",validType:"required",label:"姓名")
+		
+		field(name:"job",validType:"required",label:"职务")
+		
+		field(name:"orgName",validType:"required",label:"部门")
+		
+		field(name:"entryTime",validType:"required",label:"入职日期")
+		
+		field(name:"leaveDate",validType:"required",label:"离职日期")
+		
+		field(name:"leaveType",validType:"required",label:"离职类型")
+		
+		field(name:"oprationTypevalue",validType:"required",label:"操作类型")
+		
+		field(name:"operationReasonvalue",validType:"required",label:"操作原因")
+		
+		field(name:"leaveReson",validType:"required",label:"离职原因")
+		
+		field(name:"signSelf",validType:"required",label:"申请人签字")
+		
+		field(name:"applyUserId",validType:"required",label:"申请人账号")
+		
+	}
+	step(id:"ExecutiveDirectorAudiTask"){
+		field(name:"ExecutiveDirectorAudi",validType:"required",label:"审批结果")
+		
+		field(name:"leaveDate",validType:"required",label:"同意离职日期")
+	}
+	
+	step(id:"departMangerAudiTask"){
+		field(name:"departMangerAudi",validType:"required",label:"审批结果")
+		
+		field(name:"leaveDate",validType:"required",label:"同意离职日期")
+	}
+	
+	step(id:"humanResouceAudiTask"){
+		field(name:"humanResouceAudi",validType:"required",label:"审批结果")
+		
+		field(name:"leaveDate",validType:"required",label:"同意离职日期")
+	}
+	
+	step(id:"hrChiefInspectorAudiTask"){
+		field(name:"hrChiefInspectorAudi",validType:"required",label:"审批结果")
+		
+		field(name:"leaveDate",validType:"required",label:"同意离职日期")
+	}
+	step(id:"generalManagerAudiTask"){
+		field(name:"generalManagerAudi",validType:"required",label:"审批结果")
+		
+		field(name:"leaveDate",validType:"required",label:"同意离职日期")
+	}
+}

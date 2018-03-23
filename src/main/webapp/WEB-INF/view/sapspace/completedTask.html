@@ -1,0 +1,95 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div id="completedTaskGrid-${rand}"></div>
+
+
+<script type="text/javascript">
+$('#completedTaskGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'sapspace/completedTask.json',
+  columns:[[
+	{field:'id',title:'编号',hidden:true,checkbox:false},
+	{field:'processInstanceId',title:'流程实例编号',width:60},
+	{field:'processDefinitionId',title:'名称',width:150},
+	{field:'name',title:'流程定义',width:150},
+	{field:'startTime',title:'创建时间',width:100},
+	{field:'endTime',title:'结束时间',width:100},
+	{field:'assignee',title:'负责人',width:100},
+	{field:'deleteReason',title:'处理结果',width:100},
+	{field:'taskDefinitionKey',title:'TaskKey',hidden:true,width:100}
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  singleSelect:true,
+  rownumbers:true,
+  toolbar: [{
+	text:'流程详情',
+	iconCls: 'icon-history',
+	handler: handlegraphTrace${rand}
+  },'-',{
+	text:'取回任务',
+	iconCls: 'icon-retrieve',
+	handler: taskCallBack${rand}
+  }]
+});
+
+//查看历史
+function handlegraphTrace${rand}(){
+  var row = $('#completedTaskGrid-${rand}').datagrid('getSelected');
+  if (row){
+	viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    //fit:true,
+	    maximizable:true,
+	    style:"padding:10px",
+	    href: 'sapspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+
+function taskCallBack${rand}(){
+	 var row = $('#completedTaskGrid-${rand}').datagrid('getSelected');
+	 if (row){
+	 	$.messager.confirm('提示信息','您确定要取回任务吗?',function(r){
+				if (r){
+					$.post('sapspace/taskRollback.html',{taskId:row.id},function(result){
+				        $.messager.alert('信息提示', result.msg,'warning');
+						if (result.success){
+							$('#completedTaskGrid-${rand}').datagrid('reload');
+						} 
+				  	},'json');
+				}
+		});
+	} else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	}
+}
+
+</script>
+<#include "/common/foot.ftl">

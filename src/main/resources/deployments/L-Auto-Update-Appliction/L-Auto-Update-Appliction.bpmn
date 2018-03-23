@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="153">
+  <process id="L-Auto-Update-Appliction" name="自升级上线会签流程" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="mb_ApkAppraisal" name="SQA评审是否预发布" default="flow2" activiti:candidateUsers="${processHelpService.getgetCandidateAccounts('L-Auto-Update-Appliction','SQA评审')}"></userTask>
+    <userTask id="mb_OperationManager" name="运营经理审核" default="flow18" activiti:candidateUsers="${processHelpService.getgetCandidateAccounts('L-Auto-Update-Appliction','运营经理')}"></userTask>
+    <sequenceFlow id="flow2" name="通过" sourceRef="mb_ApkAppraisal" targetRef="mb_OperationManager">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SqaAudi== '0'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="mb_SqaAffirmTask" name="SQA评审是否正式发布" activiti:candidateUsers="${processHelpService.getgetCandidateAccounts('L-Auto-Update-Appliction','SQA评审')}"></userTask>
+    <userTask id="mb_OperationManagerTask" name="运营经理审核" default="flow19" activiti:candidateUsers="${processHelpService.getgetCandidateAccounts('L-Auto-Update-Appliction','运营经理')}"></userTask>
+    <sequenceFlow id="flow5" sourceRef="mb_SqaAffirmTask" targetRef="mb_OperationManagerTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateThreeSendmailListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="nmb_updateAppTask" name="修改表单" activiti:assignee="${applyUserId}"></userTask>
+    <sequenceFlow id="flow8" name="不通过" sourceRef="mb_ApkAppraisal" targetRef="nmb_updateAppTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SqaAudi== '1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" name="不通过" sourceRef="mb_OperationManager" targetRef="nmb_updateAppTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operationManagerAudi== '1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="nmb_updateAppTask" targetRef="mb_ApkAppraisal">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateSendmailListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <userTask id="mb_SqaDismassAffirmTask" name="SQA评审正式发布是否正常" activiti:candidateUsers="${processHelpService.getgetCandidateAccounts('L-Auto-Update-Appliction','SQA评审')}"></userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow15" name="不通过" sourceRef="mb_OperationManagerTask" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operationManagerTwoAudi== '1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow18" name="通过" sourceRef="mb_OperationManager" targetRef="mb_SqaAffirmTask">
+      <documentation>${operationManagerAudi== '0'}</documentation>
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateTwoSendmailListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operationManagerAudi== '0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow19" name="通过" sourceRef="mb_OperationManagerTask" targetRef="mb_SqaDismassAffirmTask">
+      <documentation>${operationManagerTwoAudi== '0'}</documentation>
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateFourSendmailListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${operationManagerTwoAudi== '0'}]]></conditionExpression>
+    </sequenceFlow>
+    <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow20" sourceRef="mb_SqaDismassAffirmTask" targetRef="exclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow21" name="通过" sourceRef="exclusivegateway1" targetRef="endevent1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SqaDismassAffirmAudi=='0'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow22" name="不通过" sourceRef="exclusivegateway1" targetRef="mb_OperationManagerTask">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateFiveSendmailListener"></activiti:executionListener>
+      </extensionElements>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${SqaDismassAffirmAudi=='1'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="startevent1" targetRef="mb_ApkAppraisal">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.AutoUpdateSendmailListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Auto-Update-Appliction">
+    <bpmndi:BPMNPlane bpmnElement="L-Auto-Update-Appliction" id="BPMNPlane_L-Auto-Update-Appliction">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="140.0" y="150.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_ApkAppraisal" id="BPMNShape_mb_ApkAppraisal">
+        <omgdc:Bounds height="65.0" width="105.0" x="240.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_OperationManager" id="BPMNShape_mb_OperationManager">
+        <omgdc:Bounds height="70.0" width="105.0" x="390.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_SqaAffirmTask" id="BPMNShape_mb_SqaAffirmTask">
+        <omgdc:Bounds height="70.0" width="105.0" x="595.0" y="133.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_OperationManagerTask" id="BPMNShape_mb_OperationManagerTask">
+        <omgdc:Bounds height="63.0" width="105.0" x="781.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_updateAppTask" id="BPMNShape_nmb_updateAppTask">
+        <omgdc:Bounds height="65.0" width="105.0" x="390.0" y="265.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_SqaDismassAffirmTask" id="BPMNShape_mb_SqaDismassAffirmTask">
+        <omgdc:Bounds height="71.0" width="105.0" x="781.0" y="262.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="816.0" y="460.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exclusivegateway1" id="BPMNShape_exclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="813.0" y="369.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="345.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="168.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="355.0" y="167.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="700.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="781.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="292.0" y="200.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="297.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="300.0" y="224.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="442.0" y="203.0"></omgdi:waypoint>
+        <omgdi:waypoint x="442.0" y="265.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="450.0" y="227.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="390.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="292.0" y="200.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="886.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="957.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="957.0" y="477.0"></omgdi:waypoint>
+        <omgdi:waypoint x="851.0" y="477.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="890.0" y="257.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="495.0" y="168.0"></omgdi:waypoint>
+        <omgdi:waypoint x="595.0" y="168.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="518.0" y="168.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="833.0" y="199.0"></omgdi:waypoint>
+        <omgdi:waypoint x="833.0" y="262.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="800.0" y="224.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="833.0" y="333.0"></omgdi:waypoint>
+        <omgdi:waypoint x="833.0" y="369.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="833.0" y="409.0"></omgdi:waypoint>
+        <omgdi:waypoint x="833.0" y="460.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="24.0" x="800.0" y="419.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="853.0" y="389.0"></omgdi:waypoint>
+        <omgdi:waypoint x="954.0" y="389.0"></omgdi:waypoint>
+        <omgdi:waypoint x="954.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="886.0" y="167.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="36.0" x="869.0" y="369.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="175.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="240.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

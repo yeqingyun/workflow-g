@@ -1,0 +1,13 @@
+create table sysCategory (id int,pid int)
+insert into sysCategory(id,pid) values (01,0)
+insert into sysCategory(id,pid) values (02,0)
+insert into sysCategory(id,pid) values (03,0)
+insert into sysCategory(id,pid) values (04,0)
+insert into sysCategory(id,pid) values (05,0)
+insert into sysCategory(id,pid) values (06,0)
+insert into sysCategory(id,pid) values (07,0)
+insert into sysCategory(id,pid) values (08,0)
+insert into sysCategory(id,pid) values (09,0)
+
+
+---根据系统选择部门组织架构表

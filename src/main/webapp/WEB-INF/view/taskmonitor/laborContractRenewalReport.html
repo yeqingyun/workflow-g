@@ -1,0 +1,365 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		    <thead>
+		    		<tr>
+		    			<td align="right" style="white-space:nowrap">创建时间：</td>
+		    			<td> 
+		    			 	<input id="startCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">流程实例编号：</td>
+		   				<td width="200">
+		   				 	<input id="processInstanceId-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="processInstanceId"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">状态：</td>
+		   				<td>
+		   				 	<select id="status-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="status" >
+		   				 		<option value="">--请选择--</option>
+		   				 		<option value="1">运行中</option>
+		   				 		<option value="2">已完成</option>
+		   				 		<option value="3">已挂起</option>
+		   				 		<option value="4">已激活</option>
+		   				 		<option value="5">已作废</option>
+		   				 		<option value="6">审批未通过</option>
+		   				 	</select>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		    		</tr>
+		    		<tr>
+		    			<td align="right" style="white-space:nowrap">完成时间：</td>
+		    			<td> 
+		    			 	<input id="startFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">合同类型：</td>
+		   				<td>
+		   				 	<select id="principalContractType-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="principalContractType" >
+		   				 		<option value="">--请选择--</option>
+		   				 		<option value="0">不固定期限合同</option>
+		   				 		<option value="1">固定期限合同</option>
+		   				 	</select>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">审批意见：</td>
+		   				<td>
+		   				 	<select id="approvalOpinion-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="approvalOpinion" >
+		   				 		<option value="">--请选择--</option>
+		   				 		<option value="0">不同意</option>
+		   				 		<option value="1">同意</option>
+		   				 	</select>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">
+		   					<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出查询</a>
+		   				</td>
+		    		</tr>
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap; padding-left:12px;">部门：</td>
+		   				<td>
+		   				 	<input id="principalOrgName-${rand}"   name="principalOrgName"   class="easyui-textbox" style="width:148px;"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">员工编号：</td>
+		   				<td >
+		   				 	<input id="principalEmpId-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="principalEmpId" data-options=""/>
+		   				</td>
+  						<td align="right" style="white-space:nowrap; padding-left:12px;">员工姓名：</td>
+		   				<td >
+		   				 	<input id="principalName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="principalName" data-options=""/>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+			<div id="monitorTaskGrid-${rand}"></div>
+	</div>
+</div>
+<div id="renewalDialog${rand}" style="width:300px;height:150px;" >  
+	<div style="padding: 26.5px 35px;">
+		<input type="hidden" id="renewalProcess${rand}" value=""/>
+		续签日期：<input id="renewalDate${rand}" type="text" class="easyui-my97" readonly="readonly" data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'%y-%M-%d'"/>
+	</div>
+</div>
+ <style>
+	.icon-email_go{
+		background:url('css/themes/icons/email_go.png') no-repeat center center;
+	}
+	.icon-information{
+		background:url('css/themes/icons/information.png') no-repeat center center;
+	}
+ </style>
+ 
+ <script type="text/javascript">
+$('#monitorTaskGrid-${rand}').datagrid({
+  fit:true,
+  fitColumns:true,
+  url:'taskmonitor/getlaborContractRenewals.json',
+  columns:[[
+	{checkbox:true},
+  	{field:'processInstanceId',title:'流程编号',width:150,align:'center'},
+  	{field:'principalOrgName',title:'员工部门',width:150,align:'center'},
+	{field:'principalEmpId',title:'员工编号',width:150,align:'center'},
+	{field:'principalName',title:'员工姓名',width:150,align:'center'},
+	{field:'principalJob',title:'员工职位',width:150,align:'center'},
+	{field:'principalEntryTime',title:'员工入职时间',width:150,align:'center'},
+	{field:'principalContractType',title:'续签合同类型',width:150,align:'center',formatter:function(value,rowData,rowIndex){
+		if(value == "0"){
+			return "无固定期限合同";
+		}else{
+			return "固定期限合同";
+		}
+	}},
+	{field:'principalContractStartTime',title:'本次合同开始时间',width:150,align:'center'},
+	{field:'principalContractEndTime',title:'本次合同结束时间',width:150,align:'center'},
+	{field:'approvalOpinion',title:'审批意见',width:150,align:'center',formatter:function(value,rowData,rowIndex){
+		if(value == "2"){
+			return "<span style='color:blue'>同意</span>";
+		}else if(value == "6"){
+			return "<span style='color:red'>不同意</span>";
+		}
+	}},
+	{field:'startTime',title:'创建时间',width:150,align:'center'},
+	{field:'endTime',title:'结束时间',width:150,align:'center'},
+	{field:'status',title:'状态',width:150,align:'center',formatter:function(value,rowData,rowIndex){
+		if(value == "1"){
+			return "<span style='color:red'>运行中</span>";
+		}else if(value == "2"){
+			return "<span style='color:blue'>已完成</span>";
+		}else if(value == "3"){
+			return "<span style='color:#005831'>已挂起</span>";
+		}else if(value == "4"){
+			return "<span style='color:#c88400'>已激活</span>";
+		}else if(value == "5"){
+			return "<span style='color:#840228'>已作废</span>";
+		}else if(value == "6"){
+			return "<span style=\"color:#D2691E\">审批未通过</span>";
+		}else{
+			return "<span style=\"color:#008792\">未知状态</span>"
+		}
+	}},
+  	{field:'actName',title:'任务名称',width:80,align:'center'},
+  	{field:'checkUserName',title:'审批人',width:80,align:'center'}]
+  ],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:false,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20,
+  toolbar:[{
+	  iconCls:"icon-email_go",
+	  text:'邮件发送',
+	  handler:function(){
+		  var rows = $('#monitorTaskGrid-${rand}').datagrid("getSelections");
+		  if(rows.length == 0){
+			  $.messager.alert('信息提示','请选择至少一条记录!','warning');
+			  return ;
+		  }
+		  var processInstanceIds = [];
+		  for(var i=0;i<rows.length;i++){
+			  var row = rows[i];
+			  if(row.approvalOpinion == "2"){
+				  processInstanceIds.push(row.processInstanceId);
+			  }
+		  }
+		  processInstanceIds = processInstanceIds.join(",");
+		  if(processInstanceIds == ""){
+			  $.messager.alert('信息提示','请选择至少一条有效的记录!','warning');
+			  return ;
+		  }
+		  $.parser.parse($('#renewalDialog${rand}'));
+		  $("#renewalDialog${rand}").dialog("open");
+		  $("#renewalProcess${rand}").val(processInstanceIds);
+	  }
+  },{
+	  iconCls:"icon-down_load",
+	  text:'导出选中',
+	  handler:function(){
+		  var rows = $('#monitorTaskGrid-${rand}').datagrid("getSelections");
+		  if(rows.length == 0){
+			  $.messager.alert('信息提示','请选择至少一条记录!','warning');
+			  return ;
+		  }
+		  var processInstanceIds = [];
+		  for(var i=0;i<rows.length;i++){
+			  var row = rows[i];
+			  processInstanceIds.push(row.processInstanceId);
+		  }
+		  processInstanceIds = processInstanceIds.join(",");
+		  var form = $("<form method='post'>");
+	   	  form.attr('style', 'display:none');
+		  form.append($("<input type=hidden name='processInstanceIds' value='"+processInstanceIds+"'>"));
+	   	  form.appendTo($(document.body));
+	      form.form('submit',{url:'taskmonitor/exportlaborContractRenewalReport.html'});
+	      form.remove();
+	  }
+  },{
+		text : '流转详情',
+		iconCls: 'icon-history',
+		handler: viewHisProcss${rand}
+   }],
+  onDblClickRow:function(rowIndex, rowData){
+	   viewHisProcess${rand}(rowData.processInstanceId);
+	}
+  
+});
+//查看历史
+function viewHisProcss${rand}(){
+  var rows = $('#monitorTaskGrid-${rand}').datagrid('getSelections');
+  if (rows.length == 1){
+	  var row = $('#monitorTaskGrid-${rand}').datagrid('getSelected');
+	  viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录其中的一条记录！"
+	});
+  }
+}
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    //fit:true,
+	    //maximizable:true,
+	    href: 'workspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+//查询
+$('#search_btn-${rand}').bind('click', function(){
+	var processInstanceId = $('#processInstanceId-${rand}').val();
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var startFinishTime = $('#startFinishTime-${rand}').val();
+	var endFinishTime = $('#endFinishTime-${rand}').val();
+	var principalOrgName = $('#principalOrgName-${rand}').val();
+	var principalEmpId = $('#principalEmpId-${rand}').val();
+	var principalName = $('#principalName-${rand}').val();
+	var approvalOpinion = $('#approvalOpinion-${rand}').combobox("getValue");
+	var status = $('#status-${rand}').combobox("getValue");
+	var principalContractType = $('#principalContractType-${rand}').combobox("getValue");
+	$('#monitorTaskGrid-${rand}').datagrid('reload',
+		{
+			processInstanceId:processInstanceId	,
+			startCreateTime_d : startCreateTime,
+			endCreateTime_d : endCreateTime,
+			startFinishTime_d:startFinishTime,
+			endFinishTime_d:endFinishTime,
+			principalOrgName : principalOrgName,
+			principalEmpId : principalEmpId,
+			principalName : principalName,
+			approvalOpinion : approvalOpinion,
+			status : status,
+			principalContractType : principalContractType
+		});
+});
+//重置
+$('#reset_btn-${rand}').bind('click', function(){
+	$('#processInstanceId-${rand}').val('');
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$('#startFinishTime-${rand}').val('');
+	$('#endFinishTime-${rand}').val('');
+	$('#principalOrgName-${rand}').val('');
+	$('#principalEmpId-${rand}').val('');
+	$('#principalName-${rand}').val('');
+	$('#approvalOpinion-${rand}').combobox("setValue",'');
+	$('#status-${rand}').combobox("setValue",'');
+	$('#principalContractType-${rand}').combobox("setValue",'');
+});
+
+//导出
+$('#export_btn-${rand}').bind('click', function(){
+	var processInstanceId = $('#processInstanceId-${rand}').val();
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var startFinishTime = $('#startFinishTime-${rand}').val();
+	var endFinishTime = $('#endFinishTime-${rand}').val();
+	var principalOrgName = $('#principalOrgName-${rand}').val();
+	var principalEmpId = $('#principalEmpId-${rand}').val();
+	var principalName = $('#principalName-${rand}').val();
+	var approvalOpinion = $('#approvalOpinion-${rand}').combobox("getValue");
+	var status = $('#status-${rand}').combobox("getValue");
+	var principalContractType = $('#principalContractType-${rand}').combobox("getValue");
+	var form = $("<form method='post'>");
+   	form.attr('style', 'display:none');
+	form.append($("<input type=hidden name='processInstanceId' value='"+processInstanceId+"'>"));
+   	form.append($("<input type=hidden name='startCreateTime_d' value='"+startCreateTime+"'>"));
+   	form.append($("<input type=hidden name='endCreateTime_d' value='"+endCreateTime+"'>"));
+   	form.append($("<input type=hidden name='startFinishTime_d' value='"+startFinishTime+"'>"));
+   	form.append($("<input type=hidden name='endFinishTime_d' value='"+endFinishTime+"'>"));
+	form.append($("<input type=hidden name='principalOrgName' value='"+principalOrgName+"'>"));
+   	form.append($("<input type=hidden name='principalEmpId' value='"+principalEmpId+"'>"));
+	form.append($("<input type=hidden name='principalName' value='"+principalName+"'>"));
+	form.append($("<input type=hidden name='approvalOpinion' value='"+approvalOpinion+"'>"));
+	form.append($("<input type=hidden name='status' value='"+status+"'>"));
+	form.append($("<input type=hidden name='principalContractType' value='"+principalContractType+"'>"));
+   	form.appendTo($(document.body));
+    form.form('submit',{url:'taskmonitor/exportlaborContractRenewalReport.html'});
+    form.remove();
+});
+//初始化信息提示框，提供续签日期的输入条件
+$('#renewalDialog${rand}').dialog({
+		modal:true, 
+		closed:true,
+		iconCls:'icon-information',
+		title:"提示",
+		buttons: [{
+            text:'确认',
+            plain:true,
+            iconCls:'icon-ok',
+            handler: function(){
+           	  var processInstanceIds = $("#renewalProcess${rand}").val();
+           	  var renewalDate = $("#renewalDate${rand}").val();
+           	  if(renewalDate == ""){
+           		  $.messager.alert('信息提示',"请选择续签日期!",'warning');
+           		  return ;
+           	  }
+           	$('#renewalDialog${rand}').dialog("close");
+  			  $.getJSON("taskmonitor/sendLaborContractRenewalEmail.html",{processInstanceIds:processInstanceIds,renewalDate:renewalDate},function(data){
+				  if(data.success){
+					  $.messager.alert('信息提示',data.msg,'info');
+				  }else{
+					  $.messager.alert('信息提示',data.msg,'warning');
+				  }
+			  });
+            }
+        },{
+            text:'取消',
+            plain:true,
+            iconCls:'icon-cancel',
+            handler: function(){
+            	  $("#renewalProcess${rand}").val('');
+               	  $("#renewalDate${rand}").val('');
+               	  $('#renewalDialog${rand}').dialog("close");
+            }
+        }]
+	});
+</script>
+<#include "/common/foot.ftl">

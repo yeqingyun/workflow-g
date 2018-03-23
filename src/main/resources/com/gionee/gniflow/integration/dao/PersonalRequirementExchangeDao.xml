@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.PersonalRequirementExchangeDao">
+  
+  <sql id="columns">
+    ID, ACCOUNT, NAME, DEPARTMENT, COMPANY, PROC_INST_ID_,
+	STATUS, REMARK, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.PersonalRequirementExchange" id="result">
+	<id property="id" column="ID"/>
+	<result property="account" column="ACCOUNT"/>
+	<result property="name" column="NAME"/>
+	<result property="department" column="DEPARTMENT"/>
+	<result property="company" column="COMPANY"/>
+	<result property="procInstId" column="PROC_INST_ID_"/>
+	<result property="status" column="STATUS"/>
+	<result property="remark" column="REMARK"/>
+	<result property="createBy" column="CREATE_BY"/>
+	<result property="createTime" column="CREATE_TIME"/>
+	<result property="updateBy" column="UPDATE_BY"/>
+	<result property="updateTime" column="UPDATE_TIME"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.PersonalRequirementExchange">
+    insert into PERSONAL_REQUIREMENT_EXCHANGE (<include refid="columns"/>) values (
+    #{nextId},
+    #{account},
+    #{name},
+    #{department},
+    #{company},
+    #{procInstId},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.PersonalRequirementExchange">
+    update PERSONAL_REQUIREMENT_EXCHANGE
+    <set>
+      <if test="account != null">
+        ACCOUNT = #{account},
+      </if>
+      <if test="name != null">
+        NAME = #{name},
+      </if>
+      <if test="department != null">
+        DEPARTMENT = #{department},
+      </if>
+      <if test="company != null">
+        COMPANY = #{company},
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID_ = #{procInstId},
+      </if>
+      <if test="status != null">
+        STATUS = #{status},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark},
+      </if>
+      UPDATE_BY = #{currentAccount},
+      UPDATE_TIME = #{currentTime}
+    </set>
+    where ID = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete PERSONAL_REQUIREMENT_EXCHANGE where ID = #{_parameter}
+  </delete>
+
+  <select id="getAllById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from PERSONAL_REQUIREMENT_EXCHANGE
+	where ID = #{_parameter}
+  </select>
+
+  <select id="getPageById" parameterType="Integer" resultMap="result">
+    select * from ( select a.*, ROWNUM rnum from (
+      select <include refid="columns"/> from PERSONAL_REQUIREMENT_EXCHANGE
+      where ID = #{_parameter}
+    ) a where ROWNUM &lt; #{lastRow}) where rnum  &gt;= #{firstRow}
+  </select>
+  <select id="getPageCountById" parameterType="Integer" resultType="int">
+    select count(*) from PERSONAL_REQUIREMENT_EXCHANGE
+    where ID = #{_parameter}
+  </select>  
+
+  <select id="getById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from PERSONAL_REQUIREMENT_EXCHANGE
+	where ID = #{_parameter}
+  </select>
+
+  <select id="getSelectedOnce" parameterType="String" resultMap="result">
+	select * from PERSONAL_REQUIREMENT_EXCHANGE where  ACCOUNT = #{account}
+  </select>
+</mapper>

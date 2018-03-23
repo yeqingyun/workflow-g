@@ -1,0 +1,731 @@
+<#include "/common/head.ftl">
+<div class="easyui-layout" data-options="fit:true">
+	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:35px;background:#fafafa;border:1px solid #ccc">
+		     <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">名称：</td>
+		   				<td> 
+	   			 			<input id="name-${rand}" type="text" class="easyui-textbox" style="width: 260px" name="name" />
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">描述：</td>
+		   				<td width="200">
+		   				 	<input id="description-${rand}" style="width:260px;" class="easyui-textbox" type="text" name="description" ></input>
+		   				</td>
+		   				<td width="200"  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+		
+		<div data-options="region:'west',border:false,split:true,width:600" style="padding:0px 0px 0px 0px;">
+			<div id="bpmRoleGrid-${rand}"></div>
+		</div>
+		<div data-options="region:'center',border:true,split:true" style="padding:0px 0px 0px 0px;">
+			<table id="bpmRoleUserGrid-${rand}" ></table>
+		</div>
+		<div data-options="region:'east',border:true,split:true,width:300" style="padding:0px 0px 0px 0px;">
+			<ul id="showRoleTree${rand}" />
+		</div>
+ </div>
+<!-- Role Win -->
+<div id="bpmRoleWin${rand}" class="easyui-dialog" data-options="title:'新增流程角色',collapsible:false,
+	width:800,height:500,maximizable:true,resizable:true,closed:true,
+	cache:false,modal:true,buttons: '#bpmRoleWin-buttons${rand}'">
+	<div  style="padding:10px 10px;">
+		<form id="bpmRoleForm${rand}">
+			<table>
+				<tr>
+					<td width="80" align="right" >名称:</td>
+					<td>
+						<input id="id${rand}" type="hidden" name="id" />
+						<input id="name${rand}" class="easyui-validatebox" data-options="required:true" type="text" name="name" style="width:500px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td width="80" align="right" >描述:</td>
+					<td>
+						<textarea id="description${rand}" name="description" style="width: 500px; height: 50px" class="easyui-validatebox" ></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td width="80" align="right" >平台流程:</td>
+					<td>
+						<select id="authProTree${rand}" multiple class="easyui-combotree" name="roleResources"
+							data-options="required:true,checkbox:true,lines:true,url:'bpmRole/bpmRoleTree.json',method:'get',panelHeight:300" 
+							style="width:505px;">
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<div id="bpmRoleWin-buttons${rand}">
+   <a id="bpmRoleWinSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">保存</a>
+   <a id="bpmRoleWinCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- Set Role Win -->
+<div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 1000px; height: 600px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: '#orgWin-buttons${rand}'">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs${rand}" />
+		</div>
+		
+		<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="users${rand}"></table>
+		</div>
+		<div data-options="region:'south',iconCls:'icon-task',title:'角色列表',border:true,split:true,height:200,minHeight:120,"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="selectBpmRoleGrid-${rand}"></table>
+		</div>
+	</div>
+</div>
+<div id="orgWin-buttons${rand}">
+	<a id="orgWinSaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-save'" class="easyui-linkbutton">保存人员分配</a>
+   	<a id="orgWinCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+	员工账号: <input id="userAccount${rand}" class="easyui-validatebox" style="width:150px"/>
+	员工姓名: <input id="userName${rand}" class="easyui-validatebox" style="width:150px"/>
+	<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+</div>
+
+<!-- 单个角色的人员分配 -->
+<div id="orgWin1-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 1000px; height: 600px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: '#orgWin1-buttons${rand}'">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+			style="padding: 5px 0px 5px 0px">
+			<ul id="orgs1${rand}" />
+		</div>
+		
+		<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="users1${rand}"></table>
+		</div>
+	</div>
+</div>
+<div id="orgWin1-buttons${rand}">
+	<a id="orgWin1SaveBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-save'" class="easyui-linkbutton">保存人员分配</a>
+   	<a id="orgWin1CloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<div id="user1GridToolBar${rand}" style="padding:2px 5px;">
+	员工账号: <input id="userAccount1${rand}" class="easyui-validatebox" style="width:150px"/>
+	员工姓名: <input id="userName1${rand}" class="easyui-validatebox" style="width:150px"/>
+	<a id="user1GridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+</div>
+
+
+<!-- 导入人员分配 -->
+<div id="importWin-${rand}" class="easyui-dialog" 
+	data-options="modal:true, title:'导入人员分配',closed:true,cache:false,iconCls:'icon-retrieve',width:700,height:160,
+				buttons: '#importWin-buttons${rand}',onClose:clearInputFile${rand}">
+	<div  style="padding:10px 10px;">
+		<form id="importForm${rand}" method="post" enctype="multipart/form-data">
+			<table>
+				<tr>
+					<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请先下载Excel模板，填写完毕后，再导入！</td>
+				</tr>
+				<tr>
+					<td width="120" align="right">上传文件:</td>
+					<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/></td>
+					<td>
+						<a id="download_btn-${rand}" href="javascript:void(0)" data-options="iconCls:'icon-down_load'" class="easyui-linkbutton">下载导入模板</a>
+						<a id="upload_btn-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">上传</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</div>
+<div id="importWin-buttons${rand}">
+   	<a id="importWinCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+</div>
+
+<!-- show error win -->
+<div id="showErrorWin-${rand}" style="padding:5px 5px 5px 5px"></div>
+
+<script type="text/javascript">
+$(function(){
+	var bpmRoleWin = $('#bpmRoleWin${rand}');
+	var bpmRoleForm = $('#bpmRoleForm${rand}');
+	
+	var input_id = $('#id${rand}');
+	var input_name = $('#name${rand}');
+	var input_description = $('#description${rand}');
+	var input_authProTree = $('#authProTree${rand}');
+	
+	
+	var importWin = $('#importWin-${rand}');
+	//加载所有的角色列表
+	$('#bpmRoleGrid-${rand}').datagrid({
+	  fitColumns:false,
+	  url:'bpmRole/loadBpmRole.json',
+	  columns:[[
+		{field:'id',title:'编号',checkbox:true,width:150},
+		{field:'name',title:'名称',width:200},
+		{field:'description',title:'描述',width:300},
+		{field:'relationDetail',title:'关系值',width:800,hidden:true}
+	  ]],
+	  nowrap: true,
+	  pagination:true,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  border : true,
+	  rownumbers:true,
+	  onCheck : function(index,row){
+	 	showRoleTree.tree('reload');
+	 	$('#bpmRoleUserGrid-${rand}').datagrid("options").queryParams.roleId = row.id; 
+	 	$('#bpmRoleUserGrid-${rand}').datagrid("reload");
+	  },
+	  toolbar: [{
+			text : '新增',
+			iconCls: 'icon-add',
+			handler:addBpmRole${rand}
+		  },'-',{
+			text:'编辑',
+			iconCls: 'icon-edit',
+			handler:editBpmRole${rand}
+		  },'-',{
+			text:'删除',
+			iconCls: 'icon-remove',
+			handler:deleteBpmRole${rand}
+		  },'-',{
+			text:'人员分配',
+			iconCls: 'icon-prodefine',
+			handler:setBpmRole${rand}
+		  },'-',{
+			text:'导入人员分配',
+			iconCls: 'icon-retrieve',
+			handler:showImportWin${rand}
+		  }],
+  		onLoadSuccess:function(data){
+  			$('#bpmRoleGrid-${rand}').datagrid("selectRow",0);
+  		}
+	});
+	//加载当前角色下的人员
+	$('#bpmRoleUserGrid-${rand}').datagrid({
+		  fitColumns:false,
+		  url:'bpmRole/bpmusers.json',
+		  columns:[[
+			{field:'id',title:'编号',checkbox:true,width:150},
+			{field:'account',title:'名称',width:200},
+			{field:'userName',title:'描述',width:300},
+			{field:'orgName',title:'部门名称',width:200}
+		  ]],
+		  queryParams:{"roleId":0},
+		  nowrap: true,
+		  pagination:true,
+		  pageNumber:1,
+		  pageSize:20,
+		  fit : true,
+		  border : true,
+		  rownumbers:true,
+		  toolbar: [{
+				text:'删除',
+				iconCls: 'icon-remove',
+				handler:deleteBpmRoleUser${rand}
+			  	},'-',{
+					text:'人员分配',
+					iconCls: 'icon-prodefine',
+					handler:insertBpmRoleUser${rand}
+				  }]
+		});
+	
+	//add
+	function addBpmRole${rand}(){
+	 	bpmRoleWin.dialog('open');
+	 	clearBpmRoleWinValue${rand}();
+	}
+	
+	//btn handle--Save
+	$('#bpmRoleWinSaveBtn${rand}').bind('click',function(){
+		var proTree = $('#authProTree${rand}').combotree('tree');
+		var nodes = proTree.tree('getChecked');
+		
+		var roleResources = "";
+			
+		for (var i=0;i<nodes.length;i++) {
+			if (proTree.tree('isLeaf',nodes[i].target)) {
+				roleResources += nodes[i].id + ',';
+			}
+		}
+		if (bpmRoleForm.form('validate')) {
+			$.post('bpmRole/saveBpmRole.html',
+			{
+				id:$('#id${rand}').val(),
+				name:$('#name${rand}').val(),
+				description:$('#description${rand}').val(),
+				roleResources:roleResources
+			},
+			function(result){
+				clearBpmRoleWinValue${rand}();
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					$('#bpmRoleWin${rand}').dialog('close');
+					$('#bpmRoleGrid-${rand}').datagrid('reload');
+				} 
+			},'json');
+		}
+	})
+	
+	$('#bpmRoleWinCloseBtn${rand}').bind('click',function(){
+		bpmRoleWin.dialog('close');
+	})
+	
+
+	//edit
+	function editBpmRole${rand}(){
+	  clearBpmRoleWinValue${rand}();
+	  //回填值
+	  var row = $('#bpmRoleGrid-${rand}').datagrid('getSelected');
+		 if (row){
+		 	//回填值
+			input_id.val(row.id);
+			input_name.val(row.name);
+			input_description.val(row.description);
+			
+			var relationDetail = row.relationDetail;
+			input_authProTree.combotree('setValues', relationDetail.split(","));
+			bpmRoleWin.dialog('setTitle', '编辑流程角色');
+			bpmRoleWin.dialog('open');
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	
+	//delete
+	function deleteBpmRole${rand}(){
+		 var row = $('#bpmRoleGrid-${rand}').datagrid('getSelected');
+		 if (row){
+			$.messager.confirm('删除提示','该操作将会删除与角色关联的所有数据，您确定要删除该流程角色吗?',function(r){
+				if (r){
+					$.post('bpmRole/deleteBpmRole.json',{id:row.id},function(result){
+						$.messager.show({
+							title: '信息提示', msg: result.msg
+				        });
+						if (result.success){
+							$('#bpmRoleGrid-${rand}').datagrid('reload');
+						} 
+				  	},'json');
+				}
+			});
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	//删除掉当前角色下的选中的人员权限
+	function deleteBpmRoleUser${rand}(){
+		 var userRows = $("#bpmRoleUserGrid-${rand}").datagrid("getSelections");
+		 
+		 var roleRows = $('#bpmRoleGrid-${rand}').datagrid("getSelected")
+		 if (userRows.length>0){
+			var userIds = "";
+			for(var i=0;i<userRows.length;i++){
+				userIds += userRows[i].userId+","
+			}
+			var roleIds = "";
+			roleIds = userRows[0].roleId;
+			$.messager.confirm('删除提示','该操作将会删除与当前角色关联的所有权限，您确定要从中删除该人员吗?',function(r){
+				if (r){
+					$.post('bpmRole/deleteBpmRoleUser.json',{userIds:userIds,roleIds:roleIds},function(result){
+						$.messager.show({
+							title: '信息提示', msg: result.msg
+				        });
+						if (result.success){
+							$('#bpmRoleUserGrid-${rand}').datagrid('reload');
+						} 
+				  	},'json');
+				}
+			});
+		} else {
+			$.messager.show({
+			  title: '信息提示',
+			  msg: "请选择记录！"
+			});
+		}
+	}
+	//refresh
+	function refreshBpmRole${rand}(){
+		$('#bpmRoleGrid-${rand}').datagrid('reload');
+	}
+	
+	//按钮绑定事件
+	$('#search_btn-${rand}').bind('click', function(){
+		var description = $('#description-${rand}').val();
+		var name = $('#name-${rand}').val();
+		
+		$('#bpmRoleGrid-${rand}').datagrid('reload',
+			{
+				description:description,
+				name:name
+			});
+	});
+	
+	//Search Reset
+	$('#reset_btn-${rand}').bind('click', function(){
+		$('#name-${rand}').val('');
+		$('#description-${rand}').val('');
+	});
+	
+	//clear form value
+	function clearBpmRoleWinValue${rand}(){
+		//清空编辑框中的值
+		input_id.val('');
+		input_name.val('');
+		input_description.val('');
+		input_authProTree.combotree('clear');
+	}
+	
+	//可以多个设置角色人员关联
+	function setBpmRole${rand}(){
+		$('#orgWin-${rand}').dialog('open');
+		//role grid reload
+		$('#selectBpmRoleGrid-${rand}').datagrid('reload');
+	}
+	//为单个角色设置人员
+	function insertBpmRoleUser${rand}(){
+		$('#orgWin1-${rand}').dialog('open');
+	}
+	//多个角色一起分配时的组织树和人员列表的初始化
+	var orgs = $('#orgs${rand}');
+	var currentOrgId = 0;
+	//init tree
+	orgs.tree({
+			url: 'hrFlow/auth/orgs.json',
+			method:'get',
+			required:true,
+		 	lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+				currentOrgId = node.id;		
+				$('#users${rand}').datagrid('reload',{id:currentOrgId});
+			}
+	});
+	
+	$('#users${rand}').datagrid({
+		fitColumns:false,
+		url:'bpmRole/users.json',
+		queryParams:{
+			id:currentOrgId
+		},
+		columns:[[
+			{field:'id',checkbox:true},
+			{field:'account',title:'帐号',width:150},
+			{field:'name',title:'姓名',width:150},
+			{field:'roles',title:'角色名称',width:150}
+		]],
+		nowrap: true,
+		fit : true,
+		border : false,
+		pagination:false,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:false,
+		toolbar:'#userGridToolBar${rand}'
+	});
+	
+	//单个角色进行人员分配时的组织树和人员列表的初始化
+	var orgs1 = $('#orgs1${rand}');
+	var currentOrgId1 = 0;
+	//init tree
+	orgs1.tree({
+			url: 'hrFlow/auth/orgs.json',
+			method:'get',
+			required:true,
+		 	lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onClick:function(node){
+				currentOrgId1 = node.id;		
+				$('#users1${rand}').datagrid('reload',{id:currentOrgId1});
+			}
+	});
+	
+	$('#users1${rand}').datagrid({
+		fitColumns:false,
+		url:'bpmRole/users.json',
+		queryParams:{
+			id:currentOrgId1
+		},
+		columns:[[
+			{field:'id',checkbox:true},
+			{field:'account',title:'帐号',width:150},
+			{field:'name',title:'姓名',width:150},
+			{field:'roles',title:'角色名称',width:150}
+		]],
+		nowrap: true,
+		fit : true,
+		border : false,
+		pagination:false,
+		pageNumber : 1,
+		pageSize : 20,
+		rownumbers:true,
+		singleSelect:false,
+		toolbar:'#user1GridToolBar${rand}'
+	});
+	
+	
+	//多个角色分配人员时的角色列表
+	$('#selectBpmRoleGrid-${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/loadAllBpmRole.json',
+	  columns:[[
+		{field:'id',title:'编号',checkbox:true,width:150},
+		{field:'name',title:'名称',width:300},
+		{field:'description',title:'描述',width:300}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  fit : true,
+	  singleSelect:false,
+	  rownumbers:true
+	});
+	
+	//Close Btn Click为多个角色分配人员的保存和关闭按钮
+	$('#orgWinCloseBtn${rand}').bind('click', function(){
+		$('#orgWin-${rand}').dialog('close');	
+	});
+	
+	$('#orgWinSaveBtn${rand}').bind('click', function(){
+		saveUserRole${rand}();
+	});
+	
+	//为单个角色分配人员的保存和关闭按钮
+	$('#orgWin1CloseBtn${rand}').bind('click', function(){
+		$('#orgWin1-${rand}').dialog('close');	
+	});
+	
+	$('#orgWin1SaveBtn${rand}').bind('click', function(){
+		saveUserRole1${rand}();
+	});
+	
+	//Save Data
+	function saveUserRole${rand}(){
+		var userGrid = $('#users${rand}');
+		var roleGrid = $('#selectBpmRoleGrid-${rand}');
+		
+		var userRows = userGrid.datagrid('getChecked');
+		var roleRows = roleGrid.datagrid('getChecked');
+		
+		if (userRows == null || userRows.length <= 0) {
+			 $.messager.alert('信息提示','请从系统用户列表选取用户记录!','warning');
+			 return;
+		}
+		if (roleRows == null || roleRows.length <= 0) {
+			$.messager.alert('信息提示','请从角色列表选选取用户记录!','warning');
+			 return;
+		}
+		
+		var userIds = "";
+		var roleIds = "";
+		
+		for (var i=0;i<userRows.length;i++) {
+			userIds += userRows[i].id + ',';
+		}
+		
+		for (var i=0;i<roleRows.length;i++) {
+			roleIds += roleRows[i].id + ',';
+		}
+		
+		$.post('bpmRole/saveUserRole.json',
+			{
+				userIds:userIds,
+				roleIds:roleIds
+			},function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					userGrid.datagrid('reload');
+					roleGrid.datagrid('reload');
+				} 
+		},'json');
+	}
+	//为单个角色分配人员
+	function saveUserRole1${rand}(){
+		var userGrid = $('#users1${rand}');
+		
+		var userRows = userGrid.datagrid('getChecked');
+		
+		if (userRows == null || userRows.length <= 0) {
+			 $.messager.alert('信息提示','请从系统用户列表选取用户记录!','warning');
+			 return;
+		}
+		var roleRows = $("#bpmRoleGrid-${rand}").datagrid("getChecked");
+		
+		if (roleRows == null || roleRows.length <= 0) {
+			 $.messager.alert('信息提示','请从系统角色列表选取角色记录!','warning');
+			 return;
+		}
+		
+		var userIds = "";
+		var roleIds = "";
+		
+		for (var i=0;i<userRows.length;i++) {
+			userIds += userRows[i].id + ',';
+		}
+		for (var i=0;i<roleRows.length;i++) {
+			roleIds += roleRows[i].id + ',';
+		}
+		$.post('bpmRole/insertUserRole.json',
+			{
+				userIds:userIds,
+				roleIds:roleIds
+			},function(result){
+				$.messager.show({
+					title: '信息提示', msg: result.msg
+				});
+				if (result.success){
+					userGrid.datagrid('reload');
+					$("#bpmRoleUserGrid-${rand}").datagrid("reload");
+				} 
+		},'json');
+	}
+	
+	
+	//show role tree
+	var showRoleTree = $('#showRoleTree${rand}');
+	var currentOrgId = 0;
+	//init tree
+	showRoleTree.tree({
+			url: 'bpmRole/bpmRoleTree.json',
+			method:'get',
+			checkbox:true,
+			required:true,
+		 	lines:true,
+			panelWidth:300,
+			panelHeight:280,
+			onLoadSuccess:function(){
+				 var row = $('#bpmRoleGrid-${rand}').datagrid('getSelected');
+				 if (row) {
+				 	//回填值
+					var relationDetail = row.relationDetail;
+					var relationArr = relationDetail.split(",");
+					for (var i=0;i<relationArr.length;i++) {
+						var node = showRoleTree.tree('find', relationArr[i]);
+						if (node != null) {
+							showRoleTree.tree('check', node.target);
+						}
+					}
+				 }
+			}
+	});
+	
+	//user search  多个角色分配人员的人员查询
+	$('#userGridSearchBtn${rand}').bind('click', function(){
+		var userAccount = $('#userAccount${rand}').val();
+		var userName = $('#userName${rand}').val();
+		$('#users${rand}').datagrid('reload',
+			{
+				userAccount:userAccount,
+				userName:userName
+			});
+	});
+	//为单个角色分配人员时的人员查询
+	$('#user1GridSearchBtn${rand}').bind('click', function(){
+		var userAccount = $('#userAccount1${rand}').val();
+		var userName = $('#userName1${rand}').val();
+		$('#users1${rand}').datagrid('reload',
+			{
+				userAccount:userAccount,
+				userName:userName
+			});
+	});
+	//import
+	function showImportWin${rand}(){
+		importWin.dialog('open');	
+	}
+	
+	//btn
+	$('#importWinCloseBtn${rand}').bind('click', function(){
+		importWin.dialog('close');
+	});
+	//下载
+	$('#download_btn-${rand}').bind('click', function(){
+		downLoadTemplate('download.personnel.assignment.name');
+	});
+	
+	$('#upload_btn-${rand}').bind('click', function(){
+		 $.messager.progress();
+	    $('#importForm${rand}').form('submit',{
+				url: "bpmRole/importUserAssignment.html",
+			    onSubmit: function(){
+			    	var validateResult = $(this).form('validate');
+			    	if (!validateResult) {
+			    		$.messager.progress('close');
+						return false;
+			    	} else {
+			    		return true;
+			    	}
+			    },
+			    success: function(result){
+			    	$.messager.progress('close');
+			    	
+			        var result = eval('('+result+')');
+			        
+			        if (!result.success){
+			            $('#showErrorWin-${rand}').window({
+			            	title:'错误信息提示',
+						    width:600,
+						    height:400,
+						    collapsible:false,
+						    minimizable:false,
+						    modal:true,
+						    iconCls:'icon-monitor',
+						    content:result.msg
+						});
+			        } else {
+			        	importWin.dialog('close');
+			            $.messager.show({
+			                title: '信息提示',
+			                msg: result.msg
+			            });
+			        }
+			    }
+		});
+	});
+});
+
+function clearInputFile${rand}(){
+	//清空文件框
+	$("#upload_file-${rand}").remove(); //移除原来的
+	
+    var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/>';
+   	$('#td_input_${rand}').html(newFileInput); //添加新的
+    
+    $.parser.parse('#td_input_${rand}');
+    
+}
+
+</script>
+<#include "/common/foot.ftl">

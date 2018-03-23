@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.SapReqSheetAttachmentDao">
+  
+  <sql id="columns">
+    preq_no, preq_item, file_no, file_name, del_flag
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.SapReqSheetAttachment" id="result">
+	<result property="preqNo" column="preq_no"/>
+	<result property="preqItem" column="preq_item"/>
+	<result property="fileNo" column="file_no"/>
+	<result property="fileName" column="file_name"/>
+	<result property="delFlag" column="del_flag"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.SapReqSheetAttachment">
+    insert into sap_reqsheet_attachment (<include refid="columns"/>) values (
+    #{preqNo},
+    #{preqItem},
+    #{fileNo},
+    #{fileName},
+    #{delFlag}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.SapReqSheetAttachment">
+    update sap_reqsheet_attachment
+    <set>
+      <if test="fileNo != null">
+        file_no = #{fileNo},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag},
+      </if>
+    </set>
+    where preq_no = #{preqNo} and preq_item = #{preqItem}
+  </update>
+
+  <update id="logicDelete">
+	update sap_reqsheet_attachment set del_flag = #{delflag} where preq_no = #{preqNo} 
+		and preq_item = #{preqItem} and file_no = #{fileNo}
+  </update>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from sap_reqsheet_attachment
+	<where>
+	  <if test="preqNo != null">
+        and preq_no = #{preqNo}
+	  </if>
+	  <if test="preqItem != null">
+        and preq_item = #{preqItem}
+	  </if>
+	  <if test="fileNo != null">
+        and file_no = #{fileNo}
+	  </if>
+	  <if test="fileName != null">
+        and file_name = #{fileName}
+	  </if>
+	  <if test="delFlag != null">
+        and del_flag = #{delFlag}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY ID_) rnk FROM (
+      select <include refid="columns"/> from sap_reqsheet_attachment
+      <where>
+        <if test="preqNo != null">
+          and preq_no = #{preqNo}
+        </if>
+        <if test="preqItem != null">
+          and preq_item = #{preqItem}
+        </if>
+        <if test="fileNo != null">
+          and file_no = #{fileNo}
+        </if>
+        <if test="fileName != null">
+          and file_name = #{fileName}
+        </if>
+        <if test="delFlag != null">
+          and del_flag = #{delFlag}
+        </if>
+      </where>
+      <![CDATA[
+      	)RES ) SUB WHERE SUB.rnk >= #{firstRow} AND SUB.rnk < #{lastRow}
+      ]]>
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="java.lang.Integer">
+    select count(*) from sap_reqsheet_attachment
+    <where>
+      <if test="preqNo != null">
+        and preq_no = #{preqNo}
+      </if>
+      <if test="preqItem != null">
+        and preq_item = #{preqItem}
+      </if>
+      <if test="fileNo != null">
+        and file_no = #{fileNo}
+      </if>
+      <if test="fileName != null">
+        and file_name = #{fileName}
+      </if>
+      <if test="delFlag != null">
+        and del_flag = #{delFlag}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" resultMap="result">
+	select <include refid="columns"/> from sap_reqsheet_attachment
+	where preq_no = #{preqNo} and preq_item = #{preqItem}
+  </select>
+
+</mapper>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>打印帮助</title>
+	<link rel="stylesheet" type="text/css" href="css/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="css/themes/icon.css"/>
+	<link rel="stylesheet" type="text/css" href="css/themes/myicon.css"/>
+	<script type="text/javascript" src="${base}js/jquery.min.js"></script>
+	<script type="text/javascript" src="${base}js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="${base}js/locale/easyui-lang-zh_CN.js"></script>
+	<script type="text/javascript" src="${base}js/common/common.js"></script>
+	
+	<style type="text/css">
+		li{padding: 5px 0;}
+	</style>
+</head>
+<body>
+  <h3><b>打印时请确保计算机开启了打印服务并且连接到了打印机！</b></h3>
+  <ul>
+    <li>（第一步）开启计算机打印服务，适合<b>Windows XP</b>,<b>Windows 7</b>用户：
+    <p>
+    <img alt="第一步" title="第一步" src="${base}image/print/step_1.jpg" />
+    <img alt="第二步" title="第二步" src="${base}image/print/step_2.jpg" />
+    </li>
+    <li>（第二步）安装<b>Lodop(露肚皮)</b>打印控件：
+    	<p>
+    		本地系统下载地址，请点击右侧链接下载！
+    		<a id="down32${rand}" href="javascript:void(0);">install_lodop32.exe</a>&nbsp;
+    		<a id="down64${rand}" href="javascript:void(0);">install_lodop64.exe</a>
+    	</p>
+    </li>
+    <li>（第三步）安装<b>CLodop(云露肚皮)</b>打印控件：
+    	<p>
+    		本地系统下载地址，请点击右侧链接下载！
+    		<a id="downClodop${rand}" href="javascript:void(0);">CLodop_Setup_for_Win32NT.exe</a>&nbsp;
+    	</p>
+	    <img alt="第三步" title="第三步" src="${base}image/print/step_3.jpg" />
+    </li>
+    <li>（第四步）开始打印：
+    	<p>
+   			 完成上述操作后，回到打印页面，点击<b>打印</b>按钮弹出打印窗口，开始打印。<br>
+   			另外可以安装PDF Creator，打印成pdf文档。
+   			<a id="downpdf${rand}" href="javascript:void(0);">PDFCreator.exe</a>
+   		</p>
+    </li>
+  </ul>
+  <h3 align="center"><input type="button" value="我知道了" onclick="window.close();" /></h3>
+  
+  <script type="text/javascript">
+  	 $(function(){
+  	 	//32位
+  	 	$('#down32${rand}').bind('click', function(){
+  	 		submitForm("download.print.plug32.name");
+  	 	});
+  	 	
+  	 	//64位
+  	 	$('#down64${rand}').bind('click', function(){
+  	 		submitForm("download.print.plug64.name");
+  	 	});
+  	 	//云
+  	 	$('#downClodop${rand}').bind('click', function(){
+  	 		submitForm("download.print.clodop.name");
+  	 	});
+  	 	$('#downpdf${rand}').bind('click', function(){
+  	 		submitForm("download.print.pdf.name");
+  	 	});
+  	 	
+  	 	function submitForm(value){
+  	 		var form = $("<form>");
+		   	form.attr('style', 'display:none');
+		   	form.attr('method', 'post');
+		    form.attr('action', '${base}sysprocess/task/printDownload.html');
+		
+		    var key = $('<input>');
+		   	key.attr('type', 'hidden');
+		   	key.attr('name', 'key');
+		    key.attr('value', value);
+		
+		   	$('body').append(form);
+		    form.append(key);
+		        
+		    form.submit();
+		    form.remove();
+  	 	}
+  	 });
+  </script>
+</body>
+</html>

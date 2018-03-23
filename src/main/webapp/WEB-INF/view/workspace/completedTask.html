@@ -1,0 +1,239 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">创建时间：</td>
+		    			<td> 
+		    			 	<input id="startCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd HH:mm:ss',width:130,required:false,maxDate:'#F{$dp.$D(\'endCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd HH:mm:ss',width:130,required:false,minDate:'#F{$dp.$D(\'startCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">流程实例编号：</td>
+		   				<td>
+		   				 	<input id="proInstId-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstId" data-options=""></input>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap">完成时间：</td>
+		    			<td> 
+		   					<input id="startFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd HH:mm:ss',width:130,required:false,maxDate:'#F{$dp.$D(\'endFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endFinishTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endFinishTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd HH:mm:ss',width:130,required:false,minDate:'#F{$dp.$D(\'startFinishTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">流程名称：</td>
+		    			<td> 
+		    			 	<input id="processTree-${rand}" class="easyui-combotree" data-options="panelHeight:300,panelWidth:230,lines:true,url:'menus.json',onClick:proTreeNodeClick${rand}" style="width:154px;"/>
+		   					<input id="processDefId-${rand}" type="hidden" value=""/>
+		   					<input id="categoryId-${rand}" type="hidden" value=""/>
+		   				</td>
+		   				
+		 			</tr>
+		 			<tr>
+		 				<!-- <td align="left" style="white-space:nowrap; padding-left:12px;">任务名称：</td>
+		 				<td>
+		    			 	<input id="name-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="name" data-options=""/>
+		   				</td> -->
+		   				<td align="left" style="white-space:nowrap; padding-left:12px;">流程发起人：</td>
+		   				<td>
+		   				 	<input id="proInstApply-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstId" data-options=""></input>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap">实例名称：</td>
+		    			<td>
+		   				 	<input id="proInstName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="proInstName" data-options=""></input>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="completedTaskGrid-${rand}"></div>
+	</div>
+ </div>
+
+
+<script type="text/javascript">
+$('#completedTaskGrid-${rand}').datagrid({
+  fitColumns:false,
+  url:'workspace/completedTask.json',
+  columns:[[
+  	{field:'processInstanceId',title:'流程实例编号',width:120,align:'center'},
+  	{field:'processInstanceName',title:'实例名称',width:150,align:'center'},
+  	{field:'processDefName',title:'流程名称',width:130,align:'center'},
+	{field:'proStartUserId',title:'流程发起人工号',hidden:true,width:100},
+	{field:'proStartUserName',title:'流程发起人',width:80,align:'center'},
+	{field:'processDefinitionId',title:'流程定义',hidden:true,width:120},
+	{field:'categoryName',title:'流程所属部门',width:100,align:'center'},
+	{field:'id',title:'任务编号',checkbox:false,hidden:false,align:'center'},
+	{field:'name',title:'任务名称',width:100,align:'center'},
+	{field:'startTime',title:'创建时间',width:150,align:'center'},
+	{field:'endTime',title:'完成时间',width:150,align:'center'},
+	{field:'assignee',title:'负责人',hidden:true,width:80},
+	{field:'durationInMillis',title:'处理耗时(小时)',width:90,align:'center',
+		formatter: function(value,row,index){
+			var value = row.durationInMillis;
+   			var day = value/1000/3600;
+    		return day.toFixed(2);
+		}
+	},
+	{field:'deleteReason',title:'状态',width:80,align:'center',
+		formatter: function(value,row,index){
+			if (value == 'completed' || value == '跳过'){
+				return '<span style="color:blue">已完成</span>';
+			}
+		}
+	}
+  ]],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  pageNumber : 1,
+  pageSize : 20,
+  singleSelect:true,
+  rownumbers:true,
+  toolbar: [{
+	text:'取回任务',
+	iconCls: 'icon-retrieve',
+	handler: recallTask${rand}
+  },'-',{
+	text:'流转详情',
+	iconCls: 'icon-history',
+	handler: handlegraphTrace${rand}
+  }],
+  onDblClickRow:function(rowIndex, rowData){
+	 handlegraphTrace${rand}();
+  }
+});
+
+//查看历史
+function handlegraphTrace${rand}(){
+  var row = $('#completedTaskGrid-${rand}').datagrid('getSelected');
+  if (row){
+	viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    //fit:true,
+	    maximizable:true,
+	    style:"padding:10px",
+	    href: 'workspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+
+//
+function proTreeNodeClick${rand}(node){
+	var processTree = $('#processTree-${rand}');
+	var proDefId = $('#processDefId-${rand}');
+	var categoryId = $('#categoryId-${rand}');
+	
+	//清空
+	proDefId.val('');
+	categoryId.val('');
+	
+	if (node.id == null) {
+		var defArr = node.attributes.processDefId.split(":");
+		proDefId.val(defArr[0]);
+	} else {
+		categoryId.val(node.id);
+	}
+	return true;
+}
+
+//按钮绑定事件
+$('#search_btn-${rand}').bind('click', function(){
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	var proInstId = $('#proInstId-${rand}').val();
+	var proInstName = $('#proInstName-${rand}').val();
+	var proInstApply = $('#proInstApply-${rand}').val();
+	var startFinishTime = $('#startFinishTime-${rand}').val();
+	var endFinishTime = $('#endFinishTime-${rand}').val();
+	var processDefId = $('#processDefId-${rand}').val();
+	var categoryId = $('#categoryId-${rand}').val();
+
+	$('#completedTaskGrid-${rand}').datagrid('reload',
+		{
+			startCreateTime_d:startCreateTime,
+			endCreateTime_d:endCreateTime,
+			proInstId:proInstId,
+			startFinishTime_d:startFinishTime,
+			endFinishTime_d:endFinishTime,
+			processInstanceName:proInstName,
+			processDefId:processDefId,
+			proInstApply:proInstApply,
+			categoryId:categoryId
+		});
+});
+
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$('#proInstId-${rand}').val('');
+	$('#proInstApply-${rand}').val('');
+	$('#startFinishTime-${rand}').val('');
+	$('#endFinishTime-${rand}').val('');
+	$('#proInstName-${rand}').val('');
+	$('#processTree-${rand}').combotree('clear');
+	
+	//特殊处理
+	$('#processDefId-${rand}').val('');
+	$('#categoryId-${rand}').val('');
+});
+
+//update 2014-12-18
+function recallTask${rand}(){
+	var row = $('#completedTaskGrid-${rand}').datagrid('getSelected');
+	 if (row){
+	 	$.messager.confirm('提示信息','您确定要取回任务吗?',function(r){
+				if (r){
+					$.post('workspace/recallTask.html',{taskId:row.id,processInstanceId:row.processInstanceId},function(result){
+				        $.messager.alert('信息提示', result.msg,'warning');
+						if (result.success){
+							$('#completedTaskGrid-${rand}').datagrid('reload');
+						} 
+				  	},'json');
+				}
+		});
+	} else {
+		$.messager.show({
+		  title: '信息提示',
+		  msg: "请选择记录！"
+		});
+	}
+}
+</script>
+<#include "/common/foot.ftl">

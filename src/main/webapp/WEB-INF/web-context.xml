@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+              http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/context
+              http://www.springframework.org/schema/context/spring-context.xsd
+              http://www.springframework.org/schema/mvc
+              http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+  <context:property-placeholder location="classpath:app.properties"/>
+  <context:component-scan base-package="com.gionee.oss.api.web,com.gionee.gniflow.web.controller,com.gionee.devtool.web.controller"/>
+
+  <!-- 转换器，用于转换页面提交的数据到应用，或者将应用的数据转换为页面可接受的数据格式 -->
+  <mvc:annotation-driven conversion-service="conversionService">
+	<!-- 数据查询转移器，用于查询条件的数据转换 -->
+	<mvc:argument-resolvers>
+	  <bean class="com.gionee.gnif.web.util.QueryMapArgumentResolver"/>
+	</mvc:argument-resolvers>
+	<!-- 消息转换器，用于将返回对象转换为浏览器可以识别的格式 -->
+	<mvc:message-converters>
+	  <!-- Json 转换器，将 Controller 对象转换为 Json 数据格式 -->
+      <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="objectMapper">
+          <bean class="com.gionee.gnif.util.GnifObjectMapper">
+			<constructor-arg index="0" value="yyyy-MM-dd HH:mm:ss"/>
+		  </bean>
+		</property>
+		<property name="supportedMediaTypes">
+          <list>
+			<!-- 设置支持返回Content-Type，如果浏览器请求头指定可接受的 Content-Type 为以下类型，则使用当前转换器 -->
+			<value>text/html;charset=UTF-8</value>
+			<value>application/json;charset=UTF-8</value>
+          </list>
+		</property>
+      </bean>
+	</mvc:message-converters>
+  </mvc:annotation-driven>
+
+  <mvc:view-controller path="/**/*.html" />
+
+  <mvc:default-servlet-handler/>
+
+  <mvc:interceptors>
+	<bean class="com.gionee.gnif.web.interceptor.AccessLogInterceptor" />
+  </mvc:interceptors>
+
+  <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	<property name="registerDefaultFormatters" value="false" />
+    <property name="converters">
+      <set>
+		<bean class="com.gionee.gnif.util.StringToDate"/>
+      </set>
+    </property>
+  </bean>
+
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	<!-- 文件大小，单位：bytes -->
+    <property name="maxUploadSize" value="10000000"/>
+  </bean>
+
+  <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+    <property name="mediaTypes">
+      <map>
+        <entry key="atom" value="application/atom+xml"/>
+        <entry key="html" value="text/html"/>
+        <entry key="json" value="application/json"/>
+      </map>
+    </property>
+    <property name="viewResolvers">
+      <list>
+        <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+        <bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		  <!--property name="cache" value="true"/-->
+		  <property name="prefix" value=""/>
+          <property name="suffix" value=".html"/>
+		  <property name="contentType" value="text/html;charset=UTF-8"/>
+		  <property name="requestContextAttribute" value="request"/>
+		  <property name="viewClass" value="com.gionee.gnif.web.view.GnifFreeMarkerView"/>
+        </bean>
+      </list>
+    </property>
+    <property name="defaultViews">
+      <list>
+        <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+      </list>
+    </property>
+  </bean>
+
+  <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+	<property name="templateLoaderPath" value="/WEB-INF/view/"/>
+	<property name="defaultEncoding" value="UTF-8"/>
+	<property name="preferFileSystemAccess" value="false"/>
+	<property name="freemarkerVariables">
+	  <map>
+		<entry key="resource" value-ref="ftlResource"/>
+		<!-- GnFs Variables -->
+		<entry key="file_upload_url" value="${file.upload.url}"/>
+		<entry key="file_download_url" value="${file.download.url}"/>
+		<entry key="file_param_iframeUrl" value="${file.param.iframeUrl}"/>
+		<entry key="file_param_syId" value="${file.param.syId}"/>
+		<entry key="file_param_syNm" value="${file.param.syNm}"/>
+		<entry key="file_param_diyFolder" value="${file.param.diyFolder}"/>
+		<entry key="file_parma_uploadType" value="${file.parma.uploadType}"/>
+		<entry key="file_param_fileVersion" value="${file.param.fileVersion}"/>
+		<!-- SAP -->
+		<entry key="sap_file_upload_callback_url" value="${sap.file.upload.callback.url}"/>
+
+        <!-- oss -->
+        <entry key="oss_code" value="${oss.code}"/>
+        <entry key="oss_server" value="${oss.serverUrl}"/>
+	  </map>
+	</property>
+  </bean>
+
+  <bean id="ftlResource" class="com.gionee.auth.freemarker.ResourceFunction"/>
+
+  <bean id="exceptionResolver" class="com.gionee.gnif.web.util.GnifExceptionResolver">
+    <property name="defaultErrorView">
+      <value>common/error</value>
+    </property>
+	<property name="exceptionMappings">
+      <props>
+		<prop key="java.lang.Exception">common/error</prop>
+      </props>
+    </property>
+  </bean>
+
+</beans>

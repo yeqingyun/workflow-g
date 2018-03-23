@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.RapInfoDao">
+	
+    <insert id="insert"  parameterType="java.util.Map">
+     insert into rapinfo(sort,cause,score,money,rapdate,account,instanceID)
+  	  values
+  	  (#{I_ZJCLB},#{I_ZJCYY},#{I_ZJCFS},#{I_ZJCJE},#{I_BEGDA},#{I_PERNR},#{instanceID})
+     
+    </insert>
+  	 
+  	<select id="query" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	    select count(1) from rapinfo 
+  	     where sort=#{I_ZJCLB}
+  	     and   cause=#{I_ZJCYY}
+  	     and   score=#{I_ZJCFS}
+  	     and   money=#{I_ZJCJE}
+  	     and   rapdate=#{I_BEGDA}
+  	     and   account=#{I_PERNR}
+  	</select>
+  	
+  	<delete id="delete" parameterType="java.lang.String">
+  	   delete from rapinfo where instanceID=#{instanceID}
+  	</delete>
+</mapper>

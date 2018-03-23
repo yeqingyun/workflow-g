@@ -1,0 +1,899 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<style type="text/css">
+
+.printtable td.print_td_key{
+	width: 100px;
+}
+.printtable td.print_td_value{
+	width:180px;
+	padding-left:17px;
+}
+</style>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<div style="text-align:center;padding: 15px 0px"><span style="font-size: 16pt">劳动合同续签审批表</span></div>
+<table class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		  	  	<tr>
+		  	        <td class="formtable_td_key print_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value" width="100">${steps.vars["principalEmpId"]}
+		  	        </td>
+		  	        <td class="formtable_td_key print_td_key">姓名：</td>
+				  	<td class="formtable_td_value" width="100">${steps.vars["principalName"]}
+				  	</td>
+		  	        <td class="formtable_td_key print_td_key">入职时间：</td>
+				  	<td class="formtable_td_value" width="100">${steps.vars["principalEntryTime"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key print_td_key">系统：</td>
+		  	        <td class="formtable_td_value print_td_value">${steps.vars["principalSystem"]}
+	  	        	</td>
+		  	        <td class="formtable_td_key print_td_key">部门：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalOrgName"]}
+				  	</td>
+		  	        <td class="formtable_td_key print_td_key">职位：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalJob"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key print_td_key">上年度绩效：</td>
+		  	        <td class="formtable_td_value print_td_value">${steps.vars["principalLyPerform"]}
+	  	        	</td>
+		  	        <td class="formtable_td_key print_td_key">合同到期时间：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalContractExpire"]}
+				  	</td>
+		  	        <td class="formtable_td_key print_td_key">本次合同签订类型：</td>
+				  	<td class="formtable_td_value print_td_value">
+		  				<#if steps.vars["principalContractType"] == '0'>无固定期限合同</#if>
+						<#if steps.vars["principalContractType"] == '1'>固定期限合同</#if>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key print_td_key">本次合同签订次数：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalContractCount"]}
+			  		</td>
+				  	<td class="formtable_td_key print_td_key">本次合同开始时间：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalContractStartTime"]}
+				  	</td>
+				  	<td class="formtable_td_key print_td_key">本次合同结束时间：</td>
+				  	<td class="formtable_td_value print_td_value">${steps.vars["principalContractEndTime"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_value">
+				  	  	<div class="attention">
+				  	  	<div class="font"><span>重要提醒：</span></div>
+				  	  	<div class="content">
+				  	  		<ul>
+					  	  		<li>请部门领导根据该员工近年的绩效表现情况以及行为态度，综合考虑是否续签，续签之后除非员工主动离职或者严重违纪，部门不可随意解除劳动合同。</li>
+					  	  		<li>特别是第2次劳动合同的签订，部门领导必须慎重考虑，因为第3次劳动合同是否签订，主动权在员工手中，如果部门提出不续签，会产生解聘成本。</li>
+					  	  		<li>如果部门意见是不与员工续签，需要先通知人力资源负责人，与人力资源中心达成共识后，才可与员工面谈。</li>
+					  	  	</ul>
+				  	  	</div>
+
+						</div>
+						<style>
+							.attention{
+								line-height: 16pt;
+							}
+							.attention .font{
+								display: inline;
+								font-size: 12pt;
+								color: red;
+								font-weight: bold;
+							}
+							.attention .content{
+								padding-left:2em;
+							}
+							.attention .content ul{
+								list-style: decimal;
+								font-size: 12pt;  
+								font-family:"黑体";
+								font-weight: normal;
+								padding:0px auto;
+								margin: 0px;
+							}
+
+						</style>
+			  	  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="5">${steps.vars["principalRemark"]}</td>
+		  	  	</tr>
+  	  			<#if steps.attachments??>
+					<tr>
+						<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="5"><#list
+							steps.attachments as attachs> <a href="${attachs.url}">
+								${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+						</td>
+					</tr>
+				</#if>
+	</#if>
+	
+	<#if steps.key =='mb_deptManagerAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">经理审批</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >经理审批：</td>
+			<td class="formtable_td_value">${steps.vars["deptManagerName"]}</td>
+			<td class="formtable_td_key">处理结果</td>
+			<td class="formtable_td_value">
+			<#if steps.vars["deptManagerAudi"] == '0'>同意续签</#if>
+			<#if steps.vars["deptManagerAudi"] == '1'>不同意续签</#if>
+			</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value">${steps.vars["deptManagerSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">该员工行为态度/工作表现：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["deptManagerAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<#if steps.key =='mb_inspectorgeneralAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">总监审批</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >总监审批：</td>
+			<td class="formtable_td_value">${steps.vars["inspectorgeneralName"]}</td>
+			<td class="formtable_td_key">处理结果</td>
+			<td class="formtable_td_value">
+			<#if steps.vars["inspectorgeneralAudi"] == '0'>同意续签</#if>
+			<#if steps.vars["inspectorgeneralAudi"] == '1'>不同意续签</#if>
+			</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value">${steps.vars["inspectorgeneralSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">该员工行为态度/工作表现：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["inspectorgeneralAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<#if steps.key =='mb_deputygeneralAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">主管副总审批</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >主管副总审批：</td>
+			<td class="formtable_td_value">${steps.vars["deputygeneralName"]}</td>
+			<td class="formtable_td_key">处理结果</td>
+			<td class="formtable_td_value">
+			<#if steps.vars["deputygeneralAudi"] == '0'>同意续签</#if>
+			<#if steps.vars["deputygeneralAudi"] == '1'>不同意续签</#if>
+			</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value">${steps.vars["deputygeneralSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["deputygeneralAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<#if steps.key =='mb_hrViceChairmanAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">HR副总裁审批</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >HR副总裁审批：</td>
+			<td class="formtable_td_value">${steps.vars["hrViceChairmanName"]}</td>
+			<td class="formtable_td_key">处理结果</td>
+			<td class="formtable_td_value">
+			<#if steps.vars["hrViceChairmanAudi"] == '0'>同意续签</#if>
+			<#if steps.vars["hrViceChairmanAudi"] == '1'>不同意续签</#if>
+			</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value">${steps.vars["hrViceChairmanSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["hrViceChairmanAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<#if steps.key =='mb_chairmanAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">董事长审批</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >董事长审批：</td>
+			<td class="formtable_td_value">${steps.vars["chairmanName"]}</td>
+			<td class="formtable_td_key">处理结果</td>
+			<td class="formtable_td_value">
+			<#if steps.vars["chairmanAudi"] == '0'>同意续签</#if>
+			<#if steps.vars["chairmanAudi"] == '1'>不同意续签</#if>
+			</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value">${steps.vars["chairmanSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["chairmanAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<!-- 人力资源专员审批 -->
+	<#if steps.key =='mb_hrCommissionerAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">人力资源专员确认</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">人力资源专员确认：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["hrCommissionerName"]}</td>
+			<td class="formtable_td_key" >时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["hrCommissionerSignDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["hrCommissionerAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="3"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+</#list>
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable${rand}" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+			  <input id="isManager${rand}" name="fp_isManager" type="hidden" />
+			  <input id="managerType${rand}" name="fp_managerType" type="hidden" />
+			  <input name="fp_applyUserId" type="hidden" value="${appuser.account}"/>
+			  <input id="processName${rand}" type="hidden" name="fp_processName"/>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value" width="150">
+		  	        	<input  type="text" name="fp_principalEmpId" id="principalEmpId${rand}" readonly="readonly" class="easyui-validatebox" data-options="required:true" style="width:120px;border:solid 1px #007ACC;margin-right:35px;"/>
+		  	        	<input  type="hidden" name="fp_principalAccount" id="principalAccount${rand}"/>
+		  	        	<input  type="text" name="fp_canSubmit" id="canSubmit${rand}" value=""  class="easyui-validatebox" missingMessage="无固定期限合同员工" data-options="required:true" readonly="readonly" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;"/>
+		  	        	<a id="openSelectPrincipalBtn${rand}" name="openSelectPrincipalBtn" style="margin-left:-35px;" href="javascript:void(0);" plain="true" class="easyui-linkbutton" data-options="iconCls:'icon-search'"></a>
+	  	        	</td>
+		  	        <td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value"  width="150">
+		  	  			<input type="text" class="none-input" readonly="readonly" name="fp_principalName" id="principalName${rand}"/>
+				  	</td>
+		  	        <td class="formtable_td_key">入职时间：</td>
+				  	<td class="formtable_td_value"  width="150">
+		  	  			<input  type="text" class="none-input" readonly="readonly"  name="fp_principalEntryTime"  id="principalEntryTime${rand}"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">系统：</td>
+		  	        <td class="formtable_td_value" >
+		  	  			<input type="text" class="none-input"  name="fp_principalSystem"  id="principalSystem${rand}"  readonly="readonly"/>
+	  	        	</td>
+		  	        <td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_principalOrgId" id="principalOrgId${rand}" />
+		  	  			<input type="text" class="none-input" readonly="readonly" name="fp_principalOrgName"  id="principalOrgName${rand}" readonly="readonly"/>
+				  	</td>
+		  	        <td class="formtable_td_key">职位：</td>
+				  	<td class="formtable_td_value">
+		  	  			<input  type="text" class="none-input" readonly="readonly"  name="fp_principalJob"  id="principalJob${rand}"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">上年度绩效：</td>
+		  	        <td class="formtable_td_value">
+		  	        	<input  type="text" name="fp_principalLyPerform"  class="easyui-validatebox" id="principalLyPerform${rand}"/>
+	  	        	</td>
+		  	        <td class="formtable_td_key">合同到期时间：</td>
+				  	<td class="formtable_td_value">
+		  	  			<input  type="text" class="none-input" readonly="readonly"  name="fp_principalContractExpire"  id="principalContractExpire${rand}"/>
+				  	</td>
+		  	        <td class="formtable_td_key">本次合同签订类型：</td>
+				  	<td class="formtable_td_value">
+				  		<select name="fp_principalContractType" class="easyui-combobox" id="principalContractType${rand}">
+				  		  	<option value="0">无固定期限合同</option>
+				  		 	<option value="1" selected="selected">固定期限合同</option>
+				  		</select>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+				  	<td class="formtable_td_key">本次合同签订次数：</td>
+				  	<td class="formtable_td_value">
+				  		<input type="text" name="fp_principalContractCount" data-options="validType:['integer','maxValue[100]']" class="easyui-validatebox" id="principalContractCount${rand}"/>
+			  		</td>
+				  	<td class="formtable_td_key">本次合同开始时间：</td>
+				  	<td class="formtable_td_value">
+				  		<input type="text" class="none-input" readonly="readonly" name="fp_principalContractStartTime"  id="principalContractStartTime${rand}"/>
+				  	</td>
+				  	<td class="formtable_td_key">本次合同结束时间：</td>
+				  	<td class="formtable_td_value">
+				  		<input  type="text" name="fp_principalContractEndTime"  id="principalContractEndTime${rand}" data-options="dateFmt:'yyyy-MM-dd',minDate:'%y-%M-%d',required:true" class="easyui-my97 easyui-validatebox" />
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+			  	  	<td colspan="6" class="formtable_td_value">
+				  	  	<div class="attention">
+				  	  	<div class="font"><span>重要提醒：</span></div>
+				  	  	<div class="content">
+				  	  		<ul>
+					  	  		<li>请部门领导根据该员工近年的绩效表现情况以及行为态度，综合考虑是否续签，续签之后除非员工主动离职或者严重违纪，部门不可随意解除劳动合同。</li>
+					  	  		<li>特别是第2次劳动合同的签订，部门领导必须慎重考虑，因为第3次劳动合同是否签订，主动权在员工手中，如果部门提出不续签，会产生解聘成本。</li>
+					  	  		<li>如果部门意见是不与员工续签，需要先通知人力资源负责人，与人力资源中心达成共识后，才可与员工面谈。</li>
+					  	  	</ul>
+				  	  	</div>
+
+						</div>
+						<style>
+							.attention{
+								line-height: 16pt;
+							}
+							.attention .font{
+								display: inline;
+								font-size: 12pt;
+								color: red;
+								font-weight: bold;
+							}
+							.attention .content ul{
+								list-style: decimal;
+								font-size: 12pt;  
+								font-family:"黑体";
+								font-weight: normal;
+								padding:0px auto;
+								margin: 0px;
+							}
+
+						</style>
+			  	  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="principalRemark${rand}" name="fp_principalRemark" class="formtable_remark easyui-validatebox" mobile="备注"  ></textarea>
+		  	  		</td>
+		  	  	</tr>
+			</table>
+		</form>
+ 		<div id="principalWin-${rand}" class="easyui-dialog" title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-task',title:'组织架构',border:true,split:true" style="padding: 2px 0px 0px 0px;width:250px">
+					<ul id="orgTree${rand}"></ul>
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 26px 0px 0px 0px;width:400px">
+					<div id="principalGridToolBar${rand}" style="padding:2px 5px;margin-top:-26px">
+						员工账号: <input id="account${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="name${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="principalGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="principal${rand}" ></table>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		
+		   $(function(){
+			   init();
+			   //初始化操作
+			   function init(){
+				    initSelectPrincipalDialog();
+				    var orgId = "${appuser.orgId}".split(",").join("");
+				    loadPrincipal(orgId)
+				    //选择
+				   	$("#openSelectPrincipalBtn${rand}").on("click",function(){
+				 		$("#principalAccount${rand}").val("");
+				 		$("#principalName${rand}").val("");
+				 		$('#principalWin-${rand}').dialog('open');
+			 		 });
+			 		 //搜索
+				 	 $('#principalGridSearchBtn${rand}').on('click', function(){
+					 		var principalAccount = $('#account${rand}').val();
+					 		var principalName = $('#name${rand}').val();
+							if(!principalAccount && !principalName){
+								$.messager.alert('提示','请输入信息','warning');
+								return;
+							}
+					 		var queryParams = {};
+					 		queryParams.userAccount = principalAccount;
+					 		queryParams.userName = principalName;
+					 		$('#principal${rand}').datagrid('reload',queryParams);
+					 		$("#principal${rand}").datagrid("clearSelections");
+				 	});
+			 		//选择合同类型后进行简单的赋值操作 
+			 	    $("#principalContractType${rand}").combobox({
+			 			onSelect:function(record){
+			 				$("input[name=fp_principalContractEndTime]").remove("input[type=hidden]");
+			 				if(record.value == "0"){
+			 					$("#principalContractEndTime${rand}").val("");
+			 					$("#principalContractEndTime${rand}").validatebox({
+			 						required:false
+			 					})
+			 					$("#principalContractEndTime${rand}").attr("disabled",'disabled');
+			 					$("#principalContractEndTime${rand}").after("<input  type='hidden' name='fp_principalContractEndTime' value=''/>")
+			 				}else{
+			 					$("#principalContractEndTime${rand}").val("");
+			 					$("#principalContractEndTime${rand}").removeAttr("disabled");
+			 					$("#principalContractEndTime${rand}").validatebox({
+			 						required:true
+			 					})
+			 				}
+			 			}
+			 		 });
+			 		
+			 		$("#orgTree${rand}").tree({
+			 			url:"hrFlow/auth/orgs.json",
+			 			onLoadSuccess:function(node,data){
+			 				var root = $(this).tree("getRoot");
+			 				var childs =  $(this).tree("getChildren",root.target);
+			 				var first = childs[0];
+			 				var node = $(this).tree("find",first.id);
+			 				$(this).tree("expand",node.target);
+			 			},
+			 			onSelect:function(node){
+			 				 loadPrincipal(node.id)
+			 			}
+			 		})
+			   }
+			 	//选择乘机人完成事件
+			 	function selectPrincipalEnd(){
+		 		   var row = $('#principal${rand}').datagrid('getSelected');
+		 			if (row) {
+		            	 $.getJSON("hrFlow/getHrUserInfo.json",{account:row.account},function(data){
+		            		 if(data.success){
+		            			 var userInfo = data.obj;
+		            			 if(userInfo != null){
+		            				 //对员工编号进行补齐0
+			            			 var empId = userInfo.empId+"";
+		            				 if(empId.length < 8){
+		            					 var bl = 8-empId.length;
+		            					 for(var i=0;i<bl;i++){
+		            						 empId="0"+empId+"";
+		            					 }
+		            				 }
+		            				//进行赋值
+		            				$("#principalEmpId${rand}").val(empId);
+		            				$("#principalAccount${rand}").val(row.account);
+		            				$("#principalName${rand}").val(userInfo.name);
+		            				$("#principalEntryTime${rand}").val(userInfo.entryDate);
+		            				$("#principalSystem${rand}").val(userInfo.systemName);
+		            				$("#principalOrgName${rand}").val(userInfo.orgName);
+		            				$("#principalOrgId${rand}").val(row.orgId);
+		            				$("#principalJob${rand}").val(userInfo.job);
+		            				$("#processName${rand}").val("["+row.account+","+userInfo.name+"]劳动合同续签审批");
+		            				//查询合同信息
+		            				$.post("hrFlow/getEmpLaborContractExpire.json",{
+		        						empId:empId
+		        					},function(data){
+		        						if(data.success){
+		        							var attributes = data.attributes;
+		        							var contractExpire = attributes.contractExpire;
+				            				$("#principalContractCount${rand}").val(attributes.principalContractCount+1);
+				            				$("#principalContractExpire${rand}").val(contractExpire);
+				            				var contractExpireDate = new Date(contractExpire);
+				            				contractExpireDate.setDate(contractExpireDate.getDate()+1);
+				            				var contractStartTimeStr = contractExpireDate.getFullYear()+"-";
+				            				
+				            				if(contractExpireDate.getMonth()+1 < 10){
+				            					contractStartTimeStr+="0"+(contractExpireDate.getMonth()+1)+"-";
+				            				}else{
+				            					contractStartTimeStr+=(contractExpireDate.getMonth()+1)+"-";
+				            				}
+				            				
+				            				if((contractExpireDate.getDate()) < 10){
+				            					contractStartTimeStr+="0"+contractExpireDate.getDate();
+				            				}else{
+				            					contractStartTimeStr+=contractExpireDate.getDate();
+				            				}
+				            				$("#principalContractStartTime${rand}").val(contractStartTimeStr);
+				            				
+				            				contractExpireDate.setFullYear(contractExpireDate.getFullYear()+3);
+				            				var contractEndTimeStr = contractExpireDate.getFullYear()+"-";
+				            				
+				            				
+				            				if(contractExpireDate.getMonth()+1 < 10){
+				            					contractEndTimeStr+="0"+(contractExpireDate.getMonth()+1)+"-";
+				            				}else{
+				            					contractEndTimeStr+=(contractExpireDate.getMonth()+1)+"-";
+				            				}
+				            				
+				            				if((contractExpireDate.getDate()-1) < 10){
+				            					contractEndTimeStr+="0"+(contractExpireDate.getDate()-1);
+				            				}else{
+				            					contractEndTimeStr+=contractExpireDate.getDate()-1;
+				            				}
+				            				$("#principalContractEndTime${rand}").val(contractEndTimeStr);
+				            				
+				            				$("#canSubmit${rand}").val("1");
+				            				
+		        						}else{
+		        							$.messager.alert('提示',data.msg,'warning');
+		        							$("#canSubmit${rand}").val("");
+				            				$("#principalContractStartTime${rand}").val("");
+				            				$("#principalContractExpire${rand}").val("");
+				            				$("#principalContractEndTime${rand}").val("");
+				            				$("#principalContractCount${rand}").val("");
+		        						}
+		        					});
+		            				//判断是否为经理级以上
+		        				 	$.post("lead/checkIsManager.json",{
+		        						account:$("#principalAccount${rand}").val()
+		        					},function(data){
+		        						if(data.success){
+			        							if(data.msg=="2"){
+			        								$("#managerType${rand}").val('2');
+			        							}else{
+			        								$("#managerType${rand}").val('1');
+			        							}
+		        								$("#isManager${rand}").val('1');
+		        						}else{
+		        							$("#isManager${rand}").val('0');
+		        							$("#managerType${rand}").val('0');
+		        						}
+		        					});
+		            			 }else{
+		            				 $.messager.alert('提示','无效的员工信息','warning');
+		            			 }
+		            		 }
+		            	 })
+		            	 //关闭对话框
+		 			     $('#principalWin-${rand}').dialog('close');
+		 			} else {
+		 				$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+		 			}
+		 	  	 }
+			 	 //关闭选择负责人窗口
+			     function  closeSelectPrincipalWin(){
+			    	 $('#principalWin-${rand}').dialog('close');	
+			  	 }
+			 	 
+			 	//初始化选择人员对话框
+			 	function initSelectPrincipalDialog(){
+			 		$('#principalWin-${rand}').dialog({
+			 			modal:true, 
+			 			closed:true,
+			 			iconCls:'icon-process',
+						buttons: [{
+		                    text:'完成',
+		                    iconCls:'icon-ok',
+		                    handler: selectPrincipalEnd
+		                },{
+		                    text:'关闭',
+		                    iconCls:'icon-cancel',
+		                    handler: closeSelectPrincipalWin
+		                }]
+			 		});
+			 		 $.parser.parse($('#principalWin-${rand}'));
+			 	}
+				//加载员工列表
+			 	function loadPrincipal(orgId){
+	 	        	 $('#principal${rand}').datagrid({
+						  fit:true,
+						  fitColumns:false,
+						  url:'bpmRole/users.json',
+						  queryParams:{id:orgId},
+						  columns:[[
+							{field:'id',checkbox:true},
+							{field:'account',title:'帐号',width:90},
+							{field:'name',title:'姓名',width:90},
+							{field:'orgName',title:'部门',width:120}
+						  ]],
+						  border:false,
+						  nowrap: true,
+						  pagination:false,
+						  singleSelect:true,
+						  rownumbers:true
+					});
+			 	}
+		 		$.extend($.fn.validatebox.defaults.rules, {     
+		            intOrFloat: {// 验证整数或小数
+		                validator: function (value) {
+		                    return /^\d+(\.\d+)?$/i.test(value);
+		                },
+		                message: '请输入正数，并确保格式正确'
+		            },
+		            integer: {// 验证整数或小数
+		                validator: function (value) {
+		                    return /^\d+$/i.test(value);
+		                },
+		                message: '请输入正整数'
+		            },
+		            maxValue: {// 验证最大值
+		                validator: function (value,param) {
+		                    return value <= param[0];
+		                },
+		                message: '最大值不能大于{0}'
+		            },
+		            minValue: {// 验证最小值
+		                validator: function (value,param) {
+		                    return value >= param[0];
+		                },
+		                message: '最小值不能小于{0}'
+		            }
+		 		});
+		   })
+		 </script>
+		</div>
+	</#if>
+</#if>
+
+ <!-- 部门经理审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_deptManagerAudiTask'>
+		<div id="mb_deptManagerAudiTask" style="margin-top: 10px">
+			<table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >经理审批</td>
+				</tr>
+			</table>
+			<form id="mb_deptManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_deptManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0"  style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">经理审批：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deptManagerName" value="${appuser.name}" mobile="经理审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" width="100" > 
+		  	  			<input id="fp_deptManagerAudi${rand}" name="fp_deptManagerAudi" type="radio" value="0" checked="checked" mobile="同意续签"/>同意续签
+		  	  			<input id="fp_deptManagerAudi2${rand}"  name="fp_deptManagerAudi" type="radio" value="1" mobile="不同意续签"/>不同意续签
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deptManagerSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">该员工行为态度/工作表现：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_deptManagerAudiAdvice${rand}" name="fp_deptManagerAudiAdvice" class="formtable_remark easyui-validatebox" mobile="该员工行为态度/工作表现"  data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 总监审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_inspectorgeneralAudiTask'>
+		<div id="mb_inspectorgeneralAudiTask" style="margin-top: 10px">
+			<form id="mb_inspectorgeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >总监审批</td>
+				</tr>
+			  </table>
+		  	  <table id="mb_inspectorgeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">总监审批：</td>
+		  	  		<td class="formtable_td_value"  width="100">
+		  	  			<input type="hidden" name="fp_inspectorgeneralName" value="${appuser.name}" mobile="总监审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" width="100"> 
+		  	  			<input id="fp_inspectorgeneralAudi${rand}" name="fp_inspectorgeneralAudi" type="radio" value="0" checked="checked" mobile="同意续签"/>同意续签
+		  	  			<input id="fp_inspectorgeneralAudi2${rand}"  name="fp_inspectorgeneralAudi" type="radio" value="1" mobile="不同意续签"/>不同意续签
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value"  width="100">
+		  	  			<input type="hidden" name="fp_inspectorgeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">该员工行为态度/工作表现：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_inspectorgeneralAudiAdvice${rand}" name="fp_inspectorgeneralAudiAdvice" class="formtable_remark easyui-validatebox" mobile="该员工行为态度/工作表现"  data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 主管副总审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_deputygeneralAudiTask'>
+		<div id="mb_deputygeneralAudiTask" style="margin-top: 10px">
+			<form id="mb_deputygeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >主管副总审批</td>
+				</tr>
+			  </table>
+		  	  <table id=mb_deputygeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">主管副总审批：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deputygeneralName" value="${appuser.name}" mobile="主管副总审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" width="100"> 
+		  	  			<input id="fp_deputygeneralAudi${rand}" name="fp_deputygeneralAudi" type="radio" value="0" checked="checked" mobile="同意续签"/>同意续签
+		  	  			<input id="fp_deputygeneralAudi2${rand}"  name="fp_deputygeneralAudi" type="radio" value="1" mobile="不同意续签"/>不同意续签
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_deputygeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_deputygeneralAudiAdvice${rand}" name="fp_deputygeneralAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"  data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- HR副总裁审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_hrViceChairmanAudiTask'>
+		<div id="mb_hrViceChairmanAudiTask" style="margin-top: 10px">
+			<form id="mb_hrViceChairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >hr副总审批</td>
+				</tr>
+			  </table>
+		  	  <table id="mb_hrViceChairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">HR副总裁审批：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_hrViceChairmanName" value="${appuser.name}" mobile="HR副总裁审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" width="100"> 
+		  	  			<input id="fp_hrViceChairmanAudi${rand}" name="fp_hrViceChairmanAudi" type="radio" value="0" checked="checked" mobile="同意续签"/>同意续签
+		  	  			<input id="fp_hrViceChairmanAudi2${rand}"  name="fp_hrViceChairmanAudi" type="radio" value="1" mobile="不同意续签"/>不同意续签
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_hrViceChairmanSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_hrViceChairmanAudiAdvice${rand}" name="fp_hrViceChairmanAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 董事长审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_chairmanAudiTask'>
+		<div id="mb_chairmanAudiTask" style="margin-top: 10px">
+			<form id="mb_chairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >董事长审批</td>
+				</tr>
+			  </table>
+		  	  <table id="mb_chairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">董事长审批：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_chairmanName" value='刘立荣' mobile="董事长审批"/>
+		  	  			刘立荣
+		  	  		</td>
+		  	  		<td class="formtable_td_key">审批意见：</td>
+		  	  		<td class="formtable_td_value" width="100"> 
+		  	  			<input id="fp_hrViceChairmanAudi${rand}" name="fp_chairmanAudi" type="radio" value="0" checked="checked" mobile="同意续签"/>同意续签
+		  	  			<input id="fp_hrViceChairmanAudi2${rand}"  name="fp_chairmanAudi" type="radio" value="1" mobile="不同意续签"/>不同意续签
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_chairmanSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_chairmanAudiAdvice${rand}" name="fp_chairmanAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<!-- 人力资源专员审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'mb_hrCommissionerAudiTask'>
+		<div id="mb_hrCommissionerAudiTask" style="margin-top: 10px">
+			<form id="mb_hrCommissionerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table  class="formtable" cellspacing="1" cellpadding="0" style="margin-bottom: -1px">
+				<tr>
+					<td style="font-weight:bold;font-size: 14px; height: 25px;" align="center" colspan="6" class="formtable_td_value" >人力资源专员确认</td>
+				</tr>
+			  </table>
+		  	  <table id="mb_hrCommissionerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人力资源专员确认：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_hrCommissionerName" value="${appuser.name}" mobile="人力资源专员确认"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value" width="100">
+		  	  			<input type="hidden" name="fp_hrCommissionerSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_hrCommissionerAudiAdvice${rand}" name="fp_hrCommissionerAudiAdvice" class="formtable_remark" mobile="备注" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">

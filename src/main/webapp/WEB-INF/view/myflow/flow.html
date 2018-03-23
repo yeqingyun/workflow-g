@@ -1,0 +1,30 @@
+<#assign title="发起流程">
+<#include "/common/head.ftl">
+<script type="text/javascript">
+$(function() {
+  $('#item').tree({
+	url: 'myflow/flows.json',
+	onSelect: function(param) {
+	  var pp = $('#tt').tabs('getSelected');
+	  var tabId = pp.attr("id");
+	  initStartForm('startform', tabId, 'myflow/start/' + param.id + '.json', "myflow/create/" + param.id + ".json", "flow");
+	},
+	loadFilter: function(data, param) {
+	  $.each(data, function(i, d) {
+		d.id = d.value;
+	  });
+	  return data;
+	}
+  });
+});
+</script>
+<div>
+<div style="float:left;">
+<ul id="item" style="padding-top:20px;">
+</ul>
+</div>
+<div id="startform" style="float:left;margin-left:20px;padding:30px;display:none;border:1px solid black;">
+  
+</div>
+</div>
+<#include "/common/foot.ftl">

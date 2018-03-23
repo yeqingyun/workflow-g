@@ -1,0 +1,192 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<!-- 展示表单 -->
+<#if processSteps??>
+	 <table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent'>
+					  	 <tr>
+				  	  		<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">姓名：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["userName"])!""}</td>
+				  	  		<td class="formtable_td_key">部门：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["orgName"])!""}</td>
+				  	  		<td class="formtable_td_key">职务：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["job"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  	    <td class="formtable_td_key">入职日期：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["entryTime"])!""}</td>
+				  	  		<td class="formtable_td_key">劳动用工形式：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["contractType"])!""}</td>
+				  	  		<td class="formtable_td_key">学历：</td>
+				  	  		<td class="formtable_td_value">${(steps.vars["education"])!""}</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">身份证号：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  			${(steps.vars["cardId"])!""}
+				  	  		</td>
+				  	  	</tr>
+				  	  	<tr>
+				  	  		<td class="formtable_td_key">申请原因：</td>
+				  	  		<td class="formtable_td_value" colspan="5">
+				  	  			${(steps.vars["applicationrensons"])!""}
+				  	  		</td>
+				  	  	</tr>
+				  	  	<#if steps.attachments??>
+				  	  		<tr>
+				  	  			<td class="formtable_td_key">附件：</td>
+				  	  			<td class="formtable_td_value" colspan="5">
+				  	  				<#list steps.attachments as attachs>
+				  	  					<a href="${attachs.url}">
+				  	  						${attachs.name}_${attachs.revision}.0
+				  	  					</a><br/>
+				  	  				</#list>
+				  	  			</td>
+				  	  		</tr>
+				  	  	</#if>
+	   </#if>
+	   
+	   <!-- 部门经理 -->
+		<#if steps.key == 'mb_hrAttestationAudiTask'>
+			<tr>
+				<td class="formtable_td_key">人力资源部处理人：</td>
+				<td class="formtable_td_value">
+					${(steps.vars["hrHandleName"])!""}
+				</td>
+				<td class="formtable_td_key">处理时间：</td>
+				<td class="formtable_td_value"  colspan="3">
+					${(steps.vars["hrHandleTime"])!""}
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">反馈信息：</td>
+				<td class="formtable_td_value" colspan="5">
+					${(steps.vars["hrFeedbackInfo"])!""}
+				</td>
+			</tr>
+			<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5">
+				<#list
+						steps.attachments as attachs> <a href="${attachs.url}">
+							${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+				</td>
+			</tr>
+			</#if>
+		</#if> 
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">姓名：</td>
+		  	        <input type="hidden" name="fp_curUserId" value="${appuser.userId?c}"/>
+		  	        <input id="curUserId" type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	        <input id="userName" type="hidden" name="fp_userName" value="${appuser.name}"/>
+		  	        <input type="hidden" name="fp_orgName" value="${appuser.orgName}"/>
+				  	<td class="formtable_td_value">${appuser.name}</td>
+				  	<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value">${appuser.orgName}</td>
+				  	<td class="formtable_td_key">职务：</td>
+				  	<td id="td_job${rand}" class="formtable_td_value">
+				  		<input id="job${rand}" type="hidden" type="text" name="fp_job"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">入职日期：</td>
+				  	<td id="td_entryTime${rand}" class="formtable_td_value">
+				  		<input id="entryTime${rand}" type="hidden" name="fp_entryTime"/>
+				  	</td>
+				  	<td class="formtable_td_key">劳动用工形式：</td>
+				  	<td class="formtable_td_value"> 
+				  	  	<input type="hidden" name="fp_contractType" checked="checked" value="合同制" />合同制
+				  	<td class="formtable_td_key">学历：</td>
+				  	<td id="td_education${rand}" class="formtable_td_value">
+				  		<input id="education${rand}" type="hidden" name="fp_education"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">身份证号：</td>
+		  	  		<td id="td_idCard${rand}" class="formtable_td_value" colspan="5">
+		  	  			<input id="cardId${rand}" type="hidden" name="fp_cardId"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_applicationrensons" class="easyui-validatebox" data-options="required:true" style="width: 730px; height: 100px"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+			//界面通过接口加载个人信息
+			$.post("hrFlow/getHrUserInfo.json",
+				{
+					account:$("#curUserId").val()
+				},
+				function(data){
+					if (data.success) {
+						$("#entryTime${rand}").val(data.obj.entryDate);
+						$("#job${rand}").val(data.obj.job);
+						$("#education${rand}").val(data.obj.education);
+						$("#cardId${rand}").val(data.obj.idCard);
+						//设置TD
+						$("#td_entryTime${rand}").append(data.obj.entryDate);
+						$("#td_job${rand}").append(data.obj.job);
+						$("#td_education${rand}").append(data.obj.education);
+						$("#td_idCard${rand}").append(data.obj.idCard);
+					}
+				});
+			});
+	</script>
+	</#if>
+</#if>
+<!-- 人力资源处理 -->
+<#if currentStep?exists && currentStep == 'mb_hrAttestationAudiTask'> 
+		<div id="mb_hrAttestationAudiTask">
+			<form id="mb_hrAttestationAudiTaskForm" method="post"
+				enctype='multipart/form-data'>
+				<table id="mb_hrAttestationAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+					<tr>
+						<td class="formtable_td_key">人力资源部处理人：</td>
+						<td class="formtable_td_value" colspan="5">
+							<input type="hidden" name="fp_hrHandleAccount" value="${appuser.account}"/>
+							<input type="hidden" name="fp_hrHandleName" value="${appuser.name}" mobile="人力资源部处理人"/>
+							${appuser.name}
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">反馈信息：</td>
+						<td class="formtable_td_value" colspan="5">
+						<textarea style="width: 730px; height: 100px"
+								name="fp_hrFeedbackInfo" class="formtable_remark" mobile="反馈信息"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">处理时间：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input type="hidden" name="fp_hrHandleTime"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="处理时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+</#if>
+
+<#include "/common/foot.html">

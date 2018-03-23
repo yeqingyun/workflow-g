@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsd="http://www.w3.org/2001/XMLSchema" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="8">
+  <process id="T-Account-Handle" name="T户口办理申请流程" isExecutable="true">
+    <documentation>1.办理调户手续需在本司服务满一年；&lt;br/&gt;
+2.本人同意自户口调入深圳之日起（以户口卡落户日期为准），在本公司服务满 一年，如果服务不满一年 ，不满一年部分本人自愿向公司缴纳500/月的工本费(不满一个月按一个月计算违约时间)；&lt;br/&gt;
+3.调干、招工判断指引：干部，户籍地有人事档案；全日制普通大中专院校毕业；非农业户籍；档案中应有（报到证和转正定级表）；招工，积分达100以上；&lt;br/&gt;
+4.可在流程图页面查看流程完成情况。&lt;br/&gt;
+5.附件:&lt;a href="javascript:void(0)" onclick="downLoadTemplate('process.account.handle.attachment.name');"&gt;在职人才引进申请流程.xlsx&lt;/a&gt;&lt;br/&gt;</documentation>
+    <startEvent id="startevent1" name="户口办理申请" activiti:initiator="applyUserId"></startEvent>
+    <userTask id="mb_departmentleaderAudiTask" name="部门经理审批"></userTask>
+    <endEvent id="endevent1" name="户口办理申请结束"></endEvent>
+    <userTask id="mb_hrStaffAudiTask" name="户口专员处理" activiti:assignee="00001222"></userTask>
+    <sequenceFlow id="y_flow28" sourceRef="mb_hrStaffAudiTask" targetRef="endevent1">
+      <extensionElements>
+        <activiti:executionListener event="take" class="com.gionee.gniflow.web.listener.account.AccountHandleSendEmailListener"></activiti:executionListener>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="mb_departmentleaderAudiTask" targetRef="mb_hrStaffAudiTask"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="startevent1" targetRef="mb_departmentleaderAudiTask"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_T-Account-Handle">
+    <bpmndi:BPMNPlane bpmnElement="T-Account-Handle" id="BPMNPlane_T-Account-Handle">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="40.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_departmentleaderAudiTask" id="BPMNShape_mb_departmentleaderAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="160.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="530.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="mb_hrStaffAudiTask" id="BPMNShape_mb_hrStaffAudiTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="340.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="y_flow28" id="BPMNEdge_y_flow28">
+        <omgdi:waypoint x="445.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="265.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="340.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="75.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="160.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

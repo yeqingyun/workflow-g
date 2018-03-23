@@ -1,0 +1,39 @@
+ process(id:"L-Labor-Contract-Renewal-Flow"){
+	step(id:"startevent1"){
+		field(name:"isManager",validType:"required",label:"是否为经理级以上")
+		
+		field(name:"managerType",validType:"required",label:"管理者类型")
+		
+		field(name:"applyUserId",validType:"required",label:"流程申请人账号")
+		
+		field(name:"processName",validType:"required",label:"流程实例名")
+		
+		field(name:"principalEmpId",validType:"required",label:"员工编号")
+		
+		field(name:"principalAccount",validType:"required",label:"员工账号")
+		
+		field(name:"principalName",validType:"required",label:"员工姓名")
+		
+		field(name:"principalEntryTime",validType:"required",label:"入职时间")
+		
+		field(name:"principalSystem",validType:"required",label:"所属系统")
+		
+		field(name:"principalOrgId",validType:"required",label:"部门编号")
+		
+		field(name:"principalOrgName",validType:"required",label:"部门名称")
+		
+		field(name:"principalJob",validType:"required",label:"职位")
+		
+		field(name:"principalLyPerform",validType:"required",label:"上年度绩效")
+		
+		field(name:"principalContractExpire",validType:"required",label:"合同到期时间")
+		
+		field(name:"principalContractType",validType:"required",label:"合同签订类型")
+		
+		field(name:"principalContractCount",validType:"required",label:"本次合同签订次数")
+		
+		field(name:"principalContractStartTime",validType:"required",label:"本次合同开始时间")
+		
+	}
+	
+}

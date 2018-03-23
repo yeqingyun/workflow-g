@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/cache
+			http://www.springframework.org/schema/cache/spring-cache.xsd
+			http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task.xsd
+			http://www.springframework.org/schema/p
+			http://www.springframework.org/schema/p/spring-p.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:component-scan
+		base-package="com.gionee.gniflow.biz.service.impl,com.gionee.devtool.biz.service.impl,com.gionee.auth.impl" />
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+		<property name="url"
+			value="jdbc:sqlserver://192.168.0.44:1433;DatabaseName=gn_flow" />
+		<property name="username" value="sa" />
+		<property name="password" value="12345678" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="mybatis-config.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="typeAliasesPackage" value="com.gionee.gniflow.biz.model" />
+	</bean>
+
+	<bean id="gniflowMapper" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage"
+			value="com.gionee.gniflow.integration.dao,com.gionee.auth.dao,com.gionee.devtool.integration.dao,com.gionee.gnif.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean class="com.gionee.auth.AuthConfig">
+		<property name="databaseSchemaUpdate" value="true" />
+		<property name="environment" value="TEST" />
+	</bean>
+
+	<bean id="propertyConfigurer" class="com.gionee.gniflow.web.util.PropertyHolder">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+		<property name="fileEncoding" value="utf-8" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="dataSource" />
+  </bean>
+
+	<bean class="com.gionee.gnif.biz.domain.AccountManager">
+		<property name="uaamUrl" value="http://192.168.0.96/uaam/"></property>
+		<property name="authCode" value="AAA"></property>
+	</bean>
+	
+	<!-- Activiti -->
+<bean id="freemarkerConfig" class="freemarker.template.Configuration">
+	<property name="templateLoader">
+	  <bean class="com.gionee.gniflow.util.ActivitiTemplateLoader"/>
+	</property>
+	<property name="localizedLookup" value="false"/>
+	<property name="defaultEncoding" value="UTF-8"/>
+  </bean>
+
+  <!-- Activiti begin -->
+  <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="transactionManager" ref="transactionManager"/>
+    <property name="databaseSchemaUpdate" value="true"/>
+    <property name="jobExecutorActivate" value="false"/>
+    <property name="history" value="full"/>
+    <property name="processDefinitionCacheLimit" value="10"/>
+    
+    <!-- 不自动生成流程定义图片 
+    <property name="createDiagramOnDeploy" value="false" />
+    -->
+   
+    <!-- <property name="idGenerator" ref="uuidGenerator" /> -->
+
+    <!-- 生成流程图的字体 -->
+    <property name="activityFontName" value="宋体"/>
+    <property name="labelFontName" value="宋体"/>
+
+	<property name="formEngines">
+	  <map>
+		<entry key="freemarker">
+		  <bean class="com.gionee.gniflow.util.FreemarkerFormEngine">
+			<property name="freemarkerConfig" ref="freemarkerConfig"/>
+			<!-- 从 deployments 文件中读取 form 表单，如果需要读取 bar 中的文件，则注释掉以下设置 -->
+			<property name="formDir" value="deployments"/>
+		  </bean>
+		</entry>
+	  </map>
+	</property>
+	
+	<property name="postBpmnParseHandlers">
+    	 <list>
+			<bean class="com.gionee.gniflow.web.listener.ProxyUserTaskBpmnParseHandler">
+				<property name="taskListenerId" value="postTaskListener"/>
+			</bean>
+    	 </list>
+	</property>
+
+    <!-- 自动部署 -->
+    
+    <!-- 自定义表单字段类型 -->
+	<!-- 处理date类型的默认正则表达式 -->
+	<property name="customFormTypes">
+	  <list>
+	    <bean class="org.activiti.engine.impl.form.DateFormType">
+	      <constructor-arg value="yyyy-MM-dd HH:mm:ss" />
+	    </bean>
+	    <bean class="com.gionee.gniflow.web.formtype.UsersFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.CurUserNameFormType" />
+	   	<bean class="com.gionee.gniflow.web.formtype.CurUserIdFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.TextFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.HtmlFormType" />
+	    <bean class="com.gionee.gniflow.web.formtype.ComboTreeFormType">
+	    	 <constructor-arg value="project" index="0" />
+	    	 <constructor-arg value="${pms.url.projectTree}" index="1" />
+	    </bean>
+	    <bean class="com.gionee.gniflow.web.formtype.ComboTreeFormType">
+	    	 <constructor-arg value="dept" index="0" />
+	    	  <constructor-arg value="yyy.json" index="1" />  
+	    </bean>
+	  </list>
+	</property>
+  </bean>
+
+  <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+    <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+  </bean>
+  
+  <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+  <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+  <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+  <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+  <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+  <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+  <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
+  
+  <bean id="basicInfoPrinter" class="com.gionee.gniflow.web.bmp.BasicInfoPrinter"/>
+  
+  <!-- 在记录history之后执行的TaskListener -->
+	<bean id="postTaskListener" class="com.gionee.gniflow.web.listener.ProxyTaskListener">
+		<property name="taskListeners">
+			<list>
+				<bean class="com.gionee.gniflow.web.listener.NoticeTaskListener"/>
+			</list>
+		</property>
+	</bean>
+	
+	
+	  <bean id="gnifConfig" class="com.gionee.gnif.GnifConfig">
+    <property name="databaseSchemaUpdate" value="true" />
+	<property name="environment" value="TEST" />
+  </bean>
+
+  <bean id="devTool" class="com.gionee.devtool.DevToolConfig">
+    <property name="modelType" value="business" />
+	<property name="codeBasePackage" value="com.gionee.gniflow" />
+  </bean>
+
+  <bean class="com.gionee.auth.AuthConfig">
+    <property name="databaseSchemaUpdate" value="true" />
+	<property name="environment" value="TEST" />
+  </bean>
+</beans>

@@ -1,0 +1,253 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		    	<tr>
+		   				<td align="right" style="white-space:nowrap">申请时间：</td>
+		    			<td> 
+		    			 	<input id="startCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endCreateTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endCreateTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startCreateTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">转正调薪类型：</td>
+		   				<td >
+		   					<select  id="salAdjust-${rand}"  class="easyui-combobox" style="width:154px;" name="salAdjust">
+		   						<option value="">--请选择--</option>
+		   						<option value="2">按约定转正调薪</option>
+		   						<option value="3">转正不调薪</option>
+		   						<option value="1">特殊转正调薪</option>
+		   					</select>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">转正时间：</td>
+						<td> 
+		    			 	<input id="startAgreeTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startAgreeTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endAgreeTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endAgreeTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endAgreeTime_d"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startAgreeTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">审批状态：</td>
+		   				<td >
+		   				 	<select id="processStatus-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="processStatus" >
+		   				 		<option value="">--请选择--</option>
+		   				 		<option value="1">运行中</option>
+		   				 		<option value="2">已完成</option>
+		   				 		<option value="3">已挂起</option>
+		   				 		<option value="4">已激活</option>
+		   				 		<option value="5">已作废</option>
+		   				 		<option value="6">审批未通过</option>
+		   				 	</select>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">员工编码：</td>
+		   				<td>
+		   					<input id="account-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="account"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">员工姓名：</td>
+		   				<td>
+		   					<input id="empName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="empName"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">部门名称：</td>
+		   				<td>
+		   					<input id="orgName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="orgName"/>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="monitorTaskGrid-${rand}"></div>
+	</div>
+
+ </div>
+ 
+ 
+ <script type="text/javascript">
+$('#monitorTaskGrid-${rand}').datagrid({
+  fitColumns:true,
+  url:'taskmonitor/getIprobationEation.json',
+  columns:[[
+	{field:'processInstanceId',title:'流程编号',width:80,align:'center'},
+  	{field:'orgName',title:'直属部门',width:80,align:'center'},
+  	{field:'agreeTime',title:'转正日期',width:80,align:'center'},
+	{field:'account',title:'员工编码',width:80,align:'center'},
+	{field:'empName',title:'姓名',width:80,align:'center'},
+  	{field:'empJob',title:'职位',width:80,align:'center'},
+  	{field:'salAdjust',title:'调薪审批',width:80,align:'center',
+  		formatter: function(value,row,index){
+  			if(value == 2){
+  				return '<span>按约定转正调薪</span>';
+  			}else if(value == 3){
+  				return '<span>转正不调薪</span>';
+  			}else{
+  				return '<span>特殊转正调薪</span>';
+  			}
+  		}
+  	},
+	{field:'curSalaryGroup',title:'试用期薪级',width:80,align:'center'},
+	{field:'curSalary',title:'试用期薪资',width:80,align:'center'},
+  	{field:'fuSalaryGroup',title:'转正后薪级',width:80,align:'center'},
+	{field:'fuSalary',title:'转正后薪资',width:80,align:'center'},
+  	{field:'processStatus',title:'状态',width:150,align:'center',formatter:function(value,rowData,rowIndex){
+		if(value == "1"){
+			return "<span style='color:red'>运行中</span>";
+		}else if(value == "2"){
+			return "<span style='color:blue'>已完成</span>";
+		}else if(value == "3"){
+			return "<span style='color:#005831'>已挂起</span>";
+		}else if(value == "4"){
+			return "<span style='color:#c88400'>已激活</span>";
+		}else if(value == "5"){
+			return "<span style='color:#840228'>已作废</span>";
+		}else if(value == "6"){
+			return "<span style=\"color:#D2691E\">审批未通过</span>";
+		}else{
+			return "<span style=\"color:#008792\">未知状态</span>"
+		}
+	  }
+  	},
+  	{field:'actName',title:'任务名称',width:80,align:'center'},
+  	{field:'checkUserName',title:'审批人',width:80,align:'center'}
+  ]],
+  toolbar: [{
+		text : '流转详情',
+		iconCls: 'icon-history',
+		handler: viewHisProcss${rand}
+	  }],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:true,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20,
+  onDblClickRow:function(rowIndex, rowData){
+		 viewHisProcss${rand}();
+	 }
+});
+//查看历史
+function viewHisProcss${rand}(){
+  var row = $('#monitorTaskGrid-${rand}').datagrid('getSelected');
+  if (row){
+	viewHisProcess${rand}(row.processInstanceId);
+  } else {
+	$.messager.show({
+	  title: '信息提示',
+	  msg: "请选择记录！"
+	});
+  }
+}
+function viewHisProcess${rand}(processInstanceId){
+	$('<div id="hisWin-${rand}"></div>').dialog({
+	    title: '流程历史',
+	    width: 1000,
+	    height: 550,
+	    closed: false,
+	    cache: false,
+	    href: 'workspace/viewHistory.html?processInstanceId=' + processInstanceId,
+	    modal: true,
+	    resizable:true,
+	    onClose: function(){
+	    	$(this).dialog('destroy');
+	    }
+	});
+}
+//查询按钮
+$('#search_btn-${rand}').bind('click', function(){
+    var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	if(startCreateTime!=''&&startCreateTime!=null){
+		startCreateTime=startCreateTime+' 00:00:00';
+	}
+	if(endCreateTime!=''&&endCreateTime!=null){
+		endCreateTime=endCreateTime+' 00:00:00';
+	}
+    var startAgreeTime = $('#startAgreeTime-${rand}').val();
+	var endAgreeTime = $('#endAgreeTime-${rand}').val();
+	
+	var account = $("#account-${rand}").val();
+	var empName = $("#empName-${rand}").val();
+	var orgName = $("#orgName-${rand}").val();
+	var salAdjust = $("#salAdjust-${rand}").combobox("getValue");
+	var processStatus = $('#processStatus-${rand}').combobox("getValue");
+	
+	$('#monitorTaskGrid-${rand}').datagrid('reload',
+		{
+			startCreateTime_d:startCreateTime,
+			endCreateTime_d:endCreateTime,
+			startAgreeTime_d:startAgreeTime,
+			endAgreeTime_d:endAgreeTime,
+			account:account,
+			empName:empName,
+			orgName:orgName,
+			salAdjust:salAdjust,
+			processStatus:processStatus
+		});
+});
+
+//重置按钮
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startCreateTime-${rand}').val('');
+	$('#endCreateTime-${rand}').val('');
+	$("#account-${rand}").val('');
+	$("#empName-${rand}").val('');
+    $('#startAgreeTime-${rand}').val('');
+	$('#endAgreeTime-${rand}').val('');
+	$("#orgName-${rand}").val('');
+	$("#salAdjust-${rand}").combobox("setValue","");
+	$('#processStatus-${rand}').combobox("setValue","");
+	
+});
+//导出
+$('#export_btn-${rand}').bind('click', function(){
+	var startCreateTime = $('#startCreateTime-${rand}').val();
+	var endCreateTime = $('#endCreateTime-${rand}').val();
+	
+    var startAgreeTime = $('#startAgreeTime-${rand}').val();
+	var endAgreeTime = $('#endAgreeTime-${rand}').val();
+	
+	var account = $('#account-${rand}').val();
+	var empName = $("#empName-${rand}").val();
+	var orgName = $("#orgName-${rand}").val();
+	var salAdjust = $("#salAdjust-${rand}").combobox("getValue");
+	var processStatus = $('#processStatus-${rand}').combobox("getValue");
+		
+	var form = $("<form method='post'>");
+   	form.attr('style', 'display:none');
+   	form.append($("<input type=hidden name='startCreateTime_d' value='"+startCreateTime+"'>"));
+   	form.append($("<input type=hidden name='endCreateTime_d' value='"+endCreateTime+"'>"));
+   	form.append($("<input type=hidden name='startAgreeTime_d' value='"+startAgreeTime+"'>"));
+   	form.append($("<input type=hidden name='endAgreeTime_d' value='"+endAgreeTime+"'>"));
+   	form.append($("<input type=hidden name='account' value='"+account+"'>"));
+   	form.append($("<input type=hidden name='empName' value='"+empName+"'>"));
+   	form.append($("<input type=hidden name='orgName' value='"+orgName+"'>"));
+   	form.append($("<input type=hidden name='salAdjust' value='"+salAdjust+"'>"));
+	form.append($("<input type=hidden name='processStatus' value='"+processStatus+"'>"));
+   	form.appendTo($(document.body));
+    form.form('submit',{url:'taskmonitor/exportIprobationEation4Hr.html'});
+    form.remove();
+});
+</script>
+<#include "/common/foot.ftl">

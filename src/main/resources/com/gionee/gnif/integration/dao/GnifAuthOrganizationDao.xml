@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gnif.integration.dao.GnifAuthOrganizationDao">
+
+  	<select id="getOrganization" parameterType="Long" resultType="com.gionee.gnif.biz.model.AuthOrganization">
+	  select id, pid, name from auth_organization where id = #{param} and status=0
+	</select>
+
+	<select id="getSubOrganizations" parameterType="Long" resultType="com.gionee.gnif.biz.model.AuthOrganization">
+	  select id, pid, name from auth_organization where pid = #{param} and status=0
+	</select>
+
+	<select id="getTree" parameterType="Long" resultType="com.gionee.gnif.dto.TreeDto">
+	  select id, name as text, id as value, 'close' as state from auth_organization where pid = #{param} and status=0
+	</select>
+
+	<select id="getOrganizationUsers" parameterType="Long" resultType="com.gionee.gnif.biz.model.AuthUser">
+	  select id, account, name, org_id from auth_user where org_id = #{param}
+	</select>
+	
+	<select id="getUser" parameterType="Long" resultType="com.gionee.gnif.biz.model.AuthUser">
+	  select id, account, name, org_id from auth_user where id = #{param}
+	</select>
+	
+</mapper>

@@ -1,0 +1,38 @@
+ process(id:"L-ABAP-Develop-Application"){
+	step(id:"startevent1"){
+		field(name:"applyContent",validType:"required",label:"开发需求描述")
+		
+		field(name:"curUserName",validType:"required",label:"申请人")
+		
+		field(name:"applyDate",validType:"required",label:"申请时间")
+		
+	}
+	step(id:"ABAPDevelopLeaderAudiTask"){
+		field(name:"developeLeaderAudi",validType:"required",label:"审批结果")
+		
+		field(name:"developAssignee",validType:"required",label:"ABAP开发工程师")
+		
+		field(name:"accepterNameTrainner",validType:"required",label:"ABAP开发工程师")
+		
+		field(name:"developeLeaderAudiName",validType:"required",label:"组长签名")
+		
+		field(name:"developeLeaderAudiTime",validType:"required",label:"签名时间")
+	}
+	
+	step(id:"ABAPDeveloperAudiTask"){
+		field(name:"developerAudiAdvice",validType:"required",label:"解决方案")
+		
+		field(name:"developerAudiName",validType:"required",label:"开发人员签名")
+		
+		field(name:"developerAudiTime",validType:"required",label:"签名时间")
+	}
+	
+	step(id:"AdviserTestAudiTask"){
+		field(name:"adviserTestAudiAdvice",validType:"required",label:"测试结果")
+		
+		field(name:"adviserTestAudiName",validType:"required",label:"测试人员签名")
+		
+		field(name:"adviserTestAudiTime",validType:"required",label:"签名时间")
+		
+	}
+}

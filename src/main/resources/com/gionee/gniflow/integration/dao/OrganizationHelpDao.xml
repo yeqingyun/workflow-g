@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.OrganizationHelpDao">
+  
+  <sql id="columns">
+    id, pid, name, address, telephone, full_name,
+	status, remark, create_by, create_time, update_by, update_time
+  </sql>
+
+ <resultMap type="com.gionee.auth.model.Organization" id="result">
+	<id property="id" column="id"/>
+	<result property="pid" column="pid"/>
+	<result property="name" column="name"/>
+	<result property="address" column="address"/>
+	<result property="telephone" column="telephone"/>
+	<result property="fullName" column="full_name"/>
+	<result property="status" column="status"/>
+	<result property="remark" column="remark"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateBy" column="update_by"/>
+	<result property="updateTime" column="update_time"/>
+  </resultMap>
+ 
+ <!-- 通过孩子节点获取根节点 -->
+ <select id="queryRootNode" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from auth_organization 
+	where pid = 56876 and status > -1 start with id = #{_parameter} connect by prior pid = id
+  </select>
+  
+ <!-- 通过部门名称获取部门 -->
+ <select id="queryOrganizationByName" parameterType="String" resultMap="result">
+	select <include refid="columns"/> from auth_organization where name = #{_parameter} and status > -1
+  </select>
+  
+  <!-- 查询所所属公司下的某个部门 -->
+  <select id="queryChildrenByRootNode" resultMap="result">
+	select * from auth_organization where name= #{orgName} start with id = #{rootId} connect by pid = prior id
+  </select>
+  
+  <!-- 根据pid查询部门下的部门 -->
+  <select id="checkHasChild" parameterType="String" resultMap="result">
+  	select * from auth_organization where PID = #{id}
+  </select>
+
+</mapper>

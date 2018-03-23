@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.GnifUserDao">
+ 
+  <sql id="columns">
+    id, account, password, name, org_id, pri_group_id, telephone, mobile, email, type,
+	status, remark, create_by, create_time, update_by, update_time
+  </sql>
+  
+  <resultMap type="com.gionee.gniflow.dto.UserDto" id="userDtoResult">
+  	<result property="id" column="id"/>
+	<result property="account" column="account"/>
+	<result property="name" column="name"/>
+	<result property="orgId" column="org_id"/>
+	<result property="orgName" column="org_name"/>
+  </resultMap>
+  
+  <select id="getLeadersByCurrentUser" parameterType="Map" resultType="com.gionee.auth.model.User">
+  	select u.* from (select * from auth_user where status > -1 and org_id = #{orgId} ) as u inner join auth_user_group as ug 
+  	on u.id = ug.user_id inner join (select * from auth_group where code = #{code} and status > -1) as ag on ug.group_id = ag.id 
+  </select>
+  
+   <select id="queryPageUsers" parameterType="map" resultMap="userDtoResult">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select u.id,u.account,u.name,u.org_id,o.name as org_name from auth_user u
+	  left join auth_organization o on u.org_id = o.id
+      <where>
+      	u.status > -1
+        <if test="id != null">
+          and u.id = #{id}
+        </if>
+        <if test="account != null">
+          and u.account like  '%' || #{account} || '%'
+        </if>
+        <if test="name != null">
+          and u.name like '%' || #{name} || '%'
+        </if>
+        <if test="orgId != null">
+          and u.org_id = #{orgId}
+        </if>
+      </where>
+    )RES ) SUB WHERE SUB.rnk &gt;= #{firstRow} AND SUB.rnk &lt; #{lastRow}
+  </select>
+  
+  <select id="countUsers" parameterType="map" resultType="int">
+    select count(*) from auth_user u
+	left join auth_organization o on u.org_id = o.id
+    <where>
+        <if test="id != null">
+          and u.id = #{id}
+        </if>
+        <if test="account != null">
+          and u.account like  '%' || #{account} || '%'
+        </if>
+        <if test="name != null">
+          and u.name like '%' || #{name} || '%'
+        </if>
+        <if test="orgId != null">
+          and org_id = #{orgId}
+        </if>
+    </where>
+  </select>
+  <select id="findById"  resultType="java.lang.String"  parameterType="java.lang.String">
+     select org_id from auth_user   where account=#{account}
+  </select>
+  <select id="getAccountById" parameterType="string" resultType="string">
+  	 select account from auth_user where id=#{id}
+  </select>
+</mapper>

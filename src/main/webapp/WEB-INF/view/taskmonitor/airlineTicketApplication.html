@@ -1,0 +1,208 @@
+<#assign title="流程">
+<#include "/common/head.ftl">
+
+<div class="easyui-layout" data-options="fit:true">
+ 	<div data-options="region:'north',border:false,minHeight:45," style="padding:5px 0px 5px 0px">
+		<div style="padding:5px;height:85px;background:#fafafa;border:1px solid #ccc">
+		    <table border="0" >
+		    <thead>
+		 			<tr>
+		   				<td align="right" style="white-space:nowrap">申请时间：</td>
+		    			<td> 
+		    			 	<input id="startApplyDate-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startApplyDate_t"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endApplyDate-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endApplyDate-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endApplyDate_t"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startApplyDate-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">申请部门：</td>
+		   				<td>
+		   				 	<input id="applyOrgId-${rand}"   name="applyOrgId"  class="easyui-combotree"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">申请人：</td>
+		   				<td >
+		   				 	<input id="applyUserName-${rand}" style="width:148px;" class="easyui-textbox" type="text" name="applyUserName" data-options=""/>
+		   				</td>
+		   				<td  align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a href="javascript:void(0)" id="search_btn-${rand}" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+		   					<a href="javascript:void(0)" id="reset_btn-${rand}" class="easyui-linkbutton" iconCls="icon-reload">重置</a>
+		   				</td>
+		 			</tr>
+		 			<tr>
+		 				<td align="right" style="white-space:nowrap">出发时间：</td>
+		    			<td> 
+		    			 	<input id="startDepartureTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="startDepartureTime_t"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,maxDate:'#F{$dp.$D(\'endDepartureTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="center" style="width:30px; white-space:nowrap;">-</td>
+		   				<td> 
+    			 			<input id="endDepartureTime-${rand}" type="text" class="easyui-my97" readonly="readonly" name="endDepartureTime_t"
+    								data-options="dateFmt:'yyyy-MM-dd',width:130,required:false,minDate:'#F{$dp.$D(\'startDepartureTime-${rand}\')}'"/>
+		   				</td>
+		   				<td align="right" style="white-space:nowrap; padding-left:12px;">状态：</td>
+		   				<td>
+		   				 	<select id="status-${rand}" style="width:154px;" class="easyui-combobox" type="text" name="status" data-options="width:176">
+		   				 		<option value="">--请选择--</option>
+		   				 		<option value="1">运行中</option>
+		   				 		<option value="2">已完成</option>
+		   				 		<option value="3">已挂起</option>
+		   				 		<option value="4">已激活</option>
+		   				 		<option value="5">已作废</option>
+		   				 		<option value="6">审批未通过</option>
+		   				 	</select>
+		   				</td>
+		   				<td align="left" style="white-space:nowrap;padding-left:12px;">
+		   					<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出</a>
+		   				</td>
+		 			</tr>
+			</table>
+		  </div>
+	 </div>
+	
+	
+	<div data-options="region:'center',border:false" style="padding:0px 0px 0px 0px;">
+		<div id="monitorTaskGrid-${rand}"></div>
+	</div>
+
+ </div>
+ <script type="text/javascript">
+$('#monitorTaskGrid-${rand}').datagrid({
+  fit:true,
+  fitColumns:true,
+  url:'taskmonitor/getAirlineTicketApplications.json',
+  columns:[[
+  	{field:'applyDate',title:'申请日期',width:80,align:'center'},
+  	{field:'applyUserName',title:'申请人',width:80,align:'center'},
+  	{field:'applyOrgName',title:'申请部门',width:80,align:'center'},
+  	{field:'idCard',title:'身份证号码',width:100,align:'center'},
+ 	{field:'status',title:'状态',width:100,align:'center',formatter:function(value,rowData,rowIndex){
+		if(value == "1"){
+			return "<span style='color:red'>运行中</span>";
+		}else if(value == "2"){
+			return "<span style='color:blue'>已完成</span>";
+		}else if(value == "3"){
+			return "<span style='color:#005831'>已挂起</span>";
+		}else if(value == "4"){
+			return "<span style='color:#c88400'>已激活</span>";
+		}else if(value == "5"){
+			return "<span style='color:#840228'>已作废</span>";
+		}else if(value == "6"){
+			return "<span style=\"color:#D2691E\">审批未通过</span>";
+		}else{
+			return "<span style=\"color:#008792\">未知状态</span>"
+		}
+	}}, 
+	{field:'departureTime',title:'出发时间',width:100,align:'center'},
+	{field:'departurePlace',title:'出发地',width:100,align:'center'},
+	{field:'destinationPlace',title:'目的地',width:100,align:'center'},
+	{field:'amount',title:'金额',width:100,align:'center'},
+	{field:'discount',title:'折扣',width:100,align:'center'},
+	{field:'discountedAmount',title:'折扣金额',width:100,align:'center'},
+	{field:'applyReasons',title:'申请理由',width:100,align:'center'},
+	{field:'remark',title:'备注',width:100,align:'center'}
+	]
+  ],
+  nowrap: true,       
+  fit : true,
+  border : true,
+  pagination:true,
+  singleSelect:true,
+  rownumbers:true,
+  pageNumber : 1,
+  pageSize : 20
+});
+//获取所有机构及其部门
+$('#applyOrgId-${rand}').combotree({
+	    url: 'hrFlow/auth/orgs.json',
+	    method:'get',
+	    lines:true,
+	    valueField:'id',
+	    textField:'text',
+		panelWidth:300,
+		panelHeight:280,
+		width:176
+	});
+//查询
+$('#search_btn-${rand}').bind('click', function(){
+    var startApplyDate = $('#startApplyDate-${rand}').val();
+	var endApplyDate = $('#endApplyDate-${rand}').val();
+    var startDepartureTime = $('#startDepartureTime-${rand}').val();
+	var endDepartureTime = $('#endDepartureTime-${rand}').val();
+	var applyUserName = $('#applyUserName-${rand}').val();
+	var applyOrgId = $('#applyOrgId-${rand}').combotree("getValue");
+	var status = $('#status-${rand}').combobox("getValue");
+	
+	if(startApplyDate!=''&&startApplyDate!=null){
+		startApplyDate = startApplyDate+' 00:00:00';
+	}
+	if(endApplyDate!=''&&endApplyDate!=null){
+		endApplyDate = endApplyDate+' 00:00:00';
+	}
+	if(startDepartureTime!=''&&startDepartureTime!=null){
+		startDepartureTime = startDepartureTime+' 00:00:00';
+	}
+	if(endDepartureTime!=''&&endDepartureTime!=null){
+		endDepartureTime = endDepartureTime+' 00:00:00';
+	}
+	$('#monitorTaskGrid-${rand}').datagrid('reload',
+		{
+			startApplyDate_t:startApplyDate,
+			endApplyDate_t:endApplyDate,
+			applyUserName:applyUserName,
+			applyOrgId:applyOrgId,
+			status:status,
+			startDepartureTime_t:startDepartureTime,
+			endDepartureTime_t:endDepartureTime
+		});
+});
+//重置
+$('#reset_btn-${rand}').bind('click', function(){
+    $('#startApplyDate-${rand}').val('');
+	$('#endApplyDate-${rand}').val('');
+	$('#applyUserName-${rand}').val('');
+	$('#startDepartureTime-${rand}').val('');
+	$('#endDepartureTime-${rand}').val('');
+	$('#applyOrgId-${rand}').combotree("setValue","");
+	$('#status-${rand}').combobox("setValue","");
+});
+
+//导出
+$('#export_btn-${rand}').bind('click', function(){
+    var startApplyDate = $('#startApplyDate-${rand}').val();
+	var endApplyDate = $('#endApplyDate-${rand}').val();
+    var startDepartureTime = $('#startDepartureTime-${rand}').val();
+	var endDepartureTime = $('#endDepartureTime-${rand}').val();
+	var applyUserName = $('#applyUserName-${rand}').val();
+	var applyOrgId = $('#applyOrgId-${rand}').combotree("getValue");
+	var status = $('#status-${rand}').combobox("getValue");
+	
+	if(startApplyDate!=''&&startApplyDate!=null){
+		startApplyDate = startApplyDate+' 00:00:00';
+	}
+	if(endApplyDate!=''&&endApplyDate!=null){
+		endApplyDate = endApplyDate+' 00:00:00';
+	}
+	if(startDepartureTime!=''&&startDepartureTime!=null){
+		startDepartureTime = startDepartureTime+' 00:00:00';
+	}
+	if(endDepartureTime!=''&&endDepartureTime!=null){
+		endDepartureTime = endDepartureTime+' 00:00:00';
+	}
+
+	var form = $("<form method='post'>");
+   	form.attr('style', 'display:none');
+   	form.append($("<input type=hidden name='startApplyDate_t' value='"+startApplyDate+"'>"));
+   	form.append($("<input type=hidden name='endApplyDate_t' value='"+endApplyDate+"'>"));
+   	form.append($("<input type=hidden name='startDepartureTime_t' value='"+startDepartureTime+"'>"));
+   	form.append($("<input type=hidden name='endDepartureTime_t' value='"+endDepartureTime+"'>"));
+	form.append($("<input type=hidden name='applyOrgId' value='"+applyOrgId+"'>"));
+   	form.append($("<input type=hidden name='applyUserName' value='"+applyUserName+"'>"));
+   	form.append($("<input type=hidden name='status' value='"+status+"'>"));
+   	form.appendTo($(document.body));
+    form.form('submit',{url:'taskmonitor/exportAirlineTicketApplications.html'});
+    form.remove();
+});
+</script>
+<#include "/common/foot.ftl">

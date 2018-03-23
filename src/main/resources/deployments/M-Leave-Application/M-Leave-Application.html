@@ -1,0 +1,1109 @@
+<#include "/common/head.html">
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+		 <tr>
+			<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">员工编码：</td>
+			<td class="formtable_td_value">${steps.vars["applyUserAccount"]}</td>
+			<td class="formtable_td_key">姓名：</td>
+			<td class="formtable_td_value">${steps.vars["userName"]}</td>
+			<td class="formtable_td_key">职务：</td>
+			<td class="formtable_td_value">${steps.vars["job"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门：</td>
+			<td class="formtable_td_value">${steps.vars["orgName"]}</td>
+			<td class="formtable_td_key">入职日期：</td>
+			<td class="formtable_td_value">${steps.vars["entryTime"]}</td>
+			<td class="formtable_td_key">离职日期：</td>
+			<td class="formtable_td_value">${steps.vars["leaveDate"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >离职类别：</td>
+			<td class="formtable_td_value" >
+				<#if steps.vars["leaveType"] == '0'>自离</#if>
+				<#if steps.vars["leaveType"] == '1'>辞职</#if>
+				<#if steps.vars["leaveType"] == '2'>辞退</#if>
+			</td>
+			<td class="formtable_td_key">操作类型:</td>
+			<td class="formtable_td_value">${(steps.vars["oprationText"])!""}</td>
+			<td class="formtable_td_key" >操作原因：</td>	
+			<td class="formtable_td_value" >${(steps.vars["operationReasonText"])!""}</td>	
+		</tr>
+		<tr>
+			<td class="formtable_td_key" rowspan="2">离职信息确认：</td>
+			<td class="formtable_td_key">离职原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["leaveReson"]!""}</td>			
+		</tr>
+		<tr>
+		    <td class="formtable_td_key">申请人签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["signSelf"]}</td>
+			<td class="formtable_td_key">申请日期：</td>
+			<td class="formtable_td_value" colspan="2" >${steps.vars["applicationDate"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+ <!-- 表单修改情况  -->
+ <#if steps.key == 'updateLeaveApplicationTask'>
+			 <tr>
+				  <td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">员工编码：</td>
+				<td class="formtable_td_value">${steps.vars["applyUserAccount"]}</td>
+				<td class="formtable_td_key">姓名：</td>
+				<td class="formtable_td_value">${steps.vars["userName"]}</td>
+				<td class="formtable_td_key">职务：</td>
+				<td class="formtable_td_value">${steps.vars["job"]}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">部门：</td>
+				<td class="formtable_td_value">${steps.vars["orgName"]}</td>
+				<td class="formtable_td_key">入职日期：</td>
+				<td class="formtable_td_value">${steps.vars["entryTime"]}</td>
+				<td class="formtable_td_key">离职日期：</td>
+				<td class="formtable_td_value">${steps.vars["leaveDate"]}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >离职类别：</td>
+				<td class="formtable_td_value" >
+					<#if steps.vars["leaveType"] == '0'>自离</#if>
+					<#if steps.vars["leaveType"] == '1'>辞职</#if>
+					<#if steps.vars["leaveType"] == '2'>辞退</#if>
+				</td>
+				<td class="formtable_td_key">操作类型:</td>
+				<td class="formtable_td_value">${(steps.vars["oprationText"])!""}</td>
+				<td class="formtable_td_key" >操作原因：</td>	
+				<td class="formtable_td_value">${(steps.vars["operationReasonText"])!""}</td>	
+			</tr>
+			<tr>
+				<td class="formtable_td_key" rowspan="2">离职信息确认：</td>
+				<td class="formtable_td_key">离职原因：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["leaveReson"]!""}</td>			
+			</tr>
+			<tr>
+			    <td class="formtable_td_key">申请人签字：</td>
+				<td class="formtable_td_value" colspan="2">${steps.vars["signSelf"]}</td>
+				<td class="formtable_td_key">申请日期：</td>
+				<td class="formtable_td_value" colspan="2" >${steps.vars["applicationDate"]}</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+					<td class="formtable_td_value" colspan="5">
+					<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+					</#list>
+					</td>
+				</tr>
+			</#if>
+		</#if>	
+
+<!-- 主管面谈结果 -->
+<#if steps.key == 'ExecutiveDirectorAudiTask'>
+	<tr>
+		<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >直属主管审批意见：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["ExecutiveDirectorAudiAdvice"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批结果：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["ExecutiveDirectorAudi"] == '0'>同意
+				&nbsp;&nbsp;同意离职日期：${steps.vars["leaveDate"]!proHisVar.vars.leaveDate} 
+			</#if> 
+			<#if steps.vars["ExecutiveDirectorAudi"] == '1'>不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">主管签字：</td>
+		<td class="formtable_td_value" colspan="2">${steps.vars["ExecutiveDirectorAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="2">${steps.vars["ExecutiveDirectorAudiTime"]}</td>
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 部门经理面谈结果 -->
+<#if steps.key == 'departMangerAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >部门经理审批意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["departMangerAudiAdvice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审批结果：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["departMangerAudi"] == '0'>同意
+					&nbsp;&nbsp;同意离职日期：${steps.vars["leaveDate"]!proHisVar.vars.leaveDate}
+				</#if>
+				<#if steps.vars["departMangerAudi"] == '1'>不同意</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">部门经理签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["departMangerAudiName"]}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["departMangerAudiTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#list steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 人力资源专员面谈结果 -->
+<#if steps.key == 'humanResouceAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >人力资源专员查核意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["humanResouceAudiAdvice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">查核结果：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["humanResouceAudi"] == '0'>同意
+					&nbsp;&nbsp;同意离职日期：${steps.vars["leaveDate"]!proHisVar.vars.leaveDate}
+				</#if>
+				<#if steps.vars["humanResouceAudi"] == '1'>不同意</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">人力专员签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["humanResouceAudiName"]}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["humanResouceAudiTime"]}</td>
+		</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+
+<!-- 人力资源总监面谈结果 -->
+<#if steps.key == 'hrChiefInspectorAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >人力资源总监审批意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["hrChiefInspectorAudiAdvice"]!""}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">审批结果：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["hrChiefInspectorAudi"] == '0'>同意
+					&nbsp;&nbsp;同意离职日期：${steps.vars["leaveDate"]!proHisVar.vars.leaveDate}
+				</#if>
+				<#if steps.vars["hrChiefInspectorAudi"] == '1'>不同意</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">人力资源部总监签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["hrChiefInspectorAudiName"]}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["hrChiefInspectorAudiTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+				<#list	steps.attachments as attachs> 
+					<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+				</#list>
+			</td>
+		</tr>
+		</#if>
+</#if>
+
+<!-- 总经理签字 -->
+<#if steps.key == 'generalManagerAudiTask'>
+	<tr>
+		<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key" >总经理审批意见：</td>
+		<td class="formtable_td_value" colspan="5">${steps.vars["generalManagerAudiAdvice"]!""}</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">审批结果：</td>
+		<td class="formtable_td_value" colspan="5">
+				<#if steps.vars["generalManagerAudi"] == '0'>同意
+					&nbsp;&nbsp;同意离职日期：${steps.vars["leaveDate"]!proHisVar.vars.leaveDate}
+				</#if>
+				<#if steps.vars["generalManagerAudi"] == '1'>不同意</#if>
+		</td>
+	</tr>
+	<tr>
+		<td class="formtable_td_key">总经理签字：</td>
+		<td class="formtable_td_value" colspan="2">${steps.vars["generalManagerAudiName"]}</td>
+		<td class="formtable_td_key">签字时间：</td>
+		<td class="formtable_td_value" colspan="2">${steps.vars["generalManagerAudiTime"]}</td>	
+	</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+
+<!-- 人力资源专员确认结果 -->
+<#if steps.key == 'humanResouceConfirmTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key">${steps.activityName}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >人力资源专员确认：</td>
+			<td class="formtable_td_value" colspan="5">请前往  SAP 确认是否修改工资范围</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">人力专员签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["humanResouceConfirmName"]}</td>
+			<td class="formtable_td_key">签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["humanResouceConfirmTime"]}</td>
+		</tr>
+	<#if steps.attachments??>
+	<tr>
+		<td class="formtable_td_key">附件：</td>
+		<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+				<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br /> 
+			</#list>
+		</td>
+	</tr>
+	</#if>
+</#if>
+</#list> 
+</table>
+</#if>
+
+
+<!-- 表单开始 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+				<input   id="leaveUserAccount${rand}" name="fp_leaveUserAccount" type="hidden"  />
+				<table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" style="width:180px"/>
+							<input type="hidden" name="fp_applyUserId" value="${appuser.account}" />
+							<input id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox"   type="text"  data-options="required:true" onblur="loadUserInfo${rand}()" />
+						</td>
+						<td class="formtable_td_key">姓名：</td>							
+						<td  class="formtable_td_value">
+							<input id="userName${rand}" class="easyui-validatebox" readonly="readonly" required="required" type="text" name="fp_userName"   />
+						</td>
+						<td class="formtable_td_key">职务：</td>
+						<td  class="formtable_td_value">
+				  			<input  id="job${rand}"  readonly="readonly" type="text" required="required" name="fp_job"/>
+				  		</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门：</td>
+						<td  class="formtable_td_value">
+							<input  id="orgName${rand}" readonly="readonly"  type="text" name="fp_orgName"  /> 
+						</td>
+						<td class="formtable_td_key">入职日期：</td>
+						<td  class="formtable_td_value">
+				  		<input id="entryTime${rand}" readonly="readonly"   type="text" name="fp_entryTime"/>
+				  		</td>
+						<td class="formtable_td_key">离职日期：</td>
+						<td  class="formtable_td_value">
+							<input id="leaveDate${rand}" class="easyui-datebox" type="text" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" />
+						</td>					
+					</tr>
+					<tr>
+						<td class="formtable_td_key">离职类别：</td>
+						<td class="formtable_td_value" >
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="0"> 自离
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="1" checked="checked"> 辞职
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="2"> 辞退
+						</td>
+						<td class="formtable_td_key">操作类型：</td>
+						<td class="formtable_td_value">
+							<input id="oprationvalue${rand}"  type="hidden" name="fp_oprationTypevalue"   />
+						  	<input id="opration${rand}" class="easyui-combobox" type="text" data-options="editable:false, required: true"/>
+						  	<input id="oprationText${rand}"  type="hidden" name="fp_oprationText"   />
+						</td>
+						<td class="formtable_td_key">操作原因：</td>
+						<td  class="formtable_td_value" >
+							<input id="operationReasonvalue${rand}" type="hidden" name="fp_operationReasonvalue"  onblur="loadViewName()" />
+						  	<input id="operationReason${rand}" class="easyui-combobox" type="text"  onblur="loadViewName()" />
+						  	<input id="operationReasonText${rand}" type="hidden" name="fp_operationReasonText" onblur="loadViewName()"  />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2" >离职信息确认：</td>
+						<td class="formtable_td_key">离职原因：</td>
+						<td class="formtable_td_value" colspan="4">
+							<textarea style="width: 600px; height: 50px" name="fp_leaveReson" data-options="required:true" class="formtable_remark easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >申请人签字：</td>
+						<td class="formtable_td_value" colspan="2" >
+							<input  id="signSelf${rand}" readonly="readonly"  type="hidden" name="fp_signSelf" />
+							<span id="signSelfSpan${rand}"></span>
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td  class="formtable_td_value" colspan="2" >
+							<input id="applyDate${rand}"  type="hidden" name="fp_applicationDate"  value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>	
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">	
+			$(function(){
+				//界面通过接口加载个人信息
+				$("#curUserId${rand}").focus();
+			});
+			function loadUserInfo${rand}(){
+				if($.trim($("#curUserId${rand}").val()) == ''||$("#curUserId${rand}").val()==undefined||$("#curUserId${rand}").val()==null){
+					return;
+				}
+				//判断是否重复发起离职申请流程
+				$.post("leaveInfo/leaveRunningProcess.json",{
+					account:$("#curUserId${rand}").val()
+				},function(data){
+					if(!data.success){
+						$.messager.alert('信息提示',data.msg,'warning');
+						 $("#curUserId${rand}").val("");
+						 $("#leaveUserAccount${rand}").val("");
+						$("#userName${rand}").val("");
+						$("#orgName${rand}").val("");
+						$("#entryTime${rand}").val("");
+						$("#job${rand}").val("");
+						$("#signSelf${rand}").val("");
+						$("#signSelfSpan${rand}").text("");
+					}else{
+						//界面通过接口加载个人信息
+						$.post("hrFlow/getHrUserInfoById.json",	{
+							account:$("#curUserId${rand}").val()	
+						},function(data){
+								if (data.success) {
+									$("#userName${rand}").val(data.obj[0].name);
+									$("#orgName${rand}").val(data.obj[0].orgName);
+									$("#entryTime${rand}").val(data.obj[0].entryDate);
+									$("#job${rand}").val(data.obj[0].job);
+									$("#signSelf${rand}").val(data.obj[0].name);
+									$("#signSelfSpan${rand}").text(data.obj[0].name);
+									$('#processName${rand}').val("编码：["+$("#curUserId${rand}").val()+"],姓名：["+data.obj[0].name+"],操作原因：["+$('#operationReason${rand}').combobox('getText')+"],部门：["+data.obj[0].orgName+"],职务：["+data.obj[0].job+"],入职日期：["+data.obj[0].entryDate+"],离职日期：["+$("#leaveDate${rand}").datebox('getText')+"]");//流程实例名称
+							}
+						});
+						$.post("project/getLoginNo.json",{userId:$("#curUserId${rand}").val()},function(data){
+							$("#leaveUserAccount${rand}").val(data);
+						});
+					}
+				});
+			}
+			function leaveDateTip${rand}(date){
+				//离职日期提示
+				   var leaveDate = date.getTime();
+				   var today = new Date();
+				   var yy = today.getFullYear();
+				   var mm = today.getMonth()+1;
+				   var dd = today.getDate();
+				   var applyDate = today.getTime();
+				   var distance = (leaveDate - applyDate)/1000/60/60/24;
+				   $.post("hrFlow/isRegularEmployee.json", {
+								account:$("#curUserId${rand}").val()
+							},function(data){
+    							$('#processName${rand}').val("编码：["+$("#curUserId${rand}").val()+"],姓名：["+$("#userName${rand}").val()+"],操作原因：["+$('#operationReason${rand}').combobox('getText')+"],部门：["+$("#orgName${rand}").val()+"],职务：["+$("#job${rand}").val()+"],入职日期：["+$("#entryTime${rand}").val()+"],离职日期：["+$("#leaveDate${rand}").datebox('getText')+"]");//流程实例名称
+								if (data == true) {
+									if(distance < 30){
+										   	$.messager.alert('信息提示','离职日期需提前30天!','warning');
+										   	return;
+											//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd)); 	将离职日期设置为今天   
+										} 
+								}else if(data != true){
+									if(distance < 3){
+											$.messager.alert('信息提示','离职日期需提前3天!','warning');
+											return;
+											//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+										   } 
+								}
+
+							}
+				   );
+				 
+			}
+			
+			
+			//操作类型初始化
+			 $.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',
+				vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+				function(data){
+					var i = new Array();
+					i[0] = data[6];
+					data = i; 
+				$('#opration${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json'); 
+	
+			//操作类型赋值		
+			$('#opration${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#oprationvalue${rand}').val(record.id);
+	           		$('#oprationText${rand}').val(record.text);
+       			}
+			});
+			//从SAP加载离职操作原因
+			//操作原因初始化
+    		 $.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+'A6'+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+				function(data){
+				$('#operationReason${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json');  
+    		//操作原因赋值		
+    		
+			$('#operationReason${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#operationReasonvalue${rand}').val(record.id);
+            		$('#operationReasonText${rand}').val(record.text);
+            		
+            		//加载待办任务中流程名称
+            		$.post("hrFlow/getHrUserInfoById.json",	{
+    					account:$("#curUserId${rand}").val()	
+    				},function(data){
+    						if (data.success) {
+    							//$('#processName${rand}').val("离职人员编码：["+$("#curUserId${rand}").val()+"],姓名：["+data.obj.name+"]");
+    							$('#processName${rand}').val("编码：["+$("#curUserId${rand}").val()+"],姓名：["+data.obj[0].name+"],操作原因：["+$('#operationReason${rand}').combobox('getText')+"],部门：["+data.obj[0].orgName+"],职务：["+data.obj[0].job+"],入职日期：["+data.obj[0].entryDate+"],离职日期：["+$("#leaveDate${rand}").datebox('getValue')+"]");//流程实例名称
+    						}
+    				});
+    			}
+			});
+    		
+    		
+		</script>
+	</#if> 
+</#if>
+
+<!--修改申请-->
+<#if currentStep?exists> 
+	<#if currentStep == 'updateLeaveApplicationTask'>
+		<#if processSteps??> 
+     		<#list processSteps as steps> 
+      			<#if steps.key == 'startevent1'>
+		<div id="updateLeaveApplicationTask">
+			<form id="updateLeaveApplicationTaskForm" method="post" enctype='multipart/form-data'>
+				<input   id="leaveUserAccount${rand}" name="fp_leaveUserAccount" value="${steps.vars["leaveUserAccount"]}"   class="easyui-validatebox" missingMessage="请不要强制提交，请检查表单" data-options="required:true" readonly="readonly" style="padding:0px;margin:0px;width:0px;height:0px;border-width:0px;" />
+				<table id="updateLeaveApplicationTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key">修改离职办理申请</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">员工编码：</td>
+						<td class="formtable_td_value">
+							<input  id="curUserId${rand}" name="fp_applyUserAccount" class="easyui-validatebox"  value="${steps.vars["applyUserAccount"]}" type="text" data-options="required:true" onblur="loadUserInfo${rand}()"/>
+						</td>
+						<td class="formtable_td_key">姓名：</td>							
+						<td class="formtable_td_value">
+							<input class="easyui-validatebox" readonly="readonly" id="userName${rand}" value="${steps.vars["userName"]}" type="text" name="fp_userName" />
+						</td>
+						<td class="formtable_td_key">职务：</td>
+						<td  class="formtable_td_value">
+				  			<input class="easyui-validatebox"  readonly="readonly" id="job${rand}" value="${steps.vars["job"]}" type="text" name="fp_job"/>
+				  		</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门：</td>
+						<td  class="formtable_td_value">
+							<input  class="easyui-validatebox" readonly="readonly" id="orgName${rand}" value="${steps.vars["orgName"]}" type="text" name="fp_orgName"  /> 
+						</td>
+						<td class="formtable_td_key">入职日期：</td>
+						<td  class="formtable_td_value">
+				  		<input class="easyui-validatebox" readonly="readonly" id="entryTime${rand}" value="${steps.vars["entryTime"]}" type="text" name="fp_entryTime"/>
+				  		</td>
+						<td class="formtable_td_key">离职日期：</td>
+						<td  class="formtable_td_value">
+							 <input id="leaveDate${rand}" class="easyui-datebox" type="text"  value="${steps.vars["leaveDate"]}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /> 
+						</td>					
+					</tr>
+					<tr>
+						<td class="formtable_td_key">离职类别：</td>
+						<td class="formtable_td_value" >
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="0"> 自离
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="1" checked="checked"> 辞职
+							<input id="leaveType${rand}" type="radio" name="fp_leaveType" value="2"> 辞退 
+						</td>
+						<td class="formtable_td_key">操作类型：</td>
+						<td class="formtable_td_value">
+							<input id="oprationvalue${rand}"  type="hidden" name="fp_oprationTypevalue"   />
+						  	<!-- <input id="operation${rand}"  class="easyui-validatebox"  readonly="readonly" /> -->
+						  	<input id="oprationText${rand}"  type="text"  name="fp_oprationText"  value="${steps.vars["oprationText"]!""}" />
+						</td>
+						<td class="formtable_td_key">操作原因：</td>
+						<td  class="formtable_td_value" >
+							<input id="operationReasonvalue${rand}" type="hidden" name="fp_operationReasonvalue"   />
+						  	<input id="operationReason${rand}" class="easyui-combobox" name="fp_operationReason" type="text"   />
+						  	<input id="operationReasonText${rand}" type="hidden" name="fp_operationReasonText"   />
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="2">离职信息确认：</td>
+						<td class="formtable_td_key">离职原因：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" value="${steps.vars["leaveReson"]!""}" name="fp_leaveReson" data-options="required:true" class="formtable_remark easyui-validatebox"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >申请人签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input class="easyui-validatebox"  id="signSelf${rand}" value="${steps.vars["signSelf"]}" type="hidden" name="fp_signSelf" />
+							<span id="signSelfSpan${rand}"></span>
+						</td>
+						<td class="formtable_td_key" >申请日期：</td>
+						<td id="applyDate${rand}" class="formtable_td_value" colspan="2" >
+							<input id="applyDate${rand}"  readonly="readonly" type="hidden" name="fp_applicationDate" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>	
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">	
+			//当输入用户Id时重新加载用户信息
+			$("#curUserId${rand}").focus();
+			function loadUserInfo${rand}(){
+				//判断是否重复发起离职申请流程
+				$.post("leaveInfo/leaveRunningProcess.json",{
+					account:$("#curUserId${rand}").val()
+				},function(data){
+					if(!data.success){
+						$.messager.alert('信息提示',data.msg,'warning');
+						$("#curUserId${rand}").val("");
+						$("#leaveUserAccount${rand}").val("");
+						$("#userName${rand}").val("");
+						$("#orgName${rand}").val("");
+						$("#entryTime${rand}").val("");
+						$("#job${rand}").val("");
+						$("#signSelf${rand}").val("");
+						$("#signSelfSpan${rand}").text("");
+					}else{
+						//界面通过接口加载个人信息
+						$.post("hrFlow/getHrUserInfoById.json",	{
+							account:$("#curUserId${rand}").val()	
+						},function(data){
+								if (data.success) {
+									$("#userName${rand}").val(data.obj[0].name);
+									$("#orgName${rand}").val(data.obj[0].orgName);
+									$("#entryTime${rand}").val(data.obj[0].entryDate);
+									$("#job${rand}").val(data.obj[0].job);
+									$("#signSelf${rand}").val(data.obj[0].name);
+									$("#signSelfSpan${rand}").text(data.obj[0].name);
+									$("#oprationvalue${rand}").val("A6");
+									$("#operation${rand}").combobox('setValue','离职');
+									$("#oprationText${rand}").val("离职");
+							}
+						});
+						$.post("project/getLoginNo.json",{userId:$("#curUserId${rand}").val()},function(data){
+							$("#leaveUserAccount${rand}").val(data);
+						});
+					}
+				});
+			}
+			function leaveDateTip${rand}(date){
+				//离职日期提示
+				   var leaveDate = date.getTime();
+				   var today = new Date();
+				   var yy = today.getFullYear();
+				   var mm = today.getMonth()+1;
+				   var dd = today.getDate();
+				   var applyDate = today.getTime();
+				   var distance = (leaveDate - applyDate)/1000/60/60/24;
+				   $.post("hrFlow/isRegularEmployee.json", {
+								account:$("#curUserId${rand}").val()
+							},function(data){
+								if (data == true) {
+									if(distance < 30){
+										   	$.messager.alert('信息提示','离职日期需提前30天!','warning');
+										   	//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+										   } 
+								}else if(data != true){
+									if(distance < 3){
+											$.messager.alert('信息提示','离职日期需提前3天!','warning');
+											//$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));	   
+										} 
+								}
+							}
+				   );
+			}
+			//操作类型初始化
+			 $.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',
+				vars:'P_MASSN_VALUE_'+' '+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T529T',code:'MASSN',describe:'MNTXT'},
+				function(data){
+					var i = new Array();
+					i[0] = data[6];
+					data = i; 
+				$('#opration${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json'); 
+	
+			//操作类型赋值		
+			$('#opration${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#oprationvalue${rand}').val(record.id);
+	           		$('#oprationText${rand}').val(record.text);
+      			}
+			});
+			//从SAP加载离职操作原因
+			//操作原因初始化
+    		$.get('hrFlow/getSapOptions.json',
+				{functionName:'ZHR_OA06',vars:'P_MASSN_VALUE_'+'A6'+'_NEXT_P_MASSG_VALUE_'+' ',
+				exportTableName:'T_T530T',code:'MASSG',describe:'MGTXT'},
+				function(data){
+				$('#operationReason${rand}').combobox("clear").combobox('loadData',data);
+				},
+				'json');
+    		//操作原因赋值		
+			$('#operationReason${rand}').combobox({
+				valueField:'id',
+				textField:'text',
+				required:true,
+				editable:false,
+				onSelect:function(record){
+					//set cur hidden value
+					$('#operationReasonvalue${rand}').val(record.id);
+            		$('#operationReasonText${rand}').val(record.text);
+        		}
+			});
+		</script>
+				</#if> 
+			</#list>
+		</#if> 
+	</#if> 
+</#if>
+
+<!-- 主管面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'ExecutiveDirectorAudiTask'>
+		<div id="ExecutiveDirectorAudiTask">
+			<form id="ExecutiveDirectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="ExecutiveDirectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td colspan="6" class="formtable_td_key">主管审批</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" >直属主管审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_ExecutiveDirectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value"  colspan="5">
+							<input  type="radio" name="fp_ExecutiveDirectorAudi" checked="checked" onclick="sel(true)" value="0" />同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input  type="radio" name="fp_ExecutiveDirectorAudi" onclick="sel(false)" value="1" />不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<span id="dd"> 同意离职日期： <input id="leaveDate${rand}" class="easyui-datebox"  type="text" value="${proHisVar.vars.leaveDate}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >主管签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input   type="hidden" name="fp_ExecutiveDirectorAudiName" data-options="required:true" value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2" >
+							<input type="hidden" readonly="readonly" name="fp_ExecutiveDirectorAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function sel(flag){
+			  if(flag == true){
+                  document.getElementById("dd").style.visibility="visible";
+          		}else{
+                  document.getElementById("dd").style.visibility="hidden";
+          		}
+			}
+			function leaveDateTip${rand}(date){
+			//离职日期提示
+			    var leaveDate = date.getTime();
+				var today = new Date();
+				var yy = today.getFullYear();
+				var mm = today.getMonth()+1;
+				var dd = today.getDate();
+				var applyDate = today.getTime();
+			   	if (applyDate > leaveDate) {
+				   	$.messager.alert('信息提示','同意离职日期不能小于审批日期!','warning');
+				   	$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd)); 
+			   	}  
+			}
+		</script>
+	</#if> 
+</#if>
+
+<!-- 部门经理面谈结果 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'departMangerAudiTask'>
+		<div id="departMangerAudiTask">
+			<form id="departMangerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="departMangerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+		  	  			<td colspan="6" class="formtable_td_key">部门经理审批</td>
+		  	  		</tr>
+					<tr>
+						<td class="formtable_td_key" >部门经理审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_departMangerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_departMangerAudi" checked="checked" onclick="sel(true)" value="0" />同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_departMangerAudi"onclick="sel(false)" value="1" />不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<span id="dd"> 同意离职日期： <input id="leaveDate${rand}" class="easyui-datebox"  type="text" value="${proHisVar.vars.leaveDate}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">部门经理签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_departMangerAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>						
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input type="hidden" readonly="readonly" name="fp_departMangerAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}	
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function sel(flag){
+			  if(flag == true){
+                	document.getElementById("dd").style.visibility="visible";
+        		}else{
+                	document.getElementById("dd").style.visibility="hidden";
+        		}
+			}
+			function leaveDateTip${rand}(date){
+			//离职日期提示
+				var leaveDate = date.getTime();
+				var today = new Date();
+				var yy = today.getFullYear();
+				var mm = today.getMonth()+1;
+				var dd = today.getDate();
+				var applyDate = today.getTime();
+			   	if (applyDate > leaveDate) {
+				   	$.messager.alert('信息提示','同意离职日期不能小于审批日期!','warning');
+				   	$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+				 }  
+		}
+		</script>
+	</#if> 
+</#if>
+
+<!-- 人力资源部专员面谈结果-->
+<#if currentStep?exists> 
+	<#if currentStep == 'humanResouceAudiTask'>
+		<div id="humanResouceAudiTask">
+			<form id="humanResouceAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="humanResouceAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源部查核意见</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" >人力资源部专员查核意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_humanResouceAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">查核结果：</td>
+						<td class="formtable_td_value"  colspan="5" >
+							<input type="radio" name="fp_humanResouceAudi" checked="checked" onclick="sel(true)" value="0" />同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_humanResouceAudi" onclick="sel(false)" value="1" />不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<span id="dd"> 同意离职日期： <input id="leaveDate${rand}" class="easyui-datebox"  type="text" value="${proHisVar.vars.leaveDate}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源专员签字：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_humanResouceAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_humanResouceAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function sel(flag){
+			 	 if(flag == true){
+              		document.getElementById("dd").style.visibility="visible";
+      			}else{
+             	 	document.getElementById("dd").style.visibility="hidden";
+      			}
+			}
+			function leaveDateTip${rand}(date){
+			//离职日期提示
+				var leaveDate = date.getTime();
+				var today = new Date();
+				var yy = today.getFullYear();
+				var mm = today.getMonth()+1;
+				var dd = today.getDate();
+				var applyDate = today.getTime();
+			   	if (applyDate > leaveDate) {
+				   	$.messager.alert('信息提示','同意离职日期不能小于审批日期!','warning');
+				   	$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+				 }  
+		}
+		</script>
+	</#if> 
+</#if>
+
+<!-- 人力资源总监签名 -->
+<#if currentStep?exists> 
+	<#if currentStep == 'hrChiefInspectorAudiTask'>
+		<div id="hrChiefInspectorAudiTask">
+			<form id="hrChiefInspectorAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="hrChiefInspectorAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源部总监审批</td>
+					</tr>
+					<tr>	
+						<td class="formtable_td_key" >人力资源总监审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_hrChiefInspectorAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_hrChiefInspectorAudi" checked="checked" onclick="sel(true)" value="0" />同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_hrChiefInspectorAudi" onclick="sel(false)" value="1" />不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<span id="dd"> 同意离职日期： <input id="leaveDate${rand}" class="easyui-datebox"  type="text" value="${proHisVar.vars.leaveDate}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /></span>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">人力资源部总监签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_hrChiefInspectorAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_hrChiefInspectorAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+						
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function sel(flag){
+			 	 if(flag == true){
+	         		document.getElementById("dd").style.visibility="visible";
+	 			}else{
+	        	 	document.getElementById("dd").style.visibility="hidden";
+	 			}
+			}
+			function leaveDateTip${rand}(date){
+			//离职日期提示
+				var leaveDate = date.getTime();
+				var today = new Date();
+				var yy = today.getFullYear();
+				var mm = today.getMonth()+1;
+				var dd = today.getDate();
+				var applyDate = today.getTime();
+			   	if (applyDate > leaveDate) {
+				   	$.messager.alert('信息提示','同意离职日期不能小于签名日期!','warning');
+				   	$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd)); 
+			   	}  
+		}
+		</script>
+	</#if> 
+</#if>
+
+
+<!-- 总经理签字 -->
+<#if currentStep?exists>
+	<#if currentStep == 'generalManagerAudiTask'>
+		<div id="generalManagerAudiTask">
+			<form id="generalManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="generalManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >总经理审批</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rowspan="3">总经理审批意见：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 600px; height: 50px" name="fp_generalManagerAudiAdvice" class="formtable_remark"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key">审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input type="radio" name="fp_generalManagerAudi" checked="checked" onclick="sel(true)" value="0" />同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_generalManagerAudi" onclick="sel(false)" value="1" />不同意&nbsp;&nbsp;&nbsp;&nbsp;
+							<span id="dd"> 同意离职日期： <input id="leaveDate${rand}" class="easyui-datebox"  type="text" value="${proHisVar.vars.leaveDate}" name="fp_leaveDate" data-options="required:true,onSelect:leaveDateTip${rand}" /></span>
+						</td>
+					</tr>
+					<tr>	
+						<td class="formtable_td_key">总经理签字：</td>
+						<td class="formtable_td_value" colspan="2">
+							<input class="easyui-validatebox"  type="hidden" name="fp_generalManagerAudiName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" readonly="readonly" name="fp_generalManagerAudiTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+			function sel(flag){
+			 	 if(flag == true){
+	        		document.getElementById("dd").style.visibility="visible";
+				}else{
+	       	 	document.getElementById("dd").style.visibility="hidden";
+				}
+			}
+			function leaveDateTip${rand}(date){
+			//离职日期提示
+				var leaveDate = date.getTime();
+				var today = new Date();
+				var yy = today.getFullYear();
+				var mm = today.getMonth()+1;
+				var dd = today.getDate();
+				var applyDate = today.getTime();
+			   	if (applyDate > leaveDate) {
+				   	$.messager.alert('信息提示','同意离职日期不能小于签名日期!','warning');
+				   	$("#leaveDate${rand}").datebox("setValue", yy + "-" + (mm<10?'0'+mm:mm) + "-" + (dd<10?'0'+dd:dd));
+				 }  
+		}
+		</script>
+	</#if> 
+</#if>
+<!-- 人力资源部专员确认结果-->
+<#if currentStep?exists>  
+	<#if currentStep == 'humanResouceConfirmTask'>
+		<div id="humanResouceConfirmTask">
+			<form id="humanResouceConfirmTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="humanResouceConfirmTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+						<td colspan="6" class="formtable_td_key" >人力资源专员确认</td>
+					</tr>
+					<tr>
+						<td class="formtable_td_key" rolspan="2">人力资源专员确认：</td>
+						<td class="formtable_td_value" colspan="5">
+							<a id="export_btn-${rand}" href="javascript:void(0);" class="easyui-linkbutton"  data-options="iconCls:'icon-down_load'">导出离职人员信息</a>
+							<span style="font-size: 13pt;  font-family:黑体">请前往  SAP 确认是否修改工资范围&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<!-- <input type="radio" name="fp_humanResouceConfirmAudi" checked="checked"  value="0" />是&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" name="fp_humanResouceConfirmAudi"  value="1" />否&nbsp;&nbsp;&nbsp;&nbsp;
+							<textarea style="width: 600px; height: 50px" name="fp_humanResouceConfirmAdvice" class="formtable_remark"></textarea> -->
+						</td>
+					</tr>			
+					<tr>
+						<td class="formtable_td_key">人力资源专员签字：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  class="easyui-validatebox" type="hidden" name="fp_humanResouceConfirmName"  value="${appuser.name}" />${appuser.name}
+						</td>
+						<td class="formtable_td_key">签字时间：</td>
+						<td class="formtable_td_value"  colspan="2">
+							<input  type="hidden" readonly="readonly" name="fp_humanResouceConfirmTime" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script type="text/javascript">
+		//导出
+		$('#export_btn-${rand}').bind('click', function(){
+			var form = $("<form>");
+		   	form.attr('style', 'display:none');
+		   	form.appendTo($(document.body));
+		    form.form('submit',{url:'export/exportLeaveInfo.html'});
+		    form.remove();
+		});
+		</script>
+	</#if>
+</#if>
+<#include "/common/foot.html">

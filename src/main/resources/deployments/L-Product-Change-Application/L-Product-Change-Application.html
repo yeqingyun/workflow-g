@@ -1,0 +1,689 @@
+<#include "/common/head.html">
+<style>
+ input.hidden-input{
+	 padding:0px;
+	 margin:0px;
+	 width:0px;
+	 height:0px;
+	 border-width:0px;
+	 display: block;
+	 float: left;
+ }
+ div.form_title{
+	 font-size: 15pt;
+	 text-align: center;
+	 font-weight: normal;
+ }
+  div.form_sub_title{
+	 font-size: 14pt;
+	 text-align: center;
+	 font-weight: bold;
+	 padding-top:10px;
+	 padding-bottom: 30px;
+ }
+ td.change_before_td{
+ 	padding-left: 47px;
+ }
+ 
+ td.change_before_td div.td_index{
+	float: left;
+	border-right: #c0c0c0 1px solid;
+	width: 40px;
+	height: 75px;
+	margin: -7px 0px -7px -47px;
+	line-height: 75px;
+	text-align: center;
+	display:table-cell
+ }
+ .des_index{
+ 	margin-right: 15px;
+	margin-left: 10px;
+ }
+</style>
+<#if processSteps??>
+<#list processSteps as steps> 
+<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top:5px">
+	<#if steps.key == 'startevent1'>
+		<div  class="form_title">金 立 通 信 设 备 有 限 公 司</div>
+		<div  class="form_sub_title">产品变更申请表</div>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">内部型号：</td>							
+			<td  class="formtable_td_value" style="width:16%">
+				${steps.vars["internalModel"]}
+			</td>
+			<td class="formtable_td_key" style="width:16%">外部型号：</td>							
+			<td  class="formtable_td_value" style="width:16%">
+				${steps.vars["externalModel"]}
+			</td>
+			<td class="formtable_td_key" style="width:16%">申请日期：</td>							
+			<td  class="formtable_td_value" style="width:16%">
+				${steps.vars["applicationDate"]}
+			</td>
+		</tr>
+		 <tr>
+  	  		<td class="formtable_td_key">变更描述：</td>
+  	  		<td colspan="5">
+  	  			<table class="formtable" cellspacing="1" cellpadding="0" id="changeDescriptionTable${rand}">
+  	  				<tr >
+  	  				    <td class="formtable_td_key" style="width:2%"></td>
+  	  					<td class="formtable_td_key" style="text-align: center;width:49%" >变更前</td>
+  	  					<td class="formtable_td_key" style="text-align: center;width:49%">变更后</td>
+  	  				</tr>
+					<#if proHisVar.vars["changeDescriptionJsonStr"]??>
+ 					<#assign text=proHisVar.vars["changeDescriptionJsonStr"] />
+					<#assign json=text?eval />
+					<#list json as item>
+  	  				<tr>
+  	  					<td class="formtable_td_value"><span class="des_index">${item_index+1}</span></td>
+  						<#assign beforeChanged=item.beforeChanged />
+  	  					<td class="formtable_td_value">${beforeChanged?replace('\\r\\n','<br/>','r')}</td>
+  						<#assign afterChanged=item.afterChanged />
+  	  					<td class="formtable_td_value">${afterChanged?replace('\\r\\n','<br/>','r')}</td>
+  	  				</tr>
+  	  				</#list>
+  	  				</#if>
+  	  			</table>
+  	  		</td>	
+  	  	</tr>
+  	  	<tr>
+  	  		<td class="formtable_td_key" style="width:16%">变更原因：</td>
+  			<#assign changeReason=proHisVar.vars["changeReason"] />	
+  	  		<td class="formtable_td_value" colspan="5">${changeReason?replace('\\r\\n','<br/>','r')}</td>
+  	  	</tr>
+  	  	<tr>
+ 	  			<td class="formtable_td_key" style="width:16%">产品经理：</td>							
+			<td  class="formtable_td_value" colspan="2">
+				${steps.vars["productManager"]}
+			</td>
+			<td class="formtable_td_key" style="width:16%">日期：</td>							
+			<td  class="formtable_td_value" colspan="2">
+				${steps.vars["productManagerSignTime"]}
+			</td>
+  	  	</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+	<#if steps.key == 'mb_LPDTAudiTask'>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">LPDT 意见：</td>
+			<#assign LPDTAudiAdvice=proHisVar.vars["LPDTAudiAdvice"] />
+			<td class="formtable_td_value" colspan="5" style="width:80%">${LPDTAudiAdvice?replace('\\r\\n','<br/>','r')}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">签名：</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["LPDTSignature"]}</td>
+			<td class="formtable_td_key" style="width:16%">日期</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["LPDTSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+	<#if steps.key == 'mb_SLPDTAudiTask'>
+				<tr>
+			<td class="formtable_td_key" style="width:16%">SLPDT 意见：</td>
+			<#assign SLPDTAudiAdvice=proHisVar.vars["SLPDTAudiAdvice"] />
+			<td class="formtable_td_value"  colspan="5" style="width:80%">${SLPDTAudiAdvice?replace('\\r\\n','<br/>','r')}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">签名：</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["SLPDTSignature"]}</td>
+			<td class="formtable_td_key" style="width:16%">日期</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["SLPDTSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+	<#if steps.key == 'mb_UEDAudiTask'>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">UED 意见：</td>
+			<#assign UEDAudiAdvice=proHisVar.vars["UEDAudiAdvice"] />
+			<td class="formtable_td_value"  colspan="5" style="width:80%">${UEDAudiAdvice?replace('\\r\\n','<br/>','r')}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">签名：</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["UEDSignature"]}</td>
+			<td class="formtable_td_key">日期</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["UEDSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+	<#if steps.key == 'mb_qualityAudiTask'>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">品质意见：</td>
+			<#assign qualityAudiAdvice=proHisVar.vars["qualityAudiAdvice"] />
+			<td class="formtable_td_value"  colspan="5" style="width:80%">${qualityAudiAdvice?replace('\\r\\n','<br/>','r')}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">签名：</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["qualitySignature"]}</td>
+			<td class="formtable_td_key" style="width:16%">日期</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["qualitySignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+	<#if steps.key == 'mb_chairmanAudiTask'>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">董事长意见：</td>
+			<td class="formtable_td_value" colspan="5" style="width:80%;">
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 0>checked="checked"</#if> />同意更改
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 1>checked="checked"</#if> />不同意更改
+				<input disabled="disabled" style="margin-left:3em" type="checkbox" <#if steps.vars["chairmanAudi"] == 2>checked="checked"</#if> />其他
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">备注：</td>
+			<#assign chairmanRemark=proHisVar.vars["chairmanRemark"] />
+			<td class="formtable_td_value"  colspan="5" style="width:80%">${chairmanRemark?replace('\\r\\n','<br/>','r')}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" style="width:16%">签名：</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["chairmanSignature"]}</td>
+			<td class="formtable_td_key" style="width:16%">日期</td>
+			<td class="formtable_td_value" colspan="2" style="width:32%">${steps.vars["chairmanSignatureTime"]}</td>
+		</tr>
+		<#if steps.attachments??>
+		<tr>
+			<td class="formtable_td_key">附件：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#list steps.attachments as attachs> 
+			<a href="${attachs.url}">${attachs.name}_${attachs.revision}.0 </a><br />
+			</#list>
+			</td>
+		</tr>
+		</#if>
+	</#if>
+</table>
+</#list>
+</#if>
+<#if currentStep?exists>
+	<!-- 开始表单 -->
+	<#if currentStep == 'startevent1'>
+	<div id="start">
+		<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input type="text" name="fp_startAccount"  value="${appuser.account}" class="easyui-validatebox hidden-input" missingMessage="发起人账号不能为空，请重新登录" data-options="required:true"  readonly="readonly"/>
+			<input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" />
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  			<td class="formtable_td_key" style="width:16%">内部型号：</td>							
+						<td  class="formtable_td_value" style="width:16%">
+							<input id="internalModel${rand}" name="fp_internalModel" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key" style="width:16%">外部型号：</td>							
+						<td  class="formtable_td_value" style="width:16%">
+							<input name="fp_externalModel" class="easyui-validatebox"  required="required" type="text" />
+						</td>
+						<td class="formtable_td_key" style="width:16%">申请日期：</td>							
+						<td  class="formtable_td_value" style="width:16%">${.now?string('yyyy-MM-dd')}
+							<input type="text" name="fp_applicationDate" class="easyui-validatebox hidden-input" value="${.now?string('yyyy-MM-dd')}" missingMessage="申请时间不能为空，请重新登录" data-options="required:true" readonly="readonly"/>
+						</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">变更描述：</td>
+		  	  		<td colspan="5">
+		  	  			<table class="formtable" cellspacing="1" cellpadding="0" id="changeDescriptionTable${rand}">
+			  	  			<input type="text" id="changeDescriptionJsonStr${rand}" name="fp_changeDescriptionJsonStr" style="position: relative;top:22px" value='' class="easyui-validatebox hidden-input" missingMessage="变更描述表格不能为空" data-options="required:true" readonly="readonly" />
+		  	  				<tr >
+		  	  				    <td class="formtable_td_key" style="width:10%"><a id="addButton${rand}" class="easyui-linkbutton" iconCls="icon-add" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;">添加</a></td>
+		  	  					<td class="formtable_td_key" style="text-align: center;width:45%" >变更前</td>
+		  	  					<td class="formtable_td_key" style="text-align: center;width:45%">变更后</td>
+		  	  				</tr>
+		  	  				<tr class="description">
+		  	  					<td class="formtable_td_value"><span class="des_index">1</span><a class="easyui-linkbutton" name="remove" iconCls="icon-remove" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;"></a></td>
+		  	  					<td class="formtable_td_value">
+		  	  						<textarea style="width: 98%" class="easyui-validatebox" data-options="required:true" name="beforeChangedDescription" ></textarea>
+		  	  					</td>
+		  	  					<td class="formtable_td_value">
+		  	  						<textarea style="width: 98%" class="easyui-validatebox" data-options="required:true"  name="afterChangedDescription" ></textarea>
+		  	  					</td>
+		  	  				</tr>
+		  	  			</table>
+		  	  		</td>	
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">变更原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_changeReason"  class="easyui-validatebox" data-options="required:true" style="width: 98%"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" rowspan="3">意见负责人：</td>
+		  	  		<td class="formtable_td_key">LPDT意见负责人：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+  	  					<input id="LPDTAssignerAccount${rand}" name="fp_LPDTAssignerAccount" type="text" class="easyui-validatebox hidden-input" data-options="required:true" readonly="readonly"/>
+  	  					<input id="LPDTAssignerName${rand}" name="fp_LPDTAssignerName" type="text"  class="easyui-validatebox" data-options="required:true"  readonly="readonly"/>
+  	  					<a id="addLPDTButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key" >SLPDT意见负责人：</td>
+		  	  		<td colspan="4" class="formtable_td_value">
+  	  				  	<input id="SLPDTAssignerAccount${rand}" name="fp_SLPDTAssignerAccount" type="text" class="easyui-validatebox hidden-input" data-options="required:true"  readonly="readonly"/>
+  	  					<input id="SLPDTAssignerName${rand}" name="fp_SLPDTAssignerName" type="text"  class="easyui-validatebox" data-options="required:true"  readonly="readonly"/>
+  	  					<a id="addSLPDTButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">UED意见负责人：</td>
+		  	  		<td colspan="4" class="formtable_td_value">
+			  	  		<input id="UEDAssignerAccount${rand}" name="fp_UEDAssignerAccount" type="text" class="easyui-validatebox hidden-input" data-options="required:true"  readonly="readonly"/>
+	  					<input id="UEDAssignerName${rand}" name="fp_UEDAssignerName" type="text"  class="easyui-validatebox" data-options="required:true" readonly="readonly"/>
+	  					<a id="addUEDButton${rand}" class="easyui-linkbutton" iconCls="icon-search" data-options="plain:true">选择</a>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+	  	  			<td class="formtable_td_key">产品经理：</td>							
+					<td  class="formtable_td_value" colspan="2">${appuser.name}
+						<input name="fp_productManager" class="easyui-validatebox hidden-input" value="${appuser.name}" missingMessage="产品经理不能为空，请重新登录" data-options="required:true" readonly="readonly" >
+					</td>
+					<td class="formtable_td_key">日期：</td>							
+					<td  class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+						<input name="fp_productManagerSignTime"  class="easyui-validatebox hidden-input" missingMessage="日期不能为空，请重新登录" data-options="required:true" readonly="readonly"  value="${.now?string('yyyy-MM-dd')}"/>
+					</td>
+		  	  	</tr>
+		  	  </table>
+	  	 </form>
+	  	 <!-- 选择意见负责人 -->
+		 <div id="orgWin-${rand}" class="easyui-dialog" title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px" data-options="modal:true,closed:true,iconCls:'icon-process'">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-process',title:'组织机构',border:true,split:true,minHeight:200,width:300"
+					style="padding: 5px 0px 5px 0px">
+					<ul id="orgs${rand}" />
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 0px 0px 0px 0px;">
+					<div id="userGridToolBar${rand}" style="padding:2px 5px;">
+						员工账号: <input id="userAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="searchName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="userGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="users${rand}"></table>
+				</div>
+			</div>
+		 </div>
+	  	 <script type="text/javascript">
+	  		$(function(){
+	  			var orgWin = $('#orgWin-${rand}');
+	  			var orgs = $('#orgs${rand}');
+	  			var users = $('#users${rand}');
+	  			bindDomEvent();
+	  			function bindDomEvent(){
+		  			$("textarea[name='beforeChangedDescription']").on("blur",function(){
+			  			var descriptionTable = $("#changeDescriptionTable${rand}");
+		  				var beforeChangedDescription = $(this).val();
+		  				var changeDescriptionJsonStr = $("#changeDescriptionJsonStr${rand}").val();
+		  				if(changeDescriptionJsonStr == ""){
+		  					changeDescriptionJsonStr = JSON.stringify([]);
+		  				}
+		  				var changeDescriptionJson = $.parseJSON(changeDescriptionJsonStr);
+		  				var index = descriptionTable.find(".description").index($(this).parent().parent());
+		  				if(changeDescriptionJson[index]){
+		  					changeDescriptionJson[index].beforeChanged = beforeChangedDescription;
+		  				}else{
+		  					var changeDes = {};
+		  					changeDes.beforeChanged = beforeChangedDescription;
+		  					changeDescriptionJson.push(changeDes);
+		  				}
+		  				changeDescriptionJsonStr = JSON.stringify(changeDescriptionJson);
+		  				$("#changeDescriptionJsonStr${rand}").val(changeDescriptionJsonStr);
+		  			});
+		  			$("textarea[name='afterChangedDescription']").on("blur",function(){
+		  				var descriptionTable = $("#changeDescriptionTable${rand}");
+		  				var afterChangedDescription = $(this).val();
+		  				
+		  				var changeDescriptionJsonStr = $("#changeDescriptionJsonStr${rand}").val();
+		  				if(changeDescriptionJsonStr == ""){
+		  					changeDescriptionJsonStr = JSON.stringify([]);
+		  				}
+		  				var changeDescriptionJson = $.parseJSON(changeDescriptionJsonStr);
+		  				var index = descriptionTable.find(".description").index($(this).parent().parent());
+		  				if(changeDescriptionJson[index]){
+		  					changeDescriptionJson[index].afterChanged = afterChangedDescription;
+		  				}else{
+		  					var changeDes = {};
+		  					changeDes.afterChanged = afterChangedDescription;
+		  					changeDescriptionJson.push(changeDes);
+		  				}
+		  				changeDescriptionJsonStr = JSON.stringify(changeDescriptionJson);
+		  				$("#changeDescriptionJsonStr${rand}").val(changeDescriptionJsonStr);
+		  			});
+		  			
+		  			$("a[name='remove']").on("click",function(){
+		  				var count = $(this).parent().parent().parent().find(".des_index").length;
+		  				if(count==1){
+		  					$.messager.alert('提示','变更描述的记录不能少于一条','warning');
+		  					return ;
+		  				}
+		  				var descriptionTable = $("#changeDescriptionTable${rand}");
+		  				//获取其点击的行的索引
+		  				var index = descriptionTable.find("a[name='remove']").index($(this));
+		  				//获取目前的JSON数据
+		  				var changeDescriptionJsonStr = $("#changeDescriptionJsonStr${rand}").val();
+		  				if(changeDescriptionJsonStr == ""){
+		  					changeDescriptionJsonStr = JSON.stringify([]);
+		  				}
+		  				var changeDescriptionJson = $.parseJSON(changeDescriptionJsonStr);
+		  				changeDescriptionJson.splice(index,1);
+		  				changeDescriptionJsonStr = JSON.stringify(changeDescriptionJson);
+		  				//对JSON字符串重新赋值
+		  				if(changeDescriptionJsonStr == "[]"){
+		  					$("#changeDescriptionJsonStr${rand}").val("");
+		  				}else{
+		  					$("#changeDescriptionJsonStr${rand}").val(changeDescriptionJsonStr);
+		  				}
+		  				//删除所在的行
+		  				$(this).parent().parent().remove();
+		  				descriptionTable = $("#changeDescriptionTable${rand}");
+		  				//重新渲染索引
+		  				descriptionTable.find(".des_index").each(function(i){
+		  					$(this).text(i+1);
+		  				})
+		  			})
+	  			}
+	  			//内部型号焦点事件
+	  			$("#internalModel${rand}").on("blur",function(){
+	  				$("#processName${rand}").val($(this).val()+"产品变更申请")
+	  			})
+	  			//添加变更事件
+	  			$("#addButton${rand}").on("click",function(){
+	  				var descriptionTable = $("#changeDescriptionTable${rand}");
+	  				$("textarea[name='beforeChangedDescription']").off();
+	  				$("textarea[name='afterChangedDescription']").off();
+	  				$("a[name='remove'").off();
+					var length = descriptionTable.find("textarea[name='beforeChangedDescription']").length;
+	  				var tr =  '<tr class="description">'+
+				  					'<td class="formtable_td_value"><span class="des_index">'+(parseInt(length)+1)+'</span><a class="easyui-linkbutton" name="remove" iconCls="icon-remove" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;"></a></td>'+
+				  					'<td class="formtable_td_value">'+
+				  						'<textarea style="width: 98%" class="easyui-validatebox" data-options="required:true" name="beforeChangedDescription" ></textarea>'+
+				  					'</td>'+
+				  					'<td class="formtable_td_value">'+
+				  						'<textarea style="width: 98%" class="easyui-validatebox" data-options="required:true"  name="afterChangedDescription" ></textarea>'+
+				  					'</td>'+
+				  				'</tr>';
+	  				descriptionTable.append(tr);
+	  				bindDomEvent();
+	  				$.parser.parse('#changeDescriptionTable${rand}'); 
+	  			});
+	  			//意见负责人选择事件
+	  			$("#addLPDTButton${rand}").on("click",function(){
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("LPDT"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				})
+  				//意见负责人选择事件
+  				$("#addSLPDTButton${rand}").on("click",function(){
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("SLPDT"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				})
+	  			//意见负责人选择事件
+  				$("#addUEDButton${rand}").on("click",function(){
+	  		    	 orgWin.dialog({
+	  		    		 buttons:[{text:'完成', iconCls:'icon-ok',handler: function(){selectUserEnd("UED"); }},{text:'关闭',iconCls:'icon-cancel',handler: closeSelectUserWin}]
+	  		    	 });
+	  		    	 orgWin.dialog('open');
+  				})
+	  			
+	  		//初始化负责人选择窗口中的组织架构树
+	  			orgs.tree({
+	  			    url: 'hrFlow/auth/orgs.json',
+	  			    method:'get',
+	  			    required:true,
+	  			    lines:true,
+	  				panelWidth:300,
+	  				panelHeight:280,
+	  		        onClick:function(node){
+	  		        		$.post("hrFlow/isThirdAndLeaf.json",{
+	  		        			orgId:node.id
+	  		        		},function(data){
+	  		        			if(data.success){
+	  		        				$('#users${rand}').datagrid('reload',{id:node.id});
+	  		        			}
+	  		        		});
+	  				}
+	  			});
+	  		    //初始化负责人选择窗口中的人员列表 
+	  		     $('#users${rand}').datagrid({
+	  					  fit:true,
+	  					  fitColumns:false,
+	  					  url:'bpmRole/users.json',
+	  					  queryParams:{
+	  							id:"${appuser.orgId}".replace(/,/,"")
+	  						},
+	  					  columns:[[
+	  						{field:'id',checkbox:true},
+	  						{field:'account',title:'帐号',width:100},
+	  						{field:'name',title:'姓名',width:100},
+	  						{field:'orgName',title:'部门',width:100}
+	  					  ]],
+	  					  border:false,
+	  					  nowrap: true,
+	  					  pagination:false,
+	  					  pageNumber:1,
+	  					  pageSize:20,
+	  					  fit : true,
+	  					  singleSelect:true,
+	  					  rownumbers:true,
+	  			});
+	  		    //查询用户
+	  			$('#userGridSearchBtn${rand}').bind('click', function(){
+	  				var userAccount = $('#userAccount${rand}').val();
+	  				var userName = $('#searchName${rand}').val();
+	  				if(!userAccount && !userName){
+	  					$.messager.alert('提示','请输入信息','warning');
+	  					return;
+	  				}
+	  				$('#users${rand}').datagrid('reload',
+	  					{
+	  						userAccount:userAccount,
+	  						userName:userName
+	  					});
+	  		         $("#users${rand}").datagrid({ singleSelect: false });
+	  			});
+	  		   //选择用户完成事件
+	  		    function selectUserEnd(assigner){
+	  			   var row = $('#users${rand}').datagrid('getSelected');
+	  				if (row) {
+	  					console.log(assigner+"AssignerAccount${rand}")
+	  				    $("#"+assigner+"AssignerAccount${rand}").val(row.account);
+	  				    $("#"+assigner+"AssignerName${rand}").val(row.name);
+	  				    orgWin.dialog('close');	
+	  				} else {
+	  					$.messager.alert('信息提示','请从人员列表中选择一位人员!','warning');
+	  				}
+	  		  	 }
+	  		   //关闭组织架构窗口
+	  		   function  closeSelectUserWin(){
+	  		   	 	orgWin.dialog('close');	
+	  		  	}
+	  		})
+	  	 </script>
+	</#if>
+	<#if currentStep == 'mb_LPDTAudiTask'>
+		<div id="mb_LPDTAudiTask">
+			<form id="mb_LPDTAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_LPDTAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td class="formtable_td_key" >LPDT意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="LPDTAudiAdvice${rand}" name="fp_LPDTAudiAdvice"  required="required" mobile="LPDT意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden" name="fp_LPDTSignature"  value="${appuser.name}"  mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_LPDTSignatureTime" value="${.now?string('yyyy-MM-dd')}"  mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_SLPDTAudiTask'>
+		<div id="mb_SLPDTAudiTask">
+			<form id="mb_SLPDTAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_SLPDTAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td class="formtable_td_key" >SLPDT 意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="SLPDTAudiAdvice${rand}" name="fp_SLPDTAudiAdvice"  required="required"  mobile="SLPDT 意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden"  name="fp_SLPDTSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_SLPDTSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_UEDAudiTask'>
+		<div id="mb_UEDAudiTask">
+			<form id="mb_UEDAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_UEDAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td class="formtable_td_key">UED 意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="UEDAudiAdvice${rand}" name="fp_UEDAudiAdvice"   required="required"  mobile="UED 意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden"name="fp_UEDSignature"  value="${appuser.name}" mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_UEDSignatureTime" value="${.now?string('yyyy-MM-dd')}" mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_qualityAudiTask'>
+		<div id="mb_qualityAudiTask">
+			<form id="mb_qualityAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="mb_qualityAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td class="formtable_td_key" >品质意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="qualityAudiAdvice${rand}" name="fp_qualityAudiAdvice"  required="required"  mobile="品质意见"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2">${appuser.name}
+							<input  type="hidden"  name="fp_qualitySignature"  value="${appuser.name}"  mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden"  name="fp_qualitySignatureTime" value="${.now?string('yyyy-MM-dd')}"  mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</#if>
+	<#if currentStep == 'mb_chairmanAudiTask'>
+		<div id="chairmanAudiTask">
+			<form id="chairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+				<table id="chairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+					<tr>
+			  	  		<td class="formtable_td_key" >董事长意见：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+							<input type="radio"  checked="checked" name="fp_chairmanAudi" value="0" mobile="同意更改" />同意更改
+							<input type="radio" name="fp_chairmanAudi"  value="1" mobile="不同意更改" />不同意更改
+							<input type="radio" name="fp_chairmanAudi"  value="2" mobile="其他" />其他			  	  	
+						</td>
+			  	  	</tr>
+			  	  	<tr>
+			  	  		<td class="formtable_td_key">备注：</td>
+			  	  		<td class="formtable_td_value" colspan="5">
+			  	  			<textarea  class="easyui-validatebox formtable_remark" id="chairmanRemark${rand}"  name="fp_chairmanRemark"  mobile="备注" makethis_required_field_name="fp_chairmanAudi" makethis_required_field_values="1"></textarea>
+			  	  		</td>
+			  	  	</tr>
+			  	  	<tr>
+						<td class="formtable_td_key" >签字：</td>
+						<td class="formtable_td_value" colspan="2"><#if appuser.name>刘立荣</#if>
+							<input  type="hidden" name="fp_chairmanSignature"  value="<#if appuser.name>刘立荣</#if>"  mobile="签字"/>
+						</td>
+						<td class="formtable_td_key">日期：</td>
+					  	<td class="formtable_td_value" colspan="2">${.now?string('yyyy-MM-dd')}
+					  		<input  type="hidden" name="fp_chairmanSignatureTime" value="${.now?string('yyyy-MM-dd')}"  mobile="日期"/>
+					  	</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name='fp_chairmanAudi']").on("change",function(){
+					$("input[name='fp_chairmanAudi']").each(function(){
+						if(this.checked){
+							var audi = this.value;
+							if(audi == "0"){
+								$("#chairmanRemark${rand}").validatebox({required:false});
+							}else{
+								$("#chairmanRemark${rand}").validatebox({required:true});
+							}
+						}
+					})
+				})
+			})
+		</script>
+	</#if>
+</#if>
+<#include "/common/foot.html">

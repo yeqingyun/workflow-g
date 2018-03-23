@@ -1,0 +1,371 @@
+<#include "/common/head.html">
+<!-- 展示表单  -->
+<#if processSteps??>
+	<table class="formtable" cellspacing="1" cellpadding="0">
+	<#list processSteps as steps>
+	   <#if steps.key == 'startevent1'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">开发申请表</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >开发需求描述：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["applyContent"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">申请人：</td>
+				<td class="formtable_td_value" >${steps.vars["curUserName"]}</td>
+				<td class="formtable_td_key">申请时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["applyDate"]}</td>
+			</tr>		 
+					 
+					 
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>
+	   </#if>
+	   <!-- ABAP组长审核 -->
+	   <#if steps.key == 'ABAPDevelopLeaderAudiTask'>
+	   		<tr>
+				<td colspan="6" class="formtable_td_key" align="center">ABAP组长审核</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >审核结果：</td>
+				<td class="formtable_td_value" colspan="5">
+					<#if steps.vars["developeLeaderAudi"] == '0'>同意</#if>
+					<#if steps.vars["developeLeaderAudi"] == '1'>不同意</#if>
+				</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >备注：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["developeLeaderAudiAdvice"]!""}</td>
+			</tr>
+			
+			<tr>
+				<td class="formtable_td_key">组长签名：</td>
+				<td class="formtable_td_value" >${steps.vars["developeLeaderAudiName"]}</td>
+				<td class="formtable_td_key">签名时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["developeLeaderAudiTime"]}</td>
+			</tr>
+			  <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- ABAP开发 -->
+	   <#if steps.key == 'ABAPDeveloperAudiTask'>
+			<tr>
+				<td colspan="6" class="formtable_td_key" align="center">ABAP开发人员意见</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >解决方案：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["developerAudiAdvice"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">开发人员签字：</td>
+				<td class="formtable_td_value" >${steps.vars["developerAudiName"]}</td>
+				<td class="formtable_td_key">签字时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["developerAudiTime"]}</td>
+			</tr>
+			<#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	   <!-- 模组顾问测试 -->
+	   <#if steps.key == 'AdviserTestAudiTask'>
+		  	 <tr>
+				<td colspan="6" class="formtable_td_key" align="center">模组顾问测试结果</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key" >模组顾问测试结果：</td>
+				<td class="formtable_td_value" colspan="5">${steps.vars["adviserTestAudiAdvice"]!""}</td>
+			</tr>
+			<tr>
+				<td class="formtable_td_key">测试人员签字：</td>
+				<td class="formtable_td_value" >${steps.vars["adviserTestAudiName"]}</td>
+				<td class="formtable_td_key">签字时间：</td>
+				<td class="formtable_td_value" colspan="3">${steps.vars["adviserTestAudiTime"]}</td>
+			</tr> 
+		  	   <#if steps.attachments??>
+				<tr>
+					<td class="formtable_td_key">附件：</td>
+						<td class="formtable_td_value" colspan="3">
+							<#list steps.attachments as attachs>
+								<a href="${attachs.url}">
+					  	 			${attachs.name}_${attachs.revision}.0
+								</a><br/>
+							</#list>
+					</td>
+				</tr>
+			</#if>	  	
+	   </#if>
+	</#list>
+	</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0" style="table-layout: fixed;">
+ 		  	  	<tr>
+		  	  		<td colspan="6" class="formtable_td_key" align="center">开发申请表</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">开发需求描述：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_applyContent" style="width: 750px; height: 150px" class="formtable_remark easyui-validatebox" data-options="required:true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<td class="formtable_td_key">申请人：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_curUserName" value="${appuser.name}"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">申请时间：</td>
+		  	  		<td class="formtable_td_value" colspan="2">
+		  	  			<input type="hidden" name="fp_applyDate"
+									value="${.now?string('yyyy-MM-dd HH:mm:ss')}" />
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- ABAP组长审核 -->
+<#if currentStep?exists>
+	<#if currentStep == 'ABAPDevelopLeaderAudiTask'>
+		<div id="ABAPDevelopLeaderAudiTask">
+		  <form id="ABAPDevelopLeaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="ABAPDevelopLeaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">ABAP组长审核</td>
+				</tr>
+				<tr id="checekResult${rand}">
+						<td class="formtable_td_key" >审批结果：</td>
+						<td class="formtable_td_value" colspan="5" >
+							<input id="checkResult0${rand}" type="radio" name="fp_developeLeaderAudi" checked="checked" value="0" mobile="处理结果_同意"/>同意&nbsp;&nbsp;
+							<input id="checkResult1${rand}" type="radio" name="fp_developeLeaderAudi" value="1" mobile="处理结果_不同意"/>不同意
+						</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >备注：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_developeLeaderAudiAdvice" class="formtable_remark" mobile="备注"></textarea>
+						</td>
+				</tr>
+				<tr id="developer${rand}">
+		  	        <td class="formtable_td_key">ABAP开发工程师：</td>
+				  	<td class="formtable_td_value" colspan="7">
+				  		 <input id="accepterTrainner${rand}" type="hidden" value="" name="fp_developAssignee" style="width:80px"/>
+				  		 <input id="accepterNameTrainner${rand}" class="easyui-validatebox" name="fp_accepterNameTrainner" data-options="required:true"     readonly="readonly" selectUserUrl="bpmRole/users.json"   nextAssigneeAttrName="fp_developAssignee"    mobile="ABAP开发工程师"   relateFieldName="fp_developeLeaderAudi"   relateShowFieldValue="0"   relateHideFieldValue="1"   relateFieldisRequired="true" />
+				  		 <a id="openOrgWinTrainnerBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-search'" mobile="选择">选择</a>
+				  	</td>
+		  	  	</tr>
+				<tr>
+					<td class="formtable_td_key">组长签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_developeLeaderAudiName"  value="${appuser.name}"  mobile="组长签名"/>
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_developeLeaderAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"  mobile="签名时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>
+		  	  </table>
+			</form>
+		</div>
+			<!--  选择ABAP开发人员-->
+<div id="orgWinTrainner-${rand}" class="easyui-dialog" title="组织结构包含的用户"
+	style="width: 800px; height: 450px; padding: 5px"
+	data-options="modal:true, closed:true,iconCls:'icon-process',
+				buttons: [{
+		                  text:'完成',
+		                  iconCls:'icon-ok',
+		                  handler: selectUserTrainnerEnd
+		              },{
+		                  text:'关闭',
+		                  iconCls:'icon-cancel',
+		                  handler: closeSelectUserTrainnerWin
+		              }]">
+	<div class="easyui-layout" data-options="fit:true">
+		<div
+			data-options="region:'center',iconCls:'icon-task',title:'可选列表',border:true,split:true"
+			style="padding: 0px 0px 0px 0px;">
+			<table id="usersTrainner${rand}"></table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">	
+
+
+//选择测试人员
+//弹出选择选择测试人员窗口
+$('#openOrgWinTrainnerBtn${rand}').bind('click', function(){
+	$('#orgWinTrainner-${rand}').dialog('open');	
+});
+
+//init org win
+$(function(){
+
+	$("#checkResult0${rand}").bind("click",function(){
+		$("#developer${rand}").show();
+		$("#accepterNameTrainner${rand}").validatebox({required:true});
+	});
+	var f=function(){
+		$("#developer${rand}").hide();
+		$("#accepterNameTrainner${rand}").validatebox({required:false});
+	};
+	$("#checkResult1${rand}").bind("click",f);
+	
+   //init UserGrid 
+     $('#usersTrainner${rand}').datagrid({
+	  fit:true,
+	  fitColumns:false,
+	  url:'bpmRole/users.json',
+	  queryParams:{
+			id:57682
+		},
+	  columns:[[
+		{field:'id',checkbox:true},
+		{field:'account',title:'帐号',width:100},
+		{field:'name',title:'姓名',width:100},
+		{field:'orgName',title:'部门',width:100}
+	  ]],
+	  border:false,
+	  nowrap: true,
+	  pagination:false,
+	  pageNumber:1,
+	  pageSize:20,
+	  fit : true,
+	  singleSelect:true,
+	  rownumbers:true
+	 
+	});
+	//init UserGrid 
+	  
+});
+
+//选择用户完成事件
+function selectUserTrainnerEnd(){
+	var row = $('#usersTrainner${rand}').datagrid('getSelected');
+	if (row) {
+	    $('#accepterTrainner${rand}').val(row.account);
+	    $('#accepterNameTrainner${rand}').val(row.name);
+	       		
+	    $('#accepterNameTrainner${rand}').validatebox('validate');
+	       		
+	    $('#orgWinTrainner-${rand}').dialog('close');	
+	} else {
+		$.messager.alert('信息提示','请从人员列表中选择一条记录!','warning');
+	}
+}
+	   
+function  closeSelectUserTrainnerWin(){
+	$('#orgWinTrainner-${rand}').dialog('close');	
+}
+
+</script>	
+	</#if>
+</#if>
+
+<!-- ABAP开发 -->
+<#if currentStep?exists>
+	<#if currentStep == 'ABAPDeveloperAudiTask'>
+		<div id="ABAPDeveloperAudiTask">
+		  <form id="ABAPDeveloperAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="ABAPDeveloperAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	 	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">ABAP开发人员意见</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >解决方案：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_developerAudiAdvice" class="formtable_remark"  mobile="解决方案"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">开发人员签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_developerAudiName"  value="${appuser.name}" mobile="开发人员签名"/>
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_developerAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签名时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>	
+		  	 	
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+
+<!-- 模组顾问测试 -->
+<#if currentStep?exists>
+	<#if currentStep == 'AdviserTestAudiTask'>
+		<div id="AdviserTestAudiTask">
+			<form id="AdviserTestAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="AdviserTestAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+						<td colspan="6" class="formtable_td_key" align="center">模组顾问测试结果</td>
+				</tr>
+				<tr>
+						<td class="formtable_td_key" >测试结果：</td>
+						<td class="formtable_td_value" colspan="5">
+							<textarea style="width: 700px; height: 80px" name="fp_adviserTestAudiAdvice" class="formtable_remark" mobile="测试结果"></textarea>
+						</td>
+				</tr>
+				<tr>
+					<td class="formtable_td_key">测试人员签名：</td>
+					<td class="formtable_td_value" >
+							<input  class="easyui-validatebox" type="hidden" name="fp_adviserTestAudiName"  value="${appuser.name}" mobile="测试人员签名"/>
+							${appuser.name}
+					</td>
+					<td class="formtable_td_key">签名时间：</td>
+					<td class="formtable_td_value"  colspan="2">
+							<input   type="hidden" name="fp_adviserTestAudiTime" readonly="readonly" data-options="required:true" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="签名时间"/>
+							${.now?string('yyyy-MM-dd HH:mm:ss')}
+					</td>
+				</tr>	
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+  
+<#include "/common/foot.html">

@@ -1,0 +1,436 @@
+<#include "/common/head.html">
+<#assign isStart = false>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<table class="formtable" cellspacing="1" cellpadding="0">
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+        <tr>
+			<td style="font-size:20px;height:30px;" align="center" class="formtable_td_key" colspan="11">机票申请表</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key" >申请人：</td>
+			<td class="formtable_td_value">${steps.vars["applyUserName"]}</td>
+			<td class="formtable_td_key" >申请日期：</td>
+			<td class="formtable_td_value">${steps.vars["applyDate"]}</td>
+			<td class="formtable_td_key">申请部门：</td>
+			<td class="formtable_td_value">${steps.vars["applyOrgName"]}</td>
+		</tr>
+				<tr>
+			<td class="formtable_td_key" >金额：</td>
+			<td class="formtable_td_value">${steps.vars["amount"]}</td>
+			<td class="formtable_td_key" >折扣：</td>
+			<td class="formtable_td_value">${steps.vars["discount"]}</td>
+			<td class="formtable_td_key">折后金额：</td>
+			<td class="formtable_td_value">${steps.vars["discountedAmount"]}</td>
+		</tr>
+						<tr>
+			<td class="formtable_td_key" >出发时间：</td>
+			<td class="formtable_td_value">${steps.vars["departureTime"]}</td>
+			<td class="formtable_td_key" >出发地：</td>
+			<td class="formtable_td_value">${steps.vars["departurePlace"]}</td>
+			<td class="formtable_td_key">目的地：</td>
+			<td class="formtable_td_value">${steps.vars["destinationPlace"]}</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">申请原因：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["applicationReasons"]}</td>
+		</tr>
+				<tr>
+			<td class="formtable_td_key">备注：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["remark"]}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+	</#if>
+	<!--主管副总裁审核 -->
+	<#if steps.key =='at_deputygeneralAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">主管副总裁审批意见</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">处理结果：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["deputygeneralAudi"] == '0'>同意</#if>
+			<#if steps.vars["deputygeneralAudi"] == '1'>不同意</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">处理意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["deputygeneralAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+		<tr>
+			<td class="formtable_td_key" > 主管副总裁签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["deputygeneralName"]}</td>
+			<td class="formtable_td_key" >签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["deputygeneralSignDate"]}</td>
+		</tr>
+	</#if> 
+	<!--董事长审核 -->
+	<#if steps.key =='at_chairmanAudiTask'>
+		<tr>
+			<td colspan="6" class="formtable_td_key" align="center">董事长审批意见</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">处理结果：</td>
+			<td class="formtable_td_value" colspan="5">
+			<#if steps.vars["chairmanAudi"] == '0'>同意</#if>
+			<#if steps.vars["chairmanAudi"] == '1'>不同意</#if>
+			</td>
+		</tr>
+		<tr>
+			<td class="formtable_td_key">处理意见：</td>
+			<td class="formtable_td_value" colspan="5">${steps.vars["chairmanAudiAdvice"]!""}</td>
+		</tr>
+		<#if steps.attachments??>
+			<tr>
+				<td class="formtable_td_key">附件：</td>
+				<td class="formtable_td_value" colspan="5"><#list
+					steps.attachments as attachs> <a href="${attachs.url}">
+						${attachs.name}_${attachs.revision}.0 </a><br /> </#list>
+				</td>
+			</tr>
+		</#if>
+		<tr>
+			<td class="formtable_td_key" > 董事长签字：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["chairmanName"]}</td>
+			<td class="formtable_td_key" >签字时间：</td>
+			<td class="formtable_td_value" colspan="2">${steps.vars["chairmanSignDate"]}</td>
+		</tr>
+	</#if> 
+</#list>
+</table>
+</#if>
+<!-- 表单开始 -->
+<#if currentStep?exists>
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+			<input type="hidden" id="fp_managerType${rand}" name="fp_managerType" value="0"/>
+			 <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" />
+		  	  <input type="text" id="fp_idCard${rand}" name="fp_idCard" class="easyui-validatebox" validType="idCard"  missingMessage="员工信息无效！"   data-options="required:true"  style="width: 0px;height: 0px;margin: 0px;padding: 0px;border: 0px;"/>
+		  	  <table id="startFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	        <td class="formtable_td_key">申请人：</td>
+		  	        <td class="formtable_td_value">
+		  	        	<input  type="hidden" name="fp_applyUserId" value="${appuser.account}"/>
+		  	        	<input  type="hidden" name="fp_applyUserName" value="${appuser.name}"/>
+		  	        	${appuser.name}
+	  	        	</td>
+		  	        <td class="formtable_td_key">申请日期：</td>
+				  	<td class="formtable_td_value">
+		  	  			<input type="hidden"  name="fp_applyDate" value="${.now?string('yyyy-MM-dd')}" />
+						${.now?string('yyyy-MM-dd')}
+				  	</td>
+				  	<td class="formtable_td_key">申请部门：</td>
+				  	<td class="formtable_td_value">
+				  		<input type="hidden" name="fp_applyOrgName" value="${appuser.orgName}"/>
+				  		<input type="hidden" name="fp_applyOrgId" value="${appuser.orgId?replace(',','')}"/>
+				  		${appuser.orgName}
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	 	<td class="formtable_td_key">金额：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<input name="fp_amount" type="text" class="easyui-validatebox"  validType="intOrFloat" id="fp_amount${rand}"/>
+		  	  	 	</td>
+		  	  	 	<td class="formtable_td_key">折扣：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<input name="fp_discount" type="text" class="easyui-validatebox" data-options="required:true"  id="fp_discount${rand}" id="fp_discount${rand}"/>
+		  	  	 	</td>
+		  	  	 	<td class="formtable_td_key">折后金额：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<span id="fp_discountedAmountSpan${rand}"></span>
+		  	  	 		<input name="fp_discountedAmount" type="hidden" id="fp_discountedAmount${rand}"/>
+		  	  	 	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  	 	<td class="formtable_td_key">出发时间：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<input type="text" name="fp_departureTime"  class="easyui-validatebox easyui-my97" data-options="required:true,minDate:'%y-%M-%d'" />
+		  	  	 	</td>
+		  	  	 	<td class="formtable_td_key">出发地：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<input type="text"  name="fp_departurePlace" class="easyui-validatebox" data-options="required:true" />
+		  	  	 	</td>
+		  	  	 	<td class="formtable_td_key">目的地：</td>
+		  	  	 	<td class="formtable_td_value">
+		  	  	 		<input type="text" name="fp_destinationPlace"  class="easyui-validatebox" data-options="required:true"  />
+		  	  	 	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">申请原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_applicationReasons" class="easyui-validatebox formtable_remark" required="true" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+	  	  		<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea name="fp_remark" class="easyui-validatebox formtable_remark" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+			</table>
+		</form>
+		<script type="text/javascript">	  
+			$(function() {
+				extendIdCardValidte();
+				loadIdCard();
+				loadManagerType(); 
+				initDom();
+				function initDom(){
+					$("#fp_amount${rand}").change(function(){
+						var discount = $("#fp_discount${rand}").val();
+						var amount = $(this).val();
+						if(!isNaN(discount) && !isNaN(amount) && $.trim(amount) != '' && $.trim(discount) != ''){
+							discount = Number.parseFloat(discount);
+							amount = Number.parseFloat(amount);
+							var discountedAmount = discount * amount/10;
+							$("#fp_discountedAmount${rand}").val(discountedAmount.toFixed(2));
+							$("#fp_discountedAmountSpan${rand}").text(discountedAmount.toFixed(2));
+							
+						}
+					});
+					$("#fp_discount${rand}").change(function(){
+						var amount = $("#fp_amount${rand}").val();
+						var discount = $(this).val();
+						if(!isNaN(discount) && !isNaN(amount) && $.trim(discount) != '' && $.trim(amount) != ''){
+							discount = Number.parseFloat(discount);
+							amount = Number.parseFloat(amount);
+							var discountedAmount = discount * amount/10;
+							$("#fp_discountedAmount${rand}").val(discountedAmount.toFixed(2));
+							$("#fp_discountedAmountSpan${rand}").text(discountedAmount.toFixed(2));
+						}
+					});
+				}
+				//加载员工类型
+				function loadManagerType(){
+				 	$.post("lead/checkIsManager.json",{account:"${appuser.account}"},function(data){
+				 					var discount  = $("#fp_discount${rand}").val();
+									if(data.success){
+		    							if(data.msg=="2"){
+		    								$("#fp_managerType${rand}").val('2');
+		    								$("#fp_discount${rand}").validatebox({
+		    									validType:["minValue[8]","maxValue[10]","intOrFloat"]
+		    								})
+		    							}else if(data.msg=="1"){
+		    								$("#fp_managerType${rand}").val('1');
+		    								$("#fp_discount${rand}").validatebox({
+		    									validType:["minValue[7]","maxValue[10]","intOrFloat"]
+		    								})
+		    							}
+									}else{
+										$("#fp_managerType${rand}").val('0');
+	    								$("#fp_discount${rand}").validatebox({
+	    									validType:["minValue[6]","maxValue[10]","intOrFloat"]
+	    								})
+									}
+							});
+				}
+			 	//加载身份证信息
+			 	function loadIdCard(){
+	            	 $.getJSON("hrFlow/getHrUserInfo.json",{account:"${appuser.account}"},function(data){
+	            		 if(data.success){
+	            			 var userInfo = data.obj;
+	            			 if(userInfo != null){
+	            			 	$("#fp_idCard${rand}").val(userInfo.idCard);
+	            			 	$("#processName${rand}").val("[${appuser.account},"+userInfo.name+"]机票申请流程")
+	            			 }else{
+	            				 $("#fp_idCard${rand}").val("");
+	            				 $.messager.alert('信息提示','员工信息无效！','warning');
+	            			 }
+	            		 }
+			 		});
+			 	}
+			 	//扩展easyui validate的身份证验证
+			 	function extendIdCardValidte(){
+			 		var aCity={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"}   
+			 		  
+			 		function isCardID(sId){   
+			 		    var iSum=0 ;  
+			 		    var info="" ;  
+			 		    if(!/^\d{17}(\d|x)$/i.test(sId)) return "你输入的身份证长度或格式错误";   
+			 		    sId=sId.replace(/x$/i,"a");   
+			 		    if(aCity[parseInt(sId.substr(0,2))]==null) return "你的身份证地区非法";   
+			 		    sBirthday=sId.substr(6,4)+"-"+Number(sId.substr(10,2))+"-"+Number(sId.substr(12,2));   
+			 		    var d=new Date(sBirthday.replace(/-/g,"/")) ;  
+			 		    if(sBirthday!=(d.getFullYear()+"-"+ (d.getMonth()+1) + "-" + d.getDate()))return "身份证上的出生日期非法";   
+			 		    for(var i = 17;i>=0;i --) iSum += (Math.pow(2,i) % 11) * parseInt(sId.charAt(17 - i),11) ;  
+			 		    if(iSum%11!=1) return "你输入的身份证号非法";   
+			 		    return true;//aCity[parseInt(sId.substr(0,2))]+","+sBirthday+","+(sId.substr(16,1)%2?"男":"女")   
+			 		}   
+			 		  
+			 		  
+			 		$.extend($.fn.validatebox.defaults.rules, {     
+			 		    idCard: {     
+			 		        validator: function(value,param){    
+			 		            var flag= isCardID(value);  
+			 		            return flag==true?true:false;    
+			 		        },     
+			 		        message: '不是有效的身份证号码'    
+			 		    },
+			            intOrFloat: {// 验证整数或小数
+			                validator: function (value) {
+			                    return /^\d+(\.\d+)?$/i.test(value);
+			                },
+			                message: '请输入正数，并确保格式正确'
+			            },
+			            maxValue: {// 验证最大值
+			                validator: function (value,param) {
+			                    return value <= param[0];
+			                },
+			                message: '最大值不能大于{0}'
+			            },
+			            minValue: {// 验证最小值
+			                validator: function (value,param) {
+			                    return value >= param[0];
+			                },
+			                message: '最小值不能小于{0}'
+			            }
+			 		});
+			 	}
+			});
+			
+		</script>
+		</div>
+	</#if>
+</#if>
+
+<!-- 主管副总裁审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'at_deputygeneralAudiTask'>
+		<div id="at_deputygeneralAudiTask">
+			<form id="at_deputygeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="at_deputygeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >主管副总裁审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">主管副总裁审批：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deputygeneralName" value='${appuser.name}' mobile="主管副总裁审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_value" colspan="2" align="center"> 
+		  	  			<input id="fp_deputygeneralAudi${rand}" name="fp_deputygeneralAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_deputygeneralAudi2${rand}"  name="fp_deputygeneralAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deputygeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_deputygeneralAudiAdvice${rand}" name="fp_deputygeneralAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+				<script type="text/javascript">
+				$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:false});//刘董意见为非必填项
+				}
+				var failure=function(){
+					$("#fp_deputygeneralAudiAdvice${rand}").val('');
+					$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:true});//刘董意见为必填项
+				};
+				$("#fp_deputygeneralAudi${rand}").bind("click",success);
+				$("#fp_deputygeneralAudi2${rand}").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_deputygeneralAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#fp_deputygeneralAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#fp_deputygeneralAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+
+<!-- 董事长审批 -->
+<#if currentStep?exists>
+	<#if currentStep == 'at_chairmanAudiTask'>
+		<div id="at_chairmanAudiTask">
+			<form id="at_chairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="at_chairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >董事长审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">董事长审批：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_chairmanName" value='${appuser.name}' mobile="董事长审批"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_value" colspan="2" align="center"> 
+		  	  			<input id="fp_chairmanAudi${rand}" name="fp_chairmanAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_chairmanAudi2${rand}"  name="fp_chairmanAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_chairmanSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="5">
+		  	  			<textarea id="fp_chairmanAudiAdvice${rand}" name="fp_chairmanAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+				<script type="text/javascript">
+				$("#fp_chairmanAudiAdvice${rand}").validatebox({required:false});
+				var success = function(){
+					$("#fp_chairmanAudiAdvice${rand}").validatebox({required:false});//刘董意见为非必填项
+				}
+				var failure=function(){
+					$("#fp_chairmanAudiAdvice${rand}").val('');
+					$("#fp_chairmanAudiAdvice${rand}").validatebox({required:true});//刘董意见为必填项
+				};
+				$("#fp_chairmanAudi${rand}").bind("click",success);
+				$("#fp_chairmanAudi2${rand}").bind("click",failure);
+				
+				//用于限制文本框输入全空格
+				function checkInput1(){
+					if($("input[name='fp_chairmanAudiAdvice']:checked").val() == '0'){
+						return;
+					}
+					var result=$("#fp_chairmanAudiAdvice${rand}").val();
+					if(result.indexOf(" ") != -1 && $.trim(result) == ""){
+						$("#fp_chairmanAudiAdvice${rand}").val('');
+						$.messager.alert('信息提示:','输入不能为全空格!');
+					}
+				}
+        </script>
+	</#if>
+</#if>
+<#include "/common/foot.html">

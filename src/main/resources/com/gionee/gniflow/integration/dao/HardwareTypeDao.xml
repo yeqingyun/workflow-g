@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.HardwareTypeDao">
+  
+  <sql id="columns">
+    ID, TYPE_NAME, DESCRIPTION,STATUS,REMARK,CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.HardwareType" id="result">
+	<id property="id" column="ID"/>
+	<result property="typeName" column="TYPE_NAME"/>
+	<result property="description" column="DESCRIPTION"/>
+	<result property="status" column="STATUS"/>
+	<result property="remark" column="REMARK"/>
+	<result property="createBy" column="CREATE_BY"/>
+	<result property="createTime" column="CREATE_TIME"/>
+	<result property="updateBy" column="UPDATE_BY"/>
+	<result property="updateTime" column="UPDATE_TIME"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.HardwareType">
+    insert into HARDWARE_TYPE (<include refid="columns"/>) values (
+    #{nextId},
+    #{typeName},
+    #{description},
+    #{status},
+    #{remark},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.HardwareType">
+    update HARDWARE_TYPE
+    <set>
+      <if test="typeName != null">
+        TYPE_NAME = #{typeName},
+      </if>
+      <if test="description != null">
+        DESCRIPTION = #{description},
+      </if>
+    </set>
+    where ID = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete HARDWARE_TYPE where ID = #{id}
+  </delete>
+
+  <select id="getAllById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from HARDWARE_TYPE
+	where ID = #{id}
+  </select>
+
+  <select id="getPageById" parameterType="Integer" resultMap="result">
+    select * from ( select a.*, ROWNUM rnum from (
+      select <include refid="columns"/> from HARDWARE_TYPE
+      where ID = #{id}
+    ) a where ROWNUM &lt; #{lastRow}) where rnum  &gt;= #{firstRow}
+  </select>
+  <select id="getPageCountById" parameterType="Integer" resultType="int">
+    select count(*) from HARDWARE_TYPE
+    where ID = #{id}
+  </select>  
+
+	 <select id="getPage" parameterType="map" resultMap="result">
+    	select * from ( select a.*, ROWNUM rnum from (
+      	select <include refid="columns"/> from HARDWARE_TYPE
+      <where> 
+      		and  1=1
+		<if test="typeName != null">
+			and	TYPE_NAME like  '%'|| #{typeName}|| '%'
+      	</if>
+      	<if test="description != null">
+        	and DESCRIPTION like  '%'|| #{description}||'%'
+      	</if>
+      </where>
+    ) a where ROWNUM &lt; #{lastRow}) where rnum  &gt;= #{firstRow}
+  </select>
+  
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from HARDWARE_TYPE
+    <where>
+    	and 1=1
+		<if test="typeName != null">
+			and	TYPE_NAME like  '%'|| #{typeName} || '%'
+      	</if>
+      	<if test="description != null">
+        	and DESCRIPTION like  '%'|| #{description} || '%'
+      	</if>
+      </where>
+  </select>  
+
+  <select id="getById" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from HARDWARE_TYPE
+	where ID = #{id}
+  </select>
+
+</mapper>

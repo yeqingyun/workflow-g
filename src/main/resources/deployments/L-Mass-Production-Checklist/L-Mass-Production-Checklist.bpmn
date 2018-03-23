@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="153">
+  <process id="L-Mass-Production-Checklist" name="量产流checklist签核单" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="nmb_ProductionTool" name="生产工具" activiti:assignee="${toolProductEngineerNo}"></userTask>
+    <userTask id="nmb_ModemConfigurationMultiInstTask" name="Modem配置" activiti:assignee="${assigneeModem}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(assigneeModemList)}" activiti:elementVariable="assigneeModem"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="nmb_ComponentCompatibilityMultiInstTask" name="器件兼容" activiti:assignee="${assigneeComp}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(assigneeCompList)}" activiti:elementVariable="assigneeComp"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <userTask id="nmb_ComponentApplicate" name="器件申请" activiti:assignee="${compApSPM}"></userTask>
+    <sequenceFlow id="flow9" sourceRef="nmb_ComponentApplicate" targetRef="nmb_ComponentCompatibilityMultiInstTask"></sequenceFlow>
+    <userTask id="nmb_SubjectParamMultiInstTask" name="主观效果参数确认" activiti:assignee="${assigneeSub}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(assigneeSubList)}" activiti:elementVariable="assigneeSub"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <userTask id="nmb_OtherParamMultiInstTask" name="其他参数确认" activiti:assignee="${assigneeOther}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(assigneeOtherList)}" activiti:elementVariable="assigneeOther"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <userTask id="nmb_ThirdCheck" name="第三方走查结果" activiti:assignee="${assigneeThird}"></userTask>
+    <userTask id="nmb_RomCheck" name="ROM团队GUI走查结果" activiti:assignee="${assigneeRom}"></userTask>
+    <userTask id="nmb_PaperCheck" name="项目内置主题包、壁纸走查结果" activiti:assignee="${assigneePaper}"></userTask>
+    <userTask id="nmb_VideoCheck" name="项目内置视频、铃声走查结果" activiti:assignee="${assigneeVideo}"></userTask>
+    <userTask id="nmb_TelecomTest" name="电信DM测试结果" activiti:assignee="${assigneeTel}"></userTask>
+    <userTask id="nmb_UnicomTest" name="联通DM测试结果" activiti:assignee="${assigneeUni}"></userTask>
+    <userTask id="nmb_HardTest" name="硬件测试确认硬件测试计划是否已实施" activiti:assignee="${assigneeHard}"></userTask>
+    <userTask id="nmb_SoftTest" name="软件测试确认软件测试计划是否已实施" activiti:assignee="${assigneeSoft}"></userTask>
+    <inclusiveGateway id="inclusivegateway1" name="Inclusive Gateway"></inclusiveGateway>
+    <inclusiveGateway id="inclusivegateway2" name="Inclusive Gateway"></inclusiveGateway>
+    <sequenceFlow id="flow10" sourceRef="startevent1" targetRef="inclusivegateway1"></sequenceFlow>
+    <sequenceFlow id="flow11" sourceRef="inclusivegateway1" targetRef="nmb_ProductionTool"></sequenceFlow>
+    <sequenceFlow id="flow12" sourceRef="nmb_ProductionTool" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow13" sourceRef="inclusivegateway2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow14" sourceRef="inclusivegateway1" targetRef="nmb_ModemConfigurationMultiInstTask"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="nmb_ModemConfigurationMultiInstTask" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow16" sourceRef="inclusivegateway1" targetRef="nmb_ComponentApplicate"></sequenceFlow>
+    <sequenceFlow id="flow17" sourceRef="nmb_ComponentCompatibilityMultiInstTask" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow18" sourceRef="inclusivegateway1" targetRef="nmb_SubjectParamMultiInstTask"></sequenceFlow>
+    <sequenceFlow id="flow19" sourceRef="nmb_SubjectParamMultiInstTask" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow20" sourceRef="inclusivegateway1" targetRef="nmb_OtherParamMultiInstTask"></sequenceFlow>
+    <sequenceFlow id="flow21" sourceRef="nmb_OtherParamMultiInstTask" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow22" sourceRef="inclusivegateway1" targetRef="nmb_ThirdCheck"></sequenceFlow>
+    <sequenceFlow id="flow23" sourceRef="nmb_ThirdCheck" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow24" sourceRef="inclusivegateway1" targetRef="nmb_RomCheck"></sequenceFlow>
+    <sequenceFlow id="flow25" sourceRef="nmb_RomCheck" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow26" sourceRef="inclusivegateway1" targetRef="nmb_PaperCheck"></sequenceFlow>
+    <sequenceFlow id="flow27" sourceRef="nmb_PaperCheck" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow28" sourceRef="inclusivegateway1" targetRef="nmb_VideoCheck"></sequenceFlow>
+    <sequenceFlow id="flow29" sourceRef="nmb_VideoCheck" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow30" sourceRef="inclusivegateway1" targetRef="nmb_TelecomTest">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${assigneeTel != ''}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow31" sourceRef="nmb_TelecomTest" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow32" sourceRef="inclusivegateway1" targetRef="nmb_UnicomTest">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${assigneeUni != ''}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow33" sourceRef="nmb_UnicomTest" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow34" sourceRef="inclusivegateway1" targetRef="nmb_HardTest"></sequenceFlow>
+    <sequenceFlow id="flow35" sourceRef="nmb_HardTest" targetRef="inclusivegateway2"></sequenceFlow>
+    <sequenceFlow id="flow36" sourceRef="inclusivegateway1" targetRef="nmb_SoftTest"></sequenceFlow>
+    <sequenceFlow id="flow37" sourceRef="nmb_SoftTest" targetRef="inclusivegateway2"></sequenceFlow>
+    <userTask id="usbInteraEngineerMultiInstTask" name="USB交互逻辑确认" activiti:assignee="${engineer}">
+      <multiInstanceLoopCharacteristics isSequential="false" activiti:collection="${processHelpService.getMultiInstanceTaskUsers(usbInteraEngineerNo)}" activiti:elementVariable="engineer"></multiInstanceLoopCharacteristics>
+    </userTask>
+    <sequenceFlow id="flow38" sourceRef="inclusivegateway1" targetRef="usbInteraEngineerMultiInstTask"></sequenceFlow>
+    <sequenceFlow id="flow39" sourceRef="usbInteraEngineerMultiInstTask" targetRef="inclusivegateway2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_L-Mass-Production-Checklist">
+    <bpmndi:BPMNPlane bpmnElement="L-Mass-Production-Checklist" id="BPMNPlane_L-Mass-Production-Checklist">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="90.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_ProductionTool" id="BPMNShape_nmb_ProductionTool">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_ModemConfigurationMultiInstTask" id="BPMNShape_nmb_ModemConfigurationMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="720.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_ComponentCompatibilityMultiInstTask" id="BPMNShape_nmb_ComponentCompatibilityMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_ComponentApplicate" id="BPMNShape_nmb_ComponentApplicate">
+        <omgdc:Bounds height="55.0" width="105.0" x="280.0" y="190.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_SubjectParamMultiInstTask" id="BPMNShape_nmb_SubjectParamMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="260.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_OtherParamMultiInstTask" id="BPMNShape_nmb_OtherParamMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="330.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_ThirdCheck" id="BPMNShape_nmb_ThirdCheck">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="470.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_RomCheck" id="BPMNShape_nmb_RomCheck">
+        <omgdc:Bounds height="71.0" width="105.0" x="370.0" y="541.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_PaperCheck" id="BPMNShape_nmb_PaperCheck">
+        <omgdc:Bounds height="71.0" width="105.0" x="372.0" y="620.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_VideoCheck" id="BPMNShape_nmb_VideoCheck">
+        <omgdc:Bounds height="71.0" width="105.0" x="370.0" y="703.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_TelecomTest" id="BPMNShape_nmb_TelecomTest">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="790.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_UnicomTest" id="BPMNShape_nmb_UnicomTest">
+        <omgdc:Bounds height="55.0" width="105.0" x="372.0" y="860.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_HardTest" id="BPMNShape_nmb_HardTest">
+        <omgdc:Bounds height="81.0" width="105.0" x="372.0" y="930.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="nmb_SoftTest" id="BPMNShape_nmb_SoftTest">
+        <omgdc:Bounds height="81.0" width="105.0" x="372.0" y="1030.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway1" id="BPMNShape_inclusivegateway1">
+        <omgdc:Bounds height="40.0" width="40.0" x="180.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="inclusivegateway2" id="BPMNShape_inclusivegateway2">
+        <omgdc:Bounds height="40.0" width="40.0" x="620.0" y="57.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="usbInteraEngineerMultiInstTask" id="BPMNShape_usbInteraEngineerMultiInstTask">
+        <omgdc:Bounds height="55.0" width="105.0" x="370.0" y="400.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="385.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="450.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="125.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="220.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
+        <omgdi:waypoint x="475.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="620.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="660.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="720.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="147.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="475.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="147.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="217.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
+        <omgdi:waypoint x="555.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="217.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="287.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">
+        <omgdi:waypoint x="475.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="287.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow20" id="BPMNEdge_flow20">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="357.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow21" id="BPMNEdge_flow21">
+        <omgdi:waypoint x="475.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="357.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow22" id="BPMNEdge_flow22">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="497.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow23" id="BPMNEdge_flow23">
+        <omgdi:waypoint x="475.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="497.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow24" id="BPMNEdge_flow24">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="576.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="576.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow25" id="BPMNEdge_flow25">
+        <omgdi:waypoint x="475.0" y="576.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="576.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow26" id="BPMNEdge_flow26">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="655.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="655.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow27" id="BPMNEdge_flow27">
+        <omgdi:waypoint x="477.0" y="655.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="655.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow28" id="BPMNEdge_flow28">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="738.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="738.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow29" id="BPMNEdge_flow29">
+        <omgdi:waypoint x="475.0" y="738.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="738.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow30" id="BPMNEdge_flow30">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="817.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="817.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow31" id="BPMNEdge_flow31">
+        <omgdi:waypoint x="475.0" y="817.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="817.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow32" id="BPMNEdge_flow32">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="887.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="887.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow33" id="BPMNEdge_flow33">
+        <omgdi:waypoint x="477.0" y="887.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="887.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow34" id="BPMNEdge_flow34">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="970.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="970.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow35" id="BPMNEdge_flow35">
+        <omgdi:waypoint x="477.0" y="970.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="970.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow36" id="BPMNEdge_flow36">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="1070.0"></omgdi:waypoint>
+        <omgdi:waypoint x="372.0" y="1070.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow37" id="BPMNEdge_flow37">
+        <omgdi:waypoint x="477.0" y="1070.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="1070.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow38" id="BPMNEdge_flow38">
+        <omgdi:waypoint x="200.0" y="97.0"></omgdi:waypoint>
+        <omgdi:waypoint x="200.0" y="427.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="427.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow39" id="BPMNEdge_flow39">
+        <omgdi:waypoint x="475.0" y="427.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="427.0"></omgdi:waypoint>
+        <omgdi:waypoint x="640.0" y="97.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

@@ -1,0 +1,1972 @@
+<#include "/common/head.html">
+<style>
+.des_index{
+ 	margin-right: 15px;
+	margin-left: 10px;
+ }
+</style>
+<!-- 展示表单 -->
+<#if processSteps??> 
+<div style="text-align:center;padding: 15px 0px"><span style="font-size: 16pt">外部培训需求申请表</span></div>
+<#list processSteps as steps> 
+	<#if steps.key =='startevent1'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+				<tr>
+		  	        <td class="formtable_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value">
+		  	       		 ${steps.vars["applyUserId"]}
+	  	        	</td>
+		  	        <td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value" >
+				  	 	${steps.vars["applyUserName"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value" >
+		  	  			 ${steps.vars["applyOrgName"]}
+				  	</td>
+				  	<td class="formtable_td_key">岗位：</td>
+				  	<td class="formtable_td_value" >
+		  	  			 ${steps.vars["applyUserJob"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训需求：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingRequirement" class="likedisabled" readonly="readonly">${steps.vars["trainingRequirement"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训主题：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSubject" class="likedisabled" readonly="readonly">${steps.vars["trainingSubject"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">课程内容/大纲：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSyllabus" class="likedisabled"  readonly="readonly" >${steps.vars["trainingSyllabus"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训形式：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<span style="margin-right: 10px;"><input type="checkbox" name="fp_trainingType" value="0" <#if steps.vars["trainingType"] == 0> checked="checked" </#if> disabled/>外派培训</span>
+		  	  			<span><input type="checkbox" name="fp_trainingType" value="1" <#if steps.vars["trainingType"] == 1> checked="checked" </#if> disabled/>外部讲师内部授课 </span>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训时间：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingTimeStart"]}<span style="margin-left: 5px;margin-right: 5px">-</span>${steps.vars["trainingTimeEnd"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训地点：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingPlace"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训机构：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingInstitution"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">授课讲师：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingLecturer"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人员信息：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_value"></td>
+		  	  		<td colspan="3" class="formtable_td_value">
+			  	  		<table class="formtable" cellspacing="1" cellpadding="0">
+			  	  			<thead>
+				  	  			<tr>
+				  	  				<td class="formtable_td_key">序号：</td>
+						  	  		<td class="formtable_td_key">员工编号：</td>
+						  	  		<td class="formtable_td_key">姓名：</td>
+						  	  		<td class="formtable_td_key">部门：</td>
+						  	  		<td class="formtable_td_key">岗位：</td>
+				  	  			</tr>
+			  	  			</thead>
+			  	  			<tbody>
+			  	  				<#if steps.vars["trainingedEmpInfo"]??>
+			 					<#assign text= steps.vars["trainingedEmpInfo"] />
+								<#assign json=text?eval />
+								<#list json as item>
+									<tr>
+										<td class="formtable_td_value"><span class="des_index">${item_index+1}</span></td>
+									  	<td class="formtable_td_value" >${item.trainingEmpNo}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingEmpName}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingOrgName}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingEmpJob}
+							  	  		</td>
+						  	  		</tr>
+								</#list>
+								</#if>
+			  	  			</tbody>
+			  	  			
+			  	  		</table>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人数：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text"  name="fp_trainingEmpCount" class="none-input"  value='${steps.vars["trainingEmpCount"]}'  readonly="readonly"  style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" /><span>)人</span></div>
+		  	  			<div style="color: red;">
+		  	  				（备注：原则上，最多允许两人同时外派参加同一课程，主张学员训后进行内部分享）
+		  	  			</div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人均培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" name="fp_perTrainingExpenses" class="none-input" value='${steps.vars["perTrainingExpenses"]}'   readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元/人</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text"  name="fp_trainingExpenses"  class="none-input" value='${steps.vars["trainingExpenses"]}' readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+		  	  </table>
+	</#if>
+	<#if steps.key =='nmb_updateApplicationInfoTask'>
+	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+			  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">修改后外部培训需求申请表</td>
+		  	  	</tr>
+				<tr>
+		  	        <td class="formtable_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value">
+		  	       		 ${steps.vars["applyUserId"]}
+	  	        	</td>
+		  	        <td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value" >
+				  	 	${steps.vars["applyUserName"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value" >
+		  	  			 ${steps.vars["applyOrgName"]}
+				  	</td>
+				  	<td class="formtable_td_key">岗位：</td>
+				  	<td class="formtable_td_value" >
+		  	  			 ${steps.vars["applyUserJob"]}
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingReason" class="likedisabled" readonly="readonly">${steps.vars["trainingReason"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训主题：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSubject" class="likedisabled" readonly="readonly">${steps.vars["trainingSubject"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训需求：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingRequirement" class="likedisabled" readonly="readonly">${steps.vars["trainingRequirement"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">课程内容/大纲：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSyllabus" class="likedisabled"  readonly="readonly" >${steps.vars["trainingSyllabus"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训形式：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<span style="margin-right: 10px;"><input type="checkbox" name="fp_trainingType" value="0" <#if steps.vars["trainingType"] == 0> checked="checked" </#if> disabled/>外派培训</span>
+		  	  			<span><input type="checkbox" name="fp_trainingType" value="1" <#if steps.vars["trainingType"] == 1> checked="checked" </#if> disabled/>外部讲师内部授课 </span>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训时间：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingTime"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训地点：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingPlace"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训机构：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingInstitution"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">授课讲师：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			${steps.vars["trainingLecturer"]}
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人员信息：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_value"></td>
+		  	  		<td colspan="3" class="formtable_td_value">
+			  	  		<table class="formtable" cellspacing="1" cellpadding="0">
+			  	  			<thead>
+				  	  			<tr>
+				  	  				<td class="formtable_td_key">序号：</td>
+						  	  		<td class="formtable_td_key">员工编号：</td>
+						  	  		<td class="formtable_td_key">姓名：</td>
+						  	  		<td class="formtable_td_key">部门：</td>
+						  	  		<td class="formtable_td_key">岗位：</td>
+				  	  			</tr>
+			  	  			</thead>
+			  	  			<tbody>
+			  	  				<#if steps.vars["trainingedEmpInfo"]??>
+			 					<#assign text= steps.vars["trainingedEmpInfo"] />
+								<#assign json=text?eval />
+								<#list json as item>
+									<tr>
+										<td class="formtable_td_value"><span class="des_index">${item_index+1}</span></td>
+									  	<td class="formtable_td_value" >${item.trainingEmpNo}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingEmpName}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingOrgName}
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >${item.trainingEmpJob}
+							  	  		</td>
+						  	  		</tr>
+								</#list>
+								</#if>
+			  	  			</tbody>
+			  	  			
+			  	  		</table>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人数：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text"  name="fp_trainingEmpCount" class="none-input"  value='${steps.vars["trainingEmpCount"]}'  readonly="readonly"  style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" /><span>)人</span></div>
+		  	  			<div style="color: red;">
+		  	  				（备注：原则上，最多允许两人同时外派参加同一课程，主张学员训后进行内部分享）
+		  	  			</div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人均培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" name="fp_perTrainingExpenses" class="none-input" value='${steps.vars["perTrainingExpenses"]}'   readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元/人</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text"  name="fp_trainingExpenses"  class="none-input" value='${steps.vars["trainingExpenses"]}' readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+		  	  </table>
+	</#if>
+	   <!-- 部门经理签字 -->  
+     <#if steps.key == 'mb_departmentleaderAudiTask'>
+     	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">部门经理审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_departmentleaderAudi" type="checkbox" value="0" <#if steps.vars["departmentleaderAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_departmentleaderAudi" type="checkbox" value="1" <#if steps.vars["departmentleaderAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_departmentleaderAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["departmentleaderAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">部门经理签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["departmentleaderName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["departmentleaderSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+	  	  		</table>
+   </#if>
+   	   <!-- 部门总监审批 -->  
+     <#if steps.key == 'mb_inspectorgeneralAudiTask'>
+     	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">部门总监审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_inspectorgeneralAudi" type="checkbox" value="0" <#if steps.vars["inspectorgeneralAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_inspectorgeneralAudi" type="checkbox" value="1" <#if steps.vars["inspectorgeneralAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_inspectorgeneralAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["inspectorgeneralAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">部门总监签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["inspectorgeneralName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["inspectorgeneralSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+	  	  		</table>
+   </#if>
+   
+   	   <!-- 人力资源中心培训专员审批 -->  
+     <#if steps.key == 'mb_hrTrainAttachAudiTask'>
+          	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">人力资源中心培训专员审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_hrTrainAttachAudi" type="checkbox" value="0" <#if steps.vars["hrTrainAttachAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_hrTrainAttachAudi" type="checkbox" value="1" <#if steps.vars["hrTrainAttachAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_hrTrainAttachAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["hrTrainAttachAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">人力资源中心培训专员签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrTrainAttachName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrTrainAttachSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+  	  		</table>
+   </#if>
+   
+   	   <!-- 人力资源中心负责人审批 -->  
+     <#if steps.key == 'mb_hrTrainManagerAudiTask'>
+          	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">人力资源中心负责人审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_hrTrainManagerAudi" type="checkbox" value="0" <#if steps.vars["hrTrainManagerAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_hrTrainManagerAudi" type="checkbox" value="1" <#if steps.vars["hrTrainManagerAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_hrTrainManagerAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["hrTrainManagerAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">人力资源中心负责人签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrTrainManagerName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrTrainManagerSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+	  	  		</table>
+   </#if>
+   
+   	   <!-- 主管副总审批 -->  
+     <#if steps.key == 'mb_deputygeneralAudiTask'>
+          	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">主管副总审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_deputygeneralAudi" type="checkbox" value="0" <#if steps.vars["deputygeneralAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_deputygeneralAudi" type="checkbox" value="1" <#if steps.vars["deputygeneralAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_deputygeneralAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["deputygeneralAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">主管副总签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["deputygeneralName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["deputygeneralSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+	  	  		</table>
+   </#if>
+   
+   	   <!-- HR副总裁审批 -->  
+     <#if steps.key == 'mb_hrViceChairmanAudiTask'>
+          	<table class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">HR副总裁审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理结果：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input style="margin-right: 10px;" disabled="disabled"  name="fp_hrViceChairmanAudi" type="checkbox" value="0" <#if steps.vars["hrViceChairmanAudi"] == '0' >checked="checked" </#if> mobile="同意"/>同意
+		  	  			<input   disabled="disabled" name="fp_hrViceChairmanAudi" type="checkbox" value="1" <#if steps.vars["hrViceChairmanAudi"] == '1' >checked="checked" </#if> mobile="不同意"/>不同意
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_hrViceChairmanAudiAdvice" class="likedisabled"  readonly="readonly" >${(steps.vars["hrViceChairmanAudiAdvice"])!""}</textarea>
+	  	  			</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">HR副总裁签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrViceChairmanName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["hrViceChairmanSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+	  	  		</table>
+   </#if>
+   
+   <#if steps.key == 'mb_staffConfirmedTask'>
+		<div id="staffConfirmedTask">
+		  	  <table id="staffConfirmedTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">员工确认</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_remark" class="likedisabled"  readonly="readonly" >${(steps.vars["remark"])!""}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td  class="formtable_td_key">员工签字：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["staffConfirmedName"])!""}</td>
+	  	  			<td  class="formtable_td_key">签字时间：</td>
+	  	  			<td  class="formtable_td_value" >${(steps.vars["staffConfirmedSignDate"])!""}</td>
+		  	  	</tr>
+		  	  	<#if steps.attachments??>
+			  	  		<tr>
+			  	  			<td class="formtable_td_key">附件：</td>
+			  	  			<td class="formtable_td_value">
+			  	  				<#list steps.attachments as attachs>
+			  	  					<a href="${attachs.url}">
+			  	  						${attachs.name}_${attachs.revision}.0
+			  	  					</a><br/>
+			  	  				</#list>
+			  	  			</td>
+			  	  		</tr>
+			  	 </#if>
+		  	  </table>
+		</div>
+	</#if>
+</#list>
+</table>
+</#if>
+<#if currentStep?exists>
+	<!-- 表单开始 -->
+	<#if currentStep == 'startevent1'>
+		<div id="start">
+			<form id="startForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="startFormTable${rand}" class="formtable" cellspacing="1" cellpadding="0">
+			  <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" />
+			  <input id="managerType${rand}" type="hidden" name="fp_managerType" readonly="readonly" />
+		  	  	<tr>
+		  	        <td class="formtable_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value">
+		  	        	<input  type="hidden"  name="fp_applyUserId" readonly="readonly"  value="${appuser.account}"/>
+		  	        	<input  type="text" class="none-input" id="applyEmpNo${rand}" name="fp_applyEmpNo" readonly="readonly"/>
+	  	        	</td>
+		  	        <td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" name="fp_applyUserName" readonly="readonly" data-options="required:true" value="${appuser.name}"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" name="fp_applyOrgName" readonly="readonly" data-options="required:true" value="${appuser.orgName}"/>
+				  	</td>
+				  	<td class="formtable_td_key">岗位：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" id="applyUserJob${rand}" name="fp_applyUserJob" readonly="readonly"/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训需求：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingRequirement" class="formtable_remark easyui-validatebox" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训主题：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSubject" class="formtable_remark easyui-validatebox" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">课程内容/大纲：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSyllabus" class="formtable_remark easyui-validatebox" data-options="required:true"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训形式：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<span style="margin-right: 10px;"><input type="radio" name="fp_trainingType" value="0" checked="checked"/>外派培训</span>
+		  	  			<span><input type="radio" name="fp_trainingType" value="1"/>外部讲师内部授课 </span>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训时间：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" id="fp_trainingTimeStart${rand}" name="fp_trainingTimeStart" data-options="dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-%d %H:%m',maxDate:'#F{$dp.$D(\'fp_trainingTimeEnd${rand}\')}',required:true" class="easyui-my97 easyui-validatebox" /><span style="margin-left: 5px;margin-right: 5px">-</span>
+		  	  			<input type="text" id="fp_trainingTimeEnd${rand}" name="fp_trainingTimeEnd" data-options="dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'fp_trainingTimeStart${rand}\')}',required:true" class="easyui-my97 easyui-validatebox" />
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训地点：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingPlace"  class="easyui-validatebox" data-options="required:true" style="width: 630px"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训机构：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingInstitution"  class="easyui-validatebox"  data-options="required:true" style="width: 630px"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">授课讲师：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingLecturer"  class="easyui-validatebox"  data-options="required:true"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人员信息：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<a id="addButton${rand}" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+		  	  			<a id="importButton${rand}" class="easyui-linkbutton" iconCls="icon-layer">批量导入</a>
+		  	  			<a id="clearButton${rand}" class="easyui-linkbutton" iconCls="icon-clear">清空</a>
+		  	  			<input type="hidden"  name="fp_trainingedEmpInfo" id="trainingedEmpInfo${rand}"/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_value"><span style="color: red">至少添加一个员工</span></td>
+		  	  		<td colspan="3" class="formtable_td_value">
+			  	  		<table class="formtable" cellspacing="1" cellpadding="0" id="trainingEmpInfoTable${rand}">
+			  	  			<thead>
+				  	  			<tr>
+				  	  				<td class="formtable_td_key">操作</td>
+						  	  		<td class="formtable_td_key">员工编号：</td>
+						  	  		<td class="formtable_td_key">姓名：</td>
+						  	  		<td class="formtable_td_key">部门：</td>
+						  	  		<td class="formtable_td_key">岗位：</td>
+				  	  			</tr>
+			  	  			</thead>
+			  	  			<tbody>
+			  	  			</tbody>
+			  	  			
+			  	  		</table>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人数：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text"  name="fp_trainingEmpCount" id="trainingEmpCount${rand}" class="none-input" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" data-options="required:true" readonly="readonly"/><span>)人</span></div>
+		  	  			<div style="color: red;">
+		  	  				（备注：原则上，最多允许两人同时外派参加同一课程，主张学员训后进行内部分享）
+		  	  			</div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人均培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" id="perTrainingExpenses${rand}" name="fp_perTrainingExpenses" class="none-input easyui-numberbox"  data-options="required:true, precision:2" validType="mone" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元/人</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" id="trainingExpenses${rand}" name="fp_trainingExpenses" class="none-input"  data-options="required:true,precision:2" validType="mone" readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元</span></div>
+		  	  		</td>
+		  	  	</tr>
+			</table>
+		</form>
+ 		<div id="principalWin-${rand}" title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-task',title:'组织架构',border:true,split:true" style="padding: 2px 0px 0px 0px;width:250px">
+					<ul id="orgTree${rand}"></ul>
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 26px 0px 0px 0px;width:400px">
+					<div id="principalGridToolBar${rand}" style="padding:2px 5px;margin-top:-26px">
+						员工账号: <input id="principalAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="principalName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="principalGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="principal${rand}" ></table>
+				</div>
+			</div>
+		</div> 
+		
+		<!-- 导入人员 -->
+		<div id="importWin-${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="importForm${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请先下载Excel模板，填写完毕后，再导入！</td>
+						</tr>
+						<tr>
+							<td width="120" align="right">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/></td>
+							<td>
+								<a id="download_btn-${rand}" href="javascript:void(0)" data-options="iconCls:'icon-down_load'" class="easyui-linkbutton">下载导入模板</a>
+								<a id="upload_btn-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-upload">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div id="importWin-buttons${rand}">
+		   	<a id="importWinCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+		</div>
+
+		<div id="showErrorWin-${rand}" style="padding:5px 5px 5px 5px"></div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				loadApplyUserInfo();
+				
+			    initSelectPrincipalDialog();
+			    initImportWinDialog();
+			    
+			    initDomEvent();
+			    
+			    var orgId = "${appuser.orgId}".split(",").join("");
+			    loadPrincipal(orgId);
+			    
+			    
+		 		//加载申请人的信息
+				function loadApplyUserInfo(){
+					$.getJSON("hrFlow/getHrUserInfo.json",{account:"${appuser.account}"},function(data){
+            		 	if(data.success){
+	            			var userInfo = data.obj;
+            			 	if(userInfo != null){
+		            			var empId = "00000000"+userInfo.empId;
+		            			empId = empId.substring(empId.length-8)
+	            				$("#applyEmpNo${rand}").val(empId);
+	            				$("#applyUserJob${rand}").val(userInfo.job);
+	            				$("#processName${rand}").val("["+empId+","+userInfo.name+"]外部培训需求申请");
+	            			 }
+						 }else{
+							 $.messager.alert('提示','无效的员工信息','warning');
+						 }
+					});
+					
+				 	$.post("lead/checkIsManager.json",{
+						account:"${appuser.account}"
+					},function(data){
+						if(data.success){
+    						$("#managerType${rand}").val(data.msg);
+						}else{
+							$("#managerType${rand}").val('0');
+						}
+					});
+				}
+		 		//初始化dom事件
+				function initDomEvent(){
+				    //组织树加载绑定
+			 		$("#orgTree${rand}").tree({
+			 			url:"hrFlow/auth/orgs.json",
+			 			onLoadSuccess:function(node,data){
+			 				var root = $(this).tree("getRoot");
+			 				var childs =  $(this).tree("getChildren",root.target);
+			 				var first = childs[0];
+			 				var node = $(this).tree("find",first.id);
+			 				$(this).tree("expand",node.target);
+			 			},
+			 			onSelect:function(node){
+			 				 loadPrincipal(node.id)
+			 			}
+			 		})
+					//添加绑定
+		  			$("#addButton${rand}").on("click",function(){
+		  				$("a[name='removeTrainingEmp'").off();
+				 		$("#principalAccount${rand}").val("");
+				 		$("#principalName${rand}").val("");
+				 		$('#principalWin-${rand}').dialog('open');
+		  			});
+				    //导入绑定
+				    $("#importButton${rand}").on("click",function(){
+				    	
+				    	$("a[name='removeTrainingEmp'").off();
+				    	$("#importWin-${rand}").dialog('open');	
+				    })
+			 		 //搜索绑定
+				 	 $('#principalGridSearchBtn${rand}').on('click', function(){
+					 		var principalAccount = $('#principalAccount${rand}').val();
+					 		var principalName = $('#principalName${rand}').val();
+							if(!principalAccount && !principalName){
+								$.messager.alert('提示','请输入信息','warning');
+								return;
+							}
+					 		var queryParams = {};
+					 		queryParams.userAccount = principalAccount;
+					 		queryParams.userName = principalName;
+					 		$('#principal${rand}').datagrid('reload',queryParams);
+					 		$("#principal${rand}").datagrid("clearSelections");
+				 	});
+			 		//个人经费变更绑定
+			 		$("#perTrainingExpenses${rand}").bind("change",function(){
+			 			var perExpenses = $(this).val();
+			 			var count = $("#trainingEmpCount${rand}").val() == ""?0:$("#trainingEmpCount${rand}").val();
+			 			$("#trainingExpenses${rand}").val((count * perExpenses).toFixed(2));
+			 		});
+			 		//下载模板绑定
+			 		$('#download_btn-${rand}').bind('click', function(){
+			 			downLoadTemplate('download.extramural.training.name');
+			 		});
+			 		//关闭
+			 		$('#importWinCloseBtn${rand}').bind('click', function(){
+			 			bindDomEvent();
+			 			$('#importWin-${rand}').dialog('close');
+			 			clearInputFile();
+			 		});
+			 		//上传绑定
+			 		$('#upload_btn-${rand}').bind('click', function(){
+			 			 $.messager.progress();
+			 		    $('#importForm${rand}').form('submit',{
+			 					url: "extramuralTraining/importTrainingEmp.html",
+			 				    onSubmit: function(){
+			 				    	var validateResult = $(this).form('validate');
+			 				    	if (!validateResult) {
+			 				    		$.messager.progress('close');
+			 							return false;
+			 				    	} else {
+			 				    		return true;
+			 				    	}
+			 				    },
+			 				    success: function(data){
+			 				    	$.messager.progress('close');
+			 				        var result = $.parseJSON(data);
+			 				        if (!result.success){
+			 				            $('#showErrorWin-${rand}').window({
+			 				            	title:'错误信息提示',
+			 							    width:600,
+			 							    height:400,
+			 							    collapsible:false,
+			 							    minimizable:false,
+			 							    modal:true,
+			 							    iconCls:'icon-monitor',
+			 							    content:result.msg
+			 							});
+			 				        } else {
+			 				            $.messager.show({
+			 				                title: '信息提示',
+			 				                msg: result.msg
+			 				            });
+			 				            var empInfos = result.obj;
+			 				            for(var i=0;i < empInfos.length;i++){
+			 				            	renderTrainingTable(empInfos[i]);
+			 				            }
+			 				            
+			 				        	$('#importWin-${rand}').dialog('close');
+			 				        	clearInputFile();
+			 				        }
+			 				    }
+			 			});
+			 		});
+			 		
+			 		$("#clearButton${rand}").on("click",function(){
+			 			$("#trainingedEmpInfo${rand}").val("");
+			 			$("#trainingEmpInfoTable${rand}").find("tbody").empty();
+		  				$("#trainingEmpCount${rand}").val(0);
+			 			$("#trainingExpenses${rand}").val(0);
+			 		})
+				}
+			 	 //关闭选择负责人窗口
+			     function  closeSelectPrincipalWin(){
+			    	 bindDomEvent();
+			    	 $('#principalWin-${rand}').dialog('close');	
+			  	 }
+			 	 
+			 	//初始化选择人员对话框
+			 	function initSelectPrincipalDialog(){
+			 		$('#principalWin-${rand}').dialog({
+			 			modal:true, 
+			 			closed:true,
+			 			iconCls:'icon-process',
+						buttons: [{
+		                    text:'完成',
+		                    iconCls:'icon-ok',
+		                    handler: selectPrincipalEnd
+		                },{
+		                    text:'关闭',
+		                    iconCls:'icon-cancel',
+		                    handler: closeSelectPrincipalWin
+		                }],
+		                onClose:bindDomEvent
+			 		});
+			 		 $.parser.parse($('#principalWin-${rand}'));
+			 	}
+			 	
+				//加载员工列表
+			 	function loadPrincipal(orgId){
+	 	        	 $('#principal${rand}').datagrid({
+						  fit:true,
+						  fitColumns:false,
+						  url:'bpmRole/users.json',
+						  queryParams:{id:orgId},
+						  columns:[[
+							{field:'id',checkbox:true},
+							{field:'account',title:'帐号',width:90},
+							{field:'name',title:'姓名',width:90},
+							{field:'orgName',title:'部门',width:120}
+						  ]],
+						  border:false,
+						  nowrap: true,
+						  pagination:false,
+						  rownumbers:true
+					});
+			 	}
+				//选择员工成功后添加数据，统计人数
+			 	function selectPrincipalEnd(){
+			 		var rows = $('#principal${rand}').datagrid('getSelections');
+		 			if (rows) {
+		 				for(var i=0;i<rows.length;i++){
+		 					 var row = rows[i];
+			            	 $.getJSON("hrFlow/getHrUserInfo.json",{account:row.account},function(data){
+			            		 if(data.success){
+			            			 var userInfo = data.obj;
+			            			 if(userInfo != null){
+			            				 renderTrainingTable(userInfo);
+			            				 closeSelectPrincipalWin();
+			            			 }else{
+										 $.messager.alert('提示','无效的员工信息','warning');
+									 }
+			            		 }else{
+									 $.messager.alert('提示','无效的员工信息','warning');
+								 }
+			            	 });
+		 				}
+		 			}
+			 	}
+			 	//导入窗口初始化
+			 	function initImportWinDialog(){
+			 		$('#importWin-${rand}').dialog({
+			 			modal:true, 
+						title:'导入人员',
+						closed:true,
+						cache:false,
+						iconCls:'icon-user',
+						width:700,height:160,
+						buttons: '#importWin-buttons${rand}',
+						onClose:clearInputFile
+			 		});
+			 		 $.parser.parse($('#importWin-${rand}'));
+			 	}
+			 	//清空文件
+			    function clearInputFile(){
+			    	//清空文件框
+			    	$("#upload_file-${rand}").remove(); //移除原来的
+			    	
+			        var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/>';
+			       	$('#td_input_${rand}').html(newFileInput); //添加新的
+			        
+			        $.parser.parse('#td_input_${rand}');
+			        
+			        bindDomEvent();
+			    }
+			 	//绑定删除时间用于删除文档中的培训对象以及json数据中的数据
+			 	function bindDomEvent(){
+		  			$("a[name='removeTrainingEmp']").on("click",function(){
+		  				var count = $(this).parent().parent().parent().find(".des_index").length;
+		  				var trainingEmpInfoTable = $("#trainingEmpInfoTable${rand}");
+		  				//获取其点击的行的索引
+		  				var index = trainingEmpInfoTable.find("a[name='removeTrainingEmp']").index($(this));
+		  				//获取目前的JSON数据
+		  				var trainingedEmpInfo = $("#trainingedEmpInfo${rand}").val();
+		  				if(trainingedEmpInfo == ""){
+		  					trainingedEmpInfo = JSON.stringify([]);
+		  				}
+		  				var trainingedEmpInfoJson = $.parseJSON(trainingedEmpInfo);
+		  				trainingedEmpInfoJson.splice(index,1);
+		  				trainingedEmpInfo = JSON.stringify(trainingedEmpInfoJson);
+		  				//对JSON字符串重新赋值
+		  				if(trainingedEmpInfo == "[]"){
+		  					$("#trainingedEmpInfo${rand}").val("");
+		  				}else{
+		  					$("#trainingedEmpInfo${rand}").val(trainingedEmpInfo);
+		  				}
+		  				//删除所在的行
+		  				$(this).parent().parent().remove();
+		  				//重新进行dom操作
+		  				$("#trainingEmpInfoTable${rand}").find(".des_index").each(function(i){
+		  					$(this).text(i+1);
+		  				});
+		  				//重新计算人数以及经费
+			 			var count = $("#trainingEmpInfoTable${rand}").find(".des_index").length;
+		  				$("#trainingEmpCount${rand}").val(count);
+			 			var perExpenses = $("#perTrainingExpenses${rand}").val() == ""?0:$("#perTrainingExpenses${rand}").val();
+			 			$("#trainingExpenses${rand}").val(count * perExpenses);
+		  			})
+			 	}
+			 	//渲染培训对象表格
+			 	function renderTrainingTable(userInfo){
+   				 //对员工编号进行补齐0
+    			    var empId = "00000000"+userInfo.empId;
+    				empId = empId.substring(empId.length-8);
+	  				var trainingedEmpInfo = $("#trainingedEmpInfo${rand}").val();
+	  				if(trainingedEmpInfo == ""){
+	  					trainingedEmpInfo = JSON.stringify([]);
+	  				}
+	  				var trainingedEmpInfoJson = $.parseJSON(trainingedEmpInfo);
+	  				for(var i = 0;i<trainingedEmpInfoJson.length;i++){
+	  					var empInfo = trainingedEmpInfoJson[i];
+	  					if(empInfo.trainingEmpNo == empId){
+	  						$.messager.alert('提示','员工['+empId+','+userInfo.name+']已经添加','warning');
+	  						return false;
+	  					}
+	  					
+	  				}
+    				var length = $("#trainingEmpInfoTable${rand}").find("input[name='trainingEmpNo']").length;
+    				
+	  				var tr =  '<tr>'+
+	  				'<td class="formtable_td_value"><span class="des_index">'+(parseInt(length)+1)+'</span><a class="easyui-linkbutton" name="removeTrainingEmp" iconCls="icon-remove" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;"></a></td>'+
+				  	'<td class="formtable_td_value" >'+
+		  	  			'<input type="text" name="trainingEmpNo"  class="none-input"  data-options="required:true" value="'+empId+'"/>'+
+		  	  		'</td>'+
+		  	  		'<td class="formtable_td_value" >'+
+		  	  			'<input type="text" name="trainingEmpName"  class="none-input" data-options="required:true"  value="'+userInfo.name+'"/>'+
+		  	  		'</td>'+
+		  	  		'<td class="formtable_td_value" >'+
+		  	  			'<input type="text" name="trainingOrgName"  class="none-input"  data-options="required:true"  value="'+userInfo.orgName+'"/>'+
+		  	  		'</td>'+
+		  	  		'<td class="formtable_td_value" >'+
+		  	  			'<input type="text" name="trainingEmpJob"  class="none-input"  data-options="required:true"  value="'+userInfo.job+'"/>'+
+		  	  		'</td>'+
+		  	  		'</tr>';
+		  	  		$("#trainingEmpInfoTable${rand}").find("tbody").append(tr);
+		  	  		
+		  	  		trainingedEmpInfoJson.push({
+		  	  			trainingEmpNo:empId,
+		  	  			trainingEmpName:userInfo.name,
+		  	  			trainingOrgName:userInfo.orgName,
+		  	  			trainingEmpJob:userInfo.job
+		  	  		});
+			  	  	trainingedEmpInfo = JSON.stringify(trainingedEmpInfoJson);
+	  				//对JSON字符串重新赋值
+	  				if(trainingedEmpInfo == "[]"){
+	  					$("#trainingedEmpInfo${rand}").val("");
+	  				}else{
+	  					$("#trainingedEmpInfo${rand}").val(trainingedEmpInfo);
+	  				}
+	  				
+	  				//统计人数
+		 			var count = (parseInt(length)+1);
+	  				$("#trainingEmpCount${rand}").val(count);
+		 			var perExpenses = $("#perTrainingExpenses${rand}").val() == ""?0:$("#perTrainingExpenses${rand}").val();
+		 			$("#trainingExpenses${rand}").val(count * perExpenses);
+		 			
+	  				$.parser.parse('#trainingEmpInfoTable${rand}');  
+			 	}
+			})
+		 </script>
+	</#if>
+	<#if currentStep == 'nmb_updateApplicationInfoTask'>
+		<div id="nmb_updateApplicationInfoTask">
+			<form id="nmb_updateApplicationInfoTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="nmb_updateApplicationInfoTaskFormTable${rand}" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px">
+			  <input id="processName${rand}" type="hidden" name="fp_processName" readonly="readonly" value='${proHisVar.vars["processName"]}'/>
+			    <input id="managerType${rand}" type="hidden" name="fp_managerType" readonly="readonly" value='${proHisVar.vars["managerType"]}'/>
+			  	<tr>
+		  	  	    <td style="font-size: 16px; height: 25px;" align="center" colspan="6"
+						class="formtable_td_key">外部培训需求申请表修改</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	        <td class="formtable_td_key">员工编号：</td>
+		  	        <td class="formtable_td_value">
+		  	        	<input  type="hidden"  name="fp_applyUserId" readonly="readonly"  value='${proHisVar.vars["applyUserId"]}'/>
+		  	        	<input  type="text" class="none-input" id="applyEmpNo${rand}" name="fp_applyEmpNo" readonly="readonly" value='${proHisVar.vars["applyEmpNo"]}'/>
+	  	        	</td>
+		  	        <td class="formtable_td_key">姓名：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" name="fp_applyUserName" readonly="readonly" data-options="required:true" value='${proHisVar.vars["applyUserName"]}'/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">部门：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" name="fp_applyOrgName" readonly="readonly" data-options="required:true" value='${proHisVar.vars["applyOrgName"]}'/>
+				  	</td>
+				  	<td class="formtable_td_key">岗位：</td>
+				  	<td class="formtable_td_value" >
+		  	  			<input  type="text" class="none-input" id="applyUserJob${rand}" name="fp_applyUserJob" readonly="readonly" value='${proHisVar.vars["applyUserJob"]}'/>
+				  	</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训需求：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingRequirement" class="formtable_remark easyui-validatebox" data-options="required:true">${proHisVar.vars["trainingRequirement"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训主题：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSubject" class="formtable_remark easyui-validatebox" data-options="required:true">${proHisVar.vars["trainingSubject"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">课程内容/大纲：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_trainingSyllabus" class="formtable_remark easyui-validatebox" data-options="required:true">${proHisVar.vars["trainingSyllabus"]}</textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训形式：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<span style="margin-right: 10px;"><input type="radio" name="fp_trainingType" value="0" <#if proHisVar.vars["trainingType"] == 0> checked="checked" </#if> checked="checked"/>外派培训</span>
+		  	  			<span><input type="radio" name="fp_trainingType" value="1" <#if proHisVar.vars["trainingType"] == 1> checked="checked" </#if>/>外部讲师内部授课 </span>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训时间：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" id="fp_trainingTimeStart${rand}" name="fp_trainingTimeStart" data-options="dateFmt:'yyyy-MM-dd HH:mm',minDate:'%y-%M-%d %H:%m',maxDate:'#F{$dp.$D(\'fp_trainingTimeEnd${rand}\')}',required:true" class="easyui-my97 easyui-validatebox"  value='${proHisVar.vars["trainingTimeStart"]}' /><span style="margin-left: 5px;margin-right: 5px">-</span>
+		  	  			<input type="text" id="fp_trainingTimeEnd${rand}" name="fp_trainingTimeEnd" data-options="dateFmt:'yyyy-MM-dd HH:mm',minDate:'#F{$dp.$D(\'fp_trainingTimeStart${rand}\')}',required:true" class="easyui-my97 easyui-validatebox"  value='${proHisVar.vars["trainingTimeEnd"]}'/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训地点：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingPlace"  class="easyui-validatebox" data-options="required:true" style="width: 630px" value='${proHisVar.vars["trainingPlace"]}'/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训机构：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingInstitution"  class="easyui-validatebox"  data-options="required:true" style="width: 630px" value='${proHisVar.vars["trainingInstitution"]}'/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">授课讲师：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<input type="text" name="fp_trainingLecturer"  class="easyui-validatebox"  data-options="required:true" value='${proHisVar.vars["trainingLecturer"]}'/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人员信息：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<a id="addButton${rand}" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+		  	  			<a id="importButton${rand}" class="easyui-linkbutton" iconCls="icon-layer">批量导入</a>
+		  	  			<a id="clearButton${rand}" class="easyui-linkbutton" iconCls="icon-clear">清空</a>
+		  	  			<input type="hidden"  name="fp_trainingedEmpInfo" id="trainingedEmpInfo${rand}" value='${proHisVar.vars["trainingedEmpInfo"]}'/>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_value"><span style="color: red">至少添加一个员工</span></td>
+		  	  		<td colspan="3" class="formtable_td_value">
+			  	  		<table class="formtable" cellspacing="1" cellpadding="0" id="trainingEmpInfoTable${rand}">
+			  	  			<thead>
+				  	  			<tr>
+				  	  				<td class="formtable_td_key">操作</td>
+						  	  		<td class="formtable_td_key">员工编号：</td>
+						  	  		<td class="formtable_td_key">姓名：</td>
+						  	  		<td class="formtable_td_key">部门：</td>
+						  	  		<td class="formtable_td_key">岗位：</td>
+				  	  			</tr>
+			  	  			</thead>
+			  	  			<tbody>
+			  	  			<#if proHisVar.vars["trainingedEmpInfo"]??>
+			 					<#assign text= proHisVar.vars["trainingedEmpInfo"] />
+								<#assign json=text?eval />
+								<#list json as item>
+									<tr>
+										<td class="formtable_td_value"><span class="des_index">${item_index+1}</span><a class="easyui-linkbutton" name="removeTrainingEmp" iconCls="icon-remove" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;"></a></td>
+									  	<td class="formtable_td_value" >
+									  		<input type="text" name="trainingEmpNo"  class="none-input"  data-options="required:true" value='${item.trainingEmpNo}'/>
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >
+							  	  			<input type="text" name="trainingEmpName"  class="none-input"  data-options="required:true" value='${item.trainingEmpName}'/>
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >
+							  	  			<input type="text" name="trainingOrgName"  class="none-input"  data-options="required:true" value='${item.trainingOrgName}'/>
+							  	  		</td>
+							  	  		<td class="formtable_td_value" >
+							  	  			<input type="text" name="trainingEmpJob"  class="none-input"  data-options="required:true" value='${item.trainingEmpJob}'/>
+							  	  		</td>
+						  	  		</tr>
+								</#list>
+								</#if>
+			  	  			</tbody>
+			  	  			
+			  	  		</table>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">培训对象人数：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" value='${proHisVar.vars["trainingEmpCount"]}'  name="fp_trainingEmpCount" id="trainingEmpCount${rand}" class="none-input" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px" data-options="required:true" readonly="readonly"/><span>)人</span></div>
+		  	  			<div style="color: red;">
+		  	  				（备注：原则上，最多允许两人同时外派参加同一课程，主张学员训后进行内部分享）
+		  	  			</div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">人均培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" value='${proHisVar.vars["perTrainingExpenses"]}' id="perTrainingExpenses${rand}" name="fp_perTrainingExpenses" class="none-input easyui-validatebox"  data-options="required:true, precision:2" validType="mone" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元/人</span></div>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">合计培训预算费用：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<div><span>(</span><input type="text" value='${proHisVar.vars["trainingExpenses"]}' id="trainingExpenses${rand}" name="fp_trainingExpenses" class="none-input"  data-options="required:true" validType="mone" readonly="readonly" style="border-bottom: 1px solid;text-align: center;margin-left: 4px;margin-right: 4px"/><span>)元</span></div>
+		  	  		</td>
+		  	  	</tr>
+			</table>
+		</form>
+ 		<div id="principalWin-${rand}"  title="组织结构包含的用户" style="width: 700px; height: 500px; padding: 5px">
+			<div class="easyui-layout" data-options="fit:true">
+				<div data-options="region:'west',iconCls:'icon-task',title:'组织架构',border:true,split:true" style="padding: 2px 0px 0px 0px;width:250px">
+					<ul id="orgTree${rand}"></ul>
+				</div>
+				<div data-options="region:'center',iconCls:'icon-task',title:'系统用户',border:true,split:true" style="padding: 26px 0px 0px 0px;width:400px">
+					<div id="principalGridToolBar${rand}" style="padding:2px 5px;margin-top:-26px">
+						员工账号: <input id="principalAccount${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						员工姓名: <input id="principalName${rand}" class="easyui-validatebox" type='text' style="width:80px"/>
+						<a id="principalGridSearchBtn${rand}" href="javascript:void(0);" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-search">查询</a>
+					</div>
+					<table id="principal${rand}" ></table>
+				</div>
+			</div>
+		</div> 
+				<!-- 导入人员 -->
+		<div id="importWin-${rand}">
+			<div  style="padding:10px 10px;">
+				<form id="importForm${rand}" method="post" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请先下载Excel模板，填写完毕后，再导入！</td>
+						</tr>
+						<tr>
+							<td width="120" align="right">上传文件:</td>
+							<td id="td_input_${rand}"><input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/></td>
+							<td>
+								<a id="download_btn-${rand}" href="javascript:void(0)" data-options="iconCls:'icon-down_load'" class="easyui-linkbutton">下载导入模板</a>
+								<a id="upload_btn-${rand}" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-upload">上传</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div id="importWin-buttons${rand}">
+		   	<a id="importWinCloseBtn${rand}" href="javascript:void(0)" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">关闭</a>
+		</div>
+
+		<div id="showErrorWin-${rand}" style="padding:5px 5px 5px 5px"></div>
+		<script type="text/javascript">
+		$(function(){
+		    initSelectPrincipalDialog();
+		    initImportWinDialog();
+		    
+		    initDomEvent();
+		    bindDomEvent();
+		    
+		    var orgId = "${appuser.orgId}".split(",").join("");
+		    loadPrincipal(orgId);
+		    
+		    
+	 		//初始化dom事件
+			function initDomEvent(){
+			    //组织树加载绑定
+		 		$("#orgTree${rand}").tree({
+		 			url:"hrFlow/auth/orgs.json",
+		 			onLoadSuccess:function(node,data){
+		 				var root = $(this).tree("getRoot");
+		 				var childs =  $(this).tree("getChildren",root.target);
+		 				var first = childs[0];
+		 				var node = $(this).tree("find",first.id);
+		 				$(this).tree("expand",node.target);
+		 			},
+		 			onSelect:function(node){
+		 				 loadPrincipal(node.id)
+		 			}
+		 		})
+				//添加绑定
+	  			$("#addButton${rand}").on("click",function(){
+	  				$("a[name='removeTrainingEmp'").off();
+			 		$("#principalAccount${rand}").val("");
+			 		$("#principalName${rand}").val("");
+			 		$('#principalWin-${rand}').dialog('open');
+	  			});
+			    //导入绑定
+			    $("#importButton${rand}").on("click",function(){
+			    	
+			    	$("a[name='removeTrainingEmp'").off();
+			    	$("#importWin-${rand}").dialog('open');	
+			    })
+		 		 //搜索绑定
+			 	 $('#principalGridSearchBtn${rand}').on('click', function(){
+				 		var principalAccount = $('#principalAccount${rand}').val();
+				 		var principalName = $('#principalName${rand}').val();
+						if(!principalAccount && !principalName){
+							$.messager.alert('提示','请输入信息','warning');
+							return;
+						}
+				 		var queryParams = {};
+				 		queryParams.userAccount = principalAccount;
+				 		queryParams.userName = principalName;
+				 		$('#principal${rand}').datagrid('reload',queryParams);
+				 		$("#principal${rand}").datagrid("clearSelections");
+			 	});
+		 		//个人经费变更绑定
+		 		$("#perTrainingExpenses${rand}").bind("change",function(){
+		 			var perExpenses = $(this).val();
+		 			var count = $("#trainingEmpCount${rand}").val() == ""?0:$("#trainingEmpCount${rand}").val();
+		 			$("#trainingExpenses${rand}").val(count * perExpenses);
+		 		});
+		 		//下载模板绑定
+		 		$('#download_btn-${rand}').bind('click', function(){
+		 			downLoadTemplate('download.extramural.training.name');
+		 		});
+		 		//关闭
+		 		$('#importWinCloseBtn${rand}').bind('click', function(){
+		 			bindDomEvent();
+		 			$('#importWin-${rand}').dialog('close');
+		 			clearInputFile();
+		 		});
+		 		//上传绑定
+		 		$('#upload_btn-${rand}').bind('click', function(){
+		 			 $.messager.progress();
+		 		    $('#importForm${rand}').form('submit',{
+		 					url: "extramuralTraining/importTrainingEmp.html",
+		 				    onSubmit: function(){
+		 				    	var validateResult = $(this).form('validate');
+		 				    	if (!validateResult) {
+		 				    		$.messager.progress('close');
+		 							return false;
+		 				    	} else {
+		 				    		return true;
+		 				    	}
+		 				    },
+		 				    success: function(data){
+		 				    	$.messager.progress('close');
+		 				        var result = $.parseJSON(data);
+		 				        if (!result.success){
+		 				            $('#showErrorWin-${rand}').window({
+		 				            	title:'错误信息提示',
+		 							    width:600,
+		 							    height:400,
+		 							    collapsible:false,
+		 							    minimizable:false,
+		 							    modal:true,
+		 							    iconCls:'icon-monitor',
+		 							    content:result.msg
+		 							});
+		 				        } else {
+		 				            $.messager.show({
+		 				                title: '信息提示',
+		 				                msg: result.msg
+		 				            });
+		 				            var empInfos = result.obj;
+		 				            for(var i=0;i < empInfos.length;i++){
+		 				            	renderTrainingTable(empInfos[i]);
+		 				            }
+		 				            
+		 				        	$('#importWin-${rand}').dialog('close');
+		 				        	clearInputFile();
+		 				        }
+		 				    }
+		 			});
+		 		});
+		 		
+		 		$("#clearButton${rand}").on("click",function(){
+		 			$("#trainingedEmpInfo${rand}").val("");
+		 			$("#trainingEmpInfoTable${rand}").find("tbody").empty();
+	  				$("#trainingEmpCount${rand}").val(0);
+		 			$("#trainingExpenses${rand}").val(0);
+		 		})
+			}
+		 	 //关闭选择负责人窗口
+		     function  closeSelectPrincipalWin(){
+		    	 bindDomEvent();
+		    	 $('#principalWin-${rand}').dialog('close');	
+		  	 }
+		 	 
+		 	//初始化选择人员对话框
+		 	function initSelectPrincipalDialog(){
+		 		$('#principalWin-${rand}').dialog({
+		 			modal:true, 
+		 			closed:true,
+		 			iconCls:'icon-process',
+					buttons: [{
+	                    text:'完成',
+	                    iconCls:'icon-ok',
+	                    handler: selectPrincipalEnd
+	                },{
+	                    text:'关闭',
+	                    iconCls:'icon-cancel',
+	                    handler: closeSelectPrincipalWin
+	                }],
+	                onClose:bindDomEvent
+		 		});
+		 		 $.parser.parse($('#principalWin-${rand}'));
+		 	}
+		 	
+			//加载员工列表
+		 	function loadPrincipal(orgId){
+ 	        	 $('#principal${rand}').datagrid({
+					  fit:true,
+					  fitColumns:false,
+					  url:'bpmRole/users.json',
+					  queryParams:{id:orgId},
+					  columns:[[
+						{field:'id',checkbox:true},
+						{field:'account',title:'帐号',width:90},
+						{field:'name',title:'姓名',width:90},
+						{field:'orgName',title:'部门',width:120}
+					  ]],
+					  border:false,
+					  nowrap: true,
+					  pagination:false,
+					  rownumbers:true
+				});
+		 	}
+			//选择员工成功后添加数据，统计人数
+		 	function selectPrincipalEnd(){
+		 		var rows = $('#principal${rand}').datagrid('getSelections');
+	 			if (rows) {
+	 				for(var i=0;i<rows.length;i++){
+	 					 var row = rows[i];
+		            	 $.getJSON("hrFlow/getHrUserInfo.json",{account:row.account},function(data){
+		            		 if(data.success){
+		            			 var userInfo = data.obj;
+		            			 if(userInfo != null){
+		            				 renderTrainingTable(userInfo);
+		            				 closeSelectPrincipalWin();
+		            			 }else{
+									 $.messager.alert('提示','无效的员工信息','warning');
+								 }
+		            		 }else{
+								 $.messager.alert('提示','无效的员工信息','warning');
+							 }
+		            	 });
+	 				}
+	 			}
+		 	}
+		 	//导入窗口初始化
+		 	function initImportWinDialog(){
+		 		$('#importWin-${rand}').dialog({
+		 			modal:true, 
+					title:'导入人员',
+					closed:true,
+					cache:false,
+					iconCls:'icon-user',
+					width:700,height:160,
+					buttons: '#importWin-buttons${rand}',
+					onClose:clearInputFile
+		 		});
+		 		 $.parser.parse($('#importWin-${rand}'));
+		 	}
+		 	//清空文件
+		    function clearInputFile(){
+		    	//清空文件框
+		    	$("#upload_file-${rand}").remove(); //移除原来的
+		    	
+		        var newFileInput = '<input id="upload_file-${rand}" class="easyui-validatebox" data-options="required:true" type="file" name="file" style="width:300px;"/>';
+		       	$('#td_input_${rand}').html(newFileInput); //添加新的
+		        
+		        $.parser.parse('#td_input_${rand}');
+		        
+		        bindDomEvent();
+		    }
+		 	//绑定删除时间用于删除文档中的培训对象以及json数据中的数据
+		 	function bindDomEvent(){
+	  			$("a[name='removeTrainingEmp']").on("click",function(){
+	  				var count = $(this).parent().parent().parent().find(".des_index").length;
+	  				var trainingEmpInfoTable = $("#trainingEmpInfoTable${rand}");
+	  				//获取其点击的行的索引
+	  				var index = trainingEmpInfoTable.find("a[name='removeTrainingEmp']").index($(this));
+	  				//获取目前的JSON数据
+	  				var trainingedEmpInfo = $("#trainingedEmpInfo${rand}").val();
+	  				if(trainingedEmpInfo == ""){
+	  					trainingedEmpInfo = JSON.stringify([]);
+	  				}
+	  				var trainingedEmpInfoJson = $.parseJSON(trainingedEmpInfo);
+	  				trainingedEmpInfoJson.splice(index,1);
+	  				trainingedEmpInfo = JSON.stringify(trainingedEmpInfoJson);
+	  				//对JSON字符串重新赋值
+	  				if(trainingedEmpInfo == "[]"){
+	  					$("#trainingedEmpInfo${rand}").val("");
+	  				}else{
+	  					$("#trainingedEmpInfo${rand}").val(trainingedEmpInfo);
+	  				}
+	  				//删除所在的行
+	  				$(this).parent().parent().remove();
+	  				//重新进行dom操作
+	  				$("#trainingEmpInfoTable${rand}").find(".des_index").each(function(i){
+	  					$(this).text(i+1);
+	  				});
+	  				//重新计算人数以及经费
+		 			var count = $("#trainingEmpInfoTable${rand}").find(".des_index").length;
+	  				$("#trainingEmpCount${rand}").val(count);
+		 			var perExpenses = $("#perTrainingExpenses${rand}").val() == ""?0:$("#perTrainingExpenses${rand}").val();
+		 			$("#trainingExpenses${rand}").val(count * perExpenses);
+	  			})
+		 	}
+		 	//渲染培训对象表格
+		 	function renderTrainingTable(userInfo){
+				 //对员工编号进行补齐0
+			    var empId = "00000000"+userInfo.empId;
+				empId = empId.substring(empId.length-8);
+  				var trainingedEmpInfo = $("#trainingedEmpInfo${rand}").val();
+  				if(trainingedEmpInfo == ""){
+  					trainingedEmpInfo = JSON.stringify([]);
+  				}
+  				var trainingedEmpInfoJson = $.parseJSON(trainingedEmpInfo);
+  				for(var i = 0;i<trainingedEmpInfoJson.length;i++){
+  					var empInfo = trainingedEmpInfoJson[i];
+  					if(empInfo.trainingEmpNo == empId){
+  						$.messager.alert('提示','员工['+empId+','+userInfo.name+']已经添加','warning');
+  						return false;
+  					}
+  					
+  				}
+				var length = $("#trainingEmpInfoTable${rand}").find("input[name='trainingEmpNo']").length;
+				
+  				var tr =  '<tr>'+
+  				'<td class="formtable_td_value"><span class="des_index">'+(parseInt(length)+1)+'</span><a class="easyui-linkbutton" name="removeTrainingEmp" iconCls="icon-remove" data-options="plain:true" style="border: 1px #b7d2ff solid;padding:0 5px 0 0;"></a></td>'+
+			  	'<td class="formtable_td_value" >'+
+	  	  			'<input type="text" name="trainingEmpNo"  class="none-input"  data-options="required:true" value="'+empId+'"/>'+
+	  	  		'</td>'+
+	  	  		'<td class="formtable_td_value" >'+
+	  	  			'<input type="text" name="trainingEmpName"  class="none-input" data-options="required:true"  value="'+userInfo.name+'"/>'+
+	  	  		'</td>'+
+	  	  		'<td class="formtable_td_value" >'+
+	  	  			'<input type="text" name="trainingOrgName"  class="none-input"  data-options="required:true"  value="'+userInfo.orgName+'"/>'+
+	  	  		'</td>'+
+	  	  		'<td class="formtable_td_value" >'+
+	  	  			'<input type="text" name="trainingEmpJob"  class="none-input"  data-options="required:true"  value="'+userInfo.job+'"/>'+
+	  	  		'</td>'+
+	  	  		'</tr>';
+	  	  		$("#trainingEmpInfoTable${rand}").find("tbody").append(tr);
+	  	  		
+	  	  		trainingedEmpInfoJson.push({
+	  	  			trainingEmpNo:empId,
+	  	  			trainingEmpName:userInfo.name,
+	  	  			trainingOrgName:userInfo.orgName,
+	  	  			trainingEmpJob:userInfo.job
+	  	  		});
+		  	  	trainingedEmpInfo = JSON.stringify(trainingedEmpInfoJson);
+  				//对JSON字符串重新赋值
+  				if(trainingedEmpInfo == "[]"){
+  					$("#trainingedEmpInfo${rand}").val("");
+  				}else{
+  					$("#trainingedEmpInfo${rand}").val(trainingedEmpInfo);
+  				}
+  				
+  				//统计人数
+	 			var count = (parseInt(length)+1);
+  				$("#trainingEmpCount${rand}").val(count);
+	 			var perExpenses = $("#perTrainingExpenses${rand}").val() == ""?0:$("#perTrainingExpenses${rand}").val();
+	 			$("#trainingExpenses${rand}").val(count * perExpenses);
+	 			
+  				$.parser.parse('#trainingEmpInfoTable${rand}');  
+		 	}
+		})
+	 </script>
+		</div>
+	</#if>
+		<!-- 部门经理审批-->
+	<#if currentStep == 'mb_departmentleaderAudiTask'>
+		<div id="mb_departmentleaderAudiTask">
+			<form id="mb_departmentleaderAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_departmentleaderAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >部门经理审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_departmentleaderAudi${rand}" name="fp_departmentleaderAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_departmentleaderAudi2${rand}"  name="fp_departmentleaderAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_departmentleaderAudiAdvice${rand}" name="fp_departmentleaderAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"  makethis_required_field_name="fp_departmentleaderAudi" makethis_required_field_values="1" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_departmentleaderName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_departmentleaderSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_departmentleaderAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_departmentleaderAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_departmentleaderAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- 总监审批-->
+	<#if currentStep == 'mb_inspectorgeneralAudiTask'>
+		<div id="mb_inspectorgeneralAudiTask">
+			<form id="mb_inspectorgeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_inspectorgeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >总监审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_inspectorgeneralAudi${rand}" name="fp_inspectorgeneralAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_inspectorgeneralAudi2${rand}"  name="fp_inspectorgeneralAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_inspectorgeneralAudiAdvice${rand}" name="fp_inspectorgeneralAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因" makethis_required_field_name="fp_inspectorgeneralAudi" makethis_required_field_values="1" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_inspectorgeneralName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_inspectorgeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_inspectorgeneralAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_inspectorgeneralAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- 人力资源中心培训专员审批-->
+	<#if currentStep == 'mb_hrTrainAttachAudiTask'>
+		<div id="mb_hrTrainAttachAudiTask">
+			<form id="mb_hrTrainAttachAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_hrTrainAttachAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >人力资源中心培训专员审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_hrTrainAttachAudi${rand}" name="fp_hrTrainAttachAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_hrTrainAttachAudi2${rand}"  name="fp_hrTrainAttachAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_hrTrainAttachAudiAdvice${rand}" name="fp_hrTrainAttachAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"  makethis_required_field_name="fp_hrTrainAttachAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrTrainAttachName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrTrainAttachSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_hrTrainAttachAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_hrTrainAttachAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_hrTrainAttachAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- 人力资源中心负责人审批-->
+	<#if currentStep == 'mb_hrTrainManagerAudiTask'>
+		<div id="mb_hrTrainManagerAudiTask">
+			<form id="mb_hrTrainManagerAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_hrTrainManagerAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >人力资源中心负责人审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_hrTrainManagerAudi${rand}" name="fp_hrTrainManagerAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_hrTrainManagerAudi2${rand}"  name="fp_hrTrainManagerAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_hrTrainManagerAudiAdvice${rand}" name="fp_hrTrainManagerAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"  makethis_required_field_name="fp_hrTrainManagerAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrTrainManagerName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrTrainManagerSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_hrTrainManagerAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_hrTrainManagerAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_hrTrainManagerAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- 主管副总审批-->
+	<#if currentStep == 'mb_deputygeneralAudiTask'>
+		<div id="mb_deputygeneralAudiTask">
+			<form id="mb_deputygeneralAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_deputygeneralAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >主管副总审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_deputygeneralAudi${rand}" name="fp_deputygeneralAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_deputygeneralAudi2${rand}"  name="fp_deputygeneralAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_deputygeneralAudiAdvice${rand}" name="fp_deputygeneralAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   makethis_required_field_name="fp_deputygeneralAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deputygeneralName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_deputygeneralSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_deputygeneralAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_deputygeneralAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- HR副总裁审批-->
+	<#if currentStep == 'mb_hrViceChairmanAudiTask'>
+		<div id="mb_hrViceChairmanAudiTask">
+			<form id="mb_hrViceChairmanAudiTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_hrViceChairmanAudiTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="6" class="formtable_td_key" align="center" >HR副总裁审批</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input id="fp_hrViceChairmanAudi${rand}" name="fp_hrViceChairmanAudi" type="radio" value="0" checked="checked" mobile="同意"/>同意
+		  	  			<input id="fp_hrViceChairmanAudi2${rand}"  name="fp_hrViceChairmanAudi" type="radio" value="1" mobile="不同意"/>不同意
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">原因：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_hrViceChairmanAudiAdvice${rand}" name="fp_hrViceChairmanAudiAdvice" class="formtable_remark easyui-validatebox" mobile="原因"   makethis_required_field_name="fp_hrViceChairmanAudi" makethis_required_field_values="1"></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrViceChairmanName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_hrViceChairmanSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+		<script>
+			$(function(){
+				$("input[name=fp_hrViceChairmanAudi]").on("change",function(){
+					if(this.value == '0'){
+						$("#fp_hrViceChairmanAudiAdvice${rand}").validatebox({required:false});
+					}else{
+						$("#fp_hrViceChairmanAudiAdvice${rand}").validatebox({required:true});
+					}
+				})
+			})
+		</script>
+	</#if>
+	<!-- 是否结束流程-->
+	<#if currentStep == 'mb_ifEndApplicationTask'>
+		<div id="mb_ifEndApplicationTask">
+			<form id="mb_ifEndApplicationTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_ifEndApplicationTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="4" class="formtable_td_key" align="center" >是否结束流程</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">处理意见：</td>
+		  	  		<td class="formtable_td_value" colspan="3"> 
+		  	  			<input  name="fp_ifEndApplication" type="radio" value="1" checked="checked" mobile="结束流程"/>结束流程
+		  	  			<input  name="fp_ifEndApplication" type="radio" value="0" mobile="修改申请表"/>修改申请表
+			  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea  name="fp_remark" class="formtable_remark easyui-validatebox" mobile="备注" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_ifEndApplicationName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_ifEndApplicationSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+	<!-- 员工确认 -->
+	<#if currentStep == 'mb_staffConfirmedTask'>
+		<div id="mb_staffConfirmedTask">
+			<form id="mb_staffConfirmedTaskForm" method="post" enctype='multipart/form-data'>
+		  	  <table id="mb_staffConfirmedTaskFormTable" class="formtable" cellspacing="1" cellpadding="0" style="margin-top: 10px;">
+		  	  	<tr>
+		  	  		<td  style="font-size: 16px; height: 25px;" colspan="4" class="formtable_td_key" align="center" >员工确认</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">备注：</td>
+		  	  		<td class="formtable_td_value" colspan="3">
+		  	  			<textarea id="fp_staffConfirmedAdvice${rand}" name="fp_staffConfirmedAdvice" class="formtable_remark easyui-validatebox" mobile="备注" ></textarea>
+		  	  		</td>
+		  	  	</tr>
+		  	  	<tr>
+		  	  		<td class="formtable_td_key">签字：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_staffConfirmedName" value="${appuser.name}" mobile="签字"/>
+		  	  			${appuser.name}
+		  	  		</td>
+		  	  		<td class="formtable_td_key">时间：</td>
+		  	  		<td class="formtable_td_value">
+		  	  			<input type="hidden" name="fp_staffConfirmedSignDate" value="${.now?string('yyyy-MM-dd HH:mm:ss')}" mobile="时间"/>
+		  	  			${.now?string('yyyy-MM-dd HH:mm:ss')}
+		  	  		</td>
+		  	  	</tr>
+		  	  </table>
+			</form>
+		</div>
+	</#if>
+</#if>
+<#include "/common/foot.html">

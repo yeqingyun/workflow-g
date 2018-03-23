@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gionee.gniflow.integration.dao.BpmConfBaseDao">
+  
+  <sql id="columns">
+    id, process_def_id, process_def_key, process_def_version,
+	status, remark, create_by, create_time, update_by, update_time
+  </sql>
+
+  <resultMap type="com.gionee.gniflow.biz.model.BpmConfBase" id="result">
+	<id property="id" column="id"/>
+	<result property="processDefId" column="process_def_id"/>
+	<result property="processDefKey" column="process_def_key"/>
+	<result property="processDefVersion" column="process_def_version"/>
+	<result property="status" column="status"/>
+	<result property="remark" column="remark"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createTime" column="create_time"/>
+	<result property="updateBy" column="update_by"/>
+	<result property="updateTime" column="update_time"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="com.gionee.gniflow.biz.model.BpmConfBase">
+    insert into bpm_conf_base (<include refid="columns"/>) values (
+    #{nextId},
+    #{processDefId},
+    #{processDefKey},
+    #{processDefVersion},
+	#{normalStatus},
+	#{remark,jdbcType=VARCHAR},
+	#{currentAccount},
+	#{currentTime},
+	#{currentAccount},
+	#{currentTime}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.gionee.gniflow.biz.model.BpmConfBase">
+    update bpm_conf_base
+    <set>
+      <if test="processDefId != null">
+        process_def_id = #{processDefId},
+      </if>
+      <if test="processDefKey != null">
+        process_def_key = #{processDefKey},
+      </if>
+      <if test="processDefVersion != null">
+        process_def_version = #{processDefVersion},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      update_by = #{currentAccount},
+      update_time = #{currentTime}
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="Integer">
+	delete bpm_conf_base where id = #{_parameter}
+  </delete>
+
+  <select id="getAll" parameterType="map" resultMap="result">
+	select <include refid="columns"/> from bpm_conf_base
+	<where>
+	  <if test="processDefId != null">
+        and process_def_id = #{processDefId}
+	  </if>
+	  <if test="processDefKey != null">
+        and process_def_key = #{processDefKey}
+	  </if>
+	  <if test="processDefVersion != null">
+        and process_def_version = #{processDefVersion}
+	  </if>
+	</where>
+  </select>
+
+  <select id="getPage" parameterType="map" resultMap="result">
+    SELECT SUB.* FROM ( select RES.* , row_number() over (ORDER BY id) rnk FROM (
+      select <include refid="columns"/> from bpm_conf_base
+      <where>
+        <if test="processDefId != null">
+          and process_def_id = #{processDefId}
+        </if>
+        <if test="processDefKey != null">
+          and process_def_key = #{processDefKey}
+        </if>
+        <if test="processDefVersion != null">
+          and process_def_version = #{processDefVersion}
+        </if>
+      </where>
+    )RES ) SUB WHERE SUB.rnk &gt;= #{firstRow} AND SUB.rnk &lt; #{lastRow}
+  </select>
+  <select id="getPageCount" parameterType="map" resultType="int">
+    select count(*) from bpm_conf_base
+    <where>
+      <if test="processDefId != null">
+        and process_def_id = #{processDefId}
+      </if>
+      <if test="processDefKey != null">
+        and process_def_key = #{processDefKey}
+      </if>
+      <if test="processDefVersion != null">
+        and process_def_version = #{processDefVersion}
+      </if>
+    </where>
+  </select>
+
+  <select id="get" parameterType="Integer" resultMap="result">
+	select <include refid="columns"/> from bpm_conf_base
+	where id = #{_parameter}
+  </select>
+
+</mapper>
